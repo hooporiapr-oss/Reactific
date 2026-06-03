@@ -121,7 +121,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 
 /* ===== PLAY SCREEN ===== */
 #screen-play{background:var(--dark)}
-.play-layout{display:flex;max-width:1100px;margin:0 auto;height:calc(100dvh - var(--nav-height) - env(safe-area-inset-top));padding:10px 16px}
+.play-layout{display:flex;max-width:1400px;margin:0 auto;height:calc(100dvh - var(--nav-height) - env(safe-area-inset-top));padding:10px 24px}
 
 /* LEFT SIDEBAR */
 .play-sidebar{width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;padding-right:14px}
@@ -163,7 +163,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 .timer-bar.warn{background:var(--orange)}
 .timer-bar.danger{background:var(--pink)}
 
-.play-court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(6,1fr);gap:4px;padding:8px;background:var(--card);border:2px solid var(--border);border-radius:14px;flex:1;position:relative;transition:border-color 0.15s,box-shadow 0.15s;min-height:0}
+.play-court-wrap2{flex:1;display:flex;justify-content:center;align-items:center;min-height:0;width:100%}.play-court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(6,1fr);gap:6px;padding:10px;background:var(--card);border:2px solid var(--border);border-radius:14px;position:relative;transition:border-color 0.15s,box-shadow 0.15s;width:100%;aspect-ratio:10/6;height:auto;max-height:100%;margin:0 auto}
 .play-court::after{content:'';position:absolute;inset:0;background:url('/cogs/tfz.png') center/75% no-repeat;opacity:0.30;border-radius:12px;pointer-events:none;z-index:0}
 .play-cell{border-radius:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:1;transition:all 0.1s;font-family:'Bebas Neue',sans-serif;font-size:clamp(0.75rem,1.5vw,1.1rem);color:var(--muted)}
 .play-cell:active{transform:scale(0.93)}
@@ -356,7 +356,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <span class="play-timer-label" id="playTimerLabel"></span>
 </div>
 <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
-<div class="play-court" id="playCourt"></div>
+<div class="play-court-wrap2"><div class="play-court" id="playCourt"></div></div>
 </div>
 </div>
 </div>
