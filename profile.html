@@ -499,43 +499,365 @@ let el = document.getElementById(id);
 return el ? el.value : "";
 }
 
+```html
 function cgGenerateReport(){
 
-let lang = cgSelection.language;
-let suffix = lang === "es" ? "-es" : "";
+let lang =
+cgSelection.language;
 
-let outputId = lang === "es" ? "cg-output-es" : "cg-output-en";
-let output = document.getElementById(outputId);
+let suffix =
+lang==="es"
+?
+"-es"
+:
+"";
+
+let outputId =
+lang==="es"
+?
+"cg-output-es"
+:
+"cg-output-en";
+
+let output =
+document.getElementById(
+outputId
+);
 
 if(!cgSelection.value){
-output.style.display="block";
-output.textContent = lang === "es"
-? "Selecciona un enfoque de entrenamiento primero."
-: "Select a training focus first.";
+
+output.style.display=
+"block";
+
+output.innerHTML =
+
+lang==="es"
+
+?
+
+"Selecciona un enfoque primero."
+
+:
+
+"Select a training focus first.";
+
 return;
+
 }
 
-let report = {
-program_system:"Cognitivo.Digital",
-training_model:"5x5 Grid Court",
-language:lang,
-name:cgGet("cg-name"+suffix),
-age:cgGet("cg-age"+suffix),
-gender:cgGet("cg-gender"+suffix),
-school:cgGet("cg-school"+suffix),
-program:cgGet("cg-program"+suffix),
-team:cgGet("cg-team"+suffix),
-position:cgGet("cg-position"+suffix),
-focus:cgSelection.label,
-focus_code:cgSelection.value,
-timestamp:new Date().toISOString()
+/* PROGRAM MAP */
+
+const programMap={
+
+"react-too-late":"Reaction Training",
+
+"miss-openings":"Spatial Awareness",
+
+"lose-spacing":"Court Intelligence",
+
+"hesitate":"Decision Speed",
+
+"freeze-games":"Pattern Recognition",
+
+"court-awareness":"Court Intelligence"
+
 };
 
-localStorage.setItem("cognitivo_player_report",JSON.stringify(report));
+const reasonMap={
 
-output.style.display="block";
-output.textContent = JSON.stringify(report,null,2);
+"react-too-late":
+"Recognition is occurring after the opportunity begins closing.",
+
+"miss-openings":
+"Opportunities may not be recognized early enough.",
+
+"lose-spacing":
+"Court relationships and movement patterns need reinforcement.",
+
+"hesitate":
+"Decision confidence and commitment speed can improve.",
+
+"freeze-games":
+"Recognition transfer from practice to competition can improve.",
+
+"court-awareness":
+"Earlier recognition of court conditions may improve play."
+
+};
+
+let profile={
+
+name:
+cgGet(
+"cg-name"+suffix
+),
+
+age:
+cgGet(
+"cg-age"+suffix
+),
+
+gender:
+cgGet(
+"cg-gender"+suffix
+),
+
+school:
+cgGet(
+"cg-school"+suffix
+),
+
+program:
+cgGet(
+"cg-program"+suffix
+),
+
+team:
+cgGet(
+"cg-team"+suffix
+),
+
+position:
+cgGet(
+"cg-position"+suffix
+)
+
+};
+
+let recommendedProgram =
+programMap[
+cgSelection.value
+];
+
+let reason =
+reasonMap[
+cgSelection.value
+];
+
+let report={
+
+system:
+"Cognitivo.Digital",
+
+model:
+"5×5 Grid Court",
+
+profile,
+
+focus:
+cgSelection.label,
+
+recommended:
+recommendedProgram,
+
+timestamp:
+new Date()
+.toISOString()
+
+};
+
+localStorage.setItem(
+
+"cognitivo_player_report",
+
+JSON.stringify(
+report
+)
+
+);
+
+output.style.display=
+"block";
+
+output.innerHTML=
+
+`
+
+<div class="cg-final-report">
+
+<h3>
+
+🏀 Player Cognitive Report
+
+</h3>
+
+<hr>
+
+<h4>
+
+Player Information
+
+</h4>
+
+<p>
+
+<strong>Name:</strong>
+
+${profile.name || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>Age:</strong>
+
+${profile.age || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>Gender:</strong>
+
+${profile.gender || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>School:</strong>
+
+${profile.school || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>Program:</strong>
+
+${profile.program || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>Team:</strong>
+
+${profile.team || "Not Provided"}
+
+</p>
+
+<p>
+
+<strong>Position:</strong>
+
+${profile.position || "Not Provided"}
+
+</p>
+
+<hr>
+
+<h4>
+
+Selected Focus
+
+</h4>
+
+<p>
+
+${cgSelection.label}
+
+</p>
+
+<hr>
+
+<h4>
+
+Primary Recommended Program
+
+</h4>
+
+<p>
+
+<strong>
+
+${recommendedProgram}
+
+</strong>
+
+</p>
+
+<p>
+
+${reason}
+
+</p>
+
+<hr>
+
+<h4>
+
+Recommended Full Training Path
+
+</h4>
+
+<p>
+
+We recommend completing all training modes to maximize transfer and recognition.
+
+</p>
+
+<ul>
+
+<li>Pattern Recognition</li>
+
+<li>Spatial Awareness</li>
+
+<li>Decision Speed</li>
+
+<li>Reaction Training</li>
+
+<li>Court Intelligence</li>
+
+</ul>
+
+<hr>
+
+<h4>
+
+Coach Recommendation
+
+</h4>
+
+<p>
+
+Start with:
+
+<strong>
+
+${recommendedProgram}
+
+</strong>
+
+and continue through all programs.
+
+Difficulty and speed should adjust automatically.
+
+</p>
+
+<div
+style="
+margin-top:30px;
+text-align:center;
+">
+
+<a
+href="#training"
+class="cg-start-training">
+
+START TRAINING →
+
+</a>
+
+</div>
+
+</div>
+
+`;
+
 }
+```
+
 </script>
 
 </section>
