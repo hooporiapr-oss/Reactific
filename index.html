@@ -468,6 +468,27 @@ body.es [data-lang="es"]{display:block}
 body.es span[data-lang="es"],
 body.es a[data-lang="es"]{display:inline-flex}
 
+.section-copy > span[data-lang="en"],
+.section-copy > span[data-lang="es"]{
+  display:block;
+}
+
+body.es .section-copy > span[data-lang="en"]{
+  display:none;
+}
+
+body.es .section-copy > span[data-lang="es"]{
+  display:block;
+}
+
+body:not(.es) .section-copy > span[data-lang="es"]{
+  display:none;
+}
+
+.nh-copy{
+  line-height:1.75;
+}
+
 @media(max-width:980px){
   .hero{grid-template-columns:1fr}
   .cards,.modes-grid,.steps,.competition{grid-template-columns:1fr}
@@ -521,91 +542,16 @@ body.es a[data-lang="es"]{display:inline-flex}
       <span data-lang="es">REACTIFIC™ es <span class="gold">NUMBER HUNT™</span></span>
     </h1>
 
-    <p class="section-copy">
-  <span data-lang="en">
-    Built around a simple but powerful loop:
-    <strong>Scan → Find → React → Repeat</strong>
-
-    <br><br>
-
-    Every challenge begins with awareness and ends with action. Players search the grid, locate targets, react under pressure, and continue as the difficulty adapts.
-
-    <br><br>
-
-    NUMBER HUNT™ can power individual challenges, team competitions, live leaderboards, school events, word hunts, pattern hunts, and future game modes — all from one experience.
-
-    <br><br>
-
-    One platform. One login. One community. One superstar.
-  </span>
-
-  ```html
-<span data-lang="es">
-
-  Construido alrededor de un ciclo simple pero poderoso:
-
-  <br><br>
-
-  <strong>Escanear → Encontrar → Reaccionar → Repetir</strong>
-
-  <br><br>
-
-  Cada reto comienza con observación y termina con acción.
-
-  <br><br>
-
-  Los jugadores exploran la cuadrícula.
-
-  <br><br>
-
-  Localizan objetivos.
-
-  <br><br>
-
-  Reaccionan bajo presión.
-
-  <br><br>
-
-  Continúan mientras el desafío evoluciona.
-
-  <br><br>
-
-  NUMBER HUNT™ puede impulsar:
-
-  <br><br>
-
-  • Retos individuales<br>
-  • Competencias por equipos<br>
-  • Tablas de líderes en vivo<br>
-  • Eventos escolares<br>
-  • Búsqueda de palabras<br>
-  • Búsqueda de patrones<br>
-  • Nuevos modos de juego
-
-  <br><br>
-
-  Todo desde una sola experiencia.
-
-  <br><br>
-
-  Una plataforma.
-
-  <br>
-
-  Un login.
-
-  <br>
-
-  Una comunidad.
-
-  <br>
-
-  Una superestrella.
-
-</span>
-```
-
-</p>
+    <p class="lead">
+      <span data-lang="en">
+        <strong>REACTIFIC™</strong> is a touch-screen reaction platform built around one superstar experience:
+        <strong>NUMBER HUNT™</strong>. Scan the grid. Find the targets. React before time runs out.
+      </span>
+      <span data-lang="es">
+        <strong>REACTIFIC™</strong> es una plataforma de reacción en pantalla táctil construida alrededor de una experiencia principal:
+        <strong>NUMBER HUNT™</strong>. Escanea la cuadrícula. Encuentra los objetivos. Reacciona antes de que se acabe el tiempo.
+      </span>
+    </p>
 
     <div class="cta-row">
       <a href="#numberhunt" class="btn btn-primary">
@@ -657,168 +603,41 @@ body.es a[data-lang="es"]{display:inline-flex}
   </div>
 </section>
 
-```html
 <section id="numberhunt">
-
   <h2 class="section-title">
-    <span data-lang="en">
-      Number Hunt™ is the Platform.
-    </span>
-
-    <span data-lang="es">
-      Number Hunt™ es la Plataforma.
-    </span>
+    <span data-lang="en">Number Hunt™ is the Platform.</span>
+    <span data-lang="es">Number Hunt™ es la Plataforma.</span>
   </h2>
 
-  <p class="section-copy">
-
+  <p class="section-copy nh-copy">
     <span data-lang="en">
-
-      REACTIFIC™
-      <strong> NUMBER HUNT™</strong>
-
-      is the core engine:
-
-      scan, find, react, repeat.
-
-      It can power individual challenges,
-      team battles,
-      leaderboards,
-      school competitions,
-      word hunts,
-      pattern hunts,
-      and more.
-
+      Built around a simple but powerful loop:
+      <br><br>
+      <strong>Scan → Find → React → Repeat</strong>
+      <br><br>
+      Every challenge begins with awareness and ends with action.
+      <br><br>
+      Players search the grid, locate targets, react under pressure, and continue as the difficulty adapts.
+      <br><br>
+      NUMBER HUNT™ can power individual challenges, team competitions, live leaderboards, school events, word hunts, pattern hunts, and future game modes — all from one experience.
+      <br><br>
+      One platform. One login. One community. One superstar.
     </span>
-
-
 
     <span data-lang="es">
-
-      REACTIFIC™
-
+      Construida alrededor de un ciclo simple pero poderoso:
       <br><br>
-
-      <strong>NUMBER HUNT™</strong>
-
+      <strong>Escanea → Encuentra → Reacciona → Repite</strong>
       <br><br>
-
-      es el motor principal.
-
+      Cada reto comienza con observación y termina con acción.
       <br><br>
-
-      Escanea.
-
-      <br>
-
-      Encuentra.
-
-      <br>
-
-      Reacciona.
-
-      <br>
-
-      Repite.
-
+      Los jugadores exploran la cuadrícula, localizan objetivos, reaccionan bajo presión y continúan mientras el desafío se adapta.
       <br><br>
-
-      Puede impulsar:
-
+      NUMBER HUNT™ puede impulsar retos individuales, competencias por equipos, tablas de líderes, eventos escolares, búsqueda de palabras, búsqueda de patrones y futuros modos de juego — todo desde una sola experiencia.
       <br><br>
-
-      • Retos individuales<br>
-      • Competencias por equipos<br>
-      • Tablas de líderes<br>
-      • Competencias escolares<br>
-      • Búsqueda de palabras<br>
-      • Búsqueda de patrones<br>
-      • Mucho más
-
-      <br><br>
-
-      Todo desde una sola experiencia.
-
+      Una plataforma. Un login. Una comunidad. Una superestrella.
     </span>
-
   </p>
-
-  <div class="cards">
-
-    <div class="card">
-      <h3>
-        <span data-lang="en">
-          Instant Replay Value
-        </span>
-
-        <span data-lang="es">
-          Valor de Repetición Instantáneo
-        </span>
-      </h3>
-
-      <p>
-        <span data-lang="en">
-          Simple to understand. Hard to master. Built for one more round.
-        </span>
-
-        <span data-lang="es">
-          Fácil de entender. Difícil de dominar. Diseñado para una ronda más.
-        </span>
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>
-        <span data-lang="en">
-          Competition Ready
-        </span>
-
-        <span data-lang="es">
-          Listo para Competencia
-        </span>
-      </h3>
-
-      <p>
-        <span data-lang="en">
-          Individual, team, station, classroom, and event formats all run on the same engine.
-        </span>
-
-        <span data-lang="es">
-          Individual, por equipos, estaciones, salón o eventos — todo funciona en el mismo motor.
-        </span>
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>
-        <span data-lang="en">
-          Expandable Challenge Engine
-        </span>
-
-        <span data-lang="es">
-          Motor Expandible de Retos
-        </span>
-      </h3>
-
-      <p>
-        <span data-lang="en">
-          Numbers are only the beginning.
-        </span>
-
-        <span data-lang="es">
-          Los números son solo el comienzo.
-        </span>
-      </p>
-    </div>
-
-  </div>
-
-</section>
-```
-
-
-</p>
-
 
   <div class="cards">
     <div class="card">
