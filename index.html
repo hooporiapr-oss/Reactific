@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>REACTIFIC™ | Number Hunt™</title>
+<title>REACTIFIC™ | The Home of Reaction Gaming™</title>
 
 <style>
 :root{
@@ -20,6 +20,7 @@
   --teal:#00D9A5;
   --white:#ffffff;
   --muted:#b8b8b8;
+  --danger:#ff3b3b;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -134,6 +135,22 @@ h1{
 }
 .lead strong{color:var(--white)}
 
+.free-banner{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin:4px 0 20px;
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(57,255,20,.10);
+  border:1px solid rgba(57,255,20,.30);
+  color:var(--lime);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+
 .cta-row{
   display:flex;
   flex-wrap:wrap;
@@ -177,6 +194,34 @@ h1{
   border-radius:28px;
   padding:24px;
   box-shadow:0 0 50px rgba(0,0,0,.55);
+}
+
+.shot-clock{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(255,59,59,.35);
+  background:linear-gradient(135deg,rgba(255,59,59,.18),rgba(212,175,55,.06));
+  border-radius:18px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+
+.shot-clock-label{
+  color:var(--muted);
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-weight:900;
+}
+
+.shot-clock-number{
+  font-size:2.1rem;
+  color:var(--danger);
+  font-weight:900;
+  line-height:1;
+  text-shadow:0 0 22px rgba(255,59,59,.45);
 }
 
 .target-strip{
@@ -306,6 +351,41 @@ section{
 }
 .card p{color:var(--muted)}
 
+.play-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.play-card{
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+  min-height:230px;
+}
+.play-card strong{
+  display:inline-flex;
+  color:#000;
+  background:var(--gold);
+  border-radius:999px;
+  padding:5px 11px;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.09em;
+  margin-bottom:16px;
+}
+.play-card h3{
+  font-size:1.9rem;
+  line-height:1;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.play-card p{
+  color:var(--muted);
+  font-weight:700;
+}
+
 .modes-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -375,29 +455,28 @@ section{
   text-transform:uppercase;
 }
 
-.steps{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-top:30px;
+.training-free{
+  border:1px solid rgba(57,255,20,.3);
+  border-radius:30px;
+  padding:34px;
+  background:
+    radial-gradient(circle at top right,rgba(57,255,20,.14),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
 }
 
-.step{
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:22px;
-  background:rgba(0,0,0,.38);
-}
-.step strong{
-  display:block;
-  color:var(--lime);
-  font-size:.8rem;
-  letter-spacing:.14em;
+.training-free h3{
+  font-size:clamp(2rem,4vw,4rem);
+  line-height:1;
   text-transform:uppercase;
-  margin-bottom:10px;
+  letter-spacing:-.045em;
+  margin-bottom:16px;
 }
-.step h3{margin-bottom:8px}
-.step p{color:var(--muted)}
+.training-free p{
+  color:var(--muted);
+  font-size:1.1rem;
+  max-width:840px;
+}
+.training-free strong{color:var(--white)}
 
 .competition{
   display:grid;
@@ -468,30 +547,9 @@ body.es [data-lang="es"]{display:block}
 body.es span[data-lang="es"],
 body.es a[data-lang="es"]{display:inline-flex}
 
-.section-copy > span[data-lang="en"],
-.section-copy > span[data-lang="es"]{
-  display:block;
-}
-
-body.es .section-copy > span[data-lang="en"]{
-  display:none;
-}
-
-body.es .section-copy > span[data-lang="es"]{
-  display:block;
-}
-
-body:not(.es) .section-copy > span[data-lang="es"]{
-  display:none;
-}
-
-.nh-copy{
-  line-height:1.75;
-}
-
 @media(max-width:980px){
   .hero{grid-template-columns:1fr}
-  .cards,.modes-grid,.steps,.competition{grid-template-columns:1fr}
+  .cards,.modes-grid,.play-grid,.competition{grid-template-columns:1fr}
   .stat-line{grid-template-columns:1fr}
   header{align-items:flex-start;flex-direction:column}
 }
@@ -505,17 +563,17 @@ body:not(.es) .section-copy > span[data-lang="es"]{
   <div class="brand">REACTIFIC<span>™</span></div>
 
   <div class="nav">
-    <a href="#numberhunt">
-      <span data-lang="en">Number Hunt</span>
-      <span data-lang="es">Number Hunt</span>
+    <a href="#play">
+      <span data-lang="en">Play</span>
+      <span data-lang="es">Jugar</span>
     </a>
-    <a href="#modes">
-      <span data-lang="en">Modes</span>
-      <span data-lang="es">Modos</span>
+    <a href="#shotclock">
+      <span data-lang="en">Shot Clock</span>
+      <span data-lang="es">Shot Clock</span>
     </a>
-    <a href="#competition">
-      <span data-lang="en">Competition</span>
-      <span data-lang="es">Competencia</span>
+    <a href="#league">
+      <span data-lang="en">League</span>
+      <span data-lang="es">Liga</span>
     </a>
     <a href="#start">
       <span data-lang="en">Start</span>
@@ -533,39 +591,60 @@ body:not(.es) .section-copy > span[data-lang="es"]{
 <section class="hero">
   <div>
     <div class="eyebrow">
-      <span data-lang="en">The Eagle Has Landed</span>
-      <span data-lang="es">El Águila Aterrizó</span>
+      <span data-lang="en">Reaction Gaming Has Arrived</span>
+      <span data-lang="es">Reaction Gaming Ha Llegado</span>
     </div>
 
     <h1>
-      <span data-lang="en">REACTIFIC™ is <span class="gold">NUMBER HUNT™</span></span>
-      <span data-lang="es">REACTIFIC™ es <span class="gold">NUMBER HUNT™</span></span>
+      <span data-lang="en">REACTIFIC™</span>
+      <span data-lang="es">REACTIFIC™</span>
     </h1>
 
     <p class="lead">
       <span data-lang="en">
-        <strong>REACTIFIC™</strong> is a touch-screen reaction platform built around one superstar experience:
-        <strong>NUMBER HUNT™</strong>. Scan the grid. Find the targets. React before time runs out.
+        <strong>The Home of Reaction Gaming™</strong><br>
+        Powered by <strong>NUMBER HUNT™</strong>. Scan. Find. React.
+        Beat the <strong>Reactific Shot Clock™</strong>.
       </span>
       <span data-lang="es">
-        <strong>REACTIFIC™</strong> es una plataforma de reacción en pantalla táctil construida alrededor de una experiencia principal:
-        <strong>NUMBER HUNT™</strong>. Escanea la cuadrícula. Encuentra los objetivos. Reacciona antes de que se acabe el tiempo.
+        <strong>El hogar de Reaction Gaming™</strong><br>
+        Impulsado por <strong>NUMBER HUNT™</strong>. Escanea. Encuentra. Reacciona.
+        Vence el <strong>Reactific Shot Clock™</strong>.
       </span>
     </p>
 
+    <div class="free-banner">
+      <span data-lang="en">Training is free</span>
+      <span data-lang="es">El entrenamiento es gratis</span>
+    </div>
+
     <div class="cta-row">
-      <a href="#numberhunt" class="btn btn-primary">
+      <a href="#play" class="btn btn-primary">
         <span data-lang="en">Enter Number Hunt™</span>
         <span data-lang="es">Entrar a Number Hunt™</span>
       </a>
-      <a href="register.html" class="btn btn-secondary">
-        <span data-lang="en">Login / Registration</span>
-        <span data-lang="es">Login / Registro</span>
+      <a href="#league" class="btn btn-secondary">
+        <span data-lang="en">View League</span>
+        <span data-lang="es">Ver Liga</span>
       </a>
     </div>
   </div>
 
   <div class="hero-card">
+    <div class="shot-clock">
+      <div>
+        <div class="shot-clock-label">
+          <span data-lang="en">Reactific Shot Clock™</span>
+          <span data-lang="es">Reactific Shot Clock™</span>
+        </div>
+        <div style="color:var(--muted);font-size:.8rem;font-weight:800;">
+          <span data-lang="en">Beat the buzzer</span>
+          <span data-lang="es">Vence la bocina</span>
+        </div>
+      </div>
+      <div class="shot-clock-number">05</div>
+    </div>
+
     <div class="target-strip">
       <div class="target-label">
         <span data-lang="en">Find These Numbers</span>
@@ -595,140 +674,156 @@ body:not(.es) .section-copy > span[data-lang="es"]{
         <span data-lang="es">Celdas</span>
       </div>
       <div class="stat">
-        <b>BPM</b>
-        <span data-lang="en">Beat</span>
-        <span data-lang="es">Ritmo</span>
+        <b>FREE</b>
+        <span data-lang="en">Training</span>
+        <span data-lang="es">Entrenamiento</span>
       </div>
     </div>
   </div>
 </section>
 
-<section id="numberhunt">
+<section id="play">
   <h2 class="section-title">
-    <span data-lang="en">Number Hunt™ is the Platform.</span>
-    <span data-lang="es">Number Hunt™ es la Plataforma.</span>
+    <span data-lang="en">Play. Compete. Improve. Repeat.</span>
+    <span data-lang="es">Juega. Compite. Mejora. Repite.</span>
   </h2>
 
-  <p class="section-copy nh-copy">
+  <p class="section-copy">
     <span data-lang="en">
-      Built around a simple but powerful loop:
-      <br><br>
-      <strong>Scan → Find → React → Repeat</strong>
-      <br><br>
-      Every challenge begins with awareness and ends with action.
-      <br><br>
-      Players search the grid, locate targets, react under pressure, and continue as the difficulty adapts.
-      <br><br>
-      NUMBER HUNT™ can power individual challenges, team competitions, live leaderboards, school events, word hunts, pattern hunts, and future game modes — all from one experience.
-      <br><br>
-      One platform. One login. One community. One superstar.
+      NUMBER HUNT™ is simple to play and brutal to master. Every game is practice.
+      Every practice is competition.
     </span>
-
     <span data-lang="es">
-      Construida alrededor de un ciclo simple pero poderoso:
-      <br><br>
-      <strong>Escanea → Encuentra → Reacciona → Repite</strong>
-      <br><br>
-      Cada reto comienza con observación y termina con acción.
-      <br><br>
-      Los jugadores exploran la cuadrícula, localizan objetivos, reaccionan bajo presión y continúan mientras el desafío se adapta.
-      <br><br>
-      NUMBER HUNT™ puede impulsar retos individuales, competencias por equipos, tablas de líderes, eventos escolares, búsqueda de palabras, búsqueda de patrones y futuros modos de juego — todo desde una sola experiencia.
-      <br><br>
-      Una plataforma. Un login. Una comunidad. Una superestrella.
+      NUMBER HUNT™ es fácil de jugar y brutal de dominar. Cada juego es práctica.
+      Cada práctica es competencia.
+    </span>
+  </p>
+
+  <div class="play-grid">
+    <div class="play-card">
+      <strong>SOLO</strong>
+      <h3>
+        <span data-lang="en">Climb the Leaderboard.</span>
+        <span data-lang="es">Sube en la Tabla.</span>
+      </h3>
+      <p>
+        <span data-lang="en">Train free. Play anytime. Chase your rank.</span>
+        <span data-lang="es">Entrena gratis. Juega cuando quieras. Persigue tu ranking.</span>
+      </p>
+    </div>
+
+    <div class="play-card">
+      <strong>DUEL</strong>
+      <h3>
+        <span data-lang="en">Beat Your Opponent.</span>
+        <span data-lang="es">Vence a tu Rival.</span>
+      </h3>
+      <p>
+        <span data-lang="en">One versus one. Same grid. Same pressure.</span>
+        <span data-lang="es">Uno contra uno. Misma cuadrícula. Misma presión.</span>
+      </p>
+    </div>
+
+    <div class="play-card">
+      <strong>3×3</strong>
+      <h3>
+        <span data-lang="en">Win the Possession.</span>
+        <span data-lang="es">Gana la Posesión.</span>
+      </h3>
+      <p>
+        <span data-lang="en">Three targets. One team. Beat the Shot Clock.</span>
+        <span data-lang="es">Tres objetivos. Un equipo. Vence el Shot Clock.</span>
+      </p>
+    </div>
+
+    <div class="play-card">
+      <strong>LEAGUE</strong>
+      <h3>
+        <span data-lang="en">Rule the Standings.</span>
+        <span data-lang="es">Domina la Liga.</span>
+      </h3>
+      <p>
+        <span data-lang="en">Teams, rounds, rankings, and championships.</span>
+        <span data-lang="es">Equipos, rondas, rankings y campeonatos.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="shotclock">
+  <h2 class="section-title">
+    <span data-lang="en">Beat the Reactific Shot Clock™</span>
+    <span data-lang="es">Vence el Reactific Shot Clock™</span>
+  </h2>
+
+  <p class="section-copy">
+    <span data-lang="en">
+      We are no longer beats per minute. We are beat the Shot Clock.
+      Targets appear. The clock starts. Find them before the buzzer.
+      That is where reaction gaming becomes real.
+    </span>
+    <span data-lang="es">
+      Ya no somos beats per minute. Somos vencer el Shot Clock.
+      Aparecen los objetivos. Empieza el reloj. Encuéntralos antes de la bocina.
+      Ahí es donde Reaction Gaming se vuelve real.
     </span>
   </p>
 
   <div class="cards">
     <div class="card">
       <h3>
-        <span data-lang="en">Instant Replay Value</span>
-        <span data-lang="es">Valor de Repetición Instantáneo</span>
+        <span data-lang="en">Shot Clock Pressure</span>
+        <span data-lang="es">Presión del Shot Clock</span>
       </h3>
       <p>
-        <span data-lang="en">Simple to understand. Hard to master. Built for “one more round.”</span>
-        <span data-lang="es">Fácil de entender. Difícil de dominar. Creado para “una ronda más”.</span>
+        <span data-lang="en">Pressure creates decisions. Decisions create performance.</span>
+        <span data-lang="es">La presión crea decisiones. Las decisiones crean rendimiento.</span>
       </p>
     </div>
 
     <div class="card">
       <h3>
-        <span data-lang="en">Competition Ready</span>
-        <span data-lang="es">Listo para Competencia</span>
+        <span data-lang="en">Buzzer Beaters</span>
+        <span data-lang="es">Buzzer Beaters</span>
       </h3>
       <p>
-        <span data-lang="en">Individual, team, station, classroom, and event formats can all run on the same engine.</span>
-        <span data-lang="es">Formatos individuales, por equipo, estaciones, salones y eventos pueden vivir en el mismo motor.</span>
+        <span data-lang="en">Find the final target before the buzzer and create the moment.</span>
+        <span data-lang="es">Encuentra el último objetivo antes de la bocina y crea el momento.</span>
       </p>
     </div>
 
     <div class="card">
       <h3>
-        <span data-lang="en">Expandable Challenge Engine</span>
-        <span data-lang="es">Motor Expandible de Retos</span>
+        <span data-lang="en">Brutal to Master</span>
+        <span data-lang="es">Brutal de Dominar</span>
       </h3>
       <p>
-        <span data-lang="en">Numbers are only the beginning. Letters, words, symbols, colors, and patterns can follow.</span>
-        <span data-lang="es">Los números son solo el comienzo. Letras, palabras, símbolos, colores y patrones pueden seguir.</span>
+        <span data-lang="en">Simple rules. Immediate feedback. No hiding.</span>
+        <span data-lang="es">Reglas simples. Respuesta inmediata. No hay dónde esconderse.</span>
       </p>
     </div>
   </div>
 </section>
 
 <section>
-  <h2 class="section-title">
-    <span data-lang="en">How It Works</span>
-    <span data-lang="es">Cómo Funciona</span>
-  </h2>
-
-  <div class="steps">
-    <div class="step">
-      <strong>01</strong>
-      <h3>
-        <span data-lang="en">Scan</span>
-        <span data-lang="es">Escanea</span>
-      </h3>
-      <p>
-        <span data-lang="en">Read the full 60-cell field.</span>
-        <span data-lang="es">Lee el campo completo de 60 celdas.</span>
-      </p>
-    </div>
-
-    <div class="step">
-      <strong>02</strong>
-      <h3>
-        <span data-lang="en">Find</span>
-        <span data-lang="es">Encuentra</span>
-      </h3>
-      <p>
-        <span data-lang="en">Locate the target numbers before time expires.</span>
-        <span data-lang="es">Localiza los números objetivo antes de que termine el tiempo.</span>
-      </p>
-    </div>
-
-    <div class="step">
-      <strong>03</strong>
-      <h3>
-        <span data-lang="en">React</span>
-        <span data-lang="es">Reacciona</span>
-      </h3>
-      <p>
-        <span data-lang="en">Touch with precision, control, and rhythm.</span>
-        <span data-lang="es">Toca con precisión, control y ritmo.</span>
-      </p>
-    </div>
-
-    <div class="step">
-      <strong>04</strong>
-      <h3>
-        <span data-lang="en">Compete</span>
-        <span data-lang="es">Compite</span>
-      </h3>
-      <p>
-        <span data-lang="en">Track scores, teams, rounds, levels, and leaderboards.</span>
-        <span data-lang="es">Registra puntos, equipos, rondas, niveles y tablas de líderes.</span>
-      </p>
-    </div>
+  <div class="training-free">
+    <h3>
+      <span data-lang="en">Training is Free.</span>
+      <span data-lang="es">El Entrenamiento es Gratis.</span>
+    </h3>
+    <p>
+      <span data-lang="en">
+        Players can practice at any time. They think they are playing, chasing the leaderboard,
+        and beating the Shot Clock. Without realizing it, they are doing REACTIFIC™ training:
+        scanning, recognition, reaction, timing, coordination, awareness, and pressure control.
+      </span>
+      <span data-lang="es">
+        Los jugadores pueden practicar en cualquier momento. Creen que están jugando,
+        subiendo en la tabla y venciendo el Shot Clock. Sin darse cuenta, están haciendo
+        entrenamiento REACTIFIC™: escaneo, reconocimiento, reacción, ritmo, coordinación,
+        conciencia y control bajo presión.
+      </span>
+    </p>
   </div>
 </section>
 
@@ -737,15 +832,6 @@ body:not(.es) .section-copy > span[data-lang="es"]{
     <span data-lang="en">One Platform. Many Hunt Modes.</span>
     <span data-lang="es">Una Plataforma. Muchos Modos Hunt.</span>
   </h2>
-
-  <p class="section-copy">
-    <span data-lang="en">
-      The core stays the same: scan, find, react. The challenge can evolve endlessly.
-    </span>
-    <span data-lang="es">
-      El núcleo se mantiene igual: escanea, encuentra y reacciona. El reto puede evolucionar sin límite.
-    </span>
-  </p>
 
   <div class="modes-grid">
     <div class="mode-card" style="--accent:var(--lime)">
@@ -761,8 +847,8 @@ body:not(.es) .section-copy > span[data-lang="es"]{
     <div class="mode-card" style="--accent:var(--cyan)">
       <h3>Word Hunt™</h3>
       <p>
-        <span data-lang="en">Find letters, build words, and turn reaction training into literacy play.</span>
-        <span data-lang="es">Encuentra letras, forma palabras y convierte la reacción en juego de lectura.</span>
+        <span data-lang="en">Find letters, build words, and turn reaction gaming into literacy play.</span>
+        <span data-lang="es">Encuentra letras, forma palabras y convierte Reaction Gaming en juego de lectura.</span>
       </p>
       <div class="pill-row"><span>Letters</span><span>Words</span><span>Learning</span></div>
       <div class="mode-status">Coming Soon</div>
@@ -777,75 +863,45 @@ body:not(.es) .section-copy > span[data-lang="es"]{
       <div class="pill-row"><span>Teams</span><span>Events</span><span>Leaderboard</span></div>
       <div class="mode-status">Coming Soon</div>
     </div>
-
-    <div class="mode-card" style="--accent:var(--purple)">
-      <h3>Pattern Hunt™</h3>
-      <p>
-        <span data-lang="en">Find matching symbols, colors, or visual targets under pressure.</span>
-        <span data-lang="es">Encuentra símbolos, colores u objetivos visuales bajo presión.</span>
-      </p>
-      <div class="pill-row"><span>Patterns</span><span>Recognition</span><span>Focus</span></div>
-      <div class="mode-status">Coming Soon</div>
-    </div>
-
-    <div class="mode-card" style="--accent:var(--orange)">
-      <h3>Speed Hunt™</h3>
-      <p>
-        <span data-lang="en">Push reaction limits as the clock tightens and the beat increases.</span>
-        <span data-lang="es">Lleva la reacción al límite mientras el tiempo baja y el ritmo sube.</span>
-      </p>
-      <div class="pill-row"><span>BPM</span><span>Pressure</span><span>Reaction</span></div>
-      <div class="mode-status">Coming Soon</div>
-    </div>
-
-    <div class="mode-card" style="--accent:var(--teal)">
-      <h3>Challenge Hunt™</h3>
-      <p>
-        <span data-lang="en">Seasonal, school, team, and event-based challenges built on the Number Hunt engine.</span>
-        <span data-lang="es">Retos por temporada, escuela, equipo y evento usando el motor Number Hunt.</span>
-      </p>
-      <div class="pill-row"><span>Events</span><span>Schools</span><span>Community</span></div>
-      <div class="mode-status">Coming Soon</div>
-    </div>
   </div>
 </section>
 
-<section id="competition">
+<section id="league">
   <h2 class="section-title">
-    <span data-lang="en">Built for Individual and Team Competition.</span>
-    <span data-lang="es">Creado para Competencia Individual y por Equipo.</span>
+    <span data-lang="en">Built for League Play.</span>
+    <span data-lang="es">Creado para Juego de Liga.</span>
   </h2>
 
   <div class="competition">
     <div class="big-panel">
       <h3>
-        <span data-lang="en">Individual Challenge</span>
-        <span data-lang="es">Reto Individual</span>
+        <span data-lang="en">Solo Leaderboard</span>
+        <span data-lang="es">Tabla Solo</span>
       </h3>
       <p>
-        <span data-lang="en">Players train alone, chase personal bests, climb levels, and build reaction confidence.</span>
-        <span data-lang="es">Los jugadores entrenan solos, persiguen marcas personales, suben niveles y fortalecen confianza de reacción.</span>
+        <span data-lang="en">Players train free, post scores, chase personal bests, and climb the board.</span>
+        <span data-lang="es">Los jugadores entrenan gratis, suben puntuaciones, persiguen marcas personales y escalan la tabla.</span>
       </p>
       <div class="scoreboard">
-        <div class="score-row"><span>Level</span><b>15</b></div>
-        <div class="score-row"><span>BPM</span><b>120</b></div>
+        <div class="score-row"><span>Rank</span><b>#1</b></div>
+        <div class="score-row"><span>Shot Clock</span><b>5s</b></div>
         <div class="score-row"><span>Targets</span><b>15</b></div>
       </div>
     </div>
 
     <div class="big-panel">
       <h3>
-        <span data-lang="en">Team Battle</span>
-        <span data-lang="es">Batalla por Equipo</span>
+        <span data-lang="en">3×3 Number Hunt™</span>
+        <span data-lang="es">3×3 Number Hunt™</span>
       </h3>
       <p>
-        <span data-lang="en">Teams rotate through stations, compete against the clock, and build a live leaderboard experience.</span>
-        <span data-lang="es">Los equipos rotan por estaciones, compiten contra el reloj y construyen una experiencia de marcador en vivo.</span>
+        <span data-lang="en">Three targets. Three teammates. A point only counts when the team clears all three before the buzzer. First to 11 wins.</span>
+        <span data-lang="es">Tres objetivos. Tres compañeros. El punto cuenta solo cuando el equipo completa los tres antes de la bocina. Primero a 11 gana.</span>
       </p>
       <div class="scoreboard">
-        <div class="score-row"><span>Team A</span><b>8,450</b></div>
-        <div class="score-row"><span>Team B</span><b>8,320</b></div>
-        <div class="score-row"><span>Round</span><b>Final</b></div>
+        <div class="score-row"><span>Team A</span><b>10</b></div>
+        <div class="score-row"><span>Team B</span><b>9</b></div>
+        <div class="score-row"><span>Next Point</span><b>Game</b></div>
       </div>
     </div>
   </div>
@@ -853,16 +909,18 @@ body:not(.es) .section-copy > span[data-lang="es"]{
 
 <section class="footer-cta" id="start">
   <h2>
-    <span data-lang="en">Be Reactific.</span>
-    <span data-lang="es">Sé Reactific.</span>
+    <span data-lang="en">Simple to Play. Brutal to Master.</span>
+    <span data-lang="es">Fácil de Jugar. Brutal de Dominar.</span>
   </h2>
 
   <p class="section-copy" style="margin-left:auto;margin-right:auto;">
     <span data-lang="en">
-      Number Hunt™ login, registration, profiles, leaderboards, and team competitions are coming next.
+      REACTIFIC™ is the Home of Reaction Gaming™. Powered by NUMBER HUNT™.
+      Training is free. Competition is coming.
     </span>
     <span data-lang="es">
-      El login, registro, perfiles, tablas de líderes y competencias por equipo de Number Hunt™ vienen próximamente.
+      REACTIFIC™ es el hogar de Reaction Gaming™. Impulsado por NUMBER HUNT™.
+      El entrenamiento es gratis. La competencia viene en camino.
     </span>
   </p>
 
@@ -877,10 +935,10 @@ body:not(.es) .section-copy > span[data-lang="es"]{
 </main>
 
 <footer>
-  <div>REACTIFIC™ = NUMBER HUNT™</div>
-  <div>Train to the Beat of the Grid™</div>
-  <div>Brought to life by Gostar Digital LLC</div>
-  <div>reactific.co</div>
+  <div>REACTIFIC™</div>
+  <div>The Home of Reaction Gaming™</div>
+  <div>Powered by NUMBER HUNT™</div>
+  <div>Training is Free</div>
 </footer>
 
 </div>
