@@ -2,305 +2,614 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REACTIFIC™ | The Home of Reaction Gaming™</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REACTIFIC™ | Number Hunt™</title>
+
 <style>
 :root{
---bg:#020202;--gold:#d4af37;--green:#39FF14;--line:rgba(255,255,255,.12);--muted:#b8b8b8;
+  --black:#020202;
+  --white:#ffffff;
+  --muted:#b8b8b8;
+  --line:rgba(255,255,255,.16);
+  --gold:#d4af37;
+  --lime:#39FF14;
+  --red:#ff3b3b;
+  --teal:#00D9A5;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:#fff;font-family:Arial,sans-serif}
-.wrap{width:min(1180px,90%);margin:auto}
-header{padding:24px 6%;border-bottom:1px solid var(--line)}
-.logo{font-size:30px;font-weight:900;letter-spacing:.12em}
-.logo span{color:var(--green)}
-.hero{min-height:90vh;display:grid;align-items:center}
-h1{font-size:clamp(60px,10vw,120px)}
-.sub{font-size:22px;color:var(--muted);margin-top:20px;line-height:1.5}
-.banner{
-display:inline-block;
-margin-top:30px;
-padding:14px 18px;
-border:1px solid rgba(57,255,20,.3);
-color:var(--green);
-border-radius:999px;
-font-weight:900;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
-.cta{
-display:inline-flex;
-margin-top:30px;
-padding:18px 34px;
-background:var(--gold);
-color:black;
-border-radius:999px;
-font-weight:900;
-text-decoration:none;
+
+html{
+  scroll-behavior:smooth;
 }
-.card{
-margin-top:50px;
-border:1px solid var(--line);
-border-radius:26px;
-padding:40px;
+
+body{
+  background:
+    radial-gradient(circle at top center,rgba(57,255,20,.14),transparent 34%),
+    radial-gradient(circle at bottom right,rgba(212,175,55,.12),transparent 35%),
+    var(--black);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  line-height:1.5;
 }
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.wrap{
+  width:min(1120px,90%);
+  margin:auto;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(2,2,2,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:22px 0;
+}
+
+.header-inner{
+  width:min(1120px,90%);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.logo{
+  font-size:1.35rem;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+
+.logo span{
+  color:var(--lime);
+}
+
+.lang{
+  display:flex;
+  gap:8px;
+}
+
+.lang button{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--white);
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.lang button.active{
+  background:var(--gold);
+  color:#000;
+  border-color:var(--gold);
+}
+
+.hero{
+  min-height:88vh;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  align-items:center;
+  gap:44px;
+  padding:70px 0;
+}
+
+.eyebrow{
+  color:var(--lime);
+  font-size:.85rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+
+h1{
+  font-size:clamp(3.5rem,9vw,7.5rem);
+  line-height:.9;
+  letter-spacing:-.06em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+
+.lead{
+  font-size:clamp(1.15rem,2vw,1.45rem);
+  color:var(--muted);
+  max-width:720px;
+  margin-bottom:24px;
+}
+
+.lead strong{
+  color:var(--white);
+}
+
+.free-pill{
+  display:inline-flex;
+  padding:11px 16px;
+  border-radius:999px;
+  border:1px solid rgba(57,255,20,.32);
+  background:rgba(57,255,20,.10);
+  color:var(--lime);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+  margin-bottom:26px;
+}
+
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
+.btn{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:999px;
+  padding:16px 24px;
+  font-weight:900;
+  border:1px solid var(--line);
+  min-width:250px;
+  text-align:center;
+}
+
+.btn-primary{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#000;
+}
+
+.btn-secondary{
+  background:transparent;
+  color:var(--white);
+}
+
+.btn-secondary:hover{
+  border-color:var(--lime);
+  color:var(--lime);
+}
+
+.demo-card{
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+  box-shadow:0 0 60px rgba(0,0,0,.55);
+}
+
+.shot-clock{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid rgba(255,59,59,.35);
+  border-radius:18px;
+  padding:15px 16px;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(255,59,59,.18),rgba(212,175,55,.05));
+}
+
+.shot-clock small{
+  display:block;
+  color:var(--muted);
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.shot-clock span{
+  display:block;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:800;
+}
+
+.clock-num{
+  color:var(--red);
+  font-size:2.3rem;
+  font-weight:900;
+  text-shadow:0 0 22px rgba(255,59,59,.5);
+}
+
+.targets{
+  border:1px solid rgba(57,255,20,.35);
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:16px;
+  text-align:center;
+  background:rgba(57,255,20,.08);
+}
+
+.targets small{
+  display:block;
+  color:var(--muted);
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.target-nums{
+  color:var(--lime);
+  font-size:2rem;
+  font-weight:900;
+  letter-spacing:.25em;
+}
+
 .grid{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:10px;
-margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
 }
+
 .cell{
-aspect-ratio:1;
-border:1px solid rgba(255,255,255,.12);
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:10px;
+  aspect-ratio:1;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,.55);
+  font-weight:900;
+  background:rgba(255,255,255,.05);
 }
-.target{
-background:var(--green);
-color:black;
-font-weight:900;
+
+.cell.target{
+  background:var(--lime);
+  color:#001400;
+  box-shadow:0 0 22px rgba(57,255,20,.55);
 }
-section{padding:90px 0}
-.title{
-font-size:56px;
-margin-bottom:20px;
+
+.cell.hit{
+  background:var(--teal);
+  color:#00110d;
 }
-.copy{
-color:var(--muted);
-font-size:20px;
-max-width:800px;
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
 }
+
+.stat{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  background:rgba(0,0,0,.3);
+}
+
+.stat b{
+  display:block;
+  color:var(--lime);
+  font-size:1.35rem;
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:800;
+}
+
+section{
+  padding:80px 0;
+  border-top:1px solid var(--line);
+}
+
+.section-title{
+  font-size:clamp(2.2rem,5vw,5rem);
+  line-height:.95;
+  letter-spacing:-.05em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.section-copy{
+  color:var(--muted);
+  font-size:1.15rem;
+  max-width:820px;
+  margin-bottom:28px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+}
+
+.card h3{
+  color:var(--gold);
+  margin-bottom:10px;
+  font-size:1.25rem;
+}
+
+.card p{
+  color:var(--muted);
+}
+
+.final{
+  text-align:center;
+}
+
+.final .section-copy{
+  margin-left:auto;
+  margin-right:auto;
+}
+
 footer{
-padding:30px;
-border-top:1px solid var(--line);
-text-align:center;
-color:var(--muted);
+  border-top:1px solid var(--line);
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
 }
 
-.lang-buttons{
-display:flex;
-gap:8px;
-align-items:center;
+.lang-block{
+  display:none;
 }
 
-.lang-buttons button{
-background:none;
-border:1px solid var(--line);
-color:white;
-padding:10px 14px;
-border-radius:999px;
-cursor:pointer;
-font-weight:900;
+body.lang-en .en{
+  display:block;
 }
 
-.lang-buttons button.active{
-background:var(--gold);
-border-color:var(--gold);
-color:#000;
+body.lang-es .es{
+  display:block;
 }
 
-[data-lang="es"]{display:none}
-body.es [data-lang="en"]{display:none}
-body.es [data-lang="es"]{display:block}
-body.es .cta [data-lang="es"],
-body.es .banner [data-lang="es"]{display:block}
+body.lang-en .inline-en{
+  display:inline;
+}
 
-body:not(.es) [data-lang="en"]{display:block}
-body:not(.es) .cta [data-lang="en"],
-body:not(.es) .banner [data-lang="en"]{display:block}
+body.lang-es .inline-es{
+  display:inline;
+}
 
-@media(max-width:700px){
-header .wrap{flex-direction:column;gap:18px;align-items:flex-start!important}
-.title{font-size:42px}
-.card{padding:24px}
+@media(max-width:900px){
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .header-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .btn{
+    width:100%;
+  }
 }
 </style>
 </head>
-<body>
+
+<body class="lang-en">
 
 <header>
-<div class="wrap" style="display:flex;justify-content:space-between;align-items:center;">
-<div class="logo">REACTIFIC<span>™</span></div>
+  <div class="header-inner">
+    <div class="logo">REACTIFIC<span>™</span></div>
 
-<div class="lang-buttons">
-<button id="btnEnglish" class="active" onclick="setLanguage('en')">English</button>
-<button id="btnSpanish" onclick="setLanguage('es')">Español</button>
-</div>
-</div>
+    <div class="lang">
+      <button id="englishBtn" class="active" onclick="setLang('en')">English</button>
+      <button id="spanishBtn" onclick="setLang('es')">Español</button>
+    </div>
+  </div>
 </header>
 
-<div class="wrap">
+<main class="wrap">
 
 <section class="hero">
+  <div>
+    <div class="eyebrow">
+      <span class="lang-block en">Reaction Gaming Has Arrived</span>
+      <span class="lang-block es">Reaction Gaming Ha Llegado</span>
+    </div>
 
-<div>
+    <h1>REACTIFIC™</h1>
 
-<h1>REACTIFIC™</h1>
+    <p class="lead">
+      <span class="lang-block en">
+        <strong>The Home of Reaction Gaming™</strong><br>
+        Powered by <strong>NUMBER HUNT™</strong>.<br>
+        Scan. Find. React. Beat the <strong>Reactific Shot Clock™</strong>.
+      </span>
 
-<div class="sub">
+      <span class="lang-block es">
+        <strong>El hogar de Reaction Gaming™</strong><br>
+        Impulsado por <strong>NUMBER HUNT™</strong>.<br>
+        Escanea. Encuentra. Reacciona. Vence el <strong>Reactific Shot Clock™</strong>.
+      </span>
+    </p>
 
-<div data-lang="en">
-The Home of Reaction Gaming™<br><br>
-Powered by NUMBER HUNT™<br><br>
-Beat the Reactific Shot Clock™
-</div>
+    <div class="free-pill">
+      <span class="lang-block en">Play free on the 5×5 Training Court™</span>
+      <span class="lang-block es">Juega gratis en la 5×5 Training Court™</span>
+    </div>
 
-<div data-lang="es">
-El hogar de Reaction Gaming™<br><br>
-Impulsado por NUMBER HUNT™<br><br>
-Vence el Reactific Shot Clock™
-</div>
+    <div class="cta-row">
+      <a href="/train/hunt-5x5.html" class="btn btn-primary">
+        <span class="lang-block en">Play Number Hunt™</span>
+        <span class="lang-block es">Jugar Number Hunt™</span>
+      </a>
 
-</div>
+      <a href="#free" class="btn btn-secondary">
+        <span class="lang-block en">Learn More</span>
+        <span class="lang-block es">Conoce Más</span>
+      </a>
+    </div>
+  </div>
 
-<div class="banner">
+  <div class="demo-card">
+    <div class="shot-clock">
+      <div>
+        <small>Reactific Shot Clock™</small>
+        <span class="lang-block en">Beat the buzzer</span>
+        <span class="lang-block es">Vence la bocina</span>
+      </div>
+      <div class="clock-num">05</div>
+    </div>
 
-<div data-lang="en">
-PLAY FREE ON THE 5×5 TRAINING COURT™
-</div>
+    <div class="targets">
+      <small>
+        <span class="lang-block en">Find these numbers</span>
+        <span class="lang-block es">Encuentra estos números</span>
+      </small>
+      <div class="target-nums">7 18 24</div>
+    </div>
 
-<div data-lang="es">
-JUEGA GRATIS EN LA 5×5 TRAINING COURT™
-</div>
+    <div class="grid">
+      <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>
+      <div class="cell">6</div><div class="cell target">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div>
+      <div class="cell">11</div><div class="cell">12</div><div class="cell">13</div><div class="cell">14</div><div class="cell">15</div>
+      <div class="cell">16</div><div class="cell">17</div><div class="cell target">18</div><div class="cell">19</div><div class="cell">20</div>
+      <div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell target">24</div><div class="cell hit">25</div>
+    </div>
 
-</div>
+    <div class="stats">
+      <div class="stat">
+        <b>5×5</b>
+        <span class="lang-block en">Court</span>
+        <span class="lang-block es">Cancha</span>
+      </div>
 
-<br>
+      <div class="stat">
+        <b>25</b>
+        <span class="lang-block en">Cells</span>
+        <span class="lang-block es">Celdas</span>
+      </div>
 
-<a
-href="/train/hunt-5x5.html"
-class="cta">
+      <div class="stat">
+        <b>FREE</b>
+        <span class="lang-block en">Play</span>
+        <span class="lang-block es">Juego</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div data-lang="en">
-PLAY NUMBER HUNT™
-</div>
+<section id="free">
+  <h2 class="section-title">
+    <span class="lang-block en">Free to Play. Brutal to Master.</span>
+    <span class="lang-block es">Gratis para Jugar. Brutal de Dominar.</span>
+  </h2>
 
-<div data-lang="es">
-JUGAR NUMBER HUNT™
-</div>
+  <p class="section-copy">
+    <span class="lang-block en">
+      Number Hunt™ is the flagship. Play free. Train without realizing it.
+      Climb the leaderboard. Beat the Reactific Shot Clock™.
+    </span>
 
-</a>
+    <span class="lang-block es">
+      Number Hunt™ es el flagship. Juega gratis. Entrena sin darte cuenta.
+      Sube en la tabla. Vence el Reactific Shot Clock™.
+    </span>
+  </p>
 
-<div class="card">
-
-<div style="font-size:14px;color:#999;">
-Reactific Shot Clock™
-</div>
-
-<div style="font-size:56px;color:red;font-weight:900;">
-05
-</div>
-
-<div class="grid">
-
-<div class="cell">1</div>
-<div class="cell target">2</div>
-<div class="cell">3</div>
-<div class="cell">4</div>
-<div class="cell">5</div>
-
-<div class="cell">6</div>
-<div class="cell">7</div>
-<div class="cell">8</div>
-<div class="cell">9</div>
-<div class="cell">10</div>
-
-<div class="cell">11</div>
-<div class="cell">12</div>
-<div class="cell target">13</div>
-<div class="cell">14</div>
-<div class="cell">15</div>
-
-<div class="cell">16</div>
-<div class="cell">17</div>
-<div class="cell">18</div>
-<div class="cell target">19</div>
-<div class="cell">20</div>
-
-<div class="cell">21</div>
-<div class="cell">22</div>
-<div class="cell">23</div>
-<div class="cell">24</div>
-<div class="cell">25</div>
-
-</div>
-
-</div>
-
-</div>
-
+  <a href="/train/hunt-5x5.html" class="btn btn-primary">
+    <span class="lang-block en">Start Free Play</span>
+    <span class="lang-block es">Comenzar Gratis</span>
+  </a>
 </section>
 
 <section>
+  <h2 class="section-title">
+    <span class="lang-block en">Play. Compete. Improve. Repeat.</span>
+    <span class="lang-block es">Juega. Compite. Mejora. Repite.</span>
+  </h2>
 
-<div class="title">
+  <div class="cards">
+    <div class="card">
+      <h3>SOLO</h3>
+      <p>
+        <span class="lang-block en">Climb the leaderboard.</span>
+        <span class="lang-block es">Sube en la tabla.</span>
+      </p>
+    </div>
 
-<div data-lang="en">
-FREE TO PLAY.<br>
-BRUTAL TO MASTER.
-</div>
+    <div class="card">
+      <h3>SHOT CLOCK</h3>
+      <p>
+        <span class="lang-block en">Find the targets before the buzzer.</span>
+        <span class="lang-block es">Encuentra los objetivos antes de la bocina.</span>
+      </p>
+    </div>
 
-<div data-lang="es">
-GRATIS PARA JUGAR.<br>
-BRUTAL DE DOMINAR.
-</div>
-
-</div>
-
-<div class="copy">
-
-<div data-lang="en">
-Number Hunt™ is the flagship.
-Play free.
-Train without realizing it.
-Climb the leaderboard.
-Beat the Shot Clock.
-</div>
-
-<div data-lang="es">
-Number Hunt™ es el flagship.
-Juega gratis.
-Entrena sin darte cuenta.
-Sube en la tabla.
-Vence el Shot Clock.
-</div>
-
-</div>
-
-<br>
-
-<a
-href="/train/hunt-5x5.html"
-class="cta">
-
-<div data-lang="en">
-START FREE PLAY
-</div>
-
-<div data-lang="es">
-COMENZAR GRATIS
-</div>
-
-</a>
-
+    <div class="card">
+      <h3>LEAGUE</h3>
+      <p>
+        <span class="lang-block en">Competition is coming.</span>
+        <span class="lang-block es">La competencia viene en camino.</span>
+      </p>
+    </div>
+  </div>
 </section>
 
-</div>
+<section class="final">
+  <h2 class="section-title">
+    <span class="lang-block en">This is Reactific.</span>
+    <span class="lang-block es">Esto es Reactific.</span>
+  </h2>
+
+  <p class="section-copy">
+    <span class="lang-block en">
+      The Home of Reaction Gaming™. Powered by NUMBER HUNT™.
+    </span>
+
+    <span class="lang-block es">
+      El hogar de Reaction Gaming™. Impulsado por NUMBER HUNT™.
+    </span>
+  </p>
+
+  <a href="/train/hunt-5x5.html" class="btn btn-primary">
+    <span class="lang-block en">Play Number Hunt™</span>
+    <span class="lang-block es">Jugar Number Hunt™</span>
+  </a>
+</section>
+
+</main>
 
 <footer>
-REACTIFIC™ • NUMBER HUNT™ • PLAY FREE
+  REACTIFIC™ • NUMBER HUNT™ • PLAY FREE
 </footer>
 
 <script>
-function setLanguage(language){
-  var isSpanish = language === 'es';
+function setLang(lang){
+  document.body.classList.remove('lang-en','lang-es');
+  document.body.classList.add(lang === 'es' ? 'lang-es' : 'lang-en');
 
-  document.body.classList.toggle('es', isSpanish);
-  document.documentElement.lang = language;
+  document.documentElement.lang = lang;
 
-  document.getElementById('btnEnglish').classList.toggle('active', !isSpanish);
-  document.getElementById('btnSpanish').classList.toggle('active', isSpanish);
+  document.getElementById('englishBtn').classList.toggle('active', lang === 'en');
+  document.getElementById('spanishBtn').classList.toggle('active', lang === 'es');
 }
 </script>
 
