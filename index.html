@@ -4,767 +4,78 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>REACTIFIC™ | The Home of Reaction Gaming™</title>
-
 <style>
-:root{
-  --black:#020202;
-  --panel:#0b0b0b;
-  --card:#111118;
-  --line:rgba(255,255,255,.14);
-  --gold:#d4af37;
-  --cyan:#00d9ff;
-  --lime:#39FF14;
-  --green:#23ff8a;
-  --orange:#FF6B35;
-  --purple:#9B59B6;
-  --teal:#00D9A5;
-  --white:#ffffff;
-  --muted:#b8b8b8;
-  --danger:#ff3b3b;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:var(--black);
-  color:var(--white);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.5;
-}
-
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-.page{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top center,rgba(57,255,20,.13),transparent 32%),
-    radial-gradient(circle at bottom right,rgba(0,217,255,.12),transparent 35%),
-    radial-gradient(circle at bottom left,rgba(212,175,55,.10),transparent 34%),
-    #020202;
-}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  padding:22px 6%;
-  border-bottom:1px solid var(--line);
-  background:rgba(2,2,2,.92);
-  backdrop-filter:blur(10px);
-}
-
-.brand{
-  font-weight:900;
-  font-size:1.25rem;
-  letter-spacing:.14em;
-}
-
-.brand span{
-  color:var(--lime);
-}
-
-.nav{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
-
-.nav a{
-  color:var(--muted);
-  font-size:.82rem;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.nav a:hover{
-  color:var(--lime);
-}
-
-.lang-toggle{
-  display:flex;
-  gap:8px;
-}
-
-.lang-toggle button{
-  background:transparent;
-  color:var(--white);
-  border:1px solid var(--line);
-  padding:8px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  font-weight:800;
-}
-
-.lang-toggle button.active{
-  background:var(--gold);
-  color:#000;
-  border-color:var(--gold);
-}
-
-.wrap{
-  width:min(1180px,90%);
-  margin:auto;
-}
-
-.hero{
-  min-height:88vh;
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  align-items:center;
-  gap:46px;
-  padding:70px 0;
-}
-
-.eyebrow{
-  color:var(--lime);
-  font-weight:900;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  margin-bottom:16px;
-  font-size:.85rem;
-}
-
-h1{
-  font-size:clamp(3rem,7vw,6.8rem);
-  line-height:.9;
-  letter-spacing:-.06em;
-  text-transform:uppercase;
-  margin-bottom:24px;
-}
-
-.gold{
-  color:var(--gold);
-}
-
-.lime{
-  color:var(--lime);
-}
-
-.lead{
-  font-size:clamp(1.13rem,2vw,1.45rem);
-  color:var(--muted);
-  max-width:760px;
-  margin-bottom:30px;
-}
-
-.lead strong{
-  color:var(--white);
-}
-
-.free-banner{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  margin:4px 0 20px;
-  padding:10px 16px;
-  border-radius:999px;
-  background:rgba(57,255,20,.10);
-  border:1px solid rgba(57,255,20,.30);
-  color:var(--lime);
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  font-size:.78rem;
-}
-
-.cta-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:14px;
-  margin-top:26px;
-}
-
-.btn{
-  padding:15px 22px;
-  border-radius:999px;
-  font-weight:900;
-  border:1px solid var(--line);
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transition:.25s ease;
-  cursor:pointer;
-}
-
-.btn-primary{
-  background:var(--gold);
-  color:#000;
-  border-color:var(--gold);
-}
-
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 28px rgba(212,175,55,.38);
-}
-
-.btn-secondary{
-  background:transparent;
-  color:var(--white);
-}
-
-.btn-secondary:hover{
-  border-color:var(--lime);
-  color:var(--lime);
-}
-
-.hero-card{
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  border-radius:28px;
-  padding:24px;
-  box-shadow:0 0 50px rgba(0,0,0,.55);
-}
-
-.shot-clock{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  border:1px solid rgba(255,59,59,.35);
-  background:linear-gradient(135deg,rgba(255,59,59,.18),rgba(212,175,55,.06));
-  border-radius:18px;
-  padding:14px 16px;
-  margin-bottom:16px;
-}
-
-.shot-clock-label{
-  color:var(--muted);
-  font-size:.68rem;
-  text-transform:uppercase;
-  letter-spacing:.15em;
-  font-weight:900;
-}
-
-.shot-clock-sub{
-  color:var(--muted);
-  font-size:.8rem;
-  font-weight:800;
-}
-
-.shot-clock-number{
-  font-size:2.1rem;
-  color:var(--danger);
-  font-weight:900;
-  line-height:1;
-  text-shadow:0 0 22px rgba(255,59,59,.45);
-}
-
-.target-strip{
-  border:1px solid rgba(57,255,20,.32);
-  background:linear-gradient(135deg,rgba(57,255,20,.13),rgba(57,255,20,.035));
-  border-radius:18px;
-  padding:14px 16px;
-  margin-bottom:16px;
-  text-align:center;
-}
-
-.target-label{
-  color:var(--muted);
-  font-size:.68rem;
-  text-transform:uppercase;
-  letter-spacing:.15em;
-  font-weight:900;
-  margin-bottom:6px;
-}
-
-.target-nums{
-  font-size:2.1rem;
-  letter-spacing:.24em;
-  color:var(--lime);
-  font-weight:900;
-  text-shadow:0 0 22px rgba(57,255,20,.45);
-}
-
-.grid-box{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  grid-template-rows:repeat(5,1fr);
-  gap:6px;
-  margin-bottom:22px;
-}
-
-.cell{
-  aspect-ratio:1/1;
-  border:1px solid rgba(255,255,255,.16);
-  border-radius:8px;
-  background:rgba(255,255,255,.045);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:rgba(255,255,255,.42);
-  font-size:.8rem;
-  font-weight:900;
-}
-
-.cell.target{
-  background:var(--lime);
-  color:#001400;
-  box-shadow:0 0 22px rgba(57,255,20,.58);
-}
-
-.cell.goldcell{
-  background:var(--gold);
-  color:#000;
-  box-shadow:0 0 22px rgba(212,175,55,.5);
-}
-
-.cell.hit{
-  background:var(--teal);
-  color:#00110d;
-  box-shadow:0 0 22px rgba(0,217,165,.5);
-}
-
-.stat-line{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.stat{
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:16px;
-  background:rgba(0,0,0,.35);
-}
-
-.stat b{
-  display:block;
-  font-size:1.55rem;
-  color:var(--lime);
-}
-
-.stat span{
-  color:var(--muted);
-  font-size:.82rem;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-section{
-  padding:80px 0;
-  border-top:1px solid var(--line);
-}
-
-.section-title{
-  font-size:clamp(2rem,4vw,4.1rem);
-  line-height:1;
-  margin-bottom:18px;
-  text-transform:uppercase;
-  letter-spacing:-.045em;
-}
-
-.section-title span{
-  color:var(--lime);
-}
-
-.section-copy{
-  color:var(--muted);
-  max-width:900px;
-  font-size:1.08rem;
-  margin-bottom:34px;
-}
-
-.section-copy strong{
-  color:var(--white);
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.card{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.045);
-  border-radius:24px;
-  padding:26px;
-}
-
-.card h3{
-  color:var(--gold);
-  margin-bottom:10px;
-  font-size:1.25rem;
-}
-
-.card p{
-  color:var(--muted);
-}
-
-.play-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-}
-
-.play-card{
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:26px;
-  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
-  min-height:230px;
-}
-
-.play-card strong{
-  display:inline-flex;
-  color:#000;
-  background:var(--gold);
-  border-radius:999px;
-  padding:5px 11px;
-  font-size:.72rem;
-  font-weight:900;
-  letter-spacing:.09em;
-  margin-bottom:16px;
-}
-
-.play-card h3{
-  font-size:1.9rem;
-  line-height:1;
-  text-transform:uppercase;
-  margin-bottom:10px;
-}
-
-.play-card p{
-  color:var(--muted);
-  font-weight:700;
-}
-
-.modes-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.mode-card{
-  position:relative;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:26px;
-  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
-  min-height:255px;
-}
-
-.mode-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  opacity:.12;
-  background:radial-gradient(circle at top right,var(--accent),transparent 48%);
-  pointer-events:none;
-}
-
-.mode-card h3,
-.mode-card p,
-.mode-card .pill-row,
-.mode-card .mode-status{
-  position:relative;
-  z-index:1;
-}
-
-.mode-card h3{
-  font-size:1.55rem;
-  line-height:1;
-  text-transform:uppercase;
-  margin-bottom:10px;
-}
-
-.mode-card p{
-  color:var(--muted);
-  margin-bottom:18px;
-}
-
-.pill-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-.pill-row span{
-  border:1px solid rgba(255,255,255,.14);
-  color:var(--muted);
-  border-radius:999px;
-  padding:6px 9px;
-  font-size:.72rem;
-  font-weight:800;
-}
-
-.mode-status{
-  margin-top:20px;
-  color:var(--accent);
-  font-size:.78rem;
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.training-free{
-  border:1px solid rgba(57,255,20,.3);
-  border-radius:30px;
-  padding:34px;
-  background:
-    radial-gradient(circle at top right,rgba(57,255,20,.14),transparent 42%),
-    linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
-}
-
-.training-free h3{
-  font-size:clamp(2rem,4vw,4rem);
-  line-height:1;
-  text-transform:uppercase;
-  letter-spacing:-.045em;
-  margin-bottom:16px;
-}
-
-.training-free p{
-  color:var(--muted);
-  font-size:1.1rem;
-  max-width:840px;
-}
-
-.training-free strong{
-  color:var(--white);
-}
-
-.competition{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.big-panel{
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:32px;
-  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
-}
-
-.big-panel h3{
-  font-size:2rem;
-  text-transform:uppercase;
-  margin-bottom:12px;
-  letter-spacing:-.03em;
-}
-
-.big-panel p{
-  color:var(--muted);
-}
-
-.scoreboard{
-  margin-top:20px;
-  display:grid;
-  gap:10px;
-}
-
-.score-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:12px 14px;
-  background:rgba(0,0,0,.3);
-}
-
-.score-row b{
-  color:var(--lime);
-}
-
-.footer-cta{
-  text-align:center;
-  padding:90px 0;
-}
-
-.footer-cta h2{
-  font-size:clamp(2.4rem,6vw,5rem);
-  line-height:.95;
-  text-transform:uppercase;
-  letter-spacing:-.05em;
-  margin-bottom:20px;
-}
-
-footer{
-  border-top:1px solid var(--line);
-  padding:28px 6%;
-  color:var(--muted);
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px;
-  font-size:.9rem;
-}
-
-[data-lang="es"]{
-  display:none;
-}
-
-body.es [data-lang="en"]{
-  display:none;
-}
-
-body.es [data-lang="es"]{
-  display:block;
-}
-
-body.es span[data-lang="es"],
-body.es a[data-lang="es"]{
-  display:inline-flex;
-}
-
-body.es p span[data-lang="es"],
-body.es .lead span[data-lang="es"],
-body.es .section-copy span[data-lang="es"]{
-  display:block;
-}
-
-@media(max-width:980px){
-  .hero{
-    grid-template-columns:1fr;
-  }
-
-  .cards,
-  .modes-grid,
-  .play-grid,
-  .competition{
-    grid-template-columns:1fr;
-  }
-
-  .stat-line{
-    grid-template-columns:1fr;
-  }
-
-  header{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-}
+:root{--black:#020202;--line:rgba(255,255,255,.14);--gold:#d4af37;--lime:#39FF14;--teal:#00D9A5;--white:#fff;--muted:#b8b8b8;--danger:#ff3b3b;--card:#111118;--cyan:#00d9ff}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.5}a{text-decoration:none;color:inherit}
+.page{min-height:100vh;background:radial-gradient(circle at top center,rgba(57,255,20,.13),transparent 32%),radial-gradient(circle at bottom right,rgba(0,217,255,.12),transparent 35%),radial-gradient(circle at bottom left,rgba(212,175,55,.10),transparent 34%),#020202}
+header{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 6%;border-bottom:1px solid var(--line);background:rgba(2,2,2,.92);backdrop-filter:blur(10px)}
+.brand{font-weight:900;font-size:1.25rem;letter-spacing:.14em}.brand span{color:var(--lime)}
+.nav{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.nav a:hover{color:var(--lime)}
+.lang-toggle{display:flex;gap:8px}.lang-toggle button{background:transparent;color:var(--white);border:1px solid var(--line);padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800}.lang-toggle button.active{background:var(--gold);color:#000;border-color:var(--gold)}
+.wrap{width:min(1180px,90%);margin:auto}.hero{min-height:88vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:46px;padding:70px 0}
+.eyebrow{color:var(--lime);font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;font-size:.85rem}
+h1{font-size:clamp(3rem,7vw,6.8rem);line-height:.9;letter-spacing:-.06em;text-transform:uppercase;margin-bottom:24px}.gold{color:var(--gold)}
+.lead{font-size:clamp(1.13rem,2vw,1.45rem);color:var(--muted);max-width:760px;margin-bottom:30px}.lead strong{color:var(--white)}
+.free-banner{display:inline-flex;align-items:center;gap:10px;margin:4px 0 20px;padding:10px 16px;border-radius:999px;background:rgba(57,255,20,.10);border:1px solid rgba(57,255,20,.30);color:var(--lime);font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}.cta-row .btn{flex:1;min-width:230px}
+.btn{padding:15px 22px;border-radius:999px;font-weight:900;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;transition:.25s ease;cursor:pointer;text-align:center;text-decoration:none}
+.btn-primary{background:var(--gold);color:#000;border-color:var(--gold)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(212,175,55,.38)}
+.btn-secondary{background:transparent;color:var(--white)}.btn-secondary:hover{border-color:var(--lime);color:var(--lime)}
+.hero-card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:28px;padding:24px;box-shadow:0 0 50px rgba(0,0,0,.55)}
+.shot-clock{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid rgba(255,59,59,.35);background:linear-gradient(135deg,rgba(255,59,59,.18),rgba(212,175,55,.06));border-radius:18px;padding:14px 16px;margin-bottom:16px}
+.shot-clock-label{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;font-weight:900}.shot-clock-sub{color:var(--muted);font-size:.8rem;font-weight:800}.shot-clock-number{font-size:2.1rem;color:var(--danger);font-weight:900;line-height:1;text-shadow:0 0 22px rgba(255,59,59,.45)}
+.target-strip{border:1px solid rgba(57,255,20,.32);background:linear-gradient(135deg,rgba(57,255,20,.13),rgba(57,255,20,.035));border-radius:18px;padding:14px 16px;margin-bottom:16px;text-align:center}
+.target-label{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;font-weight:900;margin-bottom:6px}.target-nums{font-size:2.1rem;letter-spacing:.24em;color:var(--lime);font-weight:900;text-shadow:0 0 22px rgba(57,255,20,.45)}
+.grid-box{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:6px;margin-bottom:22px}.cell{aspect-ratio:1/1;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.045);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.42);font-size:.8rem;font-weight:900}
+.cell.target{background:var(--lime);color:#001400;box-shadow:0 0 22px rgba(57,255,20,.58)}.cell.goldcell{background:var(--gold);color:#000;box-shadow:0 0 22px rgba(212,175,55,.5)}.cell.hit{background:var(--teal);color:#00110d;box-shadow:0 0 22px rgba(0,217,165,.5)}
+.stat-line{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{border:1px solid var(--line);border-radius:18px;padding:16px;background:rgba(0,0,0,.35)}.stat b{display:block;font-size:1.55rem;color:var(--lime)}.stat span{color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
+section{padding:80px 0;border-top:1px solid var(--line)}.section-title{font-size:clamp(2rem,4vw,4.1rem);line-height:1;margin-bottom:18px;text-transform:uppercase;letter-spacing:-.045em}.section-title span{color:var(--lime)}
+.section-copy{color:var(--muted);max-width:900px;font-size:1.08rem;margin-bottom:34px}.section-copy strong{color:var(--white)}
+.cards,.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.play-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.freeplay-grid,.competition{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card,.play-card,.mode-card,.big-panel{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:26px;padding:26px}.card h3{color:var(--gold);margin-bottom:10px;font-size:1.25rem}.card p,.play-card p,.mode-card p,.big-panel p{color:var(--muted)}
+.play-card{min-height:230px;display:flex;flex-direction:column}.play-card strong{display:inline-flex;align-self:flex-start;color:#000;background:var(--gold);border-radius:999px;padding:5px 11px;font-size:.72rem;font-weight:900;letter-spacing:.09em;margin-bottom:16px}.play-card h3{font-size:1.9rem;line-height:1;text-transform:uppercase;margin-bottom:10px}.play-card p{font-weight:700}.card-actions{margin-top:auto;padding-top:22px}.card-actions .btn{width:100%}
+.mode-card{position:relative;overflow:hidden;min-height:255px}.mode-card::before{content:"";position:absolute;inset:0;opacity:.12;background:radial-gradient(circle at top right,var(--accent),transparent 48%);pointer-events:none}.mode-card h3,.mode-card p,.mode-card .pill-row,.mode-card .mode-status{position:relative;z-index:1}.mode-card h3{font-size:1.55rem;line-height:1;text-transform:uppercase;margin-bottom:10px}
+.pill-row{display:flex;flex-wrap:wrap;gap:7px}.pill-row span{border:1px solid rgba(255,255,255,.14);color:var(--muted);border-radius:999px;padding:6px 9px;font-size:.72rem;font-weight:800}.mode-status{margin-top:20px;color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.training-free{border:1px solid rgba(57,255,20,.3);border-radius:30px;padding:34px;background:radial-gradient(circle at top right,rgba(57,255,20,.14),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}.training-free h3{font-size:clamp(2rem,4vw,4rem);line-height:1;text-transform:uppercase;letter-spacing:-.045em;margin-bottom:16px}.training-free p{color:var(--muted);font-size:1.1rem;max-width:840px}.training-free strong{color:var(--white)}
+.big-panel h3{font-size:2rem;text-transform:uppercase;margin-bottom:12px;letter-spacing:-.03em}.scoreboard{margin-top:20px;display:grid;gap:10px}.score-row{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:rgba(0,0,0,.3)}.score-row b{color:var(--lime)}
+.footer-cta{text-align:center;padding:90px 0}.footer-cta h2{font-size:clamp(2.4rem,6vw,5rem);line-height:.95;text-transform:uppercase;letter-spacing:-.05em;margin-bottom:20px}
+footer{border-top:1px solid var(--line);padding:28px 6%;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.9rem}
+[data-lang="es"]{display:none}body.es [data-lang="en"]{display:none}body.es [data-lang="es"]{display:block}body.es span[data-lang="es"],body.es a[data-lang="es"]{display:inline-flex}body.es p span[data-lang="es"],body.es .lead span[data-lang="es"],body.es .section-copy span[data-lang="es"]{display:block}
+@media(max-width:980px){.hero{grid-template-columns:1fr}.cards,.modes-grid,.play-grid,.freeplay-grid,.competition{grid-template-columns:1fr}.stat-line{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
-
 <body>
 <div class="page">
-
 <header>
   <div class="brand">REACTIFIC<span>™</span></div>
-
   <div class="nav">
-    <a href="#play">
-      <span data-lang="en">Play</span>
-      <span data-lang="es">Jugar</span>
-    </a>
-
-    <a href="#shotclock">
-      <span data-lang="en">Shot Clock</span>
-      <span data-lang="es">Shot Clock</span>
-    </a>
-
-    <a href="#league">
-      <span data-lang="en">League</span>
-      <span data-lang="es">Liga</span>
-    </a>
-
-    <a href="#start">
-      <span data-lang="en">Start</span>
-      <span data-lang="es">Comenzar</span>
-    </a>
-
-    <div class="lang-toggle">
-      <button id="btnEn" class="active" onclick="setLang('en')">EN</button>
-      <button id="btnEs" onclick="setLang('es')">ES</button>
-    </div>
+    <a href="#freeplay"><span data-lang="en">Free Play</span><span data-lang="es">Juego Gratis</span></a>
+    <a href="#play"><span data-lang="en">Formats</span><span data-lang="es">Formatos</span></a>
+    <a href="#shotclock"><span data-lang="en">Shot Clock</span><span data-lang="es">Shot Clock</span></a>
+    <a href="#league"><span data-lang="en">League</span><span data-lang="es">Liga</span></a>
+    <div class="lang-toggle"><button id="btnEn" class="active" onclick="setLang('en')">EN</button><button id="btnEs" onclick="setLang('es')">ES</button></div>
   </div>
 </header>
 
 <main class="wrap">
-
 <section class="hero">
   <div>
-    <div class="eyebrow">
-      <span data-lang="en">Reaction Gaming Has Arrived</span>
-      <span data-lang="es">Reaction Gaming Ha Llegado</span>
-    </div>
-
-    <h1>
-      <span data-lang="en">REACTIFIC™</span>
-      <span data-lang="es">REACTIFIC™</span>
-    </h1>
-
+    <div class="eyebrow"><span data-lang="en">Reaction Gaming Has Arrived</span><span data-lang="es">Reaction Gaming Ha Llegado</span></div>
+    <h1><span data-lang="en">REACTIFIC™</span><span data-lang="es">REACTIFIC™</span></h1>
     <p class="lead">
-      <span data-lang="en">
-        <strong>The Home of Reaction Gaming™</strong><br>
-        Powered by <strong>NUMBER HUNT™</strong>. Scan. Find. React.
-        Beat the <strong>Reactific Shot Clock™</strong>.
-      </span>
-
-      <span data-lang="es">
-        <strong>El hogar de Reaction Gaming™</strong><br>
-        Impulsado por <strong>NUMBER HUNT™</strong>. Escanea. Encuentra. Reacciona.
-        Vence el <strong>Reactific Shot Clock™</strong>.
-      </span>
+      <span data-lang="en"><strong>The Home of Reaction Gaming™</strong><br>Powered by <strong>NUMBER HUNT™</strong>. Scan. Find. React. Beat the <strong>Reactific Shot Clock™</strong>.</span>
+      <span data-lang="es"><strong>El hogar de Reaction Gaming™</strong><br>Impulsado por <strong>NUMBER HUNT™</strong>. Escanea. Encuentra. Reacciona. Vence el <strong>Reactific Shot Clock™</strong>.</span>
     </p>
-
-    <div class="free-banner">
-      <span data-lang="en">Play free on the 5×5 Training Court™</span>
-      <span data-lang="es">Juega gratis en la 5×5 Training Court™</span>
-    </div>
-
+    <div class="free-banner"><span data-lang="en">Play free on the 5×5 Training Court™</span><span data-lang="es">Juega gratis en la 5×5 Training Court™</span></div>
     <div class="cta-row">
-
-<a href="/train/hunt-5x5.html" class="btn btn-primary">
-<span data-lang="en">Play Number Hunt™</span>
-<span data-lang="es">Jugar Number Hunt™</span>
-</a>
-
-<a href="/train/lelolai.html" class="btn btn-secondary">
-<span data-lang="en">Free Play: LeLoLai™</span>
-<span data-lang="es">Juego Gratis: LeLoLai™</span>
-</a>
-
-</div>
+      <a href="/train/hunt-5x5.html" class="btn btn-primary"><span data-lang="en">Play Number Hunt™</span><span data-lang="es">Jugar Number Hunt™</span></a>
+      <a href="/train/lelolai.html" class="btn btn-secondary"><span data-lang="en">Free Play: LeLoLai™</span><span data-lang="es">Juego Gratis: LeLoLai™</span></a>
+    </div>
   </div>
 
   <div class="hero-card">
-    <div class="shot-clock">
-      <div>
-        <div class="shot-clock-label">
-          <span data-lang="en">Reactific Shot Clock™</span>
-          <span data-lang="es">Reactific Shot Clock™</span>
-        </div>
-
-        <div class="shot-clock-sub">
-          <span data-lang="en">Beat the buzzer</span>
-          <span data-lang="es">Vence la bocina</span>
-        </div>
-      </div>
-
-      <div class="shot-clock-number">05</div>
-    </div>
-
-    <div class="target-strip">
-      <div class="target-label">
-        <span data-lang="en">Find These Numbers</span>
-        <span data-lang="es">Encuentra Estos Números</span>
-      </div>
-
-      <div class="target-nums">7  18  24</div>
-    </div>
-
+    <div class="shot-clock"><div><div class="shot-clock-label"><span data-lang="en">Reactific Shot Clock™</span><span data-lang="es">Reactific Shot Clock™</span></div><div class="shot-clock-sub"><span data-lang="en">Beat the buzzer</span><span data-lang="es">Vence la bocina</span></div></div><div class="shot-clock-number">05</div></div>
+    <div class="target-strip"><div class="target-label"><span data-lang="en">Find These Numbers</span><span data-lang="es">Encuentra Estos Números</span></div><div class="target-nums">7  18  24</div></div>
     <div class="grid-box">
       <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>
       <div class="cell">6</div><div class="cell target">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div>
@@ -772,411 +83,82 @@ body.es .section-copy span[data-lang="es"]{
       <div class="cell">16</div><div class="cell">17</div><div class="cell target">18</div><div class="cell">19</div><div class="cell">20</div>
       <div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell target">24</div><div class="cell hit">25</div>
     </div>
+    <div class="stat-line"><div class="stat"><b>5×5</b><span data-lang="en">Court</span><span data-lang="es">Cancha</span></div><div class="stat"><b>25</b><span data-lang="en">Cells</span><span data-lang="es">Celdas</span></div><div class="stat"><b>FREE</b><span data-lang="en">Play</span><span data-lang="es">Juego</span></div></div>
+  </div>
+</section>
 
-    <div class="stat-line">
-      <div class="stat">
-        <b>5×5</b>
-        <span data-lang="en">Court</span>
-        <span data-lang="es">Cancha</span>
-      </div>
-
-      <div class="stat">
-        <b>25</b>
-        <span data-lang="en">Cells</span>
-        <span data-lang="es">Celdas</span>
-      </div>
-
-      <div class="stat">
-        <b>FREE</b>
-        <span data-lang="en">Play</span>
-        <span data-lang="es">Juego</span>
-      </div>
+<section id="freeplay">
+  <h2 class="section-title"><span data-lang="en">Free Play</span><span data-lang="es">Juego Gratis</span></h2>
+  <p class="section-copy"><span data-lang="en">Start with the flagship or explore a cultural Hunt Mode. Both are free to play. Number Hunt™ stays the superstar.</span><span data-lang="es">Comienza con el flagship o explora un modo Hunt cultural. Ambos son gratis para jugar. Number Hunt™ sigue siendo la superestrella.</span></p>
+  <div class="freeplay-grid">
+    <div class="play-card">
+      <strong>FLAGSHIP</strong><h3>NUMBER HUNT™</h3>
+      <p><span data-lang="en">Play free on the 5×5 Training Court™. Beat the Reactific Shot Clock™.</span><span data-lang="es">Juega gratis en la 5×5 Training Court™. Vence el Reactific Shot Clock™.</span></p>
+      <div class="card-actions"><a href="/train/hunt-5x5.html" class="btn btn-primary"><span data-lang="en">Play Number Hunt™</span><span data-lang="es">Jugar Number Hunt™</span></a></div>
+    </div>
+    <div class="play-card">
+      <strong>FREE PLAY</strong><h3>LELOLAI™</h3>
+      <p><span data-lang="en">Puerto Rican Reaction Gaming™. Find. Discover. Play.</span><span data-lang="es">Reaction Gaming™ puertorriqueño. Encuentra. Descubre. Juega.</span></p>
+      <div class="card-actions"><a href="/train/lelolai.html" class="btn btn-secondary"><span data-lang="en">Play LeLoLai™</span><span data-lang="es">Jugar LeLoLai™</span></a></div>
     </div>
   </div>
 </section>
 
 <section id="play">
-  <h2 class="section-title">
-    <span data-lang="en">Play. Compete. Improve. Repeat.</span>
-    <span data-lang="es">Juega. Compite. Mejora. Repite.</span>
-  </h2>
-
-  <p class="section-copy">
-    <span data-lang="en">
-      NUMBER HUNT™ is simple to play and brutal to master. Every game is practice.
-      Every practice is competition.
-    </span>
-
-    <span data-lang="es">
-      NUMBER HUNT™ es fácil de jugar y brutal de dominar. Cada juego es práctica.
-      Cada práctica es competencia.
-    </span>
-  </p>
-
+  <h2 class="section-title"><span data-lang="en">Play. Compete. Improve. Repeat.</span><span data-lang="es">Juega. Compite. Mejora. Repite.</span></h2>
+  <p class="section-copy"><span data-lang="en">NUMBER HUNT™ is simple to play and brutal to master. Every game is practice. Every practice is competition.</span><span data-lang="es">NUMBER HUNT™ es fácil de jugar y brutal de dominar. Cada juego es práctica. Cada práctica es competencia.</span></p>
   <div class="play-grid">
-    <div class="play-card">
-      <strong>SOLO</strong>
-      <h3>
-        <span data-lang="en">Climb the Leaderboard.</span>
-        <span data-lang="es">Sube en la Tabla.</span>
-      </h3>
-      <p>
-        <span data-lang="en">Play free anytime on the 5×5 Training Court™.</span>
-        <span data-lang="es">Juega gratis cuando quieras en la 5×5 Training Court™.</span>
-      </p>
-    </div>
-
-    <div class="play-card">
-      <strong>DUEL</strong>
-      <h3>
-        <span data-lang="en">Beat Your Opponent.</span>
-        <span data-lang="es">Vence a tu Rival.</span>
-      </h3>
-      <p>
-        <span data-lang="en">One versus one. Same grid. Same pressure.</span>
-        <span data-lang="es">Uno contra uno. Misma cuadrícula. Misma presión.</span>
-      </p>
-    </div>
-
-    <div class="play-card">
-      <strong>3×3</strong>
-      <h3>
-        <span data-lang="en">Win the Possession.</span>
-        <span data-lang="es">Gana la Posesión.</span>
-      </h3>
-      <p>
-        <span data-lang="en">Three targets. One team. Beat the Shot Clock.</span>
-        <span data-lang="es">Tres objetivos. Un equipo. Vence el Shot Clock.</span>
-      </p>
-    </div>
-
-    <div class="play-card">
-      <strong>LEAGUE</strong>
-      <h3>
-        <span data-lang="en">Rule the Standings.</span>
-        <span data-lang="es">Domina la Liga.</span>
-      </h3>
-      <p>
-        <span data-lang="en">Teams, rounds, rankings, and championships.</span>
-        <span data-lang="es">Equipos, rondas, rankings y campeonatos.</span>
-      </p>
-    </div>
+    <div class="play-card"><strong>SOLO</strong><h3><span data-lang="en">Climb the Leaderboard.</span><span data-lang="es">Sube en la Tabla.</span></h3><p><span data-lang="en">Play free anytime on the 5×5 Training Court™.</span><span data-lang="es">Juega gratis cuando quieras en la 5×5 Training Court™.</span></p></div>
+    <div class="play-card"><strong>DUEL</strong><h3><span data-lang="en">Beat Your Opponent.</span><span data-lang="es">Vence a tu Rival.</span></h3><p><span data-lang="en">One versus one. Same grid. Same pressure.</span><span data-lang="es">Uno contra uno. Misma cuadrícula. Misma presión.</span></p></div>
+    <div class="play-card"><strong>3×3</strong><h3><span data-lang="en">Win the Possession.</span><span data-lang="es">Gana la Posesión.</span></h3><p><span data-lang="en">Three targets. One team. Beat the Shot Clock.</span><span data-lang="es">Tres objetivos. Un equipo. Vence el Shot Clock.</span></p></div>
+    <div class="play-card"><strong>LEAGUE</strong><h3><span data-lang="en">Rule the Standings.</span><span data-lang="es">Domina la Liga.</span></h3><p><span data-lang="en">Teams, rounds, rankings, and championships.</span><span data-lang="es">Equipos, rondas, rankings y campeonatos.</span></p></div>
   </div>
-<section id="freeplay">
-
-<h2 class="section-title">
-
-<span data-lang="en">
-Free Play
-</span>
-
-<span data-lang="es">
-Juego Gratis
-</span>
-
-</h2>
-
-<p class="section-copy">
-
-<span data-lang="en">
-Explore additional Hunt Modes.
-Play free. Train without realizing it.
-</span>
-
-<span data-lang="es">
-Explora modos Hunt adicionales.
-Juega gratis. Entrena sin darte cuenta.
-</span>
-
-</p>
-
-<div class="play-grid">
-
-<div class="play-card">
-
-<strong>FLAGSHIP</strong>
-
-<h3>
-NUMBER HUNT™
-</h3>
-
-<p>
-
-<span data-lang="en">
-Play free on the 5×5 Training Court™.
-Beat the Reactific Shot Clock™.
-</span>
-
-<span data-lang="es">
-Juega gratis en la 5×5 Training Court™.
-Vence el Reactific Shot Clock™.
-</span>
-
-</p>
-
-<a href="/train/hunt-5x5.html"
-class="btn btn-primary">
-
-<span data-lang="en">
-PLAY NOW
-</span>
-
-<span data-lang="es">
-JUGAR AHORA
-</span>
-
-</a>
-
-</div>
-
-
-<div class="play-card">
-
-<strong>FREE PLAY</strong>
-
-<h3>
-LELOLAI™
-</h3>
-
-<p>
-
-<span data-lang="en">
-Puerto Rican Reaction Gaming™.
-Find. Discover. Play.
-</span>
-
-<span data-lang="es">
-Reaction Gaming™ puertorriqueño.
-Encuentra. Descubre. Juega.
-</span>
-
-</p>
-
-<a href="/train/lelolai.html"
-class="btn btn-secondary">
-
-<span data-lang="en">
-PLAY FREE
-</span>
-
-<span data-lang="es">
-JUGAR GRATIS
-</span>
-
-</a>
-
-</div>
-
-</div>
-
-</section>
 </section>
 
 <section id="shotclock">
-  <h2 class="section-title">
-    <span data-lang="en">Beat the Reactific Shot Clock™</span>
-    <span data-lang="es">Vence el Reactific Shot Clock™</span>
-  </h2>
-
-  <p class="section-copy">
-    <span data-lang="en">
-      We are no longer beats per minute. We are beat the Shot Clock.
-      Targets appear. The clock starts. Find them before the buzzer.
-      That is where reaction gaming becomes real.
-    </span>
-
-    <span data-lang="es">
-      Ya no somos beats per minute. Somos vencer el Shot Clock.
-      Aparecen los objetivos. Empieza el reloj. Encuéntralos antes de la bocina.
-      Ahí es donde Reaction Gaming se vuelve real.
-    </span>
-  </p>
-
+  <h2 class="section-title"><span data-lang="en">Beat the Reactific Shot Clock™</span><span data-lang="es">Vence el Reactific Shot Clock™</span></h2>
+  <p class="section-copy"><span data-lang="en">We are no longer beats per minute. We are beat the Shot Clock. Targets appear. The clock starts. Find them before the buzzer. That is where reaction gaming becomes real.</span><span data-lang="es">Ya no somos beats per minute. Somos vencer el Shot Clock. Aparecen los objetivos. Empieza el reloj. Encuéntralos antes de la bocina. Ahí es donde Reaction Gaming se vuelve real.</span></p>
   <div class="cards">
-    <div class="card">
-      <h3>
-        <span data-lang="en">Shot Clock Pressure</span>
-        <span data-lang="es">Presión del Shot Clock</span>
-      </h3>
-      <p>
-        <span data-lang="en">Pressure creates decisions. Decisions create performance.</span>
-        <span data-lang="es">La presión crea decisiones. Las decisiones crean rendimiento.</span>
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>
-        <span data-lang="en">Buzzer Beaters</span>
-        <span data-lang="es">Buzzer Beaters</span>
-      </h3>
-      <p>
-        <span data-lang="en">Find the final target before the buzzer and create the moment.</span>
-        <span data-lang="es">Encuentra el último objetivo antes de la bocina y crea el momento.</span>
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>
-        <span data-lang="en">Brutal to Master</span>
-        <span data-lang="es">Brutal de Dominar</span>
-      </h3>
-      <p>
-        <span data-lang="en">Simple rules. Immediate feedback. No hiding.</span>
-        <span data-lang="es">Reglas simples. Respuesta inmediata. No hay dónde esconderse.</span>
-      </p>
-    </div>
+    <div class="card"><h3><span data-lang="en">Shot Clock Pressure</span><span data-lang="es">Presión del Shot Clock</span></h3><p><span data-lang="en">Pressure creates decisions. Decisions create performance.</span><span data-lang="es">La presión crea decisiones. Las decisiones crean rendimiento.</span></p></div>
+    <div class="card"><h3><span data-lang="en">Buzzer Beaters</span><span data-lang="es">Buzzer Beaters</span></h3><p><span data-lang="en">Find the final target before the buzzer and create the moment.</span><span data-lang="es">Encuentra el último objetivo antes de la bocina y crea el momento.</span></p></div>
+    <div class="card"><h3><span data-lang="en">Brutal to Master</span><span data-lang="es">Brutal de Dominar</span></h3><p><span data-lang="en">Simple rules. Immediate feedback. No hiding.</span><span data-lang="es">Reglas simples. Respuesta inmediata. No hay dónde esconderse.</span></p></div>
   </div>
 </section>
 
 <section>
   <div class="training-free">
-    <h3>
-      <span data-lang="en">Play is Free.</span>
-      <span data-lang="es">Jugar es Gratis.</span>
-    </h3>
-
-    <p>
-      <span data-lang="en">
-        Start now on the <strong>5×5 Training Court™</strong>. No registration required for free play.
-        Players think they are playing, chasing the board, and beating the Shot Clock.
-        Without realizing it, they are doing REACTIFIC™ training: scanning, recognition,
-        reaction, timing, coordination, awareness, and pressure control.
-      </span>
-
-      <span data-lang="es">
-        Comienza ahora en la <strong>5×5 Training Court™</strong>. No se requiere registro para jugar gratis.
-        Los jugadores creen que están jugando, persiguiendo la tabla y venciendo el Shot Clock.
-        Sin darse cuenta, están haciendo entrenamiento REACTIFIC™: escaneo, reconocimiento,
-        reacción, ritmo, coordinación, conciencia y control bajo presión.
-      </span>
-    </p>
-
-    <div class="cta-row">
-      <a href="/train/hunt-5x5.html" class="btn btn-primary">
-        <span data-lang="en">Play Free on the 5×5 Training Court™</span>
-        <span data-lang="es">Jugar Gratis en la 5×5 Training Court™</span>
-      </a>
-    </div>
+    <h3><span data-lang="en">Play is Free.</span><span data-lang="es">Jugar es Gratis.</span></h3>
+    <p><span data-lang="en">Start now on the <strong>5×5 Training Court™</strong>. No registration required for free play. Players think they are playing, chasing the board, and beating the Shot Clock. Without realizing it, they are doing REACTIFIC™ training: scanning, recognition, reaction, timing, coordination, awareness, and pressure control.</span><span data-lang="es">Comienza ahora en la <strong>5×5 Training Court™</strong>. No se requiere registro para jugar gratis. Los jugadores creen que están jugando, persiguiendo la tabla y venciendo el Shot Clock. Sin darse cuenta, están haciendo entrenamiento REACTIFIC™: escaneo, reconocimiento, reacción, ritmo, coordinación, conciencia y control bajo presión.</span></p>
+    <div class="cta-row"><a href="/train/hunt-5x5.html" class="btn btn-primary"><span data-lang="en">Play Free on the 5×5 Training Court™</span><span data-lang="es">Jugar Gratis en la 5×5 Training Court™</span></a><a href="/train/lelolai.html" class="btn btn-secondary"><span data-lang="en">Play LeLoLai™ Free</span><span data-lang="es">Jugar LeLoLai™ Gratis</span></a></div>
   </div>
 </section>
 
 <section id="modes">
-  <h2 class="section-title">
-    <span data-lang="en">One Platform. Many Hunt Modes.</span>
-    <span data-lang="es">Una Plataforma. Muchos Modos Hunt.</span>
-  </h2>
-
+  <h2 class="section-title"><span data-lang="en">One Platform. Many Hunt Modes.</span><span data-lang="es">Una Plataforma. Muchos Modos Hunt.</span></h2>
   <div class="modes-grid">
-    <div class="mode-card" style="--accent:var(--lime)">
-      <h3>Classic Number Hunt™</h3>
-      <p>
-        <span data-lang="en">Find target numbers across the 5×5 Training Court™.</span>
-        <span data-lang="es">Encuentra números objetivo en la 5×5 Training Court™.</span>
-      </p>
-      <div class="pill-row"><span>Numbers</span><span>Speed</span><span>Accuracy</span></div>
-      <div class="mode-status">Free Training Court</div>
-    </div>
-
-    <div class="mode-card" style="--accent:var(--cyan)">
-      <h3>Word Hunt™</h3>
-      <p>
-        <span data-lang="en">Find letters, build words, and turn reaction gaming into literacy play.</span>
-        <span data-lang="es">Encuentra letras, forma palabras y convierte Reaction Gaming en juego de lectura.</span>
-      </p>
-      <div class="pill-row"><span>Letters</span><span>Words</span><span>Learning</span></div>
-      <div class="mode-status">Coming Soon</div>
-    </div>
-
-    <div class="mode-card" style="--accent:var(--gold)">
-      <h3>Team Hunt™</h3>
-      <p>
-        <span data-lang="en">Compete as teams through relay rounds, stations, and live scoreboards.</span>
-        <span data-lang="es">Compite por equipos con rondas de relevo, estaciones y marcadores en vivo.</span>
-      </p>
-      <div class="pill-row"><span>Teams</span><span>Events</span><span>Leaderboard</span></div>
-      <div class="mode-status">Coming Soon</div>
-    </div>
+    <div class="mode-card" style="--accent:var(--lime)"><h3>Classic Number Hunt™</h3><p><span data-lang="en">Find target numbers across the 5×5 Training Court™.</span><span data-lang="es">Encuentra números objetivo en la 5×5 Training Court™.</span></p><div class="pill-row"><span>Numbers</span><span>Speed</span><span>Accuracy</span></div><div class="mode-status">Free Training Court</div></div>
+    <div class="mode-card" style="--accent:var(--cyan)"><h3>Word Hunt™</h3><p><span data-lang="en">Find letters, build words, and turn reaction gaming into literacy play.</span><span data-lang="es">Encuentra letras, forma palabras y convierte Reaction Gaming en juego de lectura.</span></p><div class="pill-row"><span>Letters</span><span>Words</span><span>Learning</span></div><div class="mode-status">Coming Soon</div></div>
+    <div class="mode-card" style="--accent:var(--gold)"><h3>Team Hunt™</h3><p><span data-lang="en">Compete as teams through relay rounds, stations, and live scoreboards.</span><span data-lang="es">Compite por equipos con rondas de relevo, estaciones y marcadores en vivo.</span></p><div class="pill-row"><span>Teams</span><span>Events</span><span>Leaderboard</span></div><div class="mode-status">Coming Soon</div></div>
   </div>
 </section>
 
 <section id="league">
-  <h2 class="section-title">
-    <span data-lang="en">Built for League Play.</span>
-    <span data-lang="es">Creado para Juego de Liga.</span>
-  </h2>
-
+  <h2 class="section-title"><span data-lang="en">Built for League Play.</span><span data-lang="es">Creado para Juego de Liga.</span></h2>
   <div class="competition">
-    <div class="big-panel">
-      <h3>
-        <span data-lang="en">Solo Leaderboard</span>
-        <span data-lang="es">Tabla Solo</span>
-      </h3>
-      <p>
-        <span data-lang="en">Players train free, post scores, chase personal bests, and climb the board.</span>
-        <span data-lang="es">Los jugadores entrenan gratis, suben puntuaciones, persiguen marcas personales y escalan la tabla.</span>
-      </p>
-      <div class="scoreboard">
-        <div class="score-row"><span>Rank</span><b>#1</b></div>
-        <div class="score-row"><span>Shot Clock</span><b>5s</b></div>
-        <div class="score-row"><span>Targets</span><b>15</b></div>
-      </div>
-    </div>
-
-    <div class="big-panel">
-      <h3>
-        <span data-lang="en">3×3 Number Hunt™</span>
-        <span data-lang="es">3×3 Number Hunt™</span>
-      </h3>
-      <p>
-        <span data-lang="en">Three targets. Three teammates. A point only counts when the team clears all three before the buzzer. First to 11 wins.</span>
-        <span data-lang="es">Tres objetivos. Tres compañeros. El punto cuenta solo cuando el equipo completa los tres antes de la bocina. Primero a 11 gana.</span>
-      </p>
-      <div class="scoreboard">
-        <div class="score-row"><span>Team A</span><b>10</b></div>
-        <div class="score-row"><span>Team B</span><b>9</b></div>
-        <div class="score-row"><span>Next Point</span><b>Game</b></div>
-      </div>
-    </div>
+    <div class="big-panel"><h3><span data-lang="en">Solo Leaderboard</span><span data-lang="es">Tabla Solo</span></h3><p><span data-lang="en">Players train free, post scores, chase personal bests, and climb the board.</span><span data-lang="es">Los jugadores entrenan gratis, suben puntuaciones, persiguen marcas personales y escalan la tabla.</span></p><div class="scoreboard"><div class="score-row"><span>Rank</span><b>#1</b></div><div class="score-row"><span>Shot Clock</span><b>5s</b></div><div class="score-row"><span>Targets</span><b>15</b></div></div></div>
+    <div class="big-panel"><h3><span data-lang="en">3×3 Number Hunt™</span><span data-lang="es">3×3 Number Hunt™</span></h3><p><span data-lang="en">Three targets. Three teammates. A point only counts when the team clears all three before the buzzer. First to 11 wins.</span><span data-lang="es">Tres objetivos. Tres compañeros. El punto cuenta solo cuando el equipo completa los tres antes de la bocina. Primero a 11 gana.</span></p><div class="scoreboard"><div class="score-row"><span>Team A</span><b>10</b></div><div class="score-row"><span>Team B</span><b>9</b></div><div class="score-row"><span>Next Point</span><b>Game</b></div></div></div>
   </div>
 </section>
 
 <section class="footer-cta" id="start">
-  <h2>
-    <span data-lang="en">Free to Play. Brutal to Master.</span>
-    <span data-lang="es">Gratis para Jugar. Brutal de Dominar.</span>
-  </h2>
-
-  <p class="section-copy" style="margin-left:auto;margin-right:auto;">
-    <span data-lang="en">
-      REACTIFIC™ is the Home of Reaction Gaming™. Powered by NUMBER HUNT™.
-      Play free now on the 5×5 Training Court™. Competition is coming.
-    </span>
-
-    <span data-lang="es">
-      REACTIFIC™ es el hogar de Reaction Gaming™. Impulsado por NUMBER HUNT™.
-      Juega gratis ahora en la 5×5 Training Court™. La competencia viene en camino.
-    </span>
-  </p>
-
-  <div class="cta-row" style="justify-content:center;">
-    <a href="/train/hunt-5x5.html" class="btn btn-primary">
-      <span data-lang="en">Start Free Training</span>
-      <span data-lang="es">Comenzar Entrenamiento Gratis</span>
-    </a>
-  </div>
+  <h2><span data-lang="en">Free to Play. Brutal to Master.</span><span data-lang="es">Gratis para Jugar. Brutal de Dominar.</span></h2>
+  <p class="section-copy" style="margin-left:auto;margin-right:auto;"><span data-lang="en">REACTIFIC™ is the Home of Reaction Gaming™. Powered by NUMBER HUNT™. Play free now on the 5×5 Training Court™. Explore LeLoLai™ free play. Competition is coming.</span><span data-lang="es">REACTIFIC™ es el hogar de Reaction Gaming™. Impulsado por NUMBER HUNT™. Juega gratis ahora en la 5×5 Training Court™. Explora LeLoLai™ gratis. La competencia viene en camino.</span></p>
+  <div class="cta-row" style="justify-content:center;"><a href="/train/hunt-5x5.html" class="btn btn-primary"><span data-lang="en">Start Number Hunt™</span><span data-lang="es">Comenzar Number Hunt™</span></a><a href="/train/lelolai.html" class="btn btn-secondary"><span data-lang="en">Play LeLoLai™</span><span data-lang="es">Jugar LeLoLai™</span></a></div>
 </section>
 
 </main>
-
-<footer>
-  <div>REACTIFIC™</div>
-  <div>The Home of Reaction Gaming™</div>
-  <div>Powered by NUMBER HUNT™</div>
-  <div>Play Free on the 5×5 Training Court™</div>
-</footer>
-
+<footer><div>REACTIFIC™</div><div>The Home of Reaction Gaming™</div><div>Powered by NUMBER HUNT™</div><div>Play Free on the 5×5 Training Court™</div></footer>
 </div>
-
 <script>
 function setLang(lang){
   document.body.classList.toggle('es', lang === 'es');
@@ -1185,6 +167,5 @@ function setLang(lang){
   document.documentElement.lang = lang;
 }
 </script>
-
 </body>
 </html>
