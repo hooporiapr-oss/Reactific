@@ -2,7 +2,7 @@
 // Connects Number Hunt to the leaderboard API
 
 (function() {
-  var API_URL = 'https://reactific-api.onrender.com'; // update after deploy
+  var API_URL = 'https://api.reactificgaming.com'; // update after deploy
   var TOKEN_KEY = 'reactific-token';
   var USER_KEY = 'reactific-user';
 
