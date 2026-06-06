@@ -85,6 +85,8 @@ header{
 .hero-content{animation:fadeUp .65s ease-out both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
+.hero-logo{display:block;width:min(280px,60%);margin:0 auto 20px;filter:drop-shadow(0 0 30px rgba(126,207,90,.2))}
+.hero-logo img{width:100%;height:auto}
 .eyebrow{
   display:inline-flex;align-items:center;gap:7px;
   color:var(--accent);font-size:.6rem;font-weight:700;
@@ -289,8 +291,9 @@ body.lang-es .inline-es{display:inline}
   .logo{font-size:.88rem;letter-spacing:.12em}
   .lang button{padding:5px 10px;font-size:.6rem}
 
+  .hero-logo{width:min(220px,55%)}
   h1{font-size:2rem;margin-bottom:12px;line-height:.92}
-  .eyebrow{font-size:.55rem;margin-bottom:10px}
+.eyebrow{font-size:.55rem;margin-bottom:10px}
   .lead{font-size:.82rem;margin-bottom:12px;line-height:1.55}
   .free-pill{font-size:.55rem;padding:6px 12px;margin-bottom:16px}
 
@@ -330,6 +333,7 @@ body.lang-es .inline-es{display:inline}
 
 @media(max-width:380px){
   .wrap{width:92%}
+  .hero-logo{width:min(200px,50%)}
   h1{font-size:1.75rem}
   .lead{font-size:.78rem}
   .demo-card{padding:11px}
@@ -363,12 +367,13 @@ body.lang-es .inline-es{display:inline}
 
 <section class="hero">
   <div class="hero-content">
+    <div class="hero-logo"><img src="logo.png" alt="Reactific™ Reaction Gaming™"></div>
     <div class="eyebrow">
       <span class="lang-block en">Number Hunt™</span>
       <span class="lang-block es">Number Hunt™</span>
     </div>
 
-    <h1>
+    <h1 style="display:none">
       <span class="lang-block en">How Fast<br>Can You Find 7?</span>
       <span class="lang-block es">¿Qué Tan Rápido<br>Encuentras El 7?</span>
     </h1>
@@ -404,7 +409,7 @@ body.lang-es .inline-es{display:inline}
   <div class="demo-card">
     <div class="shot-clock">
       <div>
-        <small>Reactific Shot Clock</small>
+        <small>Reactific Shot Clock™</small>
         <span class="lang-block en">Beat the buzzer</span>
         <span class="lang-block es">Vence la bocina</span>
       </div>
@@ -524,7 +529,7 @@ body.lang-es .inline-es{display:inline}
         <span class="lang-block en">Reactific Full-Court™</span>
         <span class="lang-block es">Reactific Full-Court™</span>
       </h3>
-      <div class="compare-grid">5 × 10</div>
+      <div class="compare-grid">6 × 10</div>
       <ul class="compare-list">
         <li><span class="gold-check">✓</span>
           <span class="lang-block en">50 cells — the real game</span>
@@ -547,8 +552,8 @@ body.lang-es .inline-es{display:inline}
           <span class="lang-block es">Temporadas de liga</span>
         </li>
         <li><span class="gold-check">✓</span>
-          <span class="lang-block en">Shot Clock challenges</span>
-          <span class="lang-block es">Retos Shot Clock™</span>
+          <span class="lang-block en">Reactific Shot Clock™ challenges</span>
+          <span class="lang-block es">Retos Reactific Shot Clock™</span>
         </li>
       </ul>
       <div style="margin-top:14px">
@@ -618,10 +623,10 @@ body.lang-es .inline-es{display:inline}
 
   <p class="section-copy">
     <span class="lang-block en">
-      Free. No account. No download. Just you, 25 cells, and the shot clock.
+      Free. No account. No download. Just you, 25 cells, and the Reactific Shot Clock™.
     </span>
     <span class="lang-block es">
-      Gratis. Sin cuenta. Sin descarga. Solo tú, 25 celdas, y el shot clock.
+      Gratis. Sin cuenta. Sin descarga. Solo tú, 25 celdas, y el Reactific Shot Clock™.
     </span>
   </p>
 
