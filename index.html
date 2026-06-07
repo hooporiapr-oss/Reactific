@@ -8,187 +8,72 @@
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#040404;
-  --surface:#0a0a0c;
-  --card:#0e0e12;
-  --card-hover:#141418;
-  --white:#eaeaea;
-  --muted:#5e5e6a;
-  --muted-light:#9292a0;
-  --line:rgba(255,255,255,.06);
-  --line-hover:rgba(255,255,255,.14);
-  --gold:#bfa02e;
-  --gold-soft:rgba(191,160,46,.12);
-  --gold-border:rgba(191,160,46,.2);
-  --accent:#7ecf5a;
-  --accent-soft:rgba(126,207,90,.08);
-  --accent-border:rgba(126,207,90,.18);
-  --accent-glow:rgba(126,207,90,.12);
-  --red:#e84040;
-  --red-soft:rgba(232,64,64,.1);
-  --teal:#4dbda5;
+  --black:#040404;--surface:#0a0a0c;--card:#0e0e12;--card-hover:#141418;
+  --white:#eaeaea;--muted:#5e5e6a;--muted-light:#9292a0;
+  --line:rgba(255,255,255,.06);--line-hover:rgba(255,255,255,.14);
+  --gold:#bfa02e;--gold-soft:rgba(191,160,46,.12);--gold-border:rgba(191,160,46,.2);
+  --accent:#7ecf5a;--accent-soft:rgba(126,207,90,.08);--accent-border:rgba(126,207,90,.18);--accent-glow:rgba(126,207,90,.12);
+  --red:#e84040;--red-soft:rgba(232,64,64,.1);--teal:#4dbda5;
 }
-
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-
-body{
-  background:var(--black);color:var(--white);
-  font-family:'DM Sans',sans-serif;min-height:100vh;
-  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
-}
-
-body::before{
-  content:'';position:fixed;inset:0;
-  background:
-    radial-gradient(ellipse 50% 40% at 10% 5%,rgba(126,207,90,.03),transparent),
-    radial-gradient(ellipse 40% 35% at 90% 90%,rgba(191,160,46,.025),transparent);
-  pointer-events:none;z-index:0;
-}
-
-body::after{
-  content:'';position:fixed;inset:0;
-  background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:24px 24px;pointer-events:none;z-index:0;
-}
-
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 50% 40% at 10% 5%,rgba(126,207,90,.03),transparent),radial-gradient(ellipse 40% 35% at 90% 90%,rgba(191,160,46,.025),transparent);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;z-index:0}
 a{color:inherit;text-decoration:none}
 .wrap{width:min(1080px,90%);margin:auto;position:relative;z-index:1}
 
-/* HEADER */
-header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(4,4,4,.9);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line);
-}
-.header-inner{
-  width:min(1080px,90%);
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:8px 0;
-  height:auto;
-  gap:4px;
-}
+header{position:sticky;top:0;z-index:100;background:rgba(4,4,4,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.header-inner{width:min(1080px,90%);margin:auto;display:flex;flex-direction:column;align-items:center;padding:8px 0;height:auto;gap:4px}
 .logo{font-family:'Red Hat Display',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
 .logo span{color:var(--accent)}
 .logo-sub{font-size:1rem;color:var(--white);letter-spacing:0.15em;margin-left:8px;font-weight:900}
 .lang{display:flex;gap:4px}
-.lang button{
-  border:1px solid var(--line);background:transparent;color:var(--muted);
-  border-radius:999px;padding:6px 12px;font-family:'DM Sans',sans-serif;
-  font-size:.65rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s;
-}
+.lang button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s}
 .lang button:hover{border-color:var(--line-hover);color:var(--white)}
 .lang button.active{background:var(--accent);color:#000;border-color:var(--accent)}
 
 /* HERO */
-.hero{
-  display:grid;grid-template-columns:1fr 1fr;align-items:center;
-  gap:40px;padding:44px 0 64px;
-}
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding:44px 0 64px}
 .hero-content{animation:fadeUp .65s ease-out both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
 .hero-logo{display:block;width:min(280px,60%);margin:0 auto 20px;filter:drop-shadow(0 0 30px rgba(126,207,90,.2))}
 .hero-logo img{width:100%;height:auto}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:7px;
-  color:var(--accent);font-size:.6rem;font-weight:700;
-  letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;
-}
-.eyebrow::before{content:'';width:18px;height:1.5px;background:var(--accent);border-radius:2px}
+.hero-tagline{font-family:'Red Hat Display',sans-serif;font-size:clamp(.7rem,1.4vw,.9rem);font-weight:800;color:var(--muted-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.hero-tagline strong{color:var(--white)}
+.hero-powered{font-size:.7rem;color:var(--muted);margin-bottom:18px}
+.hero-powered strong{color:var(--accent);font-weight:700;letter-spacing:.06em}
 
-h1{
-  font-family:'Red Hat Display',sans-serif;
-  font-size:clamp(2.4rem,6.5vw,5.2rem);
-  font-weight:900;line-height:.9;letter-spacing:-.03em;
-  text-transform:uppercase;margin-bottom:18px;color:var(--white);
-}
+.hero-statement{font-family:'Red Hat Display',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:18px;color:var(--white)}
 
-.lead{
-  font-size:clamp(.88rem,1.5vw,1.05rem);
-  color:var(--muted-light);max-width:460px;margin-bottom:16px;line-height:1.6;
-}
-.lead strong{color:var(--white);font-weight:600}
+.hero-actions{list-style:none;display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+.hero-actions li{font-family:'Red Hat Display',sans-serif;font-size:.85rem;font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.hero-actions li::after{content:'·';color:var(--muted);margin-left:6px}
+.hero-actions li:last-child::after{content:''}
 
-.free-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 14px;border-radius:999px;
-  border:1px solid var(--accent-border);background:var(--accent-soft);
-  color:var(--accent);font-weight:700;letter-spacing:.05em;
-  text-transform:uppercase;font-size:.58rem;margin-bottom:22px;
-}
-.free-pill::before{
-  content:'';width:5px;height:5px;background:var(--accent);
-  border-radius:50%;animation:pdot 1.5s ease-in-out infinite;
-}
-@keyframes pdot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.hero-shotclock{font-size:.78rem;color:var(--muted-light);margin-bottom:22px}
+.hero-shotclock strong{color:var(--gold)}
 
 .cta-row{display:flex;flex-wrap:wrap;gap:10px}
-
-.btn{
-  display:inline-flex;justify-content:center;align-items:center;
-  border-radius:999px;padding:12px 24px;font-family:'DM Sans',sans-serif;
-  font-weight:700;font-size:.8rem;letter-spacing:.03em;
-  border:1px solid var(--line);cursor:pointer;transition:all .2s;
-  min-width:170px;text-align:center;
-}
-.btn-primary{
-  background:var(--accent);border-color:var(--accent);color:#050505;
-  box-shadow:0 0 20px var(--accent-glow);
-}
+.btn{display:inline-flex;justify-content:center;align-items:center;border-radius:999px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.03em;border:1px solid var(--line);cursor:pointer;transition:all .2s;min-width:170px;text-align:center}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#050505;box-shadow:0 0 20px var(--accent-glow)}
 .btn-primary:hover{box-shadow:0 0 36px rgba(126,207,90,.2);transform:translateY(-1px)}
 .btn-secondary{background:transparent;color:var(--muted-light)}
 .btn-secondary:hover{border-color:var(--accent-border);color:var(--accent)}
-.btn-gold{
-  background:var(--gold);border-color:var(--gold);color:#050505;
-  box-shadow:0 0 20px var(--gold-soft);
-}
-.btn-gold:hover{box-shadow:0 0 36px rgba(191,160,46,.25);transform:translateY(-1px)}
 
 /* DEMO CARD */
-.demo-card{
-  border:1px solid var(--line);border-radius:22px;padding:18px;
-  background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.008));
-  box-shadow:0 14px 50px rgba(0,0,0,.45);
-  animation:fadeUp .65s .1s ease-out both;
-}
-
-.shot-clock{
-  display:flex;justify-content:space-between;align-items:center;
-  border:1px solid rgba(232,64,64,.15);border-radius:12px;
-  padding:11px 13px;margin-bottom:9px;background:var(--red-soft);
-}
+.demo-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.008));box-shadow:0 14px 50px rgba(0,0,0,.45);animation:fadeUp .65s .1s ease-out both}
+.shot-clock{display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(232,64,64,.15);border-radius:12px;padding:11px 13px;margin-bottom:9px;background:var(--red-soft)}
 .shot-clock small{display:block;color:var(--muted);font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .shot-clock span{display:block;color:var(--muted-light);font-size:.72rem;font-weight:600;margin-top:1px}
-.clock-num{
-  color:var(--red);font-family:'Red Hat Display',sans-serif;font-size:1.8rem;font-weight:900;
-  text-shadow:0 0 18px rgba(232,64,64,.4);
-}
-
-.targets{
-  border:1px solid var(--accent-border);border-radius:12px;
-  padding:11px;margin-bottom:10px;text-align:center;background:var(--accent-soft);
-}
+.clock-num{color:var(--red);font-family:'Red Hat Display',sans-serif;font-size:1.8rem;font-weight:900;text-shadow:0 0 18px rgba(232,64,64,.4)}
+.targets{border:1px solid var(--accent-border);border-radius:12px;padding:11px;margin-bottom:10px;text-align:center;background:var(--accent-soft)}
 .targets small{display:block;color:var(--muted);font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
-.target-nums{
-  color:var(--accent);font-family:'Red Hat Display',sans-serif;font-size:1.5rem;font-weight:900;
-  letter-spacing:.22em;text-shadow:0 0 12px var(--accent-glow);
-}
-
+.target-nums{color:var(--accent);font-family:'Red Hat Display',sans-serif;font-size:1.5rem;font-weight:900;letter-spacing:.22em;text-shadow:0 0 12px var(--accent-glow)}
 .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.cell{
-  aspect-ratio:1;border:1px solid rgba(255,255,255,.08);border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  color:rgba(255,255,255,.3);font-family:'Red Hat Display',sans-serif;font-weight:700;
-  font-size:clamp(.6rem,1.6vw,.82rem);background:rgba(255,255,255,.02);
-}
+.cell{aspect-ratio:1;border:1px solid rgba(255,255,255,.08);border-radius:6px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-family:'Red Hat Display',sans-serif;font-weight:700;font-size:clamp(.6rem,1.6vw,.82rem);background:rgba(255,255,255,.02)}
 .cell.target{background:var(--accent);color:#081a02;border-color:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
 .cell.hit{background:var(--teal);color:#041a14;border-color:var(--teal);box-shadow:0 0 8px rgba(77,189,165,.25)}
-
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:10px}
 .stat{border:1px solid var(--line);border-radius:8px;padding:9px 6px;background:rgba(0,0,0,.3);text-align:center}
 .stat b{display:block;color:var(--accent);font-family:'Red Hat Display',sans-serif;font-size:.95rem;font-weight:900}
@@ -197,195 +82,102 @@ h1{
 /* SECTIONS */
 section{padding:60px 0;border-top:1px solid var(--line);position:relative;z-index:1}
 .section-label{color:var(--gold);font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
-.section-title{
-  font-family:'Red Hat Display',sans-serif;
-  font-size:clamp(1.4rem,4vw,2.8rem);
-  font-weight:900;line-height:1;letter-spacing:-.02em;
-  text-transform:uppercase;margin-bottom:14px;
-}
+.section-title{font-family:'Red Hat Display',sans-serif;font-size:clamp(1.4rem,4vw,2.8rem);font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:14px}
 .section-copy{color:var(--muted-light);font-size:.92rem;max-width:540px;margin-bottom:24px;line-height:1.6}
 
-/* COMPARE */
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* OPEN COURT */
+.open-court-card{border:1px solid var(--accent-border);border-radius:20px;padding:32px 28px;background:linear-gradient(165deg,rgba(126,207,90,.04),var(--card));position:relative;overflow:hidden;max-width:640px}
+.open-court-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.oc-title{font-family:'Red Hat Display',sans-serif;font-size:1.3rem;font-weight:900;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+.oc-features{list-style:none;padding:0;margin-bottom:16px}
+.oc-features li{font-size:.85rem;color:var(--white);padding:4px 0;font-weight:600}
+.oc-divider{height:1px;background:var(--line);margin:14px 0}
+.oc-note{font-size:.78rem;color:var(--muted);line-height:1.5;font-style:italic}
 
-.compare-card{
-  border:1px solid var(--line);border-radius:18px;padding:24px 20px;
-  background:var(--card);position:relative;overflow:hidden;
-}
-.compare-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:var(--accent);opacity:.5;
-}
-.compare-card.flagship::before{background:var(--gold);opacity:1}
-.compare-card.flagship{border-color:var(--gold-border);background:linear-gradient(165deg,rgba(191,160,46,.06),var(--card))}
+/* UNLOCKS */
+.unlock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.unlock-card{border:1px solid var(--line);border-radius:14px;padding:18px 16px;background:var(--card);display:flex;align-items:flex-start;gap:12px;transition:all .2s}
+.unlock-card:hover{border-color:var(--gold-border);background:var(--card-hover)}
+.unlock-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.unlock-info h4{font-family:'Red Hat Display',sans-serif;font-size:.82rem;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.unlock-info p{font-size:.75rem;color:var(--muted-light);line-height:1.4}
 
-.compare-tag{
-  display:inline-block;font-size:.5rem;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:12px;
-}
-.compare-tag.free{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border)}
-.compare-tag.pro{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)}
-
-.compare-card h3{
-  font-family:'Red Hat Display',sans-serif;font-weight:900;
-  font-size:1.05rem;letter-spacing:.03em;text-transform:uppercase;margin-bottom:4px;
-}
-.compare-card .compare-grid{
-  font-family:'Red Hat Display',sans-serif;font-weight:900;
-  font-size:1.6rem;margin-bottom:10px;
-}
-.compare-card.flagship h3{color:var(--gold)}
-.compare-card.flagship .compare-grid{color:var(--gold)}
-
-.compare-list{list-style:none;padding:0}
-.compare-list li{
-  font-size:.78rem;color:var(--muted-light);padding:5px 0;
-  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;
-}
-.compare-list li:last-child{border-bottom:none}
-.compare-list .check{color:var(--accent);font-size:.7rem}
-.compare-list .gold-check{color:var(--gold);font-size:.7rem}
-.compare-list .x{color:var(--muted);font-size:.7rem}
-
-/* CARDS */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.card{
-  border:1px solid var(--line);border-radius:16px;padding:22px 18px;
-  background:var(--card);transition:all .2s;position:relative;overflow:hidden;
-}
-.card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  opacity:0;transition:opacity .2s;
-}
-.card:hover{border-color:var(--line-hover);background:var(--card-hover);transform:translateY(-2px)}
-.card:hover::before{opacity:1}
-.card-icon{font-size:1.2rem;margin-bottom:10px}
-.card h3{
-  font-family:'Red Hat Display',sans-serif;font-weight:900;color:var(--gold);
-  margin-bottom:5px;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;
-}
-.card p{color:var(--muted-light);font-size:.8rem;line-height:1.5}
-
-/* TRAINING CARDS */
+/* TRAINING */
 .training-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.train-card{
-  border:1px solid var(--line);border-radius:16px;padding:20px 14px;
-  background:var(--card);transition:all .2s;position:relative;overflow:hidden;
-  text-align:center;text-decoration:none;
-}
-.train-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;background:var(--tc,var(--gold));
-}
+.train-card{border:1px solid var(--line);border-radius:16px;padding:20px 14px;background:var(--card);transition:all .2s;position:relative;overflow:hidden;text-align:center;text-decoration:none}
+.train-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;background:var(--tc,var(--gold))}
 .train-card:hover{border-color:var(--line-hover);background:var(--card-hover);transform:translateY(-2px)}
 .train-card:hover::before{opacity:1}
 .train-card-icon{font-size:1.6rem;margin-bottom:10px}
-.train-card h3{
-  font-family:'Red Hat Display',sans-serif;font-weight:900;
-  margin-bottom:5px;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;
-}
+.train-card h3{font-family:'Red Hat Display',sans-serif;font-weight:900;margin-bottom:5px;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}
 .train-card p{color:var(--muted);font-size:.68rem;line-height:1.4}
-.train-card .train-tag{
-  display:inline-block;font-size:.45rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-top:10px;
-  background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);
-}
+.train-tag{display:inline-block;font-size:.45rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-top:10px;background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line)}
 
 /* FINAL */
 .final{text-align:center;padding:70px 0}
 .final .section-copy{margin-left:auto;margin-right:auto}
+.final-actions{font-family:'Red Hat Display',sans-serif;font-size:clamp(.9rem,2vw,1.2rem);font-weight:800;color:var(--muted-light);letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;line-height:1.8}
+.final-actions strong{color:var(--white)}
 
-/* FOOTER */
-footer{
-  border-top:1px solid var(--line);padding:22px 16px;text-align:center;
-  color:var(--muted);font-size:.6rem;font-weight:600;letter-spacing:.1em;
-  position:relative;z-index:1;
-}
+footer{border-top:1px solid var(--line);padding:22px 16px;text-align:center;color:var(--muted);font-size:.6rem;font-weight:600;letter-spacing:.1em;position:relative;z-index:1}
 
-/* LANG */
 .lang-block{display:none}
 body.lang-en .en{display:block}
 body.lang-es .es{display:block}
-body.lang-en .inline-en{display:inline}
-body.lang-es .inline-es{display:inline}
 
 /* RESPONSIVE */
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;gap:28px;padding:28px 0 44px}
   .hero-content{order:1}.demo-card{order:2}
-  .cards{grid-template-columns:1fr;gap:8px}
+  .unlock-grid{grid-template-columns:1fr}
   .training-cards{grid-template-columns:repeat(3,1fr)}
   section{padding:44px 0}.final{padding:52px 0}
 }
-
 @media(max-width:600px){
-  .header-inner{
-    width:min(1080px,90%);margin:auto;display:flex;
-    flex-direction:column;align-items:center;padding:8px 0;height:auto;gap:4px;
-  }
+  .header-inner{width:min(1080px,90%);margin:auto;display:flex;flex-direction:column;align-items:center;padding:8px 0;height:auto;gap:4px}
   .lang button{padding:5px 10px;font-size:.6rem}
-
   .hero-logo{width:min(220px,55%)}
-  h1{font-size:2rem;margin-bottom:12px;line-height:.92}
-  .eyebrow{font-size:.55rem;margin-bottom:10px}
-  .lead{font-size:.82rem;margin-bottom:12px;line-height:1.55}
-  .free-pill{font-size:.55rem;padding:6px 12px;margin-bottom:16px}
-
+  .hero-statement{font-size:1.4rem}
+  .hero-actions li{font-size:.75rem}
   .btn{width:100%;padding:12px 16px;font-size:.78rem;min-width:unset}
   .cta-row{gap:8px}
-
   .demo-card{padding:13px;border-radius:16px}
   .shot-clock{padding:9px 11px;border-radius:10px}
   .clock-num{font-size:1.5rem}
   .targets{padding:9px;border-radius:10px}
   .target-nums{font-size:1.2rem;letter-spacing:.15em}
-  .grid{gap:3px}
-  .cell{border-radius:5px;font-size:.68rem}
-  .stats{gap:4px;margin-top:8px}
-  .stat{padding:7px 5px;border-radius:6px}
-  .stat b{font-size:.82rem}
-  .stat span{font-size:.5rem}
-
+  .grid{gap:3px}.cell{border-radius:5px;font-size:.68rem}
+  .stats{gap:4px;margin-top:8px}.stat{padding:7px 5px;border-radius:6px}.stat b{font-size:.82rem}.stat span{font-size:.5rem}
   .section-title{font-size:1.3rem;margin-bottom:10px}
   .section-copy{font-size:.82rem;margin-bottom:18px}
   .section-label{font-size:.5rem;margin-bottom:6px}
-
-  .compare{grid-template-columns:1fr;gap:10px}
-  .compare-card{padding:20px 16px;border-radius:14px}
-  .compare-card h3{font-size:.92rem}
-  .compare-card .compare-grid{font-size:1.4rem}
-  .compare-list li{font-size:.74rem;padding:4px 0}
-
-  .card{padding:16px 14px;border-radius:12px}
-  .card-icon{font-size:1rem;margin-bottom:7px}
-  .card h3{font-size:.82rem;margin-bottom:3px}
-  .card p{font-size:.75rem}
-
+  .open-court-card{padding:22px 18px;border-radius:16px}
+  .oc-title{font-size:1.1rem}
+  .oc-features li{font-size:.78rem}
+  .unlock-card{padding:14px 12px}
+  .unlock-icon{font-size:1.1rem}
+  .unlock-info h4{font-size:.75rem}
+  .unlock-info p{font-size:.68rem}
   .training-cards{grid-template-columns:repeat(2,1fr);gap:8px}
   .train-card{padding:16px 12px}
   .train-card-icon{font-size:1.3rem;margin-bottom:7px}
   .train-card h3{font-size:.68rem}
   .train-card p{font-size:.62rem}
-
-  section{padding:36px 0}
-  .final{padding:44px 0}
+  section{padding:36px 0}.final{padding:44px 0}
+  .final-actions{font-size:.85rem;line-height:1.7}
 }
-
 @media(max-width:380px){
   .wrap{width:92%}
   .hero-logo{width:min(200px,50%)}
-  h1{font-size:1.75rem}
-  .lead{font-size:.78rem}
+  .hero-statement{font-size:1.2rem}
   .demo-card{padding:11px}
-  .grid{gap:2px}
-  .cell{border-radius:4px;font-size:.6rem}
+  .grid{gap:2px}.cell{border-radius:4px;font-size:.6rem}
   .section-title{font-size:1.15rem}
   .btn{padding:11px 14px;font-size:.75rem}
   .training-cards{grid-template-columns:1fr 1fr;gap:6px}
 }
-
 @media(max-width:340px){
-  h1{font-size:1.55rem}
+  .hero-statement{font-size:1.05rem}
   .section-title{font-size:1.05rem}
   .logo{font-size:.8rem}
   .logo-sub{font-size:.8rem;margin-left:5px}
@@ -407,43 +199,40 @@ body.lang-es .inline-es{display:inline}
 
 <main class="wrap">
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <div class="hero-logo"><img src="logo.png" alt="Reactific Reaction Gaming"></div>
-    <div class="eyebrow">
-      <span class="lang-block en">Number Hunt</span>
-      <span class="lang-block es">Number Hunt</span>
+
+    <div class="hero-tagline">
+      <span class="lang-block en"><strong>The Home of Reaction Gaming</strong></span>
+      <span class="lang-block es"><strong>El Hogar de Reaction Gaming</strong></span>
     </div>
 
-    <h1 style="display:none">
-      <span class="lang-block en">How Fast<br>Can You Find 7?</span>
-      <span class="lang-block es">¿Qué Tan Rápido<br>Encuentras El 7?</span>
-    </h1>
-
-    <p class="lead">
-      <span class="lang-block en">
-        Numbers flash. Clock ticks. You scan, find, and react — or the buzzer wins.
-        <strong>Practice free on the Reactific Half-Court.</strong> Compete on the Reactific Full-Court.
-      </span>
-      <span class="lang-block es">
-        Los números aparecen. El reloj corre. Escaneas, encuentras y reaccionas — o la bocina gana.
-        <strong>Practica gratis en la Reactific Half-Court.</strong> Compite en la Reactific Full-Court.
-      </span>
-    </p>
-
-    <div class="free-pill">
-      <span class="lang-block en">Free Reactific Half-Court — no account needed</span>
-      <span class="lang-block es">Reactific Half-Court gratis — sin cuenta</span>
+    <div class="hero-powered">
+      <span class="lang-block en">Powered by <strong>SHOTCLOCK</strong></span>
+      <span class="lang-block es">Impulsado por <strong>SHOTCLOCK</strong></span>
     </div>
+
+    <div class="hero-statement">
+      <span class="lang-block en">The Court Is Open.</span>
+      <span class="lang-block es">La Cancha Está Abierta.</span>
+    </div>
+
+    <ul class="hero-actions">
+      <li><span class="lang-block en">Enter</span><span class="lang-block es">Entra</span></li>
+      <li><span class="lang-block en">Play</span><span class="lang-block es">Juega</span></li>
+      <li><span class="lang-block en">Beat the Reactific Shot Clock</span><span class="lang-block es">Vence el Reactific Shot Clock</span></li>
+    </ul>
 
     <div class="cta-row">
       <a href="cog-10.html" class="btn btn-primary">
-        <span class="lang-block en">Practice Now — It's Free</span>
-        <span class="lang-block es">Practica Ahora — Es Gratis</span>
+        <span class="lang-block en">Enter The Court</span>
+        <span class="lang-block es">Entra a La Cancha</span>
       </a>
-      <a href="#free" class="btn btn-secondary">
-        <span class="lang-block en">See The Courts</span>
-        <span class="lang-block es">Ver Las Canchas</span>
+      <a href="#open-court" class="btn btn-secondary">
+        <span class="lang-block en">Learn More</span>
+        <span class="lang-block es">Conoce Más</span>
       </a>
     </div>
   </div>
@@ -457,7 +246,6 @@ body.lang-es .inline-es{display:inline}
       </div>
       <div class="clock-num" id="shotClock">05</div>
     </div>
-
     <div class="targets">
       <small>
         <span class="lang-block en">Find these numbers</span>
@@ -465,7 +253,6 @@ body.lang-es .inline-es{display:inline}
       </small>
       <div class="target-nums">7 18 24</div>
     </div>
-
     <div class="grid">
       <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>
       <div class="cell">6</div><div class="cell target">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div>
@@ -473,185 +260,111 @@ body.lang-es .inline-es{display:inline}
       <div class="cell">16</div><div class="cell">17</div><div class="cell target">18</div><div class="cell">19</div><div class="cell">20</div>
       <div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell target">24</div><div class="cell hit">25</div>
     </div>
-
     <div class="stats">
-      <div class="stat">
-        <b>5×5</b>
-        <span class="lang-block en">Reactific Half-Court</span>
-        <span class="lang-block es">Reactific Half-Court</span>
-      </div>
-      <div class="stat">
-        <b>25</b>
-        <span class="lang-block en">Cells</span>
-        <span class="lang-block es">Celdas</span>
-      </div>
-      <div class="stat">
-        <b>FREE</b>
-        <span class="lang-block en">Always</span>
-        <span class="lang-block es">Siempre</span>
-      </div>
+      <div class="stat"><b>5×5</b><span class="lang-block en">The Court</span><span class="lang-block es">La Cancha</span></div>
+      <div class="stat"><b>25</b><span class="lang-block en">Cells</span><span class="lang-block es">Celdas</span></div>
+      <div class="stat"><b>OPEN</b><span class="lang-block en">Always</span><span class="lang-block es">Siempre</span></div>
     </div>
   </div>
 </section>
 
-<!-- TWO COURTS -->
-<section id="free">
+<!-- THE OPEN COURT -->
+<section id="open-court">
   <div class="section-label">
-    <span class="lang-block en">Reactific Half-Court. Reactific Full-Court.</span>
-    <span class="lang-block es">Reactific Half-Court. Reactific Full-Court.</span>
+    <span class="lang-block en">The Open Court</span>
+    <span class="lang-block es">La Cancha Abierta</span>
   </div>
 
   <h2 class="section-title">
-    <span class="lang-block en">Practice Free.<br>Compete For Real.</span>
-    <span class="lang-block es">Practica Gratis.<br>Compite De Verdad.</span>
+    <span class="lang-block en">The Court Is Open.</span>
+    <span class="lang-block es">La Cancha Está Abierta.</span>
   </h2>
 
-  <p class="section-copy">
-    <span class="lang-block en">
-      The Reactific Half-Court is yours — free, forever. Sharpen your reflexes, learn the game, get fast.
-      When you're ready to prove it, step onto the Reactific Full-Court.
-    </span>
-    <span class="lang-block es">
-      La Reactific Half-Court es tuya — gratis, para siempre. Afila tus reflejos, aprende el juego, sé rápido.
-      Cuando estés listo para probarlo, sube a la Reactific Full-Court.
-    </span>
-  </p>
-
-  <div class="compare">
-    <div class="compare-card">
-      <span class="compare-tag free">
-        <span class="lang-block en">Free Forever</span>
-        <span class="lang-block es">Gratis Siempre</span>
-      </span>
-      <h3>
-        <span class="lang-block en">Reactific Half-Court</span>
-        <span class="lang-block es">Reactific Half-Court</span>
-      </h3>
-      <div class="compare-grid">5 × 5</div>
-      <ul class="compare-list">
-        <li><span class="check">✓</span>
-          <span class="lang-block en">25 cells — learn the game</span>
-          <span class="lang-block es">25 celdas — aprende el juego</span>
-        </li>
-        <li><span class="check">✓</span>
-          <span class="lang-block en">Unlimited rounds</span>
-          <span class="lang-block es">Rondas ilimitadas</span>
-        </li>
-        <li><span class="check">✓</span>
-          <span class="lang-block en">3 speed tiers</span>
-          <span class="lang-block es">3 velocidades</span>
-        </li>
-        <li><span class="check">✓</span>
-          <span class="lang-block en">No account needed</span>
-          <span class="lang-block es">Sin cuenta necesaria</span>
-        </li>
-        <li><span class="x">—</span>
-          <span class="lang-block en" style="color:var(--muted)">No leaderboards</span>
-          <span class="lang-block es" style="color:var(--muted)">Sin tabla de posiciones</span>
-        </li>
-        <li><span class="x">—</span>
-          <span class="lang-block en" style="color:var(--muted)">No scoring history</span>
-          <span class="lang-block es" style="color:var(--muted)">Sin historial de puntos</span>
-        </li>
-      </ul>
-      <div style="margin-top:14px">
-        <a href="cog-10.html" class="btn btn-primary" style="width:100%">
-          <span class="lang-block en">Practice Now</span>
-          <span class="lang-block es">Practica Ahora</span>
-        </a>
-      </div>
+  <div class="open-court-card">
+    <div class="oc-title">
+      <span class="lang-block en">The Open Court</span>
+      <span class="lang-block es">La Cancha Abierta</span>
     </div>
-
-    <div class="compare-card flagship">
-      <span class="compare-tag pro">
-        <span class="lang-block en">The Flagship</span>
-        <span class="lang-block es">El Flagship</span>
-      </span>
-      <h3>
-        <span class="lang-block en">Reactific Full-Court</span>
-        <span class="lang-block es">Reactific Full-Court</span>
-      </h3>
-      <div class="compare-grid">5 × 10</div>
-      <ul class="compare-list">
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">50 cells — the real game</span>
-          <span class="lang-block es">50 celdas — el juego real</span>
-        </li>
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">Global leaderboards</span>
-          <span class="lang-block es">Tabla de posiciones global</span>
-        </li>
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">Scoring & stats history</span>
-          <span class="lang-block es">Historial de puntos y stats</span>
-        </li>
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">Ranked competition</span>
-          <span class="lang-block es">Competencia clasificatoria</span>
-        </li>
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">League seasons</span>
-          <span class="lang-block es">Temporadas de liga</span>
-        </li>
-        <li><span class="gold-check">✓</span>
-          <span class="lang-block en">Reactific Shot Clock challenges</span>
-          <span class="lang-block es">Retos Reactific Shot Clock</span>
-        </li>
-      </ul>
-      <div style="margin-top:14px">
-        <a href="#free" class="btn btn-gold" style="width:100%">
-          <span class="lang-block en">Coming Soon</span>
-          <span class="lang-block es">Próximamente</span>
-        </a>
-      </div>
+    <ul class="oc-features">
+      <li><span class="lang-block en">Unlimited rounds.</span><span class="lang-block es">Rondas ilimitadas.</span></li>
+      <li><span class="lang-block en">Unlimited attempts.</span><span class="lang-block es">Intentos ilimitados.</span></li>
+      <li><span class="lang-block en">Unlimited access.</span><span class="lang-block es">Acceso ilimitado.</span></li>
+    </ul>
+    <div class="oc-divider"></div>
+    <p class="oc-note">
+      <span class="lang-block en">This is where players enter REACTIFIC. This is where rounds are played. This is where players discover the game. No rankings. No records. Only the game.</span>
+      <span class="lang-block es">Aquí es donde los jugadores entran a REACTIFIC. Aquí es donde se juegan las rondas. Aquí es donde los jugadores descubren el juego. Sin rankings. Sin récords. Solo el juego.</span>
+    </p>
+    <div style="margin-top:18px">
+      <a href="cog-10.html" class="btn btn-primary" style="width:100%">
+        <span class="lang-block en">Enter The Court</span>
+        <span class="lang-block es">Entra a La Cancha</span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- WHAT'S COMING -->
+<!-- COMPETITIVE UNLOCKS -->
 <section>
   <div class="section-label">
-    <span class="lang-block en">The Reactific Full-Court Experience</span>
-    <span class="lang-block es">La Experiencia Reactific Full-Court</span>
+    <span class="lang-block en">The Competitive Court</span>
+    <span class="lang-block es">La Cancha Competitiva</span>
   </div>
 
   <h2 class="section-title">
-    <span class="lang-block en">Half-Court Builds Skill.<br>Full-Court Proves It.</span>
-    <span class="lang-block es">La Half-Court Construye.<br>Full-Court Lo Prueba.</span>
+    <span class="lang-block en">The Open Court.<br>The Competitive Court.</span>
+    <span class="lang-block es">La Cancha Abierta.<br>La Cancha Competitiva.</span>
   </h2>
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <h3>
-        <span class="lang-block en">Leaderboards</span>
-        <span class="lang-block es">Rankings</span>
-      </h3>
-      <p>
-        <span class="lang-block en">See where you rank against every player on the platform. Daily, weekly, all-time.</span>
-        <span class="lang-block es">Mira dónde estás contra todos los jugadores. Diario, semanal, histórico.</span>
-      </p>
+  <div class="unlock-grid">
+    <div class="unlock-card">
+      <div class="unlock-icon">🏆</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Leaderboards</span><span class="lang-block es">Rankings</span></h4>
+        <p><span class="lang-block en">See where you stand.</span><span class="lang-block es">Mira dónde estás.</span></p>
+      </div>
     </div>
-
-    <div class="card">
-      <div class="card-icon">⏱️</div>
-      <h3>SHOT CLOCK</h3>
-      <p>
-        <span class="lang-block en">Timed challenges on the full 50-cell court. Find every target before the buzzer kills your run.</span>
-        <span class="lang-block es">Retos cronometrados en la cancha completa de 50 celdas. Encuentra cada objetivo antes que la bocina mate tu racha.</span>
-      </p>
+    <div class="unlock-card">
+      <div class="unlock-icon">⚡</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Shot Clock Challenges</span><span class="lang-block es">Retos Shot Clock</span></h4>
+        <p><span class="lang-block en">Official timed events.</span><span class="lang-block es">Eventos oficiales cronometrados.</span></p>
+      </div>
     </div>
-
-    <div class="card">
-      <div class="card-icon">🏆</div>
-      <h3>
-        <span class="lang-block en">League</span>
-        <span class="lang-block es">Liga</span>
-      </h3>
-      <p>
-        <span class="lang-block en">Seasonal ranked play. Climb divisions. Earn your spot at the top.</span>
-        <span class="lang-block es">Competencia clasificatoria por temporadas. Sube de división. Gana tu lugar en la cima.</span>
-      </p>
+    <div class="unlock-card">
+      <div class="unlock-icon">🔥</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Daily Challenges</span><span class="lang-block es">Retos Diarios</span></h4>
+        <p><span class="lang-block en">New rounds. New pressure.</span><span class="lang-block es">Nuevas rondas. Nueva presión.</span></p>
+      </div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-icon">🥇</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Ranked Competition</span><span class="lang-block es">Competencia Clasificatoria</span></h4>
+        <p><span class="lang-block en">Every round counts.</span><span class="lang-block es">Cada ronda cuenta.</span></p>
+      </div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-icon">👥</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Team Competition</span><span class="lang-block es">Competencia en Equipo</span></h4>
+        <p><span class="lang-block en">Compete together.</span><span class="lang-block es">Compite en equipo.</span></p>
+      </div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-icon">📈</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Score History</span><span class="lang-block es">Historial de Puntos</span></h4>
+        <p><span class="lang-block en">Track your performance.</span><span class="lang-block es">Rastrea tu rendimiento.</span></p>
+      </div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-icon">🏅</div>
+      <div class="unlock-info">
+        <h4><span class="lang-block en">Recognition</span><span class="lang-block es">Reconocimiento</span></h4>
+        <p><span class="lang-block en">Earn your place.</span><span class="lang-block es">Gana tu lugar.</span></p>
+      </div>
     </div>
   </div>
 </section>
@@ -664,139 +377,79 @@ body.lang-es .inline-es{display:inline}
   </div>
 
   <h2 class="section-title">
-    <span class="lang-block en">Train Your Reactions.<br>Dominate Number Hunt.</span>
-    <span class="lang-block es">Entrena Tus Reacciones.<br>Domina Number Hunt.</span>
+    <span class="lang-block en">Train Your Reactions.<br>Dominate ShotClock.</span>
+    <span class="lang-block es">Entrena Tus Reacciones.<br>Domina ShotClock.</span>
   </h2>
 
   <p class="section-copy">
-    <span class="lang-block en">
-      Five free training games on the 5×5 Half-Court. Each one sharpens a different reaction skill that makes you faster on the Full-Court.
-    </span>
-    <span class="lang-block es">
-      Cinco juegos de entrenamiento gratis en la Half-Court 5×5. Cada uno afila una habilidad de reacción diferente que te hace más rápido en la Full-Court.
-    </span>
+    <span class="lang-block en">Five free training games. Each one sharpens a different reaction skill that makes you faster on the court.</span>
+    <span class="lang-block es">Cinco juegos de entrenamiento gratis. Cada uno afila una habilidad de reacción diferente que te hace más rápido en la cancha.</span>
   </p>
 
   <div class="training-cards">
     <a href="cogs/cog-01.html" class="train-card" style="--tc:#FF6B35">
       <div class="train-card-icon">🔥</div>
-      <h3 style="color:#FF6B35">
-        <span class="lang-block en">Pattern Recognition</span>
-        <span class="lang-block es">Reconocimiento de Patrones</span>
-      </h3>
-      <p>
-        <span class="lang-block en">Watch cells flash in sequence. Tap them back in order.</span>
-        <span class="lang-block es">Mira las celdas iluminarse en secuencia. Repítelas en orden.</span>
-      </p>
-      <span class="train-tag">
-        <span class="lang-block en">Visual Scanning</span>
-        <span class="lang-block es">Escaneo Visual</span>
-      </span>
+      <h3 style="color:#FF6B35"><span class="lang-block en">Pattern Recognition</span><span class="lang-block es">Reconocimiento de Patrones</span></h3>
+      <p><span class="lang-block en">Watch cells flash in sequence. Tap them back in order.</span><span class="lang-block es">Mira las celdas iluminarse en secuencia. Repítelas en orden.</span></p>
+      <span class="train-tag"><span class="lang-block en">Visual Scanning</span><span class="lang-block es">Escaneo Visual</span></span>
     </a>
-
     <a href="cogs/cog-02.html" class="train-card" style="--tc:#9B59B6">
       <div class="train-card-icon">⚡</div>
-      <h3 style="color:#9B59B6">
-        <span class="lang-block en">Reaction Control</span>
-        <span class="lang-block es">Control de Reacción</span>
-      </h3>
-      <p>
-        <span class="lang-block en">A cell lights up. Tap it before the next beat.</span>
-        <span class="lang-block es">Una celda se ilumina. Tócala antes del siguiente pulso.</span>
-      </p>
-      <span class="train-tag">
-        <span class="lang-block en">Tap Speed</span>
-        <span class="lang-block es">Velocidad de Toque</span>
-      </span>
+      <h3 style="color:#9B59B6"><span class="lang-block en">Reaction Control</span><span class="lang-block es">Control de Reacción</span></h3>
+      <p><span class="lang-block en">A cell lights up. Tap it before the next beat.</span><span class="lang-block es">Una celda se ilumina. Tócala antes del siguiente pulso.</span></p>
+      <span class="train-tag"><span class="lang-block en">Tap Speed</span><span class="lang-block es">Velocidad de Toque</span></span>
     </a>
-
     <a href="cogs/cog-03.html" class="train-card" style="--tc:#00CED1">
       <div class="train-card-icon">🧠</div>
-      <h3 style="color:#00CED1">
-        <span class="lang-block en">Sequence Recall</span>
-        <span class="lang-block es">Secuencia de Memoria</span>
-      </h3>
-      <p>
-        <span class="lang-block en">Multiple cells flash at once. Find them all from memory.</span>
-        <span class="lang-block es">Varias celdas se iluminan a la vez. Encuéntralas de memoria.</span>
-      </p>
-      <span class="train-tag">
-        <span class="lang-block en">Short-Term Memory</span>
-        <span class="lang-block es">Memoria a Corto Plazo</span>
-      </span>
+      <h3 style="color:#00CED1"><span class="lang-block en">Sequence Recall</span><span class="lang-block es">Secuencia de Memoria</span></h3>
+      <p><span class="lang-block en">Multiple cells flash at once. Find them all from memory.</span><span class="lang-block es">Varias celdas se iluminan a la vez. Encuéntralas de memoria.</span></p>
+      <span class="train-tag"><span class="lang-block en">Short-Term Memory</span><span class="lang-block es">Memoria a Corto Plazo</span></span>
     </a>
-
     <a href="cogs/cog-04.html" class="train-card" style="--tc:#00D9A5">
       <div class="train-card-icon">🎯</div>
-      <h3 style="color:#00D9A5">
-        <span class="lang-block en">Focus Control</span>
-        <span class="lang-block es">Control de Enfoque</span>
-      </h3>
-      <p>
-        <span class="lang-block en">Watch a long sequence. Replay it in exact order.</span>
-        <span class="lang-block es">Mira una secuencia larga. Repítela en orden exacto.</span>
-      </p>
-      <span class="train-tag">
-        <span class="lang-block en">Sustained Attention</span>
-        <span class="lang-block es">Atención Sostenida</span>
-      </span>
+      <h3 style="color:#00D9A5"><span class="lang-block en">Focus Control</span><span class="lang-block es">Control de Enfoque</span></h3>
+      <p><span class="lang-block en">Watch a long sequence. Replay it in exact order.</span><span class="lang-block es">Mira una secuencia larga. Repítela en orden exacto.</span></p>
+      <span class="train-tag"><span class="lang-block en">Sustained Attention</span><span class="lang-block es">Atención Sostenida</span></span>
     </a>
-
     <a href="cogs/cog-05.html" class="train-card" style="--tc:#9ACD32">
       <div class="train-card-icon">👁️</div>
-      <h3 style="color:#9ACD32">
-        <span class="lang-block en">Cognitive Recovery</span>
-        <span class="lang-block es">Recuperación Cognitiva</span>
-      </h3>
-      <p>
-        <span class="lang-block en">Spot the ONE cell that changed between two patterns.</span>
-        <span class="lang-block es">Encuentra la celda que cambió entre dos patrones.</span>
-      </p>
-      <span class="train-tag">
-        <span class="lang-block en">Change Detection</span>
-        <span class="lang-block es">Detección de Cambios</span>
-      </span>
+      <h3 style="color:#9ACD32"><span class="lang-block en">Cognitive Recovery</span><span class="lang-block es">Recuperación Cognitiva</span></h3>
+      <p><span class="lang-block en">Spot the ONE cell that changed between two patterns.</span><span class="lang-block es">Encuentra la celda que cambió entre dos patrones.</span></p>
+      <span class="train-tag"><span class="lang-block en">Change Detection</span><span class="lang-block es">Detección de Cambios</span></span>
     </a>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- FINAL CTA -->
 <section class="final">
   <h2 class="section-title">
-    <span class="lang-block en">Start On The<br>Reactific Half-Court.</span>
-    <span class="lang-block es">Empieza En La<br>Reactific Half-Court.</span>
+    <span class="lang-block en">The Court Is Open.</span>
+    <span class="lang-block es">La Cancha Está Abierta.</span>
   </h2>
 
-  <p class="section-copy">
-    <span class="lang-block en">
-      Free. No account. No download. Just you, 25 cells, and the Reactific Shot Clock.
-    </span>
-    <span class="lang-block es">
-      Gratis. Sin cuenta. Sin descarga. Solo tú, 25 celdas, y el Reactific Shot Clock.
-    </span>
-  </p>
+  <div class="final-actions">
+    <span class="lang-block en"><strong>Enter the Court.</strong> Play. Compete. Climb.<br>Beat the Reactific Shot Clock.</span>
+    <span class="lang-block es"><strong>Entra a la Cancha.</strong> Juega. Compite. Sube.<br>Vence el Reactific Shot Clock.</span>
+  </div>
 
   <a href="cog-10.html" class="btn btn-primary">
-    <span class="lang-block en">Practice Now — It's Free</span>
-    <span class="lang-block es">Practica Ahora — Es Gratis</span>
+    <span class="lang-block en">Enter The Court</span>
+    <span class="lang-block es">Entra a La Cancha</span>
   </a>
 </section>
 
 </main>
 
-<footer>
-  © Gostar Digital LLC. All rights reserved.
-</footer>
+<footer>© Gostar Digital LLC. All rights reserved.</footer>
 
 <script>
 function setLang(lang){
   document.body.classList.remove('lang-en','lang-es');
-  document.body.classList.add(lang === 'es' ? 'lang-es' : 'lang-en');
-  document.documentElement.lang = lang;
-  document.getElementById('englishBtn').classList.toggle('active', lang === 'en');
-  document.getElementById('spanishBtn').classList.toggle('active', lang === 'es');
+  document.body.classList.add(lang==='es'?'lang-es':'lang-en');
+  document.documentElement.lang=lang;
+  document.getElementById('englishBtn').classList.toggle('active',lang==='en');
+  document.getElementById('spanishBtn').classList.toggle('active',lang==='es');
 }
-
 (function(){
   var el=document.getElementById('shotClock'),n=5;
   function tick(){
@@ -805,14 +458,8 @@ function setLang(lang){
     if(n<=2)el.style.textShadow='0 0 28px rgba(232,64,64,.7)';
     else el.style.textShadow='0 0 18px rgba(232,64,64,.4)';
     setTimeout(function(){el.style.transform='scale(1)'},150);
-    if(n===0){
-      el.style.transform='scale(1.3)';
-      setTimeout(function(){el.style.transform='scale(1)'},250);
-      setTimeout(function(){n=5;tick()},1200);
-    }else{
-      n--;
-      setTimeout(tick,1000);
-    }
+    if(n===0){el.style.transform='scale(1.3)';setTimeout(function(){el.style.transform='scale(1)'},250);setTimeout(function(){n=5;tick()},1200)}
+    else{n--;setTimeout(tick,1000)}
   }
   el.style.transition='transform .15s ease-out, text-shadow .3s';
   tick();
