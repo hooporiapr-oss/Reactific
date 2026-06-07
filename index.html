@@ -34,35 +34,16 @@ header{position:sticky;top:0;z-index:100;background:rgba(4,4,4,.9);backdrop-filt
 .lang button.active{background:var(--accent);color:#000;border-color:var(--accent)}
 
 /* HERO */
-.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding:44px 0 64px}
-.hero-content{animation:fadeUp .65s ease-out both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:44px 0 64px}
 .hero-logo{display:block;width:min(280px,60%);margin:0 auto 20px;filter:drop-shadow(0 0 30px rgba(126,207,90,.2))}
 .hero-logo img{width:100%;height:auto}
 .hero-tagline{font-family:'Red Hat Display',sans-serif;font-size:clamp(.7rem,1.4vw,.9rem);font-weight:800;color:var(--muted-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
 .hero-tagline strong{color:var(--white)}
-.hero-powered{font-size:.7rem;color:var(--muted);margin-bottom:18px}
+.hero-powered{font-size:.7rem;color:var(--muted);margin-bottom:24px}
 .hero-powered strong{color:var(--accent);font-weight:700;letter-spacing:.06em}
 
-.hero-statement{font-family:'Red Hat Display',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:18px;color:var(--white)}
-
-.hero-actions{list-style:none;display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
-.hero-actions li{font-family:'Red Hat Display',sans-serif;font-size:.85rem;font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
-.hero-actions li::after{content:'·';color:var(--muted);margin-left:6px}
-.hero-actions li:last-child::after{content:''}
-
-.hero-shotclock{font-size:.78rem;color:var(--muted-light);margin-bottom:22px}
-.hero-shotclock strong{color:var(--gold)}
-
-.cta-row{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-flex;justify-content:center;align-items:center;border-radius:999px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.03em;border:1px solid var(--line);cursor:pointer;transition:all .2s;min-width:170px;text-align:center}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#050505;box-shadow:0 0 20px var(--accent-glow)}
-.btn-primary:hover{box-shadow:0 0 36px rgba(126,207,90,.2);transform:translateY(-1px)}
-.btn-secondary{background:transparent;color:var(--muted-light)}
-.btn-secondary:hover{border-color:var(--accent-border);color:var(--accent)}
-
-/* DEMO CARD */
-.demo-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.008));box-shadow:0 14px 50px rgba(0,0,0,.45);animation:fadeUp .65s .1s ease-out both}
+.demo-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.008));box-shadow:0 14px 50px rgba(0,0,0,.45);animation:fadeUp .65s .1s ease-out both;width:100%;max-width:420px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .shot-clock{display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(232,64,64,.15);border-radius:12px;padding:11px 13px;margin-bottom:9px;background:var(--red-soft)}
 .shot-clock small{display:block;color:var(--muted);font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .shot-clock span{display:block;color:var(--muted-light);font-size:.72rem;font-weight:600;margin-top:1px}
@@ -81,21 +62,25 @@ header{position:sticky;top:0;z-index:100;background:rgba(4,4,4,.9);backdrop-filt
 
 /* SECTIONS */
 section{padding:60px 0;border-top:1px solid var(--line);position:relative;z-index:1}
-.section-label{color:var(--gold);font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
-.section-title{font-family:'Red Hat Display',sans-serif;font-size:clamp(1.4rem,4vw,2.8rem);font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:14px}
-.section-copy{color:var(--muted-light);font-size:.92rem;max-width:540px;margin-bottom:24px;line-height:1.6}
+.section-label{color:var(--gold);font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;text-align:center}
+.section-title{font-family:'Red Hat Display',sans-serif;font-size:clamp(1.4rem,4vw,2.8rem);font-weight:900;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:14px;text-align:center}
+.section-copy{color:var(--muted-light);font-size:.92rem;max-width:540px;margin:0 auto 24px;line-height:1.6;text-align:center}
 
 /* OPEN COURT */
-.open-court-card{border:1px solid var(--accent-border);border-radius:20px;padding:32px 28px;background:linear-gradient(165deg,rgba(126,207,90,.04),var(--card));position:relative;overflow:hidden;max-width:640px}
+.open-court-card{border:1px solid var(--accent-border);border-radius:20px;padding:32px 28px;background:linear-gradient(165deg,rgba(126,207,90,.04),var(--card));position:relative;overflow:hidden;max-width:540px;margin:0 auto}
 .open-court-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
-.oc-title{font-family:'Red Hat Display',sans-serif;font-size:1.3rem;font-weight:900;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
-.oc-features{list-style:none;padding:0;margin-bottom:16px}
+.oc-title{font-family:'Red Hat Display',sans-serif;font-size:1.3rem;font-weight:900;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;text-align:center}
+.oc-features{list-style:none;padding:0;margin-bottom:16px;text-align:center}
 .oc-features li{font-size:.85rem;color:var(--white);padding:4px 0;font-weight:600}
 .oc-divider{height:1px;background:var(--line);margin:14px 0}
-.oc-note{font-size:.78rem;color:var(--muted);line-height:1.5;font-style:italic}
+.oc-note{font-size:.78rem;color:var(--muted);line-height:1.5;font-style:italic;text-align:center}
+
+.btn{display:inline-flex;justify-content:center;align-items:center;border-radius:999px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.03em;border:1px solid var(--line);cursor:pointer;transition:all .2s;min-width:170px;text-align:center}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#050505;box-shadow:0 0 20px var(--accent-glow)}
+.btn-primary:hover{box-shadow:0 0 36px rgba(126,207,90,.2);transform:translateY(-1px)}
 
 /* UNLOCKS */
-.unlock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.unlock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:700px;margin:0 auto}
 .unlock-card{border:1px solid var(--line);border-radius:14px;padding:18px 16px;background:var(--card);display:flex;align-items:flex-start;gap:12px;transition:all .2s}
 .unlock-card:hover{border-color:var(--gold-border);background:var(--card-hover)}
 .unlock-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
@@ -127,8 +112,6 @@ body.lang-es .es{display:block}
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr;gap:28px;padding:28px 0 44px}
-  .hero-content{order:1}.demo-card{order:2}
   .unlock-grid{grid-template-columns:1fr}
   .training-cards{grid-template-columns:repeat(3,1fr)}
   section{padding:44px 0}.final{padding:52px 0}
@@ -136,11 +119,9 @@ body.lang-es .es{display:block}
 @media(max-width:600px){
   .header-inner{width:min(1080px,90%);margin:auto;display:flex;flex-direction:column;align-items:center;padding:8px 0;height:auto;gap:4px}
   .lang button{padding:5px 10px;font-size:.6rem}
+  .hero{padding:28px 0 44px}
   .hero-logo{width:min(220px,55%)}
-  .hero-statement{font-size:1.4rem}
-  .hero-actions li{font-size:.75rem}
   .btn{width:100%;padding:12px 16px;font-size:.78rem;min-width:unset}
-  .cta-row{gap:8px}
   .demo-card{padding:13px;border-radius:16px}
   .shot-clock{padding:9px 11px;border-radius:10px}
   .clock-num{font-size:1.5rem}
@@ -169,7 +150,6 @@ body.lang-es .es{display:block}
 @media(max-width:380px){
   .wrap{width:92%}
   .hero-logo{width:min(200px,50%)}
-  .hero-statement{font-size:1.2rem}
   .demo-card{padding:11px}
   .grid{gap:2px}.cell{border-radius:4px;font-size:.6rem}
   .section-title{font-size:1.15rem}
@@ -177,7 +157,6 @@ body.lang-es .es{display:block}
   .training-cards{grid-template-columns:1fr 1fr;gap:6px}
 }
 @media(max-width:340px){
-  .hero-statement{font-size:1.05rem}
   .section-title{font-size:1.05rem}
   .logo{font-size:.8rem}
   .logo-sub{font-size:.8rem;margin-left:5px}
@@ -201,18 +180,17 @@ body.lang-es .es{display:block}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-logo"><img src="logo.png" alt="Reactific Reaction Gaming"></div>
+  <div class="hero-logo"><img src="logo.png" alt="Reactific Reaction Gaming"></div>
 
-    <div class="hero-tagline">
-      <span class="lang-block en"><strong>The Home of Reaction Gaming</strong></span>
-      <span class="lang-block es"><strong>El Hogar de Reaction Gaming</strong></span>
-    </div>
+  <div class="hero-tagline">
+    <span class="lang-block en"><strong>The Home of Reaction Gaming</strong></span>
+    <span class="lang-block es"><strong>El Hogar de Reaction Gaming</strong></span>
+  </div>
 
-    <div class="hero-powered">
-      <span class="lang-block en">Powered by <strong>SHOT-CLOCK</strong></span>
-      <span class="lang-block es">Impulsado por <strong>SHOT-CLOCK</strong></span>
-    </div>
+  <div class="hero-powered">
+    <span class="lang-block en">Powered by <strong>SHOT-CLOCK</strong></span>
+    <span class="lang-block es">Impulsado por <strong>SHOT-CLOCK</strong></span>
+  </div>
 
   <div class="demo-card">
     <div class="shot-clock">
@@ -257,6 +235,10 @@ body.lang-es .es{display:block}
     <span class="lang-block es">La Cancha Está Abierta.</span>
   </h2>
 
+  <div class="open-court-card">
+    <div class="oc-title">
+      <span class="lang-block en">The Open Court</span>
+      <span class="lang-block es">La Cancha Abierta</span>
     </div>
     <ul class="oc-features">
       <li><span class="lang-block en">Unlimited rounds.</span><span class="lang-block es">Rondas ilimitadas.</span></li>
