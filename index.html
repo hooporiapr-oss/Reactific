@@ -267,6 +267,30 @@ section{padding:60px 0;border-top:1px solid var(--line);position:relative;z-inde
 }
 .card p{color:var(--muted-light);font-size:.8rem;line-height:1.5}
 
+/* TRAINING CARDS */
+.training-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.train-card{
+  border:1px solid var(--line);border-radius:16px;padding:20px 14px;
+  background:var(--card);transition:all .2s;position:relative;overflow:hidden;
+  text-align:center;text-decoration:none;
+}
+.train-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;background:var(--tc,var(--gold));
+}
+.train-card:hover{border-color:var(--line-hover);background:var(--card-hover);transform:translateY(-2px)}
+.train-card:hover::before{opacity:1}
+.train-card-icon{font-size:1.6rem;margin-bottom:10px}
+.train-card h3{
+  font-family:'Red Hat Display',sans-serif;font-weight:900;
+  margin-bottom:5px;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;
+}
+.train-card p{color:var(--muted);font-size:.68rem;line-height:1.4}
+.train-card .train-tag{
+  display:inline-block;font-size:.45rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-top:10px;
+  background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);
+}
+
 /* FINAL */
 .final{text-align:center;padding:70px 0}
 .final .section-copy{margin-left:auto;margin-right:auto}
@@ -290,25 +314,20 @@ body.lang-es .inline-es{display:inline}
   .hero{grid-template-columns:1fr;gap:28px;padding:28px 0 44px}
   .hero-content{order:1}.demo-card{order:2}
   .cards{grid-template-columns:1fr;gap:8px}
+  .training-cards{grid-template-columns:repeat(3,1fr)}
   section{padding:44px 0}.final{padding:52px 0}
 }
 
 @media(max-width:600px){
   .header-inner{
-  width:min(1080px,90%);
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:8px 0;
-  height:auto;
-  gap:4px;
-}
+    width:min(1080px,90%);margin:auto;display:flex;
+    flex-direction:column;align-items:center;padding:8px 0;height:auto;gap:4px;
+  }
   .lang button{padding:5px 10px;font-size:.6rem}
 
   .hero-logo{width:min(220px,55%)}
   h1{font-size:2rem;margin-bottom:12px;line-height:.92}
-.eyebrow{font-size:.55rem;margin-bottom:10px}
+  .eyebrow{font-size:.55rem;margin-bottom:10px}
   .lead{font-size:.82rem;margin-bottom:12px;line-height:1.55}
   .free-pill{font-size:.55rem;padding:6px 12px;margin-bottom:16px}
 
@@ -342,6 +361,12 @@ body.lang-es .inline-es{display:inline}
   .card h3{font-size:.82rem;margin-bottom:3px}
   .card p{font-size:.75rem}
 
+  .training-cards{grid-template-columns:repeat(2,1fr);gap:8px}
+  .train-card{padding:16px 12px}
+  .train-card-icon{font-size:1.3rem;margin-bottom:7px}
+  .train-card h3{font-size:.68rem}
+  .train-card p{font-size:.62rem}
+
   section{padding:36px 0}
   .final{padding:44px 0}
 }
@@ -356,6 +381,7 @@ body.lang-es .inline-es{display:inline}
   .cell{border-radius:4px;font-size:.6rem}
   .section-title{font-size:1.15rem}
   .btn{padding:11px 14px;font-size:.75rem}
+  .training-cards{grid-template-columns:1fr 1fr;gap:6px}
 }
 
 @media(max-width:340px){
@@ -627,6 +653,110 @@ body.lang-es .inline-es{display:inline}
         <span class="lang-block es">Competencia clasificatoria por temporadas. Sube de división. Gana tu lugar en la cima.</span>
       </p>
     </div>
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section id="training">
+  <div class="section-label">
+    <span class="lang-block en">Reaction Training System</span>
+    <span class="lang-block es">Sistema de Entrenamiento de Reacción</span>
+  </div>
+
+  <h2 class="section-title">
+    <span class="lang-block en">Train Your Reactions.<br>Dominate Number Hunt.</span>
+    <span class="lang-block es">Entrena Tus Reacciones.<br>Domina Number Hunt.</span>
+  </h2>
+
+  <p class="section-copy">
+    <span class="lang-block en">
+      Five free training games on the 5×5 Half-Court. Each one sharpens a different reaction skill that makes you faster on the Full-Court.
+    </span>
+    <span class="lang-block es">
+      Cinco juegos de entrenamiento gratis en la Half-Court 5×5. Cada uno afila una habilidad de reacción diferente que te hace más rápido en la Full-Court.
+    </span>
+  </p>
+
+  <div class="training-cards">
+    <a href="cogs/cog-01.html" class="train-card" style="--tc:#FF6B35">
+      <div class="train-card-icon">🔥</div>
+      <h3 style="color:#FF6B35">
+        <span class="lang-block en">Pattern Recognition</span>
+        <span class="lang-block es">Reconocimiento de Patrones</span>
+      </h3>
+      <p>
+        <span class="lang-block en">Watch cells flash in sequence. Tap them back in order.</span>
+        <span class="lang-block es">Mira las celdas iluminarse en secuencia. Repítelas en orden.</span>
+      </p>
+      <span class="train-tag">
+        <span class="lang-block en">Visual Scanning</span>
+        <span class="lang-block es">Escaneo Visual</span>
+      </span>
+    </a>
+
+    <a href="cogs/cog-02.html" class="train-card" style="--tc:#9B59B6">
+      <div class="train-card-icon">⚡</div>
+      <h3 style="color:#9B59B6">
+        <span class="lang-block en">Reaction Control</span>
+        <span class="lang-block es">Control de Reacción</span>
+      </h3>
+      <p>
+        <span class="lang-block en">A cell lights up. Tap it before the next beat.</span>
+        <span class="lang-block es">Una celda se ilumina. Tócala antes del siguiente pulso.</span>
+      </p>
+      <span class="train-tag">
+        <span class="lang-block en">Tap Speed</span>
+        <span class="lang-block es">Velocidad de Toque</span>
+      </span>
+    </a>
+
+    <a href="cogs/cog-03.html" class="train-card" style="--tc:#00CED1">
+      <div class="train-card-icon">🧠</div>
+      <h3 style="color:#00CED1">
+        <span class="lang-block en">Sequence Recall</span>
+        <span class="lang-block es">Secuencia de Memoria</span>
+      </h3>
+      <p>
+        <span class="lang-block en">Multiple cells flash at once. Find them all from memory.</span>
+        <span class="lang-block es">Varias celdas se iluminan a la vez. Encuéntralas de memoria.</span>
+      </p>
+      <span class="train-tag">
+        <span class="lang-block en">Short-Term Memory</span>
+        <span class="lang-block es">Memoria a Corto Plazo</span>
+      </span>
+    </a>
+
+    <a href="cogs/cog-04.html" class="train-card" style="--tc:#00D9A5">
+      <div class="train-card-icon">🎯</div>
+      <h3 style="color:#00D9A5">
+        <span class="lang-block en">Focus Control</span>
+        <span class="lang-block es">Control de Enfoque</span>
+      </h3>
+      <p>
+        <span class="lang-block en">Watch a long sequence. Replay it in exact order.</span>
+        <span class="lang-block es">Mira una secuencia larga. Repítela en orden exacto.</span>
+      </p>
+      <span class="train-tag">
+        <span class="lang-block en">Sustained Attention</span>
+        <span class="lang-block es">Atención Sostenida</span>
+      </span>
+    </a>
+
+    <a href="cogs/cog-05.html" class="train-card" style="--tc:#9ACD32">
+      <div class="train-card-icon">👁️</div>
+      <h3 style="color:#9ACD32">
+        <span class="lang-block en">Cognitive Recovery</span>
+        <span class="lang-block es">Recuperación Cognitiva</span>
+      </h3>
+      <p>
+        <span class="lang-block en">Spot the ONE cell that changed between two patterns.</span>
+        <span class="lang-block es">Encuentra la celda que cambió entre dos patrones.</span>
+      </p>
+      <span class="train-tag">
+        <span class="lang-block en">Change Detection</span>
+        <span class="lang-block es">Detección de Cambios</span>
+      </span>
+    </a>
   </div>
 </section>
 
