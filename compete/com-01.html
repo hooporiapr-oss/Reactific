@@ -174,6 +174,34 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'DM Sans',sa
 @media(max-height:650px){.play-court-wrap{max-width:300px}.target-card-num{font-size:1.5rem}}
 @media(max-height:550px){.play-court-wrap{max-width:260px}.play-stat-value{font-size:1.3rem}}
 @media(max-width:360px){.play-court-wrap{max-width:280px}.play-court{gap:3px;padding:6px}}
+
+/* ===== LEADERBOARD ===== */
+.lb-tabs{display:flex;gap:4px;margin-bottom:14px}
+.lb-tab{flex:1;padding:8px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;font-family:'Red Hat Display',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s;text-align:center}
+.lb-tab.active{background:var(--orange);color:#000;border-color:var(--orange)}
+.lb-speed-tabs{display:flex;gap:4px;margin-bottom:14px}
+.lb-speed{flex:1;padding:6px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:6px;font-family:'Red Hat Display',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;text-align:center}
+.lb-speed.active{background:var(--cyan);color:#000;border-color:var(--cyan)}
+.lb-list{list-style:none}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);transition:background .2s}
+.lb-row:last-child{border-bottom:none}
+.lb-row.me{background:rgba(242,138,31,.08);border-radius:8px;border:1px solid rgba(242,138,31,.2)}
+.lb-rank{font-family:'Red Hat Display',sans-serif;font-size:1rem;font-weight:900;color:var(--muted);min-width:28px;text-align:center}
+.lb-row:nth-child(1) .lb-rank{color:var(--gold);font-size:1.1rem}
+.lb-row:nth-child(2) .lb-rank{color:#c0c0c0}
+.lb-row:nth-child(3) .lb-rank{color:#cd7f32}
+.lb-name{flex:1;font-size:.8rem;font-weight:600;color:var(--text)}
+.lb-row.me .lb-name{color:var(--orange)}
+.lb-score{font-family:'Red Hat Display',sans-serif;font-size:.9rem;font-weight:900;color:var(--cyan)}
+.lb-level{font-size:.6rem;color:var(--muted);font-weight:600}
+.lb-empty{text-align:center;padding:30px;color:var(--muted);font-size:.8rem}
+.lb-loading{text-align:center;padding:30px;color:var(--muted);font-size:.75rem}
+.lb-myrank{background:var(--card);border:1px solid var(--orange);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center}
+.lb-myrank-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.lb-myrank-num{font-family:'Red Hat Display',sans-serif;font-size:2rem;font-weight:900;color:var(--orange)}
+.lb-myrank-score{font-size:.75rem;color:var(--cyan);font-weight:600}
+.lb-back{width:100%;padding:12px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;font-family:'Red Hat Display',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.06em;cursor:pointer;margin-top:14px;transition:all .2s}
+.lb-back:active{border-color:var(--orange);color:var(--orange)}
 </style>
 </head>
 <body>
@@ -276,6 +304,42 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'DM Sans',sa
 </div>
 </div>
 <button class="letsgo-btn" id="letsGoBtn">COMPETE</button>
+
+<button class="letsgo-btn" id="lbOpenBtn" style="margin-top:10px;background:linear-gradient(135deg,var(--cyan),#0099cc);box-shadow:0 4px 20px rgba(0,187,240,.2)">🏆 LEADERBOARD</button>
+</div>
+</div>
+
+
+<!-- LEADERBOARD SCREEN -->
+<div class="screen" id="screen-leaderboard">
+<div class="trophy-container">
+<div class="trophy-header">
+<div class="trophy-icon">🏆</div>
+<h1 class="trophy-title" style="color:var(--cyan)">LEADERBOARD</h1>
+<p class="trophy-subtitle">The Competitive Court Rankings</p>
+</div>
+
+<div class="lb-myrank" id="lbMyRank">
+<div class="lb-myrank-label">YOUR RANK</div>
+<div class="lb-myrank-num" id="lbMyRankNum">—</div>
+<div class="lb-myrank-score" id="lbMyRankScore"></div>
+</div>
+
+<div class="lb-speed-tabs">
+<button class="lb-speed active" data-speed="slow" onclick="lbSetSpeed('slow')">TRAINING</button>
+<button class="lb-speed" data-speed="med" onclick="lbSetSpeed('med')">TEMPO</button>
+<button class="lb-speed" data-speed="fast" onclick="lbSetSpeed('fast')">ELITE</button>
+</div>
+
+<div class="lb-tabs">
+<button class="lb-tab active" data-period="daily" onclick="lbSetPeriod('daily')">DAILY</button>
+<button class="lb-tab" data-period="weekly" onclick="lbSetPeriod('weekly')">WEEKLY</button>
+<button class="lb-tab" data-period="alltime" onclick="lbSetPeriod('alltime')">ALL-TIME</button>
+</div>
+
+<div id="lbContent"><div class="lb-loading">Loading...</div></div>
+
+<button class="lb-back" id="lbBackBtn">← BACK TO GAME</button>
 </div>
 </div>
 
@@ -406,6 +470,7 @@ setLang(currentLang);
 function showScreen(name){
   $('screen-trophy').classList.remove('active');
   $('screen-play').classList.remove('active');
+  $('screen-leaderboard').classList.remove('active');
   document.querySelector('.nav-lang').style.display=name==='play'?'none':'flex';
   $('screen-'+name).classList.add('active');
 }
@@ -631,6 +696,66 @@ function resetRound(){
 
 $('playActionBtn').onclick=startRound;
 updateTrophyUI();
+
+// ===== LEADERBOARD =====
+var lbSpeed='slow',lbPeriod='daily';
+
+$('lbOpenBtn').onclick=function(){showScreen('leaderboard');loadLeaderboard()};
+$('lbBackBtn').onclick=function(){showScreen('trophy')};
+
+window.lbSetSpeed=function(s){
+  lbSpeed=s;
+  document.querySelectorAll('.lb-speed').forEach(function(b){b.classList.toggle('active',b.dataset.speed===s)});
+  loadLeaderboard();
+};
+
+window.lbSetPeriod=function(p){
+  lbPeriod=p;
+  document.querySelectorAll('.lb-tab').forEach(function(b){b.classList.toggle('active',b.dataset.period===p)});
+  loadLeaderboard();
+};
+
+function loadLeaderboard(){
+  var lbDiv=$('lbContent');
+  lbDiv.innerHTML='<div class="lb-loading">Loading...</div>';
+  var currentUser=getUser();
+  
+  // Fetch leaderboard
+  api('GET','/api/leaderboard/'+lbPeriod+'?speed='+lbSpeed+'&limit=50').then(function(data){
+    if(!data.entries||data.entries.length===0){
+      lbDiv.innerHTML='<div class="lb-empty">No scores yet. Be the first!</div>';
+    }else{
+      var html='<ul class="lb-list">';
+      data.entries.forEach(function(entry){
+        var isMe=currentUser&&entry.username===currentUser.username;
+        html+='<div class="lb-row'+(isMe?' me':'')+'">';
+        html+='<div class="lb-rank">#'+entry.rank+'</div>';
+        html+='<div class="lb-name">'+entry.username+(isMe?' (you)':'')+'</div>';
+        html+='<div class="lb-score">'+entry.score+'</div>';
+        html+='<div class="lb-level">L'+entry.level+'</div>';
+        html+='</div>';
+      });
+      html+='</ul>';
+      lbDiv.innerHTML=html;
+    }
+  }).catch(function(){
+    lbDiv.innerHTML='<div class="lb-empty">Could not load leaderboard</div>';
+  });
+
+  // Fetch my rank
+  if(getToken()){
+    api('GET','/api/leaderboard/myrank?speed='+lbSpeed).then(function(data){
+      if(data.rank){
+        $('lbMyRankNum').textContent='#'+data.rank;
+        $('lbMyRankScore').textContent='Best: '+data.score+' pts · L'+data.level;
+      }else{
+        $('lbMyRankNum').textContent='—';
+        $('lbMyRankScore').textContent='Play to get ranked';
+      }
+    }).catch(function(){});
+  }
+}
+
 })();
 </script>
 </body>
