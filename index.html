@@ -66,29 +66,81 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(r
 /* TABLETS */
 @media(max-width:768px){
   body{padding:16px;gap:14px}
-  .banner{width:min(400px,75%)}
-  .main-game{width:90%}
+  .banner{width:min(400px,80%)}
+  .main-game{width:92%}
   .main-game a{padding:18px 24px}
   .main-game-title{font-size:1.3rem}
   .games-grid{width:95%;gap:8px}
   .game-tile{padding:14px 8px;gap:6px}
   .game-tile-icon{font-size:1.6rem}
-  .game-tile-name{font-size:.6rem}
-  .compete-row{width:90%}
+  .game-tile-name{font-size:.65rem}
+  .compete-row{width:92%}
 }
 
 /* PHONES */
 @media(max-width:480px){
-  body{padding:12px;gap:10px}
-  .banner{width:85%}
-  .games-grid{grid-template-columns:repeat(3,1fr);gap:6px}
-  .game-tile{padding:12px 6px;gap:5px}
-  .game-tile-icon{font-size:1.3rem}
-  .game-tile-name{font-size:.55rem}
-  .main-game a{padding:14px 20px;border-radius:14px}
-  .main-game-title{font-size:1.1rem}
-  .compete-row a{padding:12px 20px;border-radius:12px}
-  .compete-title{font-size:.9rem}
+  body{padding:10px 12px;gap:8px;overflow-y:auto;justify-content:flex-start;padding-top:16px;padding-bottom:40px}
+  .banner{width:88%;margin:0 auto}
+  .banner img{border-radius:8px}
+  .main-game{width:100%}
+  .main-game a{padding:14px 16px;border-radius:12px;gap:10px}
+  .main-game-icon{font-size:1.6rem}
+  .main-game-title{font-size:1.05rem;letter-spacing:.04em}
+  .main-game-sub{font-size:.6rem}
+  .games-grid{width:100%;grid-template-columns:repeat(3,1fr);gap:6px}
+  .game-tile{padding:10px 6px;gap:4px;border-radius:10px}
+  .game-tile::before{height:2px}
+  .game-tile-icon{font-size:1.2rem;margin-bottom:0}
+  .game-tile-name{font-size:.52rem;letter-spacing:.02em;line-height:1.2}
+  .game-tile-tag{font-size:.42rem}
+  .compete-row{width:100%}
+  .compete-row a{padding:12px 16px;border-radius:12px;gap:8px}
+  .compete-title{font-size:.9rem;letter-spacing:.04em}
+  .compete-sub{font-size:.55rem}
+  .fullscreen-btn{display:none}
+  .footer{font-size:.45rem;bottom:8px}
+  .footer div{gap:10px}
+  .footer a{font-size:.45rem}
+}
+
+/* SMALL PHONES */
+@media(max-width:375px){
+  body{padding:8px 10px;gap:6px}
+  .banner{width:92%}
+  .main-game a{padding:12px 14px}
+  .main-game-icon{font-size:1.4rem}
+  .main-game-title{font-size:.95rem}
+  .games-grid{gap:4px}
+  .game-tile{padding:8px 4px;gap:3px;border-radius:8px}
+  .game-tile-icon{font-size:1rem}
+  .game-tile-name{font-size:.48rem}
+  .game-tile-tag{display:none}
+  .compete-row a{padding:10px 14px}
+  .compete-title{font-size:.82rem}
+}
+
+/* VERY SMALL / SE */
+@media(max-width:340px){
+  body{padding:6px 8px;gap:5px}
+  .banner{width:95%}
+  .main-game a{padding:10px 12px}
+  .main-game-title{font-size:.88rem}
+  .main-game-sub{font-size:.5rem}
+  .games-grid{gap:3px}
+  .game-tile{padding:7px 3px;gap:2px}
+  .game-tile-icon{font-size:.9rem}
+  .game-tile-name{font-size:.45rem}
+  .compete-title{font-size:.75rem}
+  .compete-sub{font-size:.48rem}
+}
+
+/* SHORT PHONES (landscape or short viewport) */
+@media(max-height:600px){
+  body{justify-content:flex-start;overflow-y:auto;padding-top:12px}
+  .banner{width:min(280px,70%)}
+  .main-game a{padding:10px 16px}
+  .game-tile{padding:8px 4px}
+  .game-tile-icon{font-size:1rem}
 }
 </style>
 </head>
