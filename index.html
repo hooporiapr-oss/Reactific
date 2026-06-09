@@ -9,8 +9,16 @@
 <style>
 :root{--black:#040404;--card:#0e0e12;--white:#eaeaea;--muted:#5e5e6a;--muted-light:#9292a0;--line:rgba(255,255,255,.06);--orange:#f28a1f;--orange-dark:#d97a1a;--cyan:#00bbf0;--border:rgba(255,255,255,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);-webkit-user-select:none;user-select:none;cursor:default}
-body{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px}
+html,body{min-height:100%;overflow-x:hidden;overflow-y:auto;font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);-webkit-user-select:none;user-select:none;cursor:default}
+body{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+padding:24px;
+padding-bottom:140px;
+gap:20px
+}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 50% 40% at 10% 5%,rgba(0,187,240,.03),transparent),radial-gradient(ellipse 40% 35% at 90% 90%,rgba(242,138,31,.025),transparent);pointer-events:none}
 body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.015) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
 
