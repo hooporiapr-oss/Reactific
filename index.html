@@ -142,6 +142,61 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(r
   .game-tile{padding:8px 4px}
   .game-tile-icon{font-size:1rem}
 }
+
+/* COMPETE DROPDOWN */
+.compete-dropdown{width:min(500px,85%);position:relative;z-index:1}
+.compete-toggle{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 28px;background:linear-gradient(135deg,var(--cyan),#0099cc);border-radius:16px;border:none;color:#000;cursor:pointer;box-shadow:0 0 30px rgba(0,187,240,.15);transition:all .2s}
+.compete-toggle:active{transform:scale(.98)}
+.compete-toggle-text{text-align:center}
+.compete-toggle .compete-title{font-family:'Red Hat Display',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:.06em}
+.compete-toggle .compete-sub{font-size:.6rem;font-weight:600;opacity:.7}
+.compete-arrow{font-size:.7rem;transition:transform .3s;opacity:.7}
+.compete-toggle.open .compete-arrow{transform:rotate(180deg)}
+.compete-panel{max-height:0;overflow:hidden;transition:max-height .4s ease-out;width:100%}
+.compete-panel.open{max-height:800px}
+.compete-inner{padding:10px 0 0}
+.compete-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;margin-bottom:8px}
+.compete-lang{display:flex;justify-content:center;gap:4px;margin-bottom:10px}
+.compete-lang button{border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:999px;padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.compete-lang button.active{background:var(--cyan);color:#000;border-color:var(--cyan)}
+.compete-features{list-style:none}
+.compete-features li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--white)}
+.compete-features li:last-child{border-bottom:none}
+.compete-features .cf-icon{font-size:1.1rem;flex-shrink:0}
+.compete-features .cf-text{flex:1}
+.compete-features .cf-text strong{color:var(--orange);font-weight:700}
+.compete-features .cf-desc{display:block;font-size:.65rem;color:var(--muted);margin-top:2px}
+.compete-cta{margin-top:12px}
+.compete-cta a{display:block;width:100%;padding:14px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#000;border-radius:12px;font-family:'Red Hat Display',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.06em;text-align:center;text-decoration:none;box-shadow:0 0 16px rgba(242,138,31,.2);transition:all .2s}
+.compete-cta a:active{transform:scale(.98)}
+.cl-block{display:none}
+.compete-card.cl-en .cl-en{display:block}
+.compete-card.cl-es .cl-es{display:block}
+@media(max-width:480px){
+  .compete-dropdown{width:100%}
+  .compete-toggle{padding:12px 16px;border-radius:12px}
+  .compete-toggle .compete-title{font-size:.9rem}
+  .compete-toggle .compete-sub{font-size:.55rem}
+  .compete-card{padding:14px 12px}
+  .compete-features li{font-size:.72rem;padding:6px 0}
+  .compete-features .cf-icon{font-size:.95rem}
+  .compete-features .cf-desc{font-size:.58rem}
+}
+@media(max-width:375px){
+  .compete-toggle .compete-title{font-size:.82rem}
+  .compete-features li{font-size:.65rem}
+}
+@media(max-width:340px){
+  .compete-toggle .compete-title{font-size:.75rem}
+  .compete-toggle .compete-sub{font-size:.48rem}
+}
+@media(min-width:1200px){
+  .compete-dropdown{width:min(600px,70%)}
+  .compete-toggle{padding:22px 36px;border-radius:20px}
+  .compete-toggle .compete-title{font-size:1.4rem}
+  .compete-features li{font-size:.88rem;padding:10px 0}
+  .compete-features .cf-icon{font-size:1.3rem}
+}
 </style>
 </head>
 <body>
@@ -186,13 +241,81 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(r
   </a>
 </div>
 
-<div class="compete-row">
-  <a href="/compete/com-01.html">
-    <div>
+<div class="compete-dropdown">
+  <button class="compete-toggle" id="competeToggle" onclick="toggleCompete()">
+    <div class="compete-toggle-text">
       <div class="compete-title">🏆 PLAY SHOT-CLOCK</div>
       <div class="compete-sub">Leaderboards · Rankings · Compete</div>
     </div>
-  </a>
+    <span class="compete-arrow">▼</span>
+  </button>
+  <div class="compete-panel" id="competePanel">
+    <div class="compete-inner">
+      <div class="compete-card cl-en" id="competeCard">
+        <div class="compete-lang">
+          <button class="active" id="clEN" onclick="setCompeteLang('en')">English</button>
+          <button id="clES" onclick="setCompeteLang('es')">Español</button>
+        </div>
+        <ul class="compete-features">
+          <li>
+            <span class="cf-icon">🏆</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Leaderboards</strong><span class="cf-desc">See where you rank against every player. Daily, weekly, all-time.</span></div>
+              <div class="cl-block cl-es"><strong>Rankings</strong><span class="cf-desc">Mira dónde estás contra todos los jugadores. Diario, semanal, histórico.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">⚡</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Shot Clock Challenges</strong><span class="cf-desc">Official timed events. Beat the clock or go home.</span></div>
+              <div class="cl-block cl-es"><strong>Retos Shot Clock</strong><span class="cf-desc">Eventos oficiales cronometrados. Vence el reloj o vete.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">🔥</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Daily Challenges</strong><span class="cf-desc">New rounds every day. New pressure. New chance to climb.</span></div>
+              <div class="cl-block cl-es"><strong>Retos Diarios</strong><span class="cf-desc">Nuevas rondas cada día. Nueva presión. Nueva oportunidad.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">🥇</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Ranked Competition</strong><span class="cf-desc">Every round counts. Every score posts. Every rank earned.</span></div>
+              <div class="cl-block cl-es"><strong>Competencia Clasificatoria</strong><span class="cf-desc">Cada ronda cuenta. Cada puntuación se publica. Cada rango se gana.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">👥</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Team Competition</strong><span class="cf-desc">Compete together. Schools vs schools. Squad vs squad.</span></div>
+              <div class="cl-block cl-es"><strong>Competencia en Equipo</strong><span class="cf-desc">Compite en equipo. Escuela vs escuela. Equipo vs equipo.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">📈</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Score History</strong><span class="cf-desc">Track every session. See your improvement over time.</span></div>
+              <div class="cl-block cl-es"><strong>Historial de Puntos</strong><span class="cf-desc">Rastrea cada sesión. Ve tu mejora con el tiempo.</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="cf-icon">🏅</span>
+            <div class="cf-text">
+              <div class="cl-block cl-en"><strong>Recognition</strong><span class="cf-desc">Earn your place. Top players get seen.</span></div>
+              <div class="cl-block cl-es"><strong>Reconocimiento</strong><span class="cf-desc">Gana tu lugar. Los mejores jugadores se destacan.</span></div>
+            </div>
+          </li>
+        </ul>
+        <div class="compete-cta">
+          <a href="/compete/com-01.html">
+            <span class="cl-block cl-en">ENTER THE COMPETITIVE COURT</span>
+            <span class="cl-block cl-es">ENTRA A LA CANCHA COMPETITIVA</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <button class="fullscreen-btn" onclick="goFull()">⛶ FULLSCREEN</button>
@@ -223,6 +346,18 @@ document.addEventListener('mousemove',function(){
 
 // Prevent right-click context menu on kiosk
 document.addEventListener('contextmenu',function(e){e.preventDefault()});
+
+function toggleCompete(){
+  document.getElementById('competeToggle').classList.toggle('open');
+  document.getElementById('competePanel').classList.toggle('open');
+}
+function setCompeteLang(lang){
+  var card=document.getElementById('competeCard');
+  card.classList.remove('cl-en','cl-es');
+  card.classList.add('cl-'+lang);
+  document.getElementById('clEN').classList.toggle('active',lang==='en');
+  document.getElementById('clES').classList.toggle('active',lang==='es');
+}
 </script>
 </body>
 </html>
