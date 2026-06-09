@@ -197,6 +197,63 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(r
   .compete-features li{font-size:.88rem;padding:10px 0}
   .compete-features .cf-icon{font-size:1.3rem}
 }
+
+/* LEADERBOARD DROPDOWN */
+.lb-dropdown{width:min(500px,85%);position:relative;z-index:1}
+.lb-toggle{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;background:var(--card);border:1px solid var(--border);border-radius:14px;color:var(--white);cursor:pointer;transition:all .2s}
+.lb-toggle:active{transform:scale(.98)}
+.lb-toggle:hover{border-color:var(--orange-border)}
+.lb-toggle-text{font-family:'Red Hat Display',sans-serif;font-size:.95rem;font-weight:900;letter-spacing:.05em}
+.lb-arrow{font-size:.7rem;color:var(--muted);transition:transform .3s}
+.lb-toggle.open .lb-arrow{transform:rotate(180deg)}
+.lb-panel{max-height:0;overflow:hidden;transition:max-height .4s ease-out;width:100%}
+.lb-panel.open{max-height:1000px}
+.lb-inner{padding:10px 0 0}
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;overflow:hidden}
+.lb-filters{display:flex;gap:4px;margin-bottom:8px}
+.lb-filter{flex:1;padding:6px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:6px;font-family:'Red Hat Display',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;text-align:center}
+.lb-filter.active{background:var(--orange);color:#000;border-color:var(--orange)}
+.lb-periods{display:flex;gap:4px;margin-bottom:10px}
+.lb-period{flex:1;padding:5px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:6px;font-family:'Red Hat Display',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;text-align:center}
+.lb-period.active{background:var(--cyan);color:#000;border-color:var(--cyan)}
+.lb-list{list-style:none}
+.lb-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid rgba(255,255,255,.04)}
+.lb-row:last-child{border-bottom:none}
+.lb-pos{font-family:'Red Hat Display',sans-serif;font-size:.85rem;font-weight:900;color:var(--muted);min-width:24px;text-align:center}
+.lb-row:nth-child(1) .lb-pos{color:var(--gold)}
+.lb-row:nth-child(2) .lb-pos{color:#c0c0c0}
+.lb-row:nth-child(3) .lb-pos{color:#cd7f32}
+.lb-user{flex:1;font-size:.75rem;font-weight:600;color:var(--white)}
+.lb-pts{font-family:'Red Hat Display',sans-serif;font-size:.8rem;font-weight:900;color:var(--cyan)}
+.lb-lvl{font-size:.55rem;color:var(--muted);font-weight:600}
+.lb-empty{text-align:center;padding:20px;color:var(--muted);font-size:.75rem}
+.lb-loading{text-align:center;padding:20px;color:var(--muted);font-size:.7rem}
+.lb-cta{text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.lb-cta a{color:var(--orange);font-size:.65rem;font-weight:700;letter-spacing:.04em;text-decoration:none}
+.lb-cta a:hover{text-decoration:underline}
+@media(max-width:480px){
+  .lb-dropdown{width:100%}
+  .lb-toggle{padding:10px 16px;border-radius:12px}
+  .lb-toggle-text{font-size:.82rem}
+  .lb-card{padding:10px}
+  .lb-row{padding:6px 2px}
+  .lb-pos{font-size:.75rem;min-width:20px}
+  .lb-user{font-size:.68rem}
+  .lb-pts{font-size:.72rem}
+}
+@media(max-width:375px){
+  .lb-toggle-text{font-size:.75rem}
+  .lb-filter{font-size:.48rem;padding:5px}
+  .lb-period{font-size:.45rem;padding:4px}
+}
+@media(min-width:1200px){
+  .lb-dropdown{width:min(600px,70%)}
+  .lb-toggle{padding:18px 32px;border-radius:18px}
+  .lb-toggle-text{font-size:1.2rem}
+  .lb-row{padding:10px 6px}
+  .lb-user{font-size:.85rem}
+  .lb-pts{font-size:.9rem}
+}
 </style>
 </head>
 <body>
@@ -318,6 +375,32 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(r
   </div>
 </div>
 
+
+<div class="lb-dropdown">
+  <button class="lb-toggle" id="lbToggle" onclick="toggleLB()">
+    <span class="lb-toggle-text">📊 LEADERBOARD</span>
+    <span class="lb-arrow">▼</span>
+  </button>
+  <div class="lb-panel" id="lbPanel">
+    <div class="lb-inner">
+      <div class="lb-card">
+        <div class="lb-filters">
+          <button class="lb-filter active" data-speed="slow" onclick="lbSpeed('slow')">TRAINING</button>
+          <button class="lb-filter" data-speed="med" onclick="lbSpeed('med')">TEMPO</button>
+          <button class="lb-filter" data-speed="fast" onclick="lbSpeed('fast')">ELITE</button>
+        </div>
+        <div class="lb-periods">
+          <button class="lb-period active" data-period="daily" onclick="lbPeriod('daily')">DAILY</button>
+          <button class="lb-period" data-period="weekly" onclick="lbPeriod('weekly')">WEEKLY</button>
+          <button class="lb-period" data-period="alltime" onclick="lbPeriod('alltime')">ALL-TIME</button>
+        </div>
+        <div id="lbList"><div class="lb-loading">Loading...</div></div>
+        <div class="lb-cta"><a href="/compete/com-01.html">Want your name here? Enter The Competitive Court →</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <button class="fullscreen-btn" onclick="goFull()">⛶ FULLSCREEN</button>
 
 <div class="footer">
@@ -357,6 +440,51 @@ function setCompeteLang(lang){
   card.classList.add('cl-'+lang);
   document.getElementById('clEN').classList.toggle('active',lang==='en');
   document.getElementById('clES').classList.toggle('active',lang==='es');
+}
+
+var currentLBSpeed='slow',currentLBPeriod='daily';
+function toggleLB(){
+  var t=document.getElementById('lbToggle');
+  var p=document.getElementById('lbPanel');
+  t.classList.toggle('open');
+  p.classList.toggle('open');
+  if(p.classList.contains('open'))fetchLB();
+}
+function lbSpeed(s){
+  currentLBSpeed=s;
+  document.querySelectorAll('.lb-filter').forEach(function(b){b.classList.toggle('active',b.dataset.speed===s)});
+  fetchLB();
+}
+function lbPeriod(p){
+  currentLBPeriod=p;
+  document.querySelectorAll('.lb-period').forEach(function(b){b.classList.toggle('active',b.dataset.period===p)});
+  fetchLB();
+}
+function fetchLB(){
+  var list=document.getElementById('lbList');
+  list.innerHTML='<div class="lb-loading">Loading...</div>';
+  fetch('https://api.reactificgaming.com/api/leaderboard/'+currentLBPeriod+'?speed='+currentLBSpeed+'&limit=10')
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(!data.entries||data.entries.length===0){
+        list.innerHTML='<div class="lb-empty">No scores yet. Be the first!</div>';
+        return;
+      }
+      var html='<div class="lb-list">';
+      data.entries.forEach(function(e){
+        html+='<div class="lb-row">';
+        html+='<div class="lb-pos">#'+e.rank+'</div>';
+        html+='<div class="lb-user">'+e.username+'</div>';
+        html+='<div class="lb-pts">'+e.score+'</div>';
+        html+='<div class="lb-lvl">L'+e.level+'</div>';
+        html+='</div>';
+      });
+      html+='</div>';
+      list.innerHTML=html;
+    })
+    .catch(function(){
+      list.innerHTML='<div class="lb-empty">Could not load leaderboard</div>';
+    });
 }
 </script>
 </body>
