@@ -193,7 +193,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <body>
 <nav class="mini-nav"><div class="nav-row">
 <a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
-<div class="nav-title">Practice</div>
+<div class="nav-title">Compete</div>
 <div class="nav-right"><div class="nav-lang">
 <button class="nav-lang-btn" id="langEN">EN</button>
 <button class="nav-lang-btn active" id="langES">ES</button>
@@ -216,7 +216,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <div class="htp-section">
 <div class="htp-toggle" id="htpToggle">
 <span class="htp-toggle-icon">📖</span>
-<span class="htp-toggle-text" id="htpToggleText">HOW TO PRACTICE</span>
+<span class="htp-toggle-text" id="htpToggleText">HOW TO COMPETE</span>
 <span class="htp-toggle-arrow">▼</span>
 </div>
 <div class="htp-content" id="htpContent"><div class="htp-inner">
@@ -242,7 +242,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <div class="htp-tip-text" id="tipText">Scan the whole grid fast — train your eyes to find multiple targets at once!</div>
 </div></div></div></div>
 </div>
-<div class="demo-cta"><button class="play-now-btn" id="playNowBtn">▶ PRACTICE NOW</button></div>
+<div class="demo-cta"><button class="play-now-btn" id="playNowBtn">▶ COMPETE NOW</button></div>
 <div class="ritnome-promo"><div class="pulse-dot"></div>
 <div class="ritnome-promo-text"><span id="poweredBy">Powered by</span> <span>Gostar Digital™</span></div>
 </div></div></div>
@@ -305,7 +305,7 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <div class="play-tiers" id="playTierDots"></div>
 <div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
 <div class="play-info">
-<div class="play-info-badge" id="playBadge">L1 PRACTICE</div>
+<div class="play-info-badge" id="playBadge">L1 COMPETE</div>
 <div class="play-info-cells" id="playCells">FIND: 1</div>
 <div class="play-info-score" id="playTotal">0</div>
 </div>
@@ -328,8 +328,8 @@ var $=function(id){return document.getElementById(id)};
 var $$=function(sel){return document.querySelectorAll(sel)};
 var currentScreen='demo',currentLang='en';
 var translations={
-en:{demoBadge:'Reaction Gaming',demoSubtitle:'Visual Search · Memory · Reaction',demoFlashLabel:'FIND THESE NUMBERS',htpToggle:'HOW TO PRACTICE',objectiveTitle:'OBJECTIVE',step1:'<strong>See the numbers</strong> flash on screen — memorize them',step2:'<strong>All 25 grid cells</strong> show random numbers 1–25',step3:'<strong>Find and tap</strong> all the target numbers before time runs out!',progressionTitle:'PROGRESSION',prog1:'Complete <strong>3 rounds</strong> to earn a GoStar',prog2:'Level 1 = find <strong>1 number</strong>, Level 2 = find <strong>2</strong>, and so on',prog3:'Wrong tap = <strong>round fails</strong> — accuracy matters!',speedsTitle:'BPM SPEEDS',speed1:'<strong>:05 Clock (60 BPM)</strong> — 5 seconds to find them',speed2:'<strong>:03 Clock (90 BPM)</strong> — 3 seconds, stay sharp',speed3:'<strong>:02 Clock (120 BPM)</strong> — 2 seconds, pure reaction!',tipTitle:'TIP',tipText:'Scan the whole grid fast — train your eyes to find multiple targets at once!',playNow:'▶ PRACTICE NOW',poweredBy:'Powered by',trophyTitle:'REACTIFIC',trophySubtitle:'Reactific Progress',selectSpeed:'SELECT SHOT-CLOCK SPEED',tierFree:'✓ FREE',selectLevel:'SELECT LEVEL',targetsLabel:'Numbers to find:',letsGo:"LET'S GO!",roundLabel:'Round',scoreLabel:'Score',tapLetsGo:"TAP LET'S GO!",memorizeMsg:'MEMORIZE!',findMsg:'FIND THEM!',timeoutMsg:'TOO SLOW!',wrongMsg:'WRONG TAP!',tierupTitle:'GOSTAR EARNED!',tierupMsg:'You earned GoStar {tier}!',tierupLevelMsg:' Now Level {level} — find {targets} numbers!',masterMsg:'🏆 10 GOSTARS — MASTER! 🏆'},
-es:{demoBadge:'Reaction Gaming',demoSubtitle:'Búsqueda Visual · Memoria · Reacción',demoFlashLabel:'ENCUENTRA ESTOS NÚMEROS',htpToggle:'CÓMO PRACTICAR',objectiveTitle:'OBJETIVO',step1:'<strong>Ve los números</strong> destellar en pantalla — memorízalos',step2:'<strong>Las 25 celdas</strong> muestran números al azar del 1 al 25',step3:'<strong>Encuentra y toca</strong> todos los números objetivo antes de que se acabe el tiempo',progressionTitle:'PROGRESIÓN',prog1:'Completa <strong>3 rondas</strong> para ganar un GoStar',prog2:'Nivel 1 = encuentra <strong>1 número</strong>, Nivel 2 = encuentra <strong>2</strong>, y así',prog3:'¿Toque incorrecto? = <strong>ronda fallida</strong> — ¡la precisión importa!',speedsTitle:'VELOCIDADES BPM',speed1:'<strong>Entrenamiento (60 BPM)</strong> — 5 segundos para encontrarlos',speed2:'<strong>Tempo (90 BPM)</strong> — 3 segundos, mantente alerta',speed3:'<strong>Elite (120 BPM)</strong> — 2 segundos, ¡pura reacción!',tipTitle:'CONSEJO',tipText:'Escanea toda la cuadrícula rápido — ¡entrena tus ojos para encontrar múltiples objetivos a la vez!',playNow:'▶ PRACTICA AHORA',poweredBy:'Impulsado por',trophyTitle:'TU VITRINA',trophySubtitle:'Progreso de Reactific',selectSpeed:'SELECCIONA VELOCIDAD BPM',tierFree:'✓ GRATIS',selectLevel:'SELECCIONA NIVEL',targetsLabel:'Números a encontrar:',letsGo:"¡PA'LANTE!",roundLabel:'Ronda',scoreLabel:'Puntos',tapLetsGo:"¡TOCA PA'LANTE!",memorizeMsg:'¡MEMORIZA!',findMsg:'¡ENCUÉNTRALOS!',timeoutMsg:'¡MUY LENTO!',wrongMsg:'¡INCORRECTO!',tierupTitle:'¡GOSTAR GANADO!',tierupMsg:'¡Ganaste GoStar {tier}!',tierupLevelMsg:' Ahora Nivel {level} — encuentra {targets} números',masterMsg:'🏆 10 GOSTARS — ¡MAESTRO! 🏆'}
+en:{demoBadge:'Reaction Gaming',demoSubtitle:'Visual Search · Memory · Reaction',demoFlashLabel:'FIND THESE NUMBERS',htpToggle:'HOW TO COMPETE',objectiveTitle:'OBJECTIVE',step1:'<strong>See the numbers</strong> flash on screen — memorize them',step2:'<strong>All 25 grid cells</strong> show random numbers 1–25',step3:'<strong>Find and tap</strong> all the target numbers before time runs out!',progressionTitle:'PROGRESSION',prog1:'Complete <strong>3 rounds</strong> to earn a GoStar',prog2:'Level 1 = find <strong>1 number</strong>, Level 2 = find <strong>2</strong>, and so on',prog3:'Wrong tap = <strong>round fails</strong> — accuracy matters!',speedsTitle:'BPM SPEEDS',speed1:'<strong>:05 Clock (60 BPM)</strong> — 5 seconds to find them',speed2:'<strong>:03 Clock (90 BPM)</strong> — 3 seconds, stay sharp',speed3:'<strong>:02 Clock (120 BPM)</strong> — 2 seconds, pure reaction!',tipTitle:'TIP',tipText:'Scan the whole grid fast — train your eyes to find multiple targets at once!',playNow:'▶ COMPETE NOW',poweredBy:'Powered by',trophyTitle:'REACTIFIC',trophySubtitle:'Reactific Progress',selectSpeed:'SELECT SHOT-CLOCK SPEED',tierFree:'✓ FREE',selectLevel:'SELECT LEVEL',targetsLabel:'Numbers to find:',letsGo:"LET'S GO!",roundLabel:'Round',scoreLabel:'Score',tapLetsGo:"TAP LET'S GO!",memorizeMsg:'MEMORIZE!',findMsg:'FIND THEM!',timeoutMsg:'TOO SLOW!',wrongMsg:'WRONG TAP!',tierupTitle:'GOSTAR EARNED!',tierupMsg:'You earned GoStar {tier}!',tierupLevelMsg:' Now Level {level} — find {targets} numbers!',masterMsg:'🏆 10 GOSTARS — MASTER! 🏆'},
+es:{demoBadge:'Reaction Gaming',demoSubtitle:'Búsqueda Visual · Memoria · Reacción',demoFlashLabel:'ENCUENTRA ESTOS NÚMEROS',htpToggle:'CÓMO PRACTICAR',objectiveTitle:'OBJETIVO',step1:'<strong>Ve los números</strong> destellar en pantalla — memorízalos',step2:'<strong>Las 25 celdas</strong> muestran números al azar del 1 al 25',step3:'<strong>Encuentra y toca</strong> todos los números objetivo antes de que se acabe el tiempo',progressionTitle:'PROGRESIÓN',prog1:'Completa <strong>3 rondas</strong> para ganar un GoStar',prog2:'Nivel 1 = encuentra <strong>1 número</strong>, Nivel 2 = encuentra <strong>2</strong>, y así',prog3:'¿Toque incorrecto? = <strong>ronda fallida</strong> — ¡la precisión importa!',speedsTitle:'VELOCIDADES BPM',speed1:'<strong>Entrenamiento (60 BPM)</strong> — 5 segundos para encontrarlos',speed2:'<strong>Tempo (90 BPM)</strong> — 3 segundos, mantente alerta',speed3:'<strong>Elite (120 BPM)</strong> — 2 segundos, ¡pura reacción!',tipTitle:'CONSEJO',tipText:'Escanea toda la cuadrícula rápido — ¡entrena tus ojos para encontrar múltiples objetivos a la vez!',playNow:'▶ PRACTICA AHORA',poweredBy:'Impulsado por',trophyTitle:'REACTIFIC',trophySubtitle:'Progreso de Reactific',selectSpeed:'SELECCIONA VELOCIDAD BPM',tierFree:'✓ GRATIS',selectLevel:'SELECCIONA NIVEL',targetsLabel:'Números a encontrar:',letsGo:"¡PA'LANTE!",roundLabel:'Ronda',scoreLabel:'Puntos',tapLetsGo:"¡TOCA PA'LANTE!",memorizeMsg:'¡MEMORIZA!',findMsg:'¡ENCUÉNTRALOS!',timeoutMsg:'¡MUY LENTO!',wrongMsg:'¡INCORRECTO!',tierupTitle:'¡GOSTAR GANADO!',tierupMsg:'¡Ganaste GoStar {tier}!',tierupLevelMsg:' Ahora Nivel {level} — encuentra {targets} números',masterMsg:'🏆 10 GOSTARS — ¡MAESTRO! 🏆'}
 };
 function t(key){return translations[currentLang][key]||translations.en[key]||key}
 function updateUILanguage(){
