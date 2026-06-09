@@ -11,7 +11,6 @@
 :root{--lime:#39FF14;--lime-dark:#2BC10F;--gold:#FFD700;--teal:#00D9A5;--pink:#FF1493;--orange:#FF6B35;--dark:#0a0a0f;--card:#111118;--text:#FFFFFF;--muted:#8892a0;--border:rgba(255,255,255,0.1);--nav-height:50px}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
-
 .mini-nav{position:fixed;top:0;left:0;right:0;background:var(--card);border-bottom:1px solid var(--border);padding-top:env(safe-area-inset-top);z-index:1000}
 .nav-row{display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 12px}
 .back-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
@@ -21,10 +20,8 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 .nav-lang{display:flex;gap:2px}
 .nav-lang-btn{padding:5px 8px;border:1px solid var(--border);background:0;color:var(--muted);border-radius:4px;font-size:0.6rem;font-weight:600;cursor:pointer;min-width:28px;min-height:28px}
 .nav-lang-btn.active{border-color:var(--gold);color:var(--gold)}
-
 .screen{display:none;width:100%;min-height:100dvh;padding-top:calc(var(--nav-height) + env(safe-area-inset-top));padding-bottom:env(safe-area-inset-bottom);overflow-y:auto;overflow-x:hidden}
 .screen.active{display:block}
-
 #screen-demo{background:var(--dark)}
 .demo-container{max-width:420px;margin:0 auto;padding:10px 15px 20px;display:flex;flex-direction:column;align-items:center}
 .demo-header{text-align:center;margin-bottom:8px}
@@ -75,7 +72,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 @keyframes pulseDot{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
 .ritnome-promo-text{font-size:0.55rem;color:var(--muted);letter-spacing:1px}
 .ritnome-promo-text span{font-family:'Bebas Neue',sans-serif;color:var(--gold);font-size:0.7rem;letter-spacing:2px}
-
 #screen-trophy{background:var(--dark)}
 .trophy-container{max-width:420px;margin:0 auto;padding:15px 15px 40px}
 .trophy-header{text-align:center;margin-bottom:20px}
@@ -107,7 +103,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 .level-info-value{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--lime)}
 .letsgo-btn{width:100%;padding:16px 24px;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;cursor:pointer;background:linear-gradient(135deg,var(--lime),var(--lime-dark));color:var(--dark);box-shadow:0 4px 20px rgba(57,255,20,0.3);transition:all 0.3s}
 .letsgo-btn:active{transform:scale(0.98)}
-
 #screen-play{background:var(--dark)}
 .play-container{display:flex;flex-direction:column;align-items:center;max-width:420px;margin:0 auto;min-height:calc(100dvh - var(--nav-height) - env(safe-area-inset-top) - 40px)}
 .play-stats{display:flex;justify-content:center;gap:16px;margin-bottom:6px;width:100%}
@@ -125,8 +120,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 .play-message-text.watch{color:var(--gold)}
 .play-message-text.go{color:var(--lime)}
 .play-message-text.error{color:var(--pink)}
-
-/* SHOT CLOCK */
 .shot-clock-ring{position:relative;width:100px;height:100px;margin:0 auto 8px}
 .shot-clock-svg{width:100%;height:100%;transform:rotate(-90deg)}
 .shot-clock-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6}
@@ -148,7 +141,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 @keyframes ringExplode{0%{transform:scale(1)}30%{transform:scale(1.15)}60%{transform:scale(.95)}100%{transform:scale(1)}}
 .shot-clock-ring.throb{animation:ringThrob .4s ease-in-out infinite}
 @keyframes ringThrob{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-
 .play-tiers{display:flex;justify-content:center;gap:4px;margin-bottom:6px}
 .play-tier-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
 .play-tier-dot.completed{background:var(--lime);box-shadow:0 0 5px var(--lime)}
@@ -188,13 +180,102 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 @media(max-height:650px){.demo-court{width:190px;height:190px}.play-court-wrap{max-width:300px}.target-card-num{font-size:1.5rem}.shot-clock-ring{width:80px;height:80px}.shot-clock-num{font-size:1.4rem}}
 @media(max-height:550px){.demo-court{width:170px;height:170px}.play-court-wrap{max-width:260px}.play-stat-value{font-size:1.3rem}.shot-clock-ring{width:66px;height:66px}.shot-clock-num{font-size:1.2rem}}
 @media(max-width:360px){.play-court-wrap{max-width:280px}.play-court{gap:3px;padding:6px}.demo-court{width:180px;height:180px}}
+
+/* AUTH OVERLAY */
+.auth-overlay{position:fixed;inset:0;background:var(--dark);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-overlay.hidden{display:none}
+.auth-box{width:100%;max-width:360px;text-align:center}
+.auth-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;color:var(--lime);margin-bottom:4px}
+.auth-sub{font-size:.65rem;color:var(--muted);margin-bottom:24px;letter-spacing:1px}
+.auth-tabs{display:flex;gap:4px;margin-bottom:20px}
+.auth-tab{flex:1;padding:10px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:2px;cursor:pointer;transition:all .2s}
+.auth-tab.active{background:var(--lime);color:var(--dark);border-color:var(--lime)}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.auth-input{width:100%;padding:12px 16px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.85rem;margin-bottom:10px;outline:none;transition:border-color .2s}
+.auth-input:focus{border-color:var(--lime)}
+.auth-input::placeholder{color:rgba(255,255,255,.25)}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--lime),var(--lime-dark));color:var(--dark);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;cursor:pointer;margin-top:6px}
+.auth-btn:active{transform:scale(.98)}
+.auth-btn:disabled{opacity:.5}
+.auth-error{color:var(--pink);font-size:.75rem;margin-top:8px;min-height:20px}
+.auth-free{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.auth-free a{color:var(--teal);font-size:.7rem;font-weight:600;text-decoration:none}
+/* SUB GATE */
+.sub-overlay{position:fixed;inset:0;background:var(--dark);z-index:4000;display:flex;align-items:center;justify-content:center;padding:20px}
+.sub-overlay.hidden{display:none}
+.sub-box{width:100%;max-width:380px;text-align:center}
+.sub-welcome{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;color:var(--teal);margin-bottom:4px}
+.sub-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;margin-bottom:16px}
+.sub-features{list-style:none;text-align:left;margin-bottom:20px}
+.sub-features li{font-size:.78rem;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sub-features li span{color:var(--lime);font-size:.85rem}
+.sub-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--lime);margin-bottom:4px}
+.sub-price small{font-size:.8rem;color:var(--muted);font-weight:400;font-family:'Outfit',sans-serif}
+.sub-btn{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--lime),var(--lime-dark));color:var(--dark);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;cursor:pointer;margin-top:10px;box-shadow:0 0 20px rgba(57,255,20,.2)}
+.sub-btn:active{transform:scale(.98)}
+.sub-skip{margin-top:14px}
+.sub-skip a{color:var(--muted);font-size:.65rem;text-decoration:none}
+/* RANK BADGE */
+.rank-badge{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-100px);background:linear-gradient(135deg,var(--lime),var(--lime-dark));color:var(--dark);padding:8px 20px;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:2px;z-index:3000;transition:transform .4s ease-out;box-shadow:0 4px 16px rgba(57,255,20,.3)}
+.rank-badge.show{transform:translateX(-50%) translateY(0)}
+.nav-user{font-size:.6rem;color:var(--teal);font-weight:600;letter-spacing:1px}
 </style>
 </head>
 <body>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="authOverlay">
+<div class="auth-box">
+  <div class="auth-logo">REACTIFIC</div>
+  <div class="auth-sub">THE COMPETITIVE COURT</div>
+  <div class="auth-tabs">
+    <button class="auth-tab active" id="tabLogin" onclick="authTab('login')">LOG IN</button>
+    <button class="auth-tab" id="tabRegister" onclick="authTab('register')">SIGN UP</button>
+  </div>
+  <div class="auth-form active" id="formLogin">
+    <input class="auth-input" id="loginEmail" type="email" placeholder="Email">
+    <input class="auth-input" id="loginPass" type="password" placeholder="Password">
+    <button class="auth-btn" id="loginBtn" onclick="doLogin()">ENTER THE COURT</button>
+  </div>
+  <div class="auth-form" id="formRegister">
+    <input class="auth-input" id="regEmail" type="email" placeholder="Email">
+    <input class="auth-input" id="regUser" type="text" placeholder="Username (3-20 chars)" maxlength="20">
+    <input class="auth-input" id="regPass" type="password" placeholder="Password (6+ chars)">
+    <button class="auth-btn" id="regBtn" onclick="doRegister()">CREATE ACCOUNT</button>
+  </div>
+  <div class="auth-error" id="authError"></div>
+  <div class="auth-free"><a href="/cog-10.html">← Play free on The Open Court</a></div>
+</div>
+</div>
+
+<!-- SUBSCRIPTION GATE -->
+<div class="sub-overlay hidden" id="subOverlay">
+<div class="sub-box">
+  <div class="sub-welcome" id="subWelcome">Welcome back</div>
+  <div class="sub-title">UNLOCK THE COMPETITIVE COURT</div>
+  <ul class="sub-features">
+    <li><span>🏆</span> Global leaderboards — see where you rank</li>
+    <li><span>⚡</span> Shot Clock challenges — official timed events</li>
+    <li><span>🔥</span> Daily challenges — new rounds, new pressure</li>
+    <li><span>🥇</span> Ranked competition — every round counts</li>
+    <li><span>👥</span> Team competition — compete together</li>
+    <li><span>📈</span> Score history — track your performance</li>
+    <li><span>🏅</span> Recognition — earn your place</li>
+  </ul>
+  <div class="sub-price">$9.99 <small>/month</small></div>
+  <button class="sub-btn" id="subBtn" onclick="doSubscribe()">SUBSCRIBE & COMPETE</button>
+  <div class="sub-skip"><a href="/cog-10.html">← Play free on The Open Court</a></div>
+</div>
+</div>
+
+<!-- RANK BADGE -->
+<div class="rank-badge" id="rankBadge"></div>
+
 <nav class="mini-nav"><div class="nav-row">
 <a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
 <div class="nav-title">Compete</div>
-<div class="nav-right"><div class="nav-lang">
+<div class="nav-right"><div class="nav-user" id="navUser"></div><div class="nav-lang">
 <button class="nav-lang-btn" id="langEN">EN</button>
 <button class="nav-lang-btn active" id="langES">ES</button>
 </div></div></div></nav>
@@ -290,7 +371,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 </div>
 <div class="target-display" id="targetDisplay"></div>
 <div class="play-message"><span class="play-message-text" id="playMessage">TAP TO START!</span></div>
-
 <div class="shot-clock-ring" id="shotClockRing">
 <svg class="shot-clock-svg" viewBox="0 0 100 100">
 <circle class="shot-clock-track" cx="50" cy="50" r="42"/>
@@ -301,7 +381,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <div class="shot-clock-label">SHOT CLOCK</div>
 </div>
 </div>
-
 <div class="play-tiers" id="playTierDots"></div>
 <div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
 <div class="play-info">
@@ -323,6 +402,78 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',san
 <div class="coach-message" id="coachMessage"></div>
 
 <script>
+var API='https://api.reactificgaming.com';
+var TOKEN_KEY='reactific-token',USER_KEY='reactific-user';
+function getToken(){return localStorage.getItem(TOKEN_KEY)}
+function getUser(){try{return JSON.parse(localStorage.getItem(USER_KEY))}catch(e){return null}}
+function setAuth(token,user){localStorage.setItem(TOKEN_KEY,token);localStorage.setItem(USER_KEY,JSON.stringify(user))}
+function clearAuth(){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY)}
+function api(method,path,body){
+  var opts={method:method,headers:{'Content-Type':'application/json'}};
+  var token=getToken();if(token)opts.headers['Authorization']='Bearer '+token;
+  if(body)opts.body=JSON.stringify(body);
+  return fetch(API+path,opts).then(function(r){return r.json()});
+}
+function authTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
+  document.getElementById('formLogin').classList.toggle('active',tab==='login');
+  document.getElementById('formRegister').classList.toggle('active',tab==='register');
+  document.getElementById('authError').textContent='';
+}
+function doLogin(){
+  var email=document.getElementById('loginEmail').value.trim();
+  var pass=document.getElementById('loginPass').value;
+  if(!email||!pass){document.getElementById('authError').textContent='Email and password required';return}
+  document.getElementById('loginBtn').disabled=true;
+  api('POST','/api/auth/login',{email:email,password:pass}).then(function(data){
+    document.getElementById('loginBtn').disabled=false;
+    if(data.token){setAuth(data.token,data.user);checkAuth()}
+    else{document.getElementById('authError').textContent=data.error||'Login failed'}
+  }).catch(function(){document.getElementById('loginBtn').disabled=false;document.getElementById('authError').textContent='Connection error'});
+}
+function doRegister(){
+  var email=document.getElementById('regEmail').value.trim();
+  var user=document.getElementById('regUser').value.trim();
+  var pass=document.getElementById('regPass').value;
+  if(!email||!user||!pass){document.getElementById('authError').textContent='All fields required';return}
+  document.getElementById('regBtn').disabled=true;
+  api('POST','/api/auth/register',{email:email,username:user,password:pass}).then(function(data){
+    document.getElementById('regBtn').disabled=false;
+    if(data.token){setAuth(data.token,data.user);checkAuth()}
+    else{document.getElementById('authError').textContent=data.error||'Registration failed'}
+  }).catch(function(){document.getElementById('regBtn').disabled=false;document.getElementById('authError').textContent='Connection error'});
+}
+function checkAuth(){
+  var token=getToken();var user=getUser();
+  if(!token||!user){document.getElementById('authOverlay').classList.remove('hidden');document.getElementById('subOverlay').classList.add('hidden');return}
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('navUser').textContent=user.username;
+  api('GET','/api/auth/me').then(function(data){
+    if(data.user){setAuth(token,data.user);document.getElementById('navUser').textContent=data.user.username;
+      if(data.user.subscription_status==='active'){document.getElementById('subOverlay').classList.add('hidden')}
+      else{document.getElementById('subWelcome').textContent='Welcome, '+data.user.username;document.getElementById('subOverlay').classList.remove('hidden')}}
+  }).catch(function(){
+    if(user.subscription_status==='active'){document.getElementById('subOverlay').classList.add('hidden')}
+    else{document.getElementById('subWelcome').textContent='Welcome, '+user.username;document.getElementById('subOverlay').classList.remove('hidden')}
+  });
+}
+function doSubscribe(){
+  document.getElementById('subBtn').disabled=true;document.getElementById('subBtn').textContent='CONNECTING...';
+  api('POST','/api/stripe/checkout').then(function(data){
+    if(data.url){window.location.href=data.url}
+    else{document.getElementById('subBtn').disabled=false;document.getElementById('subBtn').textContent='SUBSCRIBE & COMPETE'}
+  }).catch(function(){document.getElementById('subBtn').disabled=false;document.getElementById('subBtn').textContent='SUBSCRIBE & COMPETE'});
+}
+function showRank(rank){var b=document.getElementById('rankBadge');b.textContent='#'+rank+' ON THE BOARD';b.classList.add('show');setTimeout(function(){b.classList.remove('show')},3000)}
+function postScore(speed,level,score,streak,tier){
+  api('POST','/api/scores',{court:'full',speed:speed,level:level,score:score,streak:streak||0,tier:tier||1,targets_found:level,time_remaining_ms:0}).then(function(data){if(data.rank)showRank(data.rank)}).catch(function(){});
+}
+(function(){var params=new URLSearchParams(window.location.search);if(params.get('session_id')){window.history.replaceState({},'',window.location.pathname);var token=getToken();if(token){var attempts=0;var pollSub=setInterval(function(){attempts++;api('GET','/api/auth/me').then(function(data){if(data.user&&data.user.subscription_status==='active'){setAuth(token,data.user);document.getElementById('subOverlay').classList.add('hidden');document.getElementById('navUser').textContent=data.user.username;clearInterval(pollSub)}});if(attempts>=10)clearInterval(pollSub)},2000)}}})();
+checkAuth();
+</script>
+
+<script>
 (function(){
 var $=function(id){return document.getElementById(id)};
 var $$=function(sel){return document.querySelectorAll(sel)};
@@ -340,7 +491,6 @@ function setLang(l){currentLang=l;localStorage.setItem('lc-lang',l);updateUILang
 $('langEN').onclick=function(){setLang('en')};$('langES').onclick=function(){setLang('es')};
 var savedLang=localStorage.getItem('lc-lang');if(savedLang)currentLang=savedLang;
 function showScreen(name){$('screen-demo').classList.remove('active');$('screen-trophy').classList.remove('active');$('screen-play').classList.remove('active');currentScreen=name;document.querySelector('.nav-lang').style.display=name==='play'?'none':'flex';$('screen-'+name).classList.add('active')}
-
 var demoCells=[],demoEpoch=0,demoTimeouts=[];
 function initDemoCourt(){var dc=$('demoCourt');dc.innerHTML='';demoCells=[];var nums=shuffleNums();for(var i=0;i<25;i++){var c=document.createElement('div');c.className='demo-cell';c.textContent=nums[i];dc.appendChild(c);demoCells.push(c)}}
 function shuffleNums(){var a=[];for(var i=1;i<=25;i++)a.push(i);for(var j=a.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1));var tmp=a[j];a[j]=a[k];a[k]=tmp}return a}
@@ -352,20 +502,18 @@ function stopDemo(){demoEpoch++;clearDT()}
 var htpToggle=$('htpToggle'),htpContent=$('htpContent');
 htpToggle.onclick=function(){htpToggle.classList.toggle('open');htpContent.classList.toggle('open')};
 $('playNowBtn').onclick=function(){stopDemo();showScreen('trophy')};
-
 var gameState={speed:'slow',level:1,tier:1,roundsCompleted:0,score:0,streak:0};
 var ROUNDS_PER_TIER=3,TOTAL_TIERS=10;
 function getTargetCount(level){return level}
 var SPEED_TIME={slow:5000,med:3000,fast:2000};
-function getSpeedKey(speed,key){return'lc-hunt-'+speed+'-'+key}
+function getSpeedKey(speed,key){return'rc-comp-'+speed+'-'+key}
 function loadSpeedState(speed){return{level:parseInt(localStorage.getItem(getSpeedKey(speed,'level')))||1,tier:parseInt(localStorage.getItem(getSpeedKey(speed,'tier')))||1,roundsCompleted:parseInt(localStorage.getItem(getSpeedKey(speed,'rounds')))||0,score:parseInt(localStorage.getItem(getSpeedKey(speed,'score')))||0,streak:parseInt(localStorage.getItem(getSpeedKey(speed,'streak')))||0}}
-function saveSpeedState(){localStorage.setItem(getSpeedKey(gameState.speed,'level'),gameState.level);localStorage.setItem(getSpeedKey(gameState.speed,'tier'),gameState.tier);localStorage.setItem(getSpeedKey(gameState.speed,'rounds'),gameState.roundsCompleted);localStorage.setItem(getSpeedKey(gameState.speed,'score'),gameState.score);localStorage.setItem(getSpeedKey(gameState.speed,'streak'),gameState.streak);if(typeof syncCognitiveScore==='function')syncCognitiveScore(gameState.speed,gameState.level,gameState.score,gameState.streak,gameState.tier)}
+function saveSpeedState(){localStorage.setItem(getSpeedKey(gameState.speed,'level'),gameState.level);localStorage.setItem(getSpeedKey(gameState.speed,'tier'),gameState.tier);localStorage.setItem(getSpeedKey(gameState.speed,'rounds'),gameState.roundsCompleted);localStorage.setItem(getSpeedKey(gameState.speed,'score'),gameState.score);localStorage.setItem(getSpeedKey(gameState.speed,'streak'),gameState.streak);postScore(gameState.speed,gameState.level,gameState.score,gameState.streak,gameState.tier)}
 function renderStars(tier){var s='';for(var i=0;i<10;i++)s+=i<tier?'⭐':'☆';return s}
 function updateTrophyUI(){var sd=loadSpeedState('slow'),md=loadSpeedState('med'),fd=loadSpeedState('fast');$('starsSlow').textContent=renderStars(sd.tier);$('levelSlowDisplay').textContent='L'+sd.level;$('starsMed').textContent=renderStars(md.tier);$('levelMedDisplay').textContent='L'+md.level;$('starsFast').textContent=renderStars(fd.tier);$('levelFastDisplay').textContent='L'+fd.level;$$('.bpm-tier').forEach(function(t){t.classList.remove('active')});$('tier'+(gameState.speed==='slow'?'Slow':gameState.speed==='med'?'Med':'Fast')).classList.add('active');$$('.level-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.level)===gameState.level)});$('targetsDisplay').textContent=getTargetCount(gameState.level)}
 $$('.bpm-tier').forEach(function(tier){tier.onclick=function(){gameState.speed=tier.dataset.speed;var d=loadSpeedState(gameState.speed);gameState.level=d.level;gameState.tier=d.tier;gameState.roundsCompleted=d.roundsCompleted;gameState.score=d.score;gameState.streak=d.streak;updateTrophyUI()}});
 $$('.level-btn').forEach(function(btn){btn.onclick=function(){gameState.level=parseInt(btn.dataset.level);gameState.tier=1;gameState.roundsCompleted=0;saveSpeedState();updateTrophyUI()}});
 $('letsGoBtn').onclick=function(){showScreen('play');initGame()};
-
 var playCells=[],playTimeouts=[],isPlaying=false,canTap=false;
 var targetNums=[],foundNums=[],timerInterval=null,timeLeft=0;
 var audioCtx=null;
@@ -379,22 +527,17 @@ function reshuffleGrid(){var nums=shuffleNums();playCells.forEach(function(c,i){
 function renderTargetDisplay(){var d=$('targetDisplay');d.innerHTML='';targetNums.forEach(function(n){var card=document.createElement('div');card.className='target-card'+(foundNums.indexOf(n)!==-1?' found':'');card.id='tc-'+n;card.innerHTML='<div class="target-card-label">'+t('findMsg').replace('!','')+'</div><div class="target-card-num">'+n+'</div>';d.appendChild(card)})}
 function renderPlayTierDots(){var c=$('playTierDots');c.innerHTML='';for(var i=1;i<=TOTAL_TIERS;i++){var d=document.createElement('div');d.className='play-tier-dot'+(i<gameState.tier?' completed':'')+(i===gameState.tier?' current':'');c.appendChild(d)}}
 function updatePlayUI(){$('playTier').textContent=gameState.tier;$('playRound').textContent=gameState.roundsCompleted+'/'+ROUNDS_PER_TIER;$('playStreak').textContent=gameState.streak;$('playScore').textContent=gameState.score;$('playTotal').textContent=gameState.score;var spName=gameState.speed==='slow'?':05 CLOCK':gameState.speed==='med'?':03 CLOCK':':02 CLOCK';$('playBadge').textContent='L'+gameState.level+' '+spName;$('playCells').textContent='FIND: '+getTargetCount(gameState.level);renderPlayTierDots()}
-
 function resetClock(){var rP=$('clockProgress');var rN=$('clockNum');var rR=$('shotClockRing');rP.style.strokeDashoffset='0';rP.className='shot-clock-progress';rN.className='shot-clock-num';rN.textContent=(SPEED_TIME[gameState.speed]/1000).toFixed(1);rR.className='shot-clock-ring'}
-
 function initGame(){initPlayCourt();var d=loadSpeedState(gameState.speed);gameState.level=d.level;gameState.tier=d.tier;gameState.roundsCompleted=d.roundsCompleted;gameState.score=d.score;gameState.streak=d.streak;isPlaying=false;canTap=false;targetNums=[];foundNums=[];$('targetDisplay').innerHTML='';resetClock();updatePlayUI();$('playMessage').textContent=t('tapLetsGo');$('playMessage').className='play-message-text';$('playActionBtn').disabled=false}
-
 function playTone(freq,dur){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}try{if(audioCtx.state==='suspended')audioCtx.resume();var osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type='sine';osc.frequency.value=freq;osc.connect(gain);gain.connect(audioCtx.destination);gain.gain.setValueAtTime(0.25,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+dur);osc.start();osc.stop(audioCtx.currentTime+dur+0.05)}catch(e){}}
 function playFlash(){playTone(880,0.12)}
 function playHit(){playTone(740,0.08)}
 function playSuccess(){[523,659,784].forEach(function(f,i){setTimeout(function(){playTone(f,0.12)},i*80)})}
 function playError(){playTone(180,0.3)}
-
 function getCourtCenter(){var r=$('playCourt').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
 function createBurstEmoji(emoji,x,y,type){var el=document.createElement('div');el.className='burst-emoji'+(type?' '+type:'');el.textContent=emoji;var angle=Math.random()*Math.PI*2,dist=50+Math.random()*80;el.style.cssText='left:'+x+'px;top:'+y+'px;--tx:'+Math.cos(angle)*dist+'px;--ty:'+Math.sin(angle)*dist+'px;--rot:'+(Math.random()-0.5)*720+'deg';$('emojiContainer').appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},2000)}
 function laughCelebration(intensity){var center=getCourtCenter(),count=intensity==='party'?8:intensity==='big'?5:3;var emojis=intensity==='party'?PARTY_EMOJIS:LAUGH_EMOJIS,type=intensity==='party'?'party':intensity==='big'?'big':'';for(var i=0;i<count;i++){(function(idx){setTimeout(function(){createBurstEmoji(emojis[Math.floor(Math.random()*emojis.length)],center.x+(Math.random()-0.5)*20,center.y+(Math.random()-0.5)*20,type)},idx*35)})(i)}$('playCourt').classList.add('joy-pulse');setTimeout(function(){$('playCourt').classList.remove('joy-pulse')},500)}
 function showCoach(msg){$('coachMessage').textContent=msg;$('coachMessage').classList.add('show');setTimeout(function(){$('coachMessage').classList.remove('show')},2000)}
-
 function startTimer(){
   var total=SPEED_TIME[gameState.speed];timeLeft=total;
   var circ=263.89;
@@ -415,26 +558,18 @@ function startTimer(){
   },50);
 }
 function clockSuccess(){var prog=$('clockProgress');var num=$('clockNum');var ring=$('shotClockRing');prog.style.strokeDashoffset='0';prog.className='shot-clock-progress';num.className='shot-clock-num';ring.className='shot-clock-ring success';num.textContent=(timeLeft/1000).toFixed(1)}
-
 function startRound(){if(isPlaying)return;clearPT();clearTimer();isPlaying=true;canTap=false;foundNums=[];$('playActionBtn').disabled=true;reshuffleGrid();playCells.forEach(function(c){c.className='play-cell'});var count=getTargetCount(gameState.level);var all=[];for(var i=1;i<=25;i++)all.push(i);for(var j=all.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1));var tmp=all[j];all[j]=all[k];all[k]=tmp}targetNums=all.slice(0,count);renderTargetDisplay();$('playMessage').textContent=t('memorizeMsg');$('playMessage').className='play-message-text watch';playFlash();setPT(function(){if(!isPlaying)return;$('playMessage').textContent=t('findMsg');$('playMessage').className='play-message-text go';canTap=true;startTimer()},1200)}
-
 function handleTap(cell){if(!canTap||!isPlaying)return;var num=parseInt(cell.dataset.num);if(foundNums.indexOf(num)!==-1)return;if(targetNums.indexOf(num)!==-1){foundNums.push(num);cell.className='play-cell target-hit';playHit();var tc=$('tc-'+num);if(tc)tc.classList.add('found');if(foundNums.length>=targetNums.length){canTap=false;clearTimer();setPT(function(){roundSuccess()},300)}}else{cell.className='play-cell wrong-tap';playError();canTap=false;clearTimer();setPT(function(){playCells.forEach(function(c){if(targetNums.indexOf(parseInt(c.dataset.num))!==-1&&foundNums.indexOf(parseInt(c.dataset.num))===-1)c.className='play-cell reveal'});setPT(function(){roundFail('wrong')},1500)},300)}}
-
 function roundSuccess(){isPlaying=false;clockSuccess();var timeBonus=Math.floor(timeLeft/100);var pts=getTargetCount(gameState.level)*50*(gameState.speed==='fast'?3:gameState.speed==='med'?2:1)+timeBonus;gameState.score+=pts;gameState.streak++;gameState.roundsCompleted++;saveSpeedState();var intensity=gameState.streak>=5?'party':gameState.streak>=3?'big':'medium';var msgs=gameState.streak>=5?['🏆 LEGEND!','🏆 WOW!']:gameState.streak>=3?['🔥 FIRE!','🤣 AMAZING!']:['😄 NICE!','😊 GREAT!'];playSuccess();laughCelebration(intensity);showCoach(msgs[Math.floor(Math.random()*msgs.length)]);updatePlayUI();if(gameState.roundsCompleted>=ROUNDS_PER_TIER){setPT(function(){gameState.tier<TOTAL_TIERS?tierUp():maxTier()},800)}else{setPT(resetRound,1200)}}
-
 function roundFail(reason){isPlaying=false;gameState.streak=0;saveSpeedState();updatePlayUI();$('playMessage').textContent=reason==='timeout'?t('timeoutMsg'):t('wrongMsg');$('playMessage').className='play-message-text error';setPT(resetRound,2000)}
-
 function tierUp(){gameState.tier++;gameState.roundsCompleted=0;var oldLevel=gameState.level;if(gameState.level<10)gameState.level++;saveSpeedState();laughCelebration('party');var msg=t('tierupMsg').replace('{tier}',gameState.tier);if(gameState.level>oldLevel)msg+=t('tierupLevelMsg').replace('{level}',gameState.level).replace('{targets}',getTargetCount(gameState.level));$('tierupMessage').innerHTML=msg;$('tierupOverlay').classList.add('show');updatePlayUI()}
 function maxTier(){gameState.roundsCompleted=0;if(gameState.level<10)gameState.level=10;saveSpeedState();$('tierupMessage').innerHTML=t('masterMsg');document.querySelector('#tierupOverlay .overlay-emoji').textContent='👑';$('tierupOverlay').classList.add('show');updatePlayUI()}
 $('tierupBtn').onclick=function(){$('tierupOverlay').classList.remove('show');document.querySelector('#tierupOverlay .overlay-emoji').textContent='⭐';resetRound()};
-
 function resetRound(){clearPT();clearTimer();isPlaying=false;canTap=false;targetNums=[];foundNums=[];playCells.forEach(function(c){c.className='play-cell'});$('targetDisplay').innerHTML='';resetClock();$('playMessage').textContent=(gameState.roundsCompleted+1)+'/'+ROUNDS_PER_TIER+' — '+t('tapLetsGo');$('playMessage').className='play-message-text';$('playActionBtn').disabled=false;updatePlayUI()}
-
 $('playActionBtn').onclick=startRound;
 updateUILanguage();initDemoCourt();startDemo();updateTrophyUI();
 })();
 </script>
-<script>window.COGNITIVE_TEST_NAME='numhunt';</script>
-<script src="/cognitive-sync.js"></script>
+
 </body>
 </html>
