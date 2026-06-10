@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Shot-Clock Challenges™ STROBE™</title>
+<title>Shot-Clock Challenges™ STROBE™ Levels</title>
 <style>
 :root{
 --bg:#030303;--white:#f5f5f5;--muted:#8f8f9d;--line:rgba(255,255,255,.14);
---lime:#39FF14;--lime2:#2bc10f;--gold:#FFD700;--cyan:#00bbf0;--red:#ff3b3b;--orange:#f28a1f;--pink:#FF1493
+--lime:#39FF14;--lime2:#2bc10f;--gold:#FFD700;--cyan:#00bbf0;--red:#ff3b3b;--orange:#f28a1f;--pink:#FF1493;--teal:#00D9A5
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 body{background:radial-gradient(circle at 10% 8%,rgba(57,255,20,.13),transparent 28%),radial-gradient(circle at 90% 8%,rgba(0,187,240,.12),transparent 30%),linear-gradient(#050505,#020202)}
-.app{height:100vh;display:grid;grid-template-rows:58px 64px 52px 1fr 76px;gap:8px;padding:10px 18px;overflow:hidden}
+.app{height:100vh;display:grid;grid-template-rows:56px 72px 52px 1fr 76px;gap:8px;padding:10px 18px;overflow:hidden}
 .top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-.logo{font-size:clamp(1.15rem,2.3vw,2.8rem);font-weight:900;letter-spacing:.1em;text-transform:uppercase;line-height:1}
+.logo{font-size:clamp(1.05rem,2.2vw,2.6rem);font-weight:900;letter-spacing:.1em;text-transform:uppercase;line-height:1}
 .logo span{color:var(--lime)}
-.mode{justify-self:center;color:var(--lime);border:1px solid rgba(57,255,20,.35);background:rgba(57,255,20,.08);border-radius:999px;padding:8px 16px;font-weight:900;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.mode{justify-self:center;color:var(--lime);border:1px solid rgba(57,255,20,.35);background:rgba(57,255,20,.08);border-radius:999px;padding:8px 16px;font-weight:900;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
 .full{justify-self:end;border:1px solid rgba(0,187,240,.35);background:rgba(0,187,240,.08);color:var(--cyan);border-radius:999px;padding:10px 14px;font-weight:900;letter-spacing:.08em;cursor:pointer}
 .target-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
-.stat{color:var(--muted);font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem}
+.stat{color:var(--muted);font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-size:.76rem}
 .stat b{color:var(--lime);font-size:1.35rem}
 .stat.right{text-align:right}
-.target{justify-self:center;display:flex;align-items:center;gap:16px;border:1px solid rgba(255,215,0,.28);background:rgba(255,215,0,.06);border-radius:18px;padding:8px 22px;min-width:340px;justify-content:center}
-.target label{color:var(--gold);font-size:.75rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
-.target div{color:var(--lime);font-size:3.2rem;line-height:1;font-weight:900;text-shadow:0 0 22px rgba(57,255,20,.55);min-width:86px;text-align:center}
+.target{justify-self:center;display:flex;align-items:center;gap:16px;border:1px solid rgba(255,215,0,.28);background:rgba(255,215,0,.06);border-radius:18px;padding:8px 18px;min-width:360px;justify-content:center}
+.target label{color:var(--gold);font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+.target div{color:var(--lime);font-size:clamp(1.85rem,3.4vw,3.15rem);line-height:1;font-weight:900;text-shadow:0 0 22px rgba(57,255,20,.55);text-align:center}
 .settings{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .setting{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:14px;padding:6px}
 .setting-title{text-align:center;color:var(--muted);font-weight:900;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}
@@ -36,7 +36,7 @@ body{background:radial-gradient(circle at 10% 8%,rgba(57,255,20,.13),transparent
 .side{display:flex;flex-direction:column;gap:10px}
 .card{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:16px;padding:12px;text-align:center}
 .card h3{font-size:.58rem;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}
-.big{font-size:2.4rem;color:var(--lime);font-weight:900;line-height:1}
+.big{font-size:2.1rem;color:var(--lime);font-weight:900;line-height:1}
 .clock-ring{position:relative;width:150px;height:150px;margin:0 auto}
 .clock-svg{width:100%;height:100%;transform:rotate(-90deg)}
 .track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
@@ -46,16 +46,17 @@ body{background:radial-gradient(circle at 10% 8%,rgba(57,255,20,.13),transparent
 .clock-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .clock-num{font-size:2.4rem;font-weight:900}
 .clock-label{font-size:.55rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:900}
-.message{text-align:center;color:var(--gold);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.88rem;height:24px;margin-bottom:5px}
+.message{text-align:center;color:var(--gold);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.86rem;height:24px;margin-bottom:5px}
 .court-wrap{display:flex;align-items:center;justify-content:center;min-height:0}
-.court{width:min(calc(100vh - 285px),58vw);max-width:620px;min-width:360px;aspect-ratio:1;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:10px;padding:13px;background:rgba(255,255,255,.045);border:2px solid var(--line);border-radius:24px;box-shadow:0 0 60px rgba(0,0,0,.6);transition:filter .06s linear,opacity .06s linear,border-color .15s}
+.court{width:min(calc(100vh - 292px),58vw);max-width:610px;min-width:360px;aspect-ratio:1;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:10px;padding:13px;background:rgba(255,255,255,.045);border:2px solid var(--line);border-radius:24px;box-shadow:0 0 60px rgba(0,0,0,.6);transition:filter .06s linear,opacity .06s linear,border-color .15s}
 .court.strobe-soft{filter:brightness(.62) contrast(1.08)}
 .court.strobe-medium{filter:brightness(.42) contrast(1.14)}
 .court.strobe-hard{opacity:.18}
 .court.success{border-color:var(--lime);box-shadow:0 0 38px rgba(57,255,20,.28)}
 .cell{border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.82);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(2rem,3.8vw,4.1rem);cursor:pointer}
 .cell:active{transform:scale(.94)}
-.cell.hit{background:var(--lime);border-color:var(--lime);color:#001400;box-shadow:0 0 28px rgba(57,255,20,.7)}
+.cell.hit{background:var(--teal);border-color:var(--teal);color:#001b16;box-shadow:0 0 28px rgba(0,217,165,.7)}
+.cell.reveal{background:var(--lime);border-color:var(--lime);color:#001400;box-shadow:0 0 22px rgba(57,255,20,.6)}
 .cell.wrong{background:rgba(255,59,59,.42);border-color:var(--red);color:#fff}
 .bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .start{border:none;background:linear-gradient(135deg,var(--lime),var(--lime2));color:#001400;border-radius:999px;padding:16px 42px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:1rem;cursor:pointer;box-shadow:0 0 30px rgba(57,255,20,.32)}
@@ -76,12 +77,13 @@ html,body{overflow:auto}
 .note.right{text-align:center}
 }
 @media(max-width:520px){
-.target{min-width:0;width:100%}
-.target div{font-size:2.8rem}
+.target{min-width:0;width:100%;display:block}
+.target label{display:block;margin-bottom:4px}
+.target div{font-size:2.05rem}
 .options,.options.four{grid-template-columns:repeat(2,1fr)}
 .side{gap:8px}
 .card{padding:10px}
-.big{font-size:1.7rem}
+.big{font-size:1.45rem}
 .clock-ring{width:120px;height:120px}
 .cell{font-size:clamp(1.5rem,8vw,2.4rem);border-radius:12px}
 .court{gap:6px;padding:8px;border-radius:18px}
@@ -93,7 +95,7 @@ html,body{overflow:auto}
 <div class="app">
   <header class="top">
     <div class="logo">SHOT-CLOCK <span>CHALLENGES™</span></div>
-    <div class="mode">STROBE™ SYSTEM</div>
+    <div class="mode">STROBE™ LEVELS</div>
     <button class="full" id="fullBtn">Fullscreen</button>
   </header>
 
@@ -133,8 +135,8 @@ html,body{overflow:auto}
 
   <main class="play">
     <aside class="side">
-      <div class="card"><h3>Clock</h3><div class="big"><span id="clockStat">7</span>s</div></div>
-      <div class="card"><h3>BPM</h3><div class="big" id="bpmStat">60</div></div>
+      <div class="card"><h3>Level</h3><div class="big" id="levelStat">1</div></div>
+      <div class="card"><h3>Streak</h3><div class="big"><span id="streakStat">0</span>/3</div></div>
     </aside>
 
     <section>
@@ -157,96 +159,37 @@ html,body{overflow:auto}
   </main>
 
   <footer class="bottom">
-    <div class="note">5×5 Court · 25 Zones</div>
+    <div class="note">Level = Targets To Find</div>
     <button class="start" id="startBtn">Start Round</button>
-    <div class="note right">7 · 5 · 3 | 60 · 90 · 120 BPM</div>
+    <div class="note right">3 Correct In A Row = Level Up</div>
   </footer>
 </div>
 <div class="notice" id="notice">Located</div>
 <script>
 (function(){
-const court=document.getElementById('court'),startBtn=document.getElementById('startBtn'),fullBtn=document.getElementById('fullBtn'),targetEl=document.getElementById('target'),scoreEl=document.getElementById('score'),roundEl=document.getElementById('round'),messageEl=document.getElementById('message'),notice=document.getElementById('notice'),clockProgress=document.getElementById('clockProgress'),clockNum=document.getElementById('clockNum'),clockStat=document.getElementById('clockStat'),bpmStat=document.getElementById('bpmStat'),strobeStat=document.getElementById('strobeStat');
+const court=document.getElementById('court'),startBtn=document.getElementById('startBtn'),fullBtn=document.getElementById('fullBtn'),targetEl=document.getElementById('target'),scoreEl=document.getElementById('score'),roundEl=document.getElementById('round'),messageEl=document.getElementById('message'),notice=document.getElementById('notice'),clockProgress=document.getElementById('clockProgress'),clockNum=document.getElementById('clockNum'),levelStat=document.getElementById('levelStat'),streakStat=document.getElementById('streakStat'),strobeStat=document.getElementById('strobeStat');
 const CIRC=263.89;
-let cells=[],targetNum=null,score=0,round=0,playing=false,duration=7,bpm=60,strobe='off',timeLeftMs=7000,timer=null,strobeTimer=null;
+let cells=[],targets=[],found=[],score=0,round=0,playing=false,duration=7,bpm=60,strobe='off',timeLeftMs=7000,timer=null,strobeTimer=null,level=1,streak=0;
 
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pickTargets(){targets=shuffle(Array.from({length:25},(_,i)=>i+1)).slice(0,level);found=[];targetEl.textContent=targets.join(' • ')}
 function buildCourt(){court.innerHTML='';cells=[];shuffle(Array.from({length:25},(_,i)=>i+1)).forEach(n=>{let c=document.createElement('div');c.className='cell';c.textContent=n;c.dataset.num=n;c.onclick=()=>tapCell(c);court.appendChild(c);cells.push(c)})}
-function updateStats(){clockStat.textContent=duration;bpmStat.textContent=bpm;strobeStat.textContent=strobe.charAt(0).toUpperCase()+strobe.slice(1);clockNum.textContent=duration.toFixed(1);clockProgress.style.strokeDashoffset='0';clockProgress.className='progress'}
+function updatePanel(){levelStat.textContent=level;streakStat.textContent=streak;strobeStat.textContent=strobe.charAt(0).toUpperCase()+strobe.slice(1);clockNum.textContent=duration.toFixed(1);clockProgress.style.strokeDashoffset='0';clockProgress.className='progress'}
 function active(sel,attr,val){document.querySelectorAll(sel).forEach(b=>b.classList.toggle('active',b.dataset[attr]===String(val)))}
-document.querySelectorAll('[data-clock]').forEach(b=>b.onclick=()=>{if(playing)return;duration=Number(b.dataset.clock);active('[data-clock]','clock',duration);updateStats()});
-document.querySelectorAll('[data-bpm]').forEach(b=>b.onclick=()=>{bpm=Number(b.dataset.bpm);active('[data-bpm]','bpm',bpm);updateStats();if(playing)startStrobe()});
-document.querySelectorAll('[data-strobe]').forEach(b=>b.onclick=()=>{strobe=b.dataset.strobe;active('[data-strobe]','strobe',strobe);updateStats();if(playing)startStrobe()});
+document.querySelectorAll('[data-clock]').forEach(b=>b.onclick=()=>{if(playing)return;duration=Number(b.dataset.clock);active('[data-clock]','clock',duration);updatePanel()});
+document.querySelectorAll('[data-bpm]').forEach(b=>b.onclick=()=>{bpm=Number(b.dataset.bpm);active('[data-bpm]','bpm',bpm);if(playing)startStrobe()});
+document.querySelectorAll('[data-strobe]').forEach(b=>b.onclick=()=>{strobe=b.dataset.strobe;active('[data-strobe]','strobe',strobe);updatePanel();if(playing)startStrobe()});
 function show(msg){notice.textContent=msg;notice.classList.add('show');setTimeout(()=>notice.classList.remove('show'),850)}
 function stopStrobe(){if(strobeTimer)clearInterval(strobeTimer);strobeTimer=null;court.classList.remove('strobe-soft','strobe-medium','strobe-hard')}
 function startStrobe(){stopStrobe();if(strobe==='off')return;let cls=strobe==='soft'?'strobe-soft':strobe==='medium'?'strobe-medium':'strobe-hard';let beat=60000/bpm;let flash=Math.max(90,Math.min(180,beat*.25));strobeTimer=setInterval(()=>{court.classList.add(cls);setTimeout(()=>court.classList.remove(cls),flash)},beat)}
-function startRound(){if(playing)return;playing=true;round++;roundEl.textContent=round;buildCourt();targetNum=Math.ceil(Math.random()*25);targetEl.textContent=targetNum;timeLeftMs=duration*1000;clockNum.textContent=duration.toFixed(1);clockProgress.style.strokeDashoffset='0';clockProgress.className='progress';court.classList.remove('success');startBtn.disabled=true;startBtn.textContent='Playing';messageEl.textContent='Find The Target';startStrobe();timer=setInterval(()=>{timeLeftMs-=50;let pct=Math.max(0,timeLeftMs/(duration*1000));clockProgress.style.strokeDashoffset=CIRC*(1-pct);clockNum.textContent=Math.max(0,timeLeftMs/1000).toFixed(1);clockProgress.className=pct<.25?'progress danger':pct<.5?'progress warn':'progress';if(timeLeftMs<=0)fail('Time')},50)}
-function end(){playing=false;startBtn.disabled=false;startBtn.textContent='Start Round';if(timer)clearInterval(timer);timer=null;stopStrobe()}
-function win(cell){cell.classList.add('hit');court.classList.add('success');score+=10+Math.floor(timeLeftMs/100);scoreEl.textContent=score;messageEl.textContent='Located';show('Located');end()}
-function fail(reason){messageEl.textContent=reason==='wrong'?'Wrong Tap':'Time';show(messageEl.textContent);cells.forEach(c=>{if(Number(c.dataset.num)===targetNum)c.classList.add('hit')});end()}
-function tapCell(cell){if(!playing)return;Number(cell.dataset.num)===targetNum?win(cell):(cell.classList.add('wrong'),fail('wrong'))}
+function startRound(){if(playing)return;playing=true;round++;roundEl.textContent=round;buildCourt();pickTargets();timeLeftMs=duration*1000;clockNum.textContent=duration.toFixed(1);clockProgress.style.strokeDashoffset='0';clockProgress.className='progress';court.classList.remove('success');startBtn.disabled=true;startBtn.textContent='Playing';messageEl.textContent='Find All Targets';startStrobe();timer=setInterval(()=>{timeLeftMs-=50;let pct=Math.max(0,timeLeftMs/(duration*1000));clockProgress.style.strokeDashoffset=CIRC*(1-pct);clockNum.textContent=Math.max(0,timeLeftMs/1000).toFixed(1);clockProgress.className=pct<.25?'progress danger':pct<.5?'progress warn':'progress';if(timeLeftMs<=0)fail('Time')},50)}
+function end(){playing=false;startBtn.disabled=false;startBtn.textContent='Start Round';if(timer)clearInterval(timer);timer=null;stopStrobe();updatePanel()}
+function win(){court.classList.add('success');score+=level*10+Math.floor(timeLeftMs/100);scoreEl.textContent=score;streak++;let leveled=false;if(streak>=3){if(level<10){level++;leveled=true}streak=0}messageEl.textContent=leveled?'Level Up!':'Complete';show(leveled?'Level Up!':'Complete');end()}
+function fail(reason){streak=0;messageEl.textContent=reason==='wrong'?'Wrong Tap':'Time';show(messageEl.textContent);cells.forEach(c=>{if(targets.includes(Number(c.dataset.num))&&!found.includes(Number(c.dataset.num)))c.classList.add('reveal')});end()}
+function tapCell(cell){if(!playing)return;let n=Number(cell.dataset.num);if(found.includes(n))return;if(targets.includes(n)){found.push(n);cell.classList.add('hit');if(found.length===targets.length)win()}else{cell.classList.add('wrong');fail('wrong')}}
 fullBtn.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){console.log(e)}};
 startBtn.onclick=startRound;
-buildCourt();updateStats();
-})();
-</script>
-
-<script>
-(function(){
-const old=document.getElementById('round');
-const box=document.createElement('div');
-box.style.position='fixed';
-box.style.top='72px';
-box.style.right='18px';
-box.style.zIndex='20';
-box.style.color='#39FF14';
-box.style.fontWeight='900';
-box.id='levelDisplay';
-box.innerHTML='LEVEL 1 · STREAK 0/3';
-document.body.appendChild(box);
-
-let level=1, streak=0;
-const target=document.getElementById('target');
-const start=document.getElementById('startBtn');
-const court=document.getElementById('court');
-
-function rand(n){return [...Array(25)].map((_,i)=>i+1).sort(()=>Math.random()-.5).slice(0,n)}
-
-function update(){
- box.innerHTML='LEVEL '+level+' · STREAK '+streak+'/3';
-}
-
-const oldStart=start.onclick;
-start.onclick=function(){
- window.currentTargets=rand(level);
- target.innerHTML=window.currentTargets.join(' • ');
- oldStart();
-};
-
-court.addEventListener('click',function(e){
- if(!e.target.classList.contains('cell')) return;
- if(!window.currentTargets) return;
-
- const n=Number(e.target.textContent);
-
- if(window.currentTargets.includes(n)){
-   window.currentTargets=window.currentTargets.filter(x=>x!==n);
-   e.target.classList.add('hit');
-
-   if(window.currentTargets.length===0){
-      streak++;
-      if(streak>=3 && level<10){
-         level++;
-         streak=0;
-      }
-      update();
-   }
- }else{
-   streak=0;
-   update();
- }
-},true);
-
-update();
+buildCourt();updatePanel();
 })();
 </script>
 </body>
