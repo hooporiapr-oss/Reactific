@@ -440,7 +440,20 @@ let duration=7,bpm=90,strobe='medium',level=1,streak=0,score=0,playing=false,tar
 
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function show(msg){notice.textContent=msg;notice.classList.add('show');setTimeout(()=>notice.classList.remove('show'),850)}
-function build(){court.innerHTML='';cells=[];for(let n=1;n<=25;n++){const c=document.createElement('div');c.className='cell';c.textContent=n;c.dataset.num=n;c.onclick=()=>tap(c);court.appendChild(c);cells.push(c)}}
+function build(){
+court.innerHTML='';
+cells=[];
+const nums=shuffle(Array.from({length:25},(_,i)=>i+1));
+nums.forEach(n=>{
+ const c=document.createElement('div');
+ c.className='cell';
+ c.textContent=n;
+ c.dataset.num=n;
+ c.onclick=()=>tap(c);
+ court.appendChild(c);
+ cells.push(c);
+});
+}
 function pickTargets(){targets=shuffle(Array.from({length:25},(_,i)=>i+1)).slice(0,level);found=[];targetDisplay.textContent=targets.join(' • ')}
 function update(){levelEl.textContent=level;targetCountEl.textContent=level;streakEl.textContent=streak;scoreDisplay.textContent=score;clockDisplay.textContent=duration.toFixed(1)}
 function setActive(group,btn){document.querySelectorAll(group).forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
@@ -466,7 +479,7 @@ function startRound(){
   if(playing)return;
   playing=true;
   build();
-  pickTargets();
+  pickTargets(); // targets independent of visual placement
   start.disabled=true;
   start.textContent='Find '+level+' Target'+(level>1?'s':'');
   startStrobe();
