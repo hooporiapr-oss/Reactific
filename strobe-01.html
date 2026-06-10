@@ -189,5 +189,65 @@ startBtn.onclick=startRound;
 buildCourt();updateStats();
 })();
 </script>
+
+<script>
+(function(){
+const old=document.getElementById('round');
+const box=document.createElement('div');
+box.style.position='fixed';
+box.style.top='72px';
+box.style.right='18px';
+box.style.zIndex='20';
+box.style.color='#39FF14';
+box.style.fontWeight='900';
+box.id='levelDisplay';
+box.innerHTML='LEVEL 1 · STREAK 0/3';
+document.body.appendChild(box);
+
+let level=1, streak=0;
+const target=document.getElementById('target');
+const start=document.getElementById('startBtn');
+const court=document.getElementById('court');
+
+function rand(n){return [...Array(25)].map((_,i)=>i+1).sort(()=>Math.random()-.5).slice(0,n)}
+
+function update(){
+ box.innerHTML='LEVEL '+level+' · STREAK '+streak+'/3';
+}
+
+const oldStart=start.onclick;
+start.onclick=function(){
+ window.currentTargets=rand(level);
+ target.innerHTML=window.currentTargets.join(' • ');
+ oldStart();
+};
+
+court.addEventListener('click',function(e){
+ if(!e.target.classList.contains('cell')) return;
+ if(!window.currentTargets) return;
+
+ const n=Number(e.target.textContent);
+
+ if(window.currentTargets.includes(n)){
+   window.currentTargets=window.currentTargets.filter(x=>x!==n);
+   e.target.classList.add('hit');
+
+   if(window.currentTargets.length===0){
+      streak++;
+      if(streak>=3 && level<10){
+         level++;
+         streak=0;
+      }
+      update();
+   }
+ }else{
+   streak=0;
+   update();
+ }
+},true);
+
+update();
+})();
+</script>
 </body>
 </html>
