@@ -2,393 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REACTIFIC™ Rulebook</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>REACTIFIC™ STROBE™ Rulebook</title>
 <style>
-:root{
-  --black:#020202;
-  --panel:#101015;
-  --panel2:#17171f;
-  --white:#ffffff;
-  --muted:#b7b7c4;
-  --lime:#39FF14;
-  --gold:#FFD700;
-  --cyan:#00bbf0;
-  --line:rgba(255,255,255,.18);
-}
+:root{--bg:#02050a;--blue:#008cff;--orange:#ff6b00;--orange2:#ff9b22;--white:#f4f4f4;--muted:#a7adba;--panel:#06101c;--green:#39FF14}
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:
-    radial-gradient(circle at 15% 5%,rgba(57,255,20,.16),transparent 28%),
-    radial-gradient(circle at 88% 10%,rgba(0,187,240,.13),transparent 30%),
-    var(--black);
-  color:var(--white);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.55;
-}
-.header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#050505;
-  border-bottom:1px solid var(--line);
-}
-.header-inner{
-  max-width:1100px;
-  margin:0 auto;
-  padding:14px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-}
-.logo{
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-.logo span{color:var(--lime)}
-.lang{
-  display:flex;
-  gap:8px;
-}
-.lang button{
-  border:1px solid var(--line);
-  background:var(--panel2);
-  color:var(--white);
-  border-radius:999px;
-  padding:9px 14px;
-  font-weight:900;
-  cursor:pointer;
-}
-.lang button.active{
-  background:var(--lime);
-  color:#001400;
-  border-color:var(--lime);
-}
-.wrap{
-  max-width:1100px;
-  margin:0 auto;
-  padding:36px 18px 70px;
-}
-.hero{
-  text-align:center;
-  padding:26px 0 34px;
-}
-.badge{
-  display:inline-block;
-  border:1px solid rgba(57,255,20,.45);
-  background:rgba(57,255,20,.12);
-  color:var(--lime);
-  border-radius:999px;
-  padding:9px 18px;
-  font-weight:900;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  font-size:.75rem;
-  margin-bottom:18px;
-}
-h1{
-  font-size:clamp(2.1rem,6vw,5rem);
-  line-height:.95;
-  letter-spacing:-.05em;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
-h1 span{color:var(--lime)}
-.hero p{
-  color:var(--muted);
-  max-width:760px;
-  margin:0 auto;
-  font-size:clamp(1rem,1.6vw,1.25rem);
-  font-weight:700;
-}
-.quick{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin:0 0 28px;
-}
-.quick div{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  text-align:center;
-}
-.quick small{
-  display:block;
-  color:var(--muted);
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-.quick strong{
-  display:block;
-  color:var(--lime);
-  font-size:2rem;
-}
-.section{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:24px;
-  margin-bottom:18px;
-}
-.section h2{
-  color:var(--gold);
-  font-size:1.55rem;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  margin-bottom:14px;
-}
-.rule{
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:14px;
-  padding:14px 16px;
-  margin:10px 0;
-}
-.rule b{color:var(--lime)}
-.levels{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-top:14px;
-}
-.level{
-  background:rgba(57,255,20,.08);
-  border:1px solid rgba(57,255,20,.25);
-  border-radius:14px;
-  padding:14px 8px;
-  text-align:center;
-}
-.level b{
-  color:var(--lime);
-  display:block;
-  margin-bottom:4px;
-}
-.table{
-  display:grid;
-  gap:8px;
-}
-.row{
-  display:grid;
-  grid-template-columns:160px 1fr 160px;
-  gap:8px;
-}
-.row div{
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.12);
-  padding:12px;
-  border-radius:12px;
-}
-.row .head{
-  color:var(--lime);
-  font-weight:900;
-}
-.formula{
-  text-align:center;
-  background:rgba(255,215,0,.08);
-  border:1px solid rgba(255,215,0,.28);
-  border-radius:18px;
-  padding:22px;
-  margin-top:12px;
-}
-.formula strong{
-  color:var(--gold);
-  display:block;
-  font-size:clamp(1.2rem,3vw,2rem);
-  margin-bottom:8px;
-}
-.cta{
-  text-align:center;
-  padding:36px 0 10px;
-}
-.cta h2{
-  font-size:clamp(1.7rem,5vw,3.8rem);
-  line-height:.95;
-  text-transform:uppercase;
-  margin-bottom:16px;
-}
-.cta span{color:var(--lime)}
-.cta a{
-  display:inline-block;
-  background:linear-gradient(135deg,var(--lime),#2bc10f);
-  color:#001400;
-  border-radius:999px;
-  padding:16px 32px;
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  text-decoration:none;
-}
-footer{
-  text-align:center;
-  color:var(--muted);
-  border-top:1px solid var(--line);
-  padding:26px 18px;
-  font-size:.75rem;
-  letter-spacing:.1em;
-}
-.es{display:none}
-body.show-es .en{display:none}
-body.show-es .es{display:block}
-body.show-es span.es{display:inline}
-@media(max-width:800px){
-  .header-inner{flex-direction:column}
-  .quick{grid-template-columns:repeat(2,1fr)}
-  .levels{grid-template-columns:repeat(2,1fr)}
-  .row{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .quick{grid-template-columns:1fr}
-  .section{padding:18px}
-}
+body{min-height:100vh;background:radial-gradient(circle at 18% 4%,rgba(0,140,255,.22),transparent 26%),radial-gradient(circle at 88% 8%,rgba(255,107,0,.18),transparent 28%),linear-gradient(180deg,#030814,#010306 70%,#02050a);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+.header{position:sticky;top:0;z-index:20;background:rgba(2,5,10,.96);border-bottom:2px solid var(--blue);box-shadow:0 0 22px rgba(0,140,255,.32)}
+.header-inner{width:min(1120px,94%);margin:auto;min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.logo{font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-style:italic;font-size:clamp(1rem,2.5vw,1.7rem)}
+.logo span{color:var(--orange)}
+.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.back,.lang button,.cta-btn{min-height:42px;border:2px solid var(--orange);background:linear-gradient(180deg,rgba(255,155,34,.22),rgba(255,107,0,.12));color:#fff;border-radius:999px;padding:10px 16px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.lang{display:flex;gap:8px}.lang button{border-color:var(--blue);background:rgba(0,0,0,.35)}.lang button.active{border-color:var(--orange);background:linear-gradient(180deg,var(--orange2),var(--orange))}
+.wrap{width:min(1120px,94%);margin:auto;padding:42px 0 70px}
+.hero{text-align:center;padding:20px 0 34px}.badge{display:inline-block;color:var(--orange);border:2px solid var(--blue);background:rgba(0,0,0,.35);padding:9px 20px;border-radius:999px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:.78rem;margin-bottom:18px}
+h1{font-size:clamp(2.25rem,6.6vw,5.4rem);line-height:.92;letter-spacing:.03em;font-style:italic;text-transform:uppercase;text-shadow:0 0 18px rgba(0,140,255,.36);margin-bottom:16px}h1 span{color:var(--orange)}
+.hero p{color:#d2d7e2;max-width:780px;margin:auto;font-size:clamp(1rem,1.55vw,1.24rem);font-weight:800}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 26px}.quick-card,.section{border:2px solid var(--blue);background:linear-gradient(180deg,rgba(6,16,28,.92),rgba(2,5,10,.96));border-radius:18px;box-shadow:0 0 22px rgba(0,140,255,.24),inset 0 0 28px rgba(0,140,255,.06)}
+.quick-card{padding:18px 12px;text-align:center}.quick-card small{display:block;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}.quick-card strong{color:var(--orange);display:block;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1}
+.section{padding:24px;margin-bottom:18px}.section h2{color:var(--orange);font-size:clamp(1.25rem,2.2vw,1.75rem);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-style:italic}
+.rule{background:rgba(0,0,0,.28);border:1px solid rgba(0,140,255,.42);border-left:5px solid var(--orange);border-radius:12px;padding:13px 15px;margin:10px 0}.rule b{color:var(--orange)}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}.level{text-align:center;border:1px solid rgba(0,140,255,.55);background:rgba(0,140,255,.08);border-radius:12px;padding:13px 8px}.level b{display:block;color:var(--orange);margin-bottom:4px}
+.table{display:grid;gap:8px}.row{display:grid;grid-template-columns:150px 1fr 150px;gap:8px}.row div{border:1px solid rgba(0,140,255,.42);background:rgba(0,0,0,.28);border-radius:10px;padding:12px}.row .head{color:var(--orange);font-weight:900;text-transform:uppercase}
+.formula{text-align:center;background:rgba(255,107,0,.10);border:2px solid rgba(255,107,0,.44);border-radius:16px;padding:20px;margin:12px 0}.formula strong{display:block;color:var(--orange);font-size:clamp(1.15rem,3vw,2rem);text-transform:uppercase;margin-bottom:8px}
+.cta{text-align:center;padding:36px 0 12px}.cta h2{font-size:clamp(1.8rem,5vw,4.2rem);line-height:.95;text-transform:uppercase;font-style:italic;margin-bottom:20px}.cta h2 span{color:var(--orange)}.cta-btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:15px 32px;background:linear-gradient(180deg,var(--orange2),var(--orange))}
+footer{text-align:center;color:var(--muted);border-top:1px solid rgba(0,140,255,.42);padding:28px 16px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.es{display:none}body.show-es .en{display:none}body.show-es .es{display:block}body.show-es span.es{display:inline}
+@media(max-width:850px){.header-inner{flex-direction:column;padding:12px 0}.actions{justify-content:center}.quick{grid-template-columns:repeat(2,1fr)}.levels{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.section{padding:20px}}
+@media(max-width:520px){.quick{grid-template-columns:1fr}.back,.lang button{width:100%}.actions{width:100%}.lang{width:100%;display:grid;grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="header-inner">
-    <div class="logo">REACTIFIC<span>™</span></div>
-    <div class="lang">
-      <button id="btnEN" class="active" onclick="setLang('en')">ENGLISH</button>
-      <button id="btnES" onclick="setLang('es')">ESPAÑOL</button>
-    </div>
-  </div>
-</header>
-
+<header class="header"><div class="header-inner"><div class="logo">REACTIFIC<span>™</span> Rulebook</div><div class="actions"><a class="back" href="https://reactificgaming.com/strobe-01.html">← Back to STROBE</a><div class="lang"><button id="btnEN" class="active" onclick="setLang('en')">English</button><button id="btnES" onclick="setLang('es')">Español</button></div></div></div></header>
 <main class="wrap">
-
-  <section class="hero">
-    <div class="badge">
-      <span class="en">Official Rulebook</span>
-      <span class="es">Reglamento Oficial</span>
-    </div>
-    <h1>
-      <span class="en">Shot-Clock Challenges™<br><span>STROBE™ System</span></span>
-      <span class="es">Shot-Clock Challenges™<br><span>Sistema STROBE™</span></span>
-    </h1>
-    <p>
-      <span class="en">A reaction gaming challenge built around visual search, speed, focus, recognition, and progression.</span>
-      <span class="es">Un reto de reaction gaming basado en búsqueda visual, velocidad, enfoque, reconocimiento y progresión.</span>
-    </p>
-  </section>
-
-  <section class="quick">
-    <div><small>Court</small><strong>5×5</strong></div>
-    <div><small>Levels</small><strong>1–10</strong></div>
-    <div><small>Clock</small><strong>7 · 5 · 3</strong></div>
-    <div><small>BPM</small><strong>60 · 90 · 120</strong></div>
-  </section>
-
-  <section class="section">
-    <h2><span class="en">Objective</span><span class="es">Objetivo</span></h2>
-    <div class="rule">
-      <span class="en">Find all target numbers before the shot clock expires.</span>
-      <span class="es">Encuentra todos los números objetivo antes de que termine el shot clock.</span>
-    </div>
-    <div class="rule">
-      <span class="en">Each correct round builds your streak.</span>
-      <span class="es">Cada ronda correcta aumenta tu racha.</span>
-    </div>
-    <div class="rule">
-      <span class="en">Build streaks to advance through 10 levels.</span>
-      <span class="es">Construye rachas para avanzar por 10 niveles.</span>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2><span class="en">Game Flow</span><span class="es">Flujo del Juego</span></h2>
-    <div class="rule"><b>1.</b> <span class="en">Select Shot Clock: <b>7, 5, or 3 seconds</b>.</span><span class="es">Selecciona Shot Clock: <b>7, 5 o 3 segundos</b>.</span></div>
-    <div class="rule"><b>2.</b> <span class="en">Select STROBE™ BPM: <b>60, 90, or 120 BPM</b>.</span><span class="es">Selecciona BPM STROBE™: <b>60, 90 o 120 BPM</b>.</span></div>
-    <div class="rule"><b>3.</b> <span class="en">Select STROBE™ intensity: <b>Off, Soft, Medium, or Hard</b>.</span><span class="es">Selecciona intensidad STROBE™: <b>Off, Soft, Medium o Hard</b>.</span></div>
-    <div class="rule"><b>4.</b> <span class="en">Press <b>Start Round</b>, locate the targets, and finish before time expires.</span><span class="es">Presiona <b>Start Round</b>, localiza los objetivos y termina antes de que acabe el tiempo.</span></div>
-  </section>
-
-  <section class="section">
-    <h2><span class="en">Level System</span><span class="es">Sistema de Niveles</span></h2>
-    <div class="rule">
-      <span class="en"><b>Level = number of targets to find.</b></span>
-      <span class="es"><b>Nivel = cantidad de objetivos a encontrar.</b></span>
-    </div>
-    <div class="rule">
-      <span class="en"><b>3 consecutive correct rounds = Level Up.</b></span>
-      <span class="es"><b>3 rondas correctas consecutivas = Subir de nivel.</b></span>
-    </div>
-    <div class="rule">
-      <span class="en">Miss or timeout resets the streak to zero. Your level does not drop.</span>
-      <span class="es">Fallo o tiempo agotado reinicia la racha a cero. Tu nivel no baja.</span>
-    </div>
-
-    <div class="levels">
-      <div class="level"><b>Level 1</b><span class="en">1 target</span><span class="es">1 objetivo</span></div>
-      <div class="level"><b>Level 2</b><span class="en">2 targets</span><span class="es">2 objetivos</span></div>
-      <div class="level"><b>Level 3</b><span class="en">3 targets</span><span class="es">3 objetivos</span></div>
-      <div class="level"><b>Level 4</b><span class="en">4 targets</span><span class="es">4 objetivos</span></div>
-      <div class="level"><b>Level 5</b><span class="en">5 targets</span><span class="es">5 objetivos</span></div>
-      <div class="level"><b>Level 6</b><span class="en">6 targets</span><span class="es">6 objetivos</span></div>
-      <div class="level"><b>Level 7</b><span class="en">7 targets</span><span class="es">7 objetivos</span></div>
-      <div class="level"><b>Level 8</b><span class="en">8 targets</span><span class="es">8 objetivos</span></div>
-      <div class="level"><b>Level 9</b><span class="en">9 targets</span><span class="es">9 objetivos</span></div>
-      <div class="level"><b>Level 10</b><span class="en">10 targets</span><span class="es">10 objetivos</span></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>STROBE™</h2>
-    <div class="table">
-      <div class="row"><div class="head">Off</div><div><span class="en">Normal visibility</span><span class="es">Visibilidad normal</span></div><div>Classic</div></div>
-      <div class="row"><div class="head">Soft</div><div><span class="en">Light visual interruption</span><span class="es">Interrupción visual ligera</span></div><div>Focus</div></div>
-      <div class="row"><div class="head">Medium</div><div><span class="en">Moderate visual interruption</span><span class="es">Interrupción visual moderada</span></div><div>Game</div></div>
-      <div class="row"><div class="head">Hard</div><div><span class="en">Maximum visual interruption</span><span class="es">Interrupción visual máxima</span></div><div>Elite</div></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2><span class="en">Scoring</span><span class="es">Puntuación</span></h2>
-    <div class="formula">
-      <strong>
-        <span class="en">Round Score = (Level × 10) + Time Bonus</span>
-        <span class="es">Puntuación = (Nivel × 10) + Bono de Tiempo</span>
-      </strong>
-      <div>
-        <span class="en">Example: Level 4 with 2.8 seconds left = 40 + 28 = 68 points.</span>
-        <span class="es">Ejemplo: Nivel 4 con 2.8 segundos restantes = 40 + 28 = 68 puntos.</span>
-      </div>
-    </div>
-    <div class="rule">
-      <span class="en">No score penalty for misses. Misses reset streak only.</span>
-      <span class="es">No hay penalización de puntos por fallar. Los fallos solo reinician la racha.</span>
-    </div>
-  </section>
-
-  <section class="cta">
-    <h2>
-      <span class="en">Recognize.<br><span>React.</span><br>Advance.</span>
-      <span class="es">Reconoce.<br><span>Reacciona.</span><br>Avanza.</span>
-    </h2>
-    <a href="/shot-clock-challenges.html">
-      <span class="en">Start Challenge</span>
-      <span class="es">Comenzar Reto</span>
-    </a>
-  </section>
-
+<section class="hero"><div class="badge"><span class="en">Official Rulebook</span><span class="es">Reglamento Oficial</span></div><h1><span class="en">Shot-Clock Challenges™<br><span>STROBE™ System</span></span><span class="es">Shot-Clock Challenges™<br><span>Sistema STROBE™</span></span></h1><p><span class="en">A reaction gaming challenge built around visual search, speed, focus, recognition, progression, and the new blue/orange REACTIFIC™ court identity.</span><span class="es">Un reto de reaction gaming basado en búsqueda visual, velocidad, enfoque, reconocimiento, progresión y la nueva identidad azul/naranja de la cancha REACTIFIC™.</span></p></section>
+<section class="quick"><div class="quick-card"><small class="en">Court</small><small class="es">Cancha</small><strong>5×5</strong></div><div class="quick-card"><small class="en">Levels</small><small class="es">Niveles</small><strong>1–10</strong></div><div class="quick-card"><small>Clock</small><strong>7 · 5 · 3</strong></div><div class="quick-card"><small>BPM</small><strong>60 · 90 · 120</strong></div></section>
+<section class="section"><h2><span class="en">Objective</span><span class="es">Objetivo</span></h2><div class="rule"><span class="en">Find all target numbers before the shot clock expires.</span><span class="es">Encuentra todos los números objetivo antes de que termine el shot clock.</span></div><div class="rule"><span class="en">Each correct round builds your streak.</span><span class="es">Cada ronda correcta aumenta tu racha.</span></div><div class="rule"><span class="en">Build streaks to advance through 10 levels.</span><span class="es">Construye rachas para avanzar por 10 niveles.</span></div></section>
+<section class="section"><h2><span class="en">Game Flow</span><span class="es">Flujo del Juego</span></h2><div class="rule"><b>1.</b> <span class="en">Select Shot Clock: <b>7, 5, or 3 seconds</b>.</span><span class="es">Selecciona Shot Clock: <b>7, 5 o 3 segundos</b>.</span></div><div class="rule"><b>2.</b> <span class="en">Select STROBE™ BPM: <b>60, 90, or 120 BPM</b>.</span><span class="es">Selecciona BPM STROBE™: <b>60, 90 o 120 BPM</b>.</span></div><div class="rule"><b>3.</b> <span class="en">Select STROBE™ intensity: <b>Off, Soft, Medium, or Hard</b>.</span><span class="es">Selecciona intensidad STROBE™: <b>Off, Soft, Medium o Hard</b>.</span></div><div class="rule"><b>4.</b> <span class="en">Press <b>Start Round</b>, locate every target, and finish before time expires.</span><span class="es">Presiona <b>Start Round</b>, localiza cada objetivo y termina antes de que acabe el tiempo.</span></div></section>
+<section class="section"><h2><span class="en">Level System</span><span class="es">Sistema de Niveles</span></h2><div class="rule"><span class="en"><b>Level = number of targets to find.</b></span><span class="es"><b>Nivel = cantidad de objetivos a encontrar.</b></span></div><div class="rule"><span class="en"><b>3 consecutive correct rounds = Level Up.</b></span><span class="es"><b>3 rondas correctas consecutivas = Subir de nivel.</b></span></div><div class="rule"><span class="en">Miss or timeout resets the streak to zero. Your level does not drop.</span><span class="es">Fallo o tiempo agotado reinicia la racha a cero. Tu nivel no baja.</span></div><div class="levels"><div class="level"><b>Level 1</b><span class="en">1 target</span><span class="es">1 objetivo</span></div><div class="level"><b>Level 2</b><span class="en">2 targets</span><span class="es">2 objetivos</span></div><div class="level"><b>Level 3</b><span class="en">3 targets</span><span class="es">3 objetivos</span></div><div class="level"><b>Level 4</b><span class="en">4 targets</span><span class="es">4 objetivos</span></div><div class="level"><b>Level 5</b><span class="en">5 targets</span><span class="es">5 objetivos</span></div><div class="level"><b>Level 6</b><span class="en">6 targets</span><span class="es">6 objetivos</span></div><div class="level"><b>Level 7</b><span class="en">7 targets</span><span class="es">7 objetivos</span></div><div class="level"><b>Level 8</b><span class="en">8 targets</span><span class="es">8 objetivos</span></div><div class="level"><b>Level 9</b><span class="en">9 targets</span><span class="es">9 objetivos</span></div><div class="level"><b>Level 10</b><span class="en">10 targets</span><span class="es">10 objetivos</span></div></div></section>
+<section class="section"><h2>STROBE™</h2><div class="table"><div class="row"><div class="head">Off</div><div><span class="en">Normal visibility</span><span class="es">Visibilidad normal</span></div><div>Classic</div></div><div class="row"><div class="head">Soft</div><div><span class="en">Light visual interruption</span><span class="es">Interrupción visual ligera</span></div><div>Focus</div></div><div class="row"><div class="head">Medium</div><div><span class="en">Moderate visual interruption</span><span class="es">Interrupción visual moderada</span></div><div>Game</div></div><div class="row"><div class="head">Hard</div><div><span class="en">Maximum visual interruption</span><span class="es">Interrupción visual máxima</span></div><div>Elite</div></div></div></section>
+<section class="section"><h2><span class="en">Scoring</span><span class="es">Puntuación</span></h2><div class="formula"><strong><span class="en">Round Score = (Level × 10) + Time Bonus</span><span class="es">Puntuación = (Nivel × 10) + Bono de Tiempo</span></strong><div><span class="en">Example: Level 4 with 2.8 seconds left = 40 + 28 = 68 points.</span><span class="es">Ejemplo: Nivel 4 con 2.8 segundos restantes = 40 + 28 = 68 puntos.</span></div></div><div class="rule"><span class="en">No score penalty for misses. Misses reset streak only.</span><span class="es">No hay penalización de puntos por fallar. Los fallos solo reinician la racha.</span></div></section>
+<section class="cta"><h2><span class="en">Recognize.<br><span>React.</span><br>Advance.</span><span class="es">Reconoce.<br><span>Reacciona.</span><br>Avanza.</span></h2><a class="cta-btn" href="https://reactificgaming.com/strobe-01.html"><span class="en">Back to STROBE</span><span class="es">Volver a STROBE</span></a></section>
 </main>
-
-<footer>
-  © Gostar Digital LLC · REACTIFIC™ · Reaction Gaming™
-</footer>
-
+<footer>© Gostar Digital LLC · REACTIFIC™ · Reaction Gaming™</footer>
 <script>
-function setLang(lang){
-  document.body.classList.toggle('show-es', lang === 'es');
-  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
-  document.getElementById('btnES').classList.toggle('active', lang === 'es');
-  document.documentElement.lang = lang;
-}
+function setLang(lang){document.body.classList.toggle('show-es',lang==='es');document.getElementById('btnEN').classList.toggle('active',lang==='en');document.getElementById('btnES').classList.toggle('active',lang==='es');document.documentElement.lang=lang;}
 </script>
 </body>
 </html>
