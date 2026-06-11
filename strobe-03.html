@@ -2,313 +2,1052 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Reaction Control — Desktop / Promethean</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Reaction Control | REACTIFIC™</title>
 <link rel="icon" type="image/png" href="bpm-basketball.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--purple:#9B59B6;--purple-light:#A873B8;--gold:#FFD700;--teal:#00D9A5;--pink:#FF1493;--orange:#FF6B35;--dark:#0a0a0f;--card:#111118;--text:#FFFFFF;--muted:#8892a0;--border:rgba(255,255,255,0.1);--nav-height:50px;--accent:#9B59B6}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow-x:hidden;overflow-y:auto;font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
-.mini-nav{position:fixed;top:0;left:0;right:0;background:var(--card);border-bottom:1px solid var(--border);padding-top:env(safe-area-inset-top);z-index:1000}
-.nav-row{display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 12px}
-.back-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
-.back-btn:active{border-color:var(--purple);color:var(--purple)}
-.nav-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--purple)}
-.nav-right{display:flex;align-items:center;gap:6px}
-.nav-lang{display:flex;gap:2px}
-.nav-lang-btn{padding:5px 8px;border:1px solid var(--border);background:0;color:var(--muted);border-radius:4px;font-size:0.6rem;font-weight:600;cursor:pointer;min-width:28px;min-height:28px}
-.nav-lang-btn.active{border-color:var(--gold);color:var(--gold)}
-.screen{display:none;width:100%;min-height:100dvh;padding-top:calc(var(--nav-height) + env(safe-area-inset-top));padding-bottom:env(safe-area-inset-bottom);overflow-y:auto;overflow-x:hidden}
-.screen.active{display:block}
-#screen-demo{background:var(--dark);min-height:calc(100dvh - var(--nav-height) - env(safe-area-inset-top))}
-.demo-container{max-width:420px;margin:0 auto;padding:10px 15px 20px;display:flex;flex-direction:column;align-items:center}
-.demo-header{text-align:center;margin-bottom:8px}
-.demo-badge{display:inline-block;background:rgba(155,89,182,0.15);color:var(--purple);padding:4px 12px;border-radius:15px;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
-.demo-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--purple);margin-bottom:2px}
-.demo-subtitle{font-size:0.7rem;color:var(--muted)}
-.demo-court-wrap{position:relative;margin:10px 0}
-.demo-label{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:2px;color:var(--gold);background:rgba(0,0,0,0.85);padding:4px 12px;border-radius:10px;white-space:nowrap;z-index:10;border:1px solid rgba(255,215,0,0.3);transition:all 0.3s}
-.demo-label.phase-react{color:var(--purple);border-color:rgba(155,89,182,0.4)}
-.demo-label.phase-success{color:var(--teal);border-color:rgba(0,217,165,0.4)}
-.demo-court{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:6px;border-radius:12px;width:200px;height:200px;position:relative}
-.demo-cell{aspect-ratio:1;border-radius:4px;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:all 0.1s}
-.demo-cell.lit{background:var(--purple);border-color:var(--purple);box-shadow:0 0 15px var(--purple);transform:scale(1.05)}
-.demo-cell.correct{background:var(--teal);border-color:var(--teal);box-shadow:0 0 12px rgba(0,217,165,0.5)}
-.demo-court.joy-pulse{animation:joyPulse 0.5s ease-out}
-@keyframes joyPulse{0%{box-shadow:0 0 0 0 rgba(155,89,182,0.7)}50%{box-shadow:0 0 25px 8px rgba(155,89,182,0.4)}100%{box-shadow:none}}
-.playbook-section{width:100%;max-width:380px;margin:12px 0}
-.playbook-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:linear-gradient(135deg,rgba(155,89,182,0.08),rgba(255,215,0,0.05));border:1px solid rgba(155,89,182,0.2);border-radius:10px;cursor:pointer;transition:all 0.3s}
-.playbook-toggle:active{transform:scale(0.98);border-color:var(--purple)}
-.playbook-toggle-icon{font-size:1.1rem}
-.playbook-toggle-text{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:2px;color:var(--purple)}
-.playbook-toggle-arrow{color:var(--purple);font-size:0.75rem;transition:transform 0.3s}
-.playbook-toggle.open .playbook-toggle-arrow{transform:rotate(180deg)}
-.playbook-content{max-height:0;overflow:hidden;transition:max-height 0.5s ease-out}
-.playbook-content.open{max-height:2000px}
-.playbook-inner{padding:12px 0}
-.playbook-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
-.playbook-card-title{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:2px;color:var(--purple);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.playbook-step{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
-.playbook-step:last-child{margin-bottom:0}
-.playbook-step-num{width:20px;height:20px;border-radius:50%;background:var(--purple);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:0.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.playbook-step-text{font-size:0.7rem;color:var(--text);line-height:1.4}
-.playbook-step-text strong{color:var(--gold)}
-.playbook-tip{background:rgba(155,89,182,0.08);border-left:3px solid var(--purple);padding:8px 10px;border-radius:0 8px 8px 0;margin-top:10px}
-.playbook-tip-title{font-size:0.55rem;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
-.playbook-tip-text{font-size:0.65rem;color:var(--muted);line-height:1.4}
-.demo-cta{width:100%;max-width:320px;margin-top:12px}
-.play-now-btn{width:100%;padding:14px 20px;border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:var(--text);box-shadow:0 4px 20px rgba(155,89,182,0.4);transition:all 0.3s;animation:demoPulse 2s ease-in-out infinite}
-.play-now-btn:active{transform:scale(0.98)}
-@keyframes demoPulse{0%,100%{box-shadow:0 4px 20px rgba(155,89,182,0.4)}50%{box-shadow:0 4px 30px rgba(155,89,182,0.7)}}
-.ritnome-promo{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:15px;padding:8px 14px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:20px}
-.ritnome-promo .pulse-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulseDot 1s ease-in-out infinite}
-@keyframes pulseDot{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
-.ritnome-promo-text{font-size:0.55rem;color:var(--muted);letter-spacing:1px}
-.ritnome-promo-text span{font-family:'Bebas Neue',sans-serif;color:var(--gold);font-size:0.7rem;letter-spacing:2px}
-#screen-trophy{background:var(--dark)}
-.trophy-container{max-width:420px;margin:0 auto;padding:15px 15px 40px}
-.trophy-header{text-align:center;margin-bottom:20px}
-.trophy-icon{font-size:2.5rem;margin-bottom:5px}
-.trophy-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--gold);margin-bottom:4px}
-.trophy-subtitle{font-size:0.75rem;color:var(--muted)}
-.bpm-section{margin-bottom:20px}
-.bpm-section-title{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:2px;color:var(--text);margin-bottom:10px;text-align:center}
-.bpm-tier{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:15px;margin-bottom:10px;cursor:pointer;transition:all 0.3s}
-.bpm-tier:active{transform:scale(0.98)}
-.bpm-tier.active{border-color:var(--purple);background:rgba(155,89,182,0.08)}
-.bpm-tier-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.bpm-tier-left{display:flex;align-items:center;gap:10px}
-.bpm-tier-icon{font-size:1.3rem}
-.bpm-tier-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;color:var(--text)}
-.bpm-tier-bpm{font-size:0.6rem;color:var(--muted)}
-.bpm-tier-status{font-size:0.7rem;padding:4px 10px;border-radius:10px;font-weight:600}
-.bpm-tier-status.unlocked{background:rgba(155,89,182,0.15);color:var(--purple)}
-.bpm-tier-progress{display:flex;align-items:center;justify-content:space-between}
-.bpm-level-badge{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--purple)}
-.bpm-score{font-size:0.7rem;color:var(--muted)}
-.level-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:20px}
-.level-section-title{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin-bottom:10px}
-.level-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.level-btn{aspect-ratio:1;border:2px solid var(--border);background:transparent;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--muted);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
-.level-btn:active{transform:scale(0.95)}
-.level-btn.active{border-color:var(--purple);color:var(--purple);background:rgba(155,89,182,0.1)}
-.level-info{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-.level-info-label{font-size:0.65rem;color:var(--muted)}
-.level-info-value{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--purple)}
-.letsgo-btn{width:100%;padding:16px 24px;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:var(--text);box-shadow:0 4px 20px rgba(155,89,182,0.3);transition:all 0.3s}
-.letsgo-btn:active{transform:scale(0.98)}
-
-/* PLAY SCREEN — clean open layout */
-#screen-play{background:var(--dark)}
-.play-container{display:flex;flex-direction:column;align-items:center;max-width:420px;margin:0 auto;min-height:calc(100dvh - var(--nav-height) - env(safe-area-inset-top) - 40px)}
-.play-stats{display:flex;justify-content:center;gap:16px;margin-bottom:10px;width:100%}
-.play-stat{text-align:center}
-.play-stat-value{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--purple)}
-.play-stat-label{font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.play-message{text-align:center;min-height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
-.play-message-text{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:2px;color:var(--text);transition:all 0.2s}
-.play-message-text.watch{color:var(--purple)}
-.play-message-text.go{color:var(--gold)}
-.play-message-text.perfect{color:var(--teal);text-shadow:0 0 10px var(--teal)}
-.play-message-text.good{color:var(--orange)}
-.play-message-text.miss{color:var(--pink)}
-.play-progress{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.play-progress-label{font-size:0.6rem;color:var(--muted);letter-spacing:1px}
-.play-progress-stars{display:flex;gap:8px}
-.play-progress-star{font-size:1rem;opacity:0.2;transition:all 0.3s}
-.play-progress-star.earned{opacity:1;transform:scale(1.2);filter:drop-shadow(0 0 4px var(--purple))}
-.play-court-wrap{width:100%;max-width:340px;margin:0 auto}
-.play-court{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:10px;background:var(--card);border:2px solid var(--border);border-radius:16px;aspect-ratio:1;position:relative;transition:border-color 0.15s,box-shadow 0.15s}
-.play-court.beat-pulse{border-color:var(--purple)!important;box-shadow:0 0 15px rgba(155,89,182,0.3)}
-.play-cell{aspect-ratio:1;border-radius:6px;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:1;transition:all 0.12s}
-.play-cell:active:not(.disabled){transform:scale(0.95)}
-.play-cell.target{background:var(--purple)!important;border-color:var(--purple)!important;box-shadow:0 0 22px var(--purple);transform:scale(1.08)}
-.play-cell.correct{background:var(--teal)!important;border-color:var(--teal)!important;box-shadow:0 0 12px rgba(0,217,165,0.5);transform:scale(1.02)}
-.play-cell.good-tap{background:var(--orange)!important;border-color:var(--orange)!important;box-shadow:0 0 12px var(--orange)}
-.play-cell.missed{background:rgba(255,20,147,0.3)!important;border-color:var(--pink)!important;animation:shake 0.3s ease-out}
-.play-court.joy-pulse{animation:joyPulse 0.5s ease-out}
-.play-court.shake{animation:shake 0.3s ease-out}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.play-info{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:340px;margin:10px auto 8px;padding:0 4px}
-.play-info-badge{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--purple);letter-spacing:1px}
-.play-info-lives{font-size:0.9rem;color:var(--pink)}
-.play-info-taps{font-family:'Bebas Neue',sans-serif;font-size:0.75rem;color:var(--muted);letter-spacing:1px}
-.play-info-score{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold)}
-.play-action-btn{width:100%;max-width:340px;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;cursor:pointer;margin-top:auto;box-shadow:0 4px 16px rgba(155,89,182,0.3)}
-.play-action-btn:active{transform:scale(0.97)}
-.play-action-btn:disabled{opacity:0.4;cursor:not-allowed}
-
-.emoji-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
-.burst-emoji{position:absolute;font-size:1.6rem;animation:emojiBurst 1.2s ease-out forwards}
-@keyframes emojiBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0.8) rotate(var(--rot))}}
-.coach-message{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--purple),var(--purple-light));color:var(--text);padding:10px 20px;border-radius:14px;font-weight:700;font-size:0.9rem;opacity:0;transition:all 0.3s;z-index:100}
-.coach-message.show{transform:translateX(-50%) translateY(0);opacity:1}
-.overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
-.overlay.show{display:flex}
-.overlay-card{background:var(--card);border:2px solid var(--purple);border-radius:14px;padding:25px;text-align:center;max-width:300px;width:100%}
-.overlay-emoji{font-size:2.8rem;margin-bottom:10px}
-.overlay-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--purple);margin-bottom:8px}
-.overlay-message{color:var(--muted);margin-bottom:15px;font-size:0.85rem;line-height:1.4}
-.overlay-btn{min-height:46px;padding:14px 28px;border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;cursor:pointer;margin:5px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:var(--text)}
-.overlay-btn:active{transform:scale(0.95)}
-@media(max-height:650px){.demo-court{width:200px;height:200px}.play-court-wrap{max-width:300px}}
-@media(max-height:550px){.demo-court{width:180px;height:180px}.play-court-wrap{max-width:260px}.play-stat-value{font-size:1.3rem}.play-message-text{font-size:.8rem}.play-action-btn{padding:10px;font-size:1rem}}
-@media(max-width:360px){.play-court-wrap{max-width:280px}.play-court{gap:3px;padding:6px}.demo-court{width:180px;height:180px}}
-
-/* === DESKTOP / PROMETHEAN LAYOUT (COLORS PRESERVED) ===
-@media(min-width:901px){
-:root{--nav-height:64px}
-.nav-row{height:64px;max-width:1280px;margin:0 auto;padding:0 20px}
-.screen{padding-top:calc(var(--nav-height) + env(safe-area-inset-top))}
-.demo-container{max-width:1280px!important;min-height:calc(100dvh - var(--nav-height));display:grid!important;grid-template-columns:420px 1fr!important;grid-template-areas:'header court' 'playbook court' 'cta court';gap:28px;align-items:center;padding:28px}
-.demo-header{grid-area:header;text-align:left}
-.demo-court-wrap{grid-area:court;justify-self:center;margin:0}
-.playbook-section{grid-area:playbook;max-width:420px}
-.demo-cta{grid-area:cta;max-width:420px}
-.demo-title{font-size:5rem;line-height:.88}
-.demo-subtitle{font-size:1rem}
-.demo-court{width:min(62vh,620px)!important;height:min(62vh,620px)!important;gap:8px;padding:14px;border-radius:22px}
-.demo-cell{border-radius:10px}
-.trophy-container{max-width:820px;padding:32px}
-.play-container{max-width:1280px!important;display:grid!important;grid-template-rows:auto auto auto 1fr auto auto;padding:22px 24px 40px}
-.play-stats{max-width:900px;margin:0 auto;gap:18px}
-.play-stat{background:rgba(255,255,255,.03);padding:14px;border-radius:16px}
-.play-court-wrap{max-width:min(72vh,760px)!important}
-.play-court{gap:8px;padding:14px;border-radius:22px}
-.play-cell{border-radius:10px}
-.play-cell .cell-num{font-size:2rem}
-.play-info,.play-action-btn{max-width:760px}
-.play-action-btn{min-height:60px;border-radius:999px}
+:root{
+  --purple:#9B59B6;
+  --purple-light:#A873B8;
+  --gold:#FFD700;
+  --teal:#00D9A5;
+  --pink:#FF1493;
+  --orange:#FF6B35;
+  --dark:#0a0a0f;
+  --darker:#050508;
+  --card:#111118;
+  --text:#FFFFFF;
+  --muted:#8892a0;
+  --border:rgba(255,255,255,0.12);
+  --nav-height:64px;
+  --accent:#9B59B6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 14% 5%,rgba(155,89,182,.22),transparent 28%),
+    radial-gradient(circle at 88% 12%,rgba(255,215,0,.08),transparent 30%),
+    linear-gradient(180deg,#0a0a0f,#050508 72%,#030305);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;
 }
 
+/* NAV */
+.mini-nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:1000;
+  padding-top:env(safe-area-inset-top);
+  background:rgba(10,10,15,.94);
+  border-bottom:2px solid rgba(155,89,182,.75);
+  box-shadow:0 0 24px rgba(155,89,182,.24);
+  backdrop-filter:blur(12px);
+}
+.nav-row{
+  height:64px;
+  max-width:1280px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.back-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border:2px solid rgba(155,89,182,.6);
+  background:rgba(155,89,182,.1);
+  color:#fff;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+.nav-title{
+  color:var(--purple);
+  font-size:clamp(1.15rem,2.4vw,1.8rem);
+  font-weight:900;
+  font-style:italic;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  text-shadow:0 0 16px rgba(155,89,182,.55);
+}
+.nav-title:after{content:"™";color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-lang{display:flex;gap:8px}
+.nav-lang-btn{
+  border:2px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:var(--muted);
+  border-radius:999px;
+  padding:8px 12px;
+  min-width:40px;
+  min-height:36px;
+  font-weight:900;
+  cursor:pointer;
+}
+.nav-lang-btn.active{
+  border-color:var(--gold);
+  color:var(--gold);
+  background:rgba(255,215,0,.08);
+}
+
+/* GENERAL SCREENS */
+.screen{
+  display:none;
+  width:100%;
+  min-height:100dvh;
+  padding-top:calc(var(--nav-height) + env(safe-area-inset-top));
+}
+.screen.active{display:block}
+
+/* STROBE-STYLE FRAME */
+.rc-shell{
+  width:min(1280px,96vw);
+  min-height:calc(100dvh - var(--nav-height));
+  margin:0 auto;
+  padding:18px 0 24px;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:14px;
+}
+.rc-header{
+  display:grid;
+  grid-template-columns:240px 1fr 240px;
+  align-items:center;
+  gap:16px;
+}
+.rc-title{
+  text-align:center;
+}
+.rc-kicker{
+  color:var(--gold);
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+.rc-main-title{
+  color:#fff;
+  font-size:clamp(2rem,5vw,4.8rem);
+  font-weight:900;
+  line-height:.88;
+  letter-spacing:.08em;
+  font-style:italic;
+  text-transform:uppercase;
+}
+.rc-main-title span{color:var(--purple)}
+.rc-subtitle{
+  margin-top:8px;
+  color:var(--muted);
+  font-weight:800;
+  font-size:clamp(.85rem,1.3vw,1.1rem);
+}
+.rc-wing{
+  min-height:76px;
+  border:2px solid rgba(155,89,182,.45);
+  background:rgba(17,17,24,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border-radius:18px;
+  padding:12px;
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+.rc-wing span{display:block;color:var(--gold);margin-top:4px}
+
+.rc-body{
+  min-height:0;
+  display:grid;
+  grid-template-columns:220px 1fr 220px;
+  gap:16px;
+  align-items:stretch;
+}
+.rc-rail{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.rc-card{
+  border:2px solid rgba(155,89,182,.45);
+  background:linear-gradient(180deg,rgba(17,17,24,.92),rgba(5,5,8,.95));
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 0 22px rgba(155,89,182,.16),inset 0 0 28px rgba(155,89,182,.05);
+}
+.rc-card-title{
+  color:var(--purple);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:10px;
+}
+.rc-big{
+  text-align:center;
+  color:#fff;
+  font-size:clamp(2rem,3.2vw,3.2rem);
+  font-weight:900;
+  line-height:1;
+}
+.rc-small{
+  text-align:center;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-top:6px;
+}
+.rc-btn{
+  width:100%;
+  min-height:48px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  font-size:.9rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(155,89,182,.35);
+}
+.rc-btn:active{transform:scale(.98)}
+
+.rc-center{
+  min-height:0;
+  display:grid;
+  grid-template-rows:34px 1fr;
+}
+.rc-court-label{
+  justify-self:center;
+  align-self:end;
+  border:2px solid rgba(155,89,182,.55);
+  border-bottom:none;
+  background:rgba(5,5,8,.96);
+  color:var(--gold);
+  padding:8px 36px 5px;
+  font-size:.86rem;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  border-radius:14px 14px 0 0;
+}
+.rc-court-stage{
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid rgba(155,89,182,.55);
+  background:rgba(17,17,24,.68);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 0 42px rgba(155,89,182,.18),inset 0 0 38px rgba(155,89,182,.06);
+}
+
+/* DEMO */
+.demo-left-copy{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.demo-badge{
+  display:inline-block;
+  width:max-content;
+  background:rgba(155,89,182,.14);
+  color:var(--purple);
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:.65rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  border:1px solid rgba(155,89,182,.32);
+}
+.demo-title{display:none}
+.demo-subtitle{display:none}
+.demo-court-wrap{
+  position:relative;
+}
+.demo-label{
+  position:absolute;
+  top:-38px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(5,5,8,.96);
+  color:var(--gold);
+  border:2px solid rgba(255,215,0,.28);
+  padding:7px 16px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  z-index:5;
+}
+.demo-label.phase-react{color:var(--purple);border-color:rgba(155,89,182,.55)}
+.demo-label.phase-success{color:var(--teal);border-color:rgba(0,217,165,.55)}
+.demo-court{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  width:min(64vh,640px);
+  height:min(64vh,640px);
+  max-width:640px;
+  max-height:640px;
+  padding:14px;
+  border-radius:22px;
+  position:relative;
+}
+.demo-cell{
+  aspect-ratio:1;
+  border-radius:12px;
+  background:rgba(255,255,255,.065);
+  border:2px solid rgba(255,255,255,.14);
+  transition:all .1s;
+}
+.demo-cell.lit{
+  background:var(--purple);
+  border-color:var(--purple-light);
+  box-shadow:0 0 24px rgba(155,89,182,.85);
+  transform:scale(1.06);
+}
+.demo-cell.correct{
+  background:var(--teal);
+  border-color:var(--teal);
+  box-shadow:0 0 16px rgba(0,217,165,.6);
+}
+.demo-court.joy-pulse{animation:joyPulse .5s ease-out}
+@keyframes joyPulse{0%{box-shadow:0 0 0 0 rgba(155,89,182,.7)}50%{box-shadow:0 0 28px 10px rgba(155,89,182,.38)}100%{box-shadow:none}}
+
+.playbook-section{
+  width:100%;
+}
+.playbook-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  padding:13px 16px;
+  background:rgba(155,89,182,.10);
+  border:2px solid rgba(155,89,182,.36);
+  border-radius:999px;
+  cursor:pointer;
+}
+.playbook-toggle-text{
+  color:var(--purple);
+  font-weight:900;
+  letter-spacing:.15em;
+  font-size:.76rem;
+}
+.playbook-toggle-arrow{color:var(--purple);transition:transform .3s}
+.playbook-toggle.open .playbook-toggle-arrow{transform:rotate(180deg)}
+.playbook-content{max-height:0;overflow:hidden;transition:max-height .45s ease-out}
+.playbook-content.open{max-height:2200px}
+.playbook-inner{padding:12px 0}
+.playbook-card{
+  background:rgba(17,17,24,.92);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.playbook-card-title{
+  color:var(--purple);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.playbook-step{
+  display:flex;
+  gap:9px;
+  margin-bottom:9px;
+}
+.playbook-step-num{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--purple);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.68rem;
+  font-weight:900;
+  flex-shrink:0;
+}
+.playbook-step-text{
+  color:#fff;
+  font-size:.78rem;
+  line-height:1.4;
+}
+.playbook-step-text strong{color:var(--gold)}
+.playbook-tip{
+  background:rgba(155,89,182,.08);
+  border-left:4px solid var(--purple);
+  padding:10px;
+  border-radius:0 10px 10px 0;
+}
+.playbook-tip-title{
+  color:var(--purple);
+  font-size:.6rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.playbook-tip-text{
+  color:var(--muted);
+  font-size:.72rem;
+}
+.demo-cta{width:100%}
+.play-now-btn{
+  width:100%;
+  min-height:58px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 22px rgba(155,89,182,.42);
+}
+.ritnome-promo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:9px 12px;
+  border-radius:999px;
+  background:rgba(255,215,0,.06);
+  border:1px solid rgba(255,215,0,.16);
+}
+.pulse-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  animation:pulseDot 1s infinite;
+}
+@keyframes pulseDot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.ritnome-promo-text{
+  color:var(--muted);
+  font-size:.58rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.ritnome-promo-text span{color:var(--gold);font-weight:900}
+
+/* TROPHY / SELECT */
+.trophy-container{
+  width:min(900px,94vw);
+  margin:0 auto;
+  padding:24px 0 40px;
+}
+.trophy-header{text-align:center;margin-bottom:18px}
+.trophy-icon{font-size:2.8rem}
+.trophy-title{
+  font-size:clamp(2rem,4vw,3.7rem);
+  color:var(--gold);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.trophy-subtitle{color:var(--muted);font-weight:800}
+.bpm-section{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+.bpm-section-title{
+  grid-column:1/-1;
+  color:var(--purple);
+  font-size:.8rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-align:center;
+  text-transform:uppercase;
+}
+.bpm-tier{
+  background:rgba(17,17,24,.92);
+  border:2px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:16px;
+  cursor:pointer;
+}
+.bpm-tier.active{
+  border-color:var(--purple);
+  background:rgba(155,89,182,.1);
+  box-shadow:0 0 20px rgba(155,89,182,.2);
+}
+.bpm-tier-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.bpm-tier-left{display:flex;align-items:center;gap:10px}
+.bpm-tier-icon{font-size:1.4rem}
+.bpm-tier-name{
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.bpm-tier-bpm{color:var(--muted);font-size:.7rem;font-weight:900}
+.bpm-tier-status{
+  color:var(--purple);
+  font-size:.65rem;
+  font-weight:900;
+}
+.bpm-tier-progress{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:.78rem;
+}
+.bpm-level-badge{color:var(--purple);font-weight:900}
+.level-section{
+  background:rgba(17,17,24,.92);
+  border:2px solid rgba(155,89,182,.32);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+}
+.level-section-title{
+  color:var(--purple);
+  text-align:center;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-size:.78rem;
+  margin-bottom:12px;
+}
+.level-grid{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:8px;
+}
+.level-btn{
+  aspect-ratio:1;
+  border:2px solid rgba(255,255,255,.12);
+  background:transparent;
+  color:var(--muted);
+  border-radius:10px;
+  font-weight:900;
+  cursor:pointer;
+}
+.level-btn.active{
+  border-color:var(--purple);
+  color:#fff;
+  background:rgba(155,89,182,.16);
+}
+.level-info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.level-info-label{color:var(--muted);font-size:.8rem}
+.level-info-value{color:var(--purple);font-weight:900}
+.letsgo-btn{
+  width:100%;
+  min-height:58px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+/* PLAY */
+.play-container{
+  width:min(1280px,96vw);
+  min-height:calc(100dvh - var(--nav-height));
+  margin:0 auto;
+  padding:18px 0 24px;
+  display:grid;
+  grid-template-rows:auto auto auto 1fr auto auto;
+  gap:10px;
+}
+.play-stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.play-stat{
+  background:rgba(17,17,24,.86);
+  border:2px solid rgba(155,89,182,.30);
+  border-radius:16px;
+  padding:11px 10px;
+  text-align:center;
+}
+.play-stat-value{
+  color:var(--purple);
+  font-size:clamp(1.7rem,3vw,2.7rem);
+  font-weight:900;
+  line-height:1;
+}
+.play-stat-label{
+  color:var(--muted);
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.play-message{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.play-message-text{
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.play-message-text.watch{color:var(--purple)}
+.play-message-text.go{color:var(--gold)}
+.play-message-text.perfect{color:var(--teal)}
+.play-message-text.good{color:var(--orange)}
+.play-message-text.miss{color:var(--pink)}
+.play-progress{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+}
+.play-progress-label{
+  color:var(--muted);
+  font-size:.65rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.play-progress-stars{display:flex;gap:8px}
+.play-progress-star{opacity:.22}
+.play-progress-star.earned{
+  opacity:1;
+  transform:scale(1.2);
+  filter:drop-shadow(0 0 4px var(--purple));
+}
+.play-court-wrap{
+  max-width:min(70vh,720px);
+  width:100%;
+  margin:0 auto;
+}
+.play-court{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  padding:14px;
+  background:rgba(17,17,24,.85);
+  border:2px solid rgba(155,89,182,.48);
+  border-radius:22px;
+  aspect-ratio:1;
+  box-shadow:0 0 42px rgba(155,89,182,.18),inset 0 0 38px rgba(155,89,182,.06);
+}
+.play-court.beat-pulse{
+  border-color:var(--purple);
+  box-shadow:0 0 22px rgba(155,89,182,.45);
+}
+.play-cell{
+  aspect-ratio:1;
+  border-radius:12px;
+  background:rgba(255,255,255,.065);
+  border:2px solid rgba(255,255,255,.14);
+  cursor:pointer;
+  transition:all .12s;
+}
+.play-cell.target{
+  background:var(--purple)!important;
+  border-color:var(--purple-light)!important;
+  box-shadow:0 0 24px rgba(155,89,182,.85);
+  transform:scale(1.08);
+}
+.play-cell.correct{
+  background:var(--teal)!important;
+  border-color:var(--teal)!important;
+}
+.play-cell.good-tap{
+  background:var(--orange)!important;
+  border-color:var(--orange)!important;
+}
+.play-cell.missed{
+  background:rgba(255,20,147,.3)!important;
+  border-color:var(--pink)!important;
+  animation:shake .3s ease-out;
+}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.play-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:720px;
+  width:100%;
+  margin:0 auto;
+}
+.play-info-badge{color:var(--purple);font-weight:900;letter-spacing:.08em}
+.play-info-lives{color:var(--pink)}
+.play-info-taps{color:var(--muted)}
+.play-info-score{color:var(--gold);font-weight:900}
+.play-action-btn{
+  width:100%;
+  max-width:720px;
+  min-height:58px;
+  margin:0 auto;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.play-action-btn:disabled{opacity:.45}
+
+/* EFFECTS */
+.emoji-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.burst-emoji{position:absolute;font-size:1.6rem;animation:emojiBurst 1.2s ease-out forwards}
+@keyframes emojiBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.8) rotate(var(--rot))}}
+.coach-message{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  padding:11px 22px;
+  border-radius:16px;
+  font-weight:900;
+  opacity:0;
+  transition:.3s;
+  z-index:100;
+}
+.coach-message.show{transform:translateX(-50%) translateY(0);opacity:1}
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+  padding:20px;
+}
+.overlay.show{display:flex}
+.overlay-card{
+  background:rgba(17,17,24,.98);
+  border:2px solid var(--purple);
+  border-radius:18px;
+  padding:28px;
+  text-align:center;
+  max-width:340px;
+  width:100%;
+}
+.overlay-emoji{font-size:3rem;margin-bottom:10px}
+.overlay-title{
+  color:var(--purple);
+  font-size:1.4rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.overlay-message{
+  color:var(--muted);
+  margin:12px 0 18px;
+}
+.overlay-btn{
+  min-height:48px;
+  padding:12px 28px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  :root{--nav-height:58px}
+  .nav-row{height:58px;padding:0 10px}
+  .nav-title{font-size:1rem}
+  .back-btn{padding:8px 10px;font-size:.68rem}
+  .nav-lang-btn{min-width:34px;min-height:32px;padding:6px 8px}
+  .rc-shell{
+    width:min(430px,94vw);
+    min-height:auto;
+    display:block;
+    padding:14px 0 28px;
+  }
+  .rc-header{
+    display:block;
+    text-align:center;
+  }
+  .rc-wing{display:none}
+  .rc-main-title{font-size:2rem;line-height:.95}
+  .rc-subtitle{font-size:.78rem}
+  .rc-body{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .rc-rail{gap:10px}
+  .rc-card{padding:12px}
+  .rc-center{display:block}
+  .rc-court-label{
+    display:block;
+    text-align:center;
+    margin:12px auto 0;
+    width:max-content;
+    max-width:100%;
+    font-size:.68rem;
+  }
+  .rc-court-stage{padding:10px;border-radius:18px}
+  .demo-court{
+    width:min(86vw,340px);
+    height:min(86vw,340px);
+    gap:6px;
+    padding:10px;
+  }
+  .demo-cell{border-radius:8px}
+  .bpm-section{
+    grid-template-columns:1fr;
+  }
+  .level-grid{grid-template-columns:repeat(5,1fr)}
+  .play-container{
+    width:min(430px,94vw);
+    min-height:calc(100dvh - var(--nav-height));
+    padding:12px 0 28px;
+    display:flex;
+    flex-direction:column;
+  }
+  .play-stats{gap:7px}
+  .play-stat{padding:8px 6px}
+  .play-stat-value{font-size:1.45rem}
+  .play-court-wrap{max-width:min(88vw,360px)}
+  .play-court{gap:6px;padding:9px;border-radius:16px}
+  .play-cell{border-radius:7px}
+  .play-info,.play-action-btn{max-width:360px}
+}
+@media(max-width:360px){
+  .demo-court{width:300px;height:300px}
+  .play-court-wrap{max-width:300px}
+  .play-court{gap:4px;padding:7px}
+}
 </style>
 </head>
 <body>
+
 <nav class="mini-nav">
-<div class="nav-row">
-<a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
-<div class="nav-title">Reactific</div>
-<div class="nav-right">
-<div class="nav-lang">
-<button class="nav-lang-btn" id="langEN">EN</button>
-<button class="nav-lang-btn active" id="langES">ES</button>
-</div>
-</div>
-</div>
+  <div class="nav-row">
+    <a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
+    <div class="nav-title">Reactific</div>
+    <div class="nav-right">
+      <div class="nav-lang">
+        <button class="nav-lang-btn" id="langEN">EN</button>
+        <button class="nav-lang-btn active" id="langES">ES</button>
+      </div>
+    </div>
+  </div>
 </nav>
+
 <div class="screen active" id="screen-demo">
-<div class="demo-container">
-<div class="demo-header">
-<div class="demo-badge" id="demoBadge">Reaction Training</div>
-<h1 class="demo-title">Reaction Control</h1>
-<p class="demo-subtitle" id="demoSubtitle">The Single-Beat Brake Read</p>
+  <div class="rc-shell">
+    <header class="rc-header">
+      <div class="rc-wing">Reaction<br><span>Training</span></div>
+      <div class="rc-title">
+        <div class="rc-kicker" id="demoBadge">Reaction Training</div>
+        <div class="rc-main-title">Reaction <span>Control</span></div>
+        <div class="rc-subtitle" id="demoSubtitle">The Single-Beat Brake Read</div>
+      </div>
+      <div class="rc-wing">Purple Court<br><span>Beat Read</span></div>
+    </header>
+
+    <main class="rc-body">
+      <aside class="rc-rail">
+        <div class="rc-card">
+          <div class="rc-card-title">Mission</div>
+          <div class="rc-small">See the light. Tap the cell. Reset instantly.</div>
+        </div>
+
+        <div class="playbook-section">
+          <div class="playbook-toggle" id="playbookToggle">
+            <span class="playbook-toggle-icon">📖</span>
+            <span class="playbook-toggle-text" id="pbText">THE PLAYBOOK</span>
+            <span class="playbook-toggle-arrow">▼</span>
+          </div>
+          <div class="playbook-content" id="playbookContent">
+            <div class="playbook-inner">
+              <div class="playbook-card">
+                <div class="playbook-card-title">🎯 <span id="objT">OBJECTIVE</span></div>
+                <div class="playbook-step"><div class="playbook-step-num">1</div><div class="playbook-step-text" id="s1">A cell <strong>lights up purple</strong> on the grid</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">2</div><div class="playbook-step-text" id="s2"><strong>Tap it</strong> as fast as you can!</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">3</div><div class="playbook-step-text" id="s3">Next cell lights up — <strong>react again!</strong></div></div>
+              </div>
+              <div class="playbook-card">
+                <div class="playbook-card-title">⭐ <span id="progT">PROGRESSION</span></div>
+                <div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p1">Get <strong>2 perfect rounds</strong> to level up</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p2">Higher levels = <strong>more cells</strong> per round</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p3">You have <strong>3 lives (♥♥♥)</strong> per round</div></div>
+              </div>
+              <div class="playbook-card">
+                <div class="playbook-card-title">⚡ <span id="spdT">BPM SPEEDS</span></div>
+                <div class="playbook-step"><div class="playbook-step-num">🏋️</div><div class="playbook-step-text" id="sp1"><strong>Training (60 BPM)</strong> — 1 cell per second</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">🎯</div><div class="playbook-step-text" id="sp2"><strong>Tempo (90 BPM)</strong> — Faster rhythm</div></div>
+                <div class="playbook-step"><div class="playbook-step-num">⚡</div><div class="playbook-step-text" id="sp3"><strong>Elite (120 BPM)</strong> — 2 cells per second!</div></div>
+                <div class="playbook-tip">
+                  <div class="playbook-tip-title">💡 <span id="tipT">TIP</span></div>
+                  <div class="playbook-tip-text" id="tipTx">Keep your eyes on the whole grid — don't tunnel vision on one area!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="rc-center">
+        <div class="rc-court-label">Live Demo Court</div>
+        <div class="rc-court-stage">
+          <div class="demo-court-wrap">
+            <div class="demo-label" id="demoLabel">⚡ REACT!</div>
+            <div class="demo-court" id="demoCourt"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="rc-rail">
+        <div class="rc-card">
+          <div class="rc-card-title">Reaction Rule</div>
+          <div class="rc-big">1</div>
+          <div class="rc-small">cell lights at a time</div>
+        </div>
+        <div class="rc-card">
+          <div class="rc-card-title">Start</div>
+          <div class="demo-cta">
+            <button class="play-now-btn" id="playNowBtn">▶ PLAY NOW</button>
+          </div>
+        </div>
+        <div class="ritnome-promo">
+          <div class="pulse-dot"></div>
+          <div class="ritnome-promo-text"><span id="pwBy">Powered by</span> <span>Reactific™</span></div>
+        </div>
+      </aside>
+    </main>
+  </div>
 </div>
-<div class="demo-court-wrap">
-<div class="demo-label" id="demoLabel">⚡ REACT!</div>
-<div class="demo-court" id="demoCourt"></div>
-</div>
-<div class="playbook-section">
-<div class="playbook-toggle" id="playbookToggle">
-<span class="playbook-toggle-icon">📖</span>
-<span class="playbook-toggle-text" id="pbText">THE PLAYBOOK</span>
-<span class="playbook-toggle-arrow">▼</span>
-</div>
-<div class="playbook-content" id="playbookContent">
-<div class="playbook-inner">
-<div class="playbook-card">
-<div class="playbook-card-title">🎯 <span id="objT">OBJECTIVE</span></div>
-<div class="playbook-step"><div class="playbook-step-num">1</div><div class="playbook-step-text" id="s1">A cell <strong>lights up purple</strong> on the grid</div></div>
-<div class="playbook-step"><div class="playbook-step-num">2</div><div class="playbook-step-text" id="s2"><strong>Tap it</strong> as fast as you can!</div></div>
-<div class="playbook-step"><div class="playbook-step-num">3</div><div class="playbook-step-text" id="s3">Next cell lights up — <strong>react again!</strong></div></div>
-</div>
-<div class="playbook-card">
-<div class="playbook-card-title">⭐ <span id="progT">PROGRESSION</span></div>
-<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p1">Get <strong>2 perfect rounds</strong> to level up</div></div>
-<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p2">Higher levels = <strong>more cells</strong> per round</div></div>
-<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p3">You have <strong>3 lives (♥♥♥)</strong> per round</div></div>
-</div>
-<div class="playbook-card">
-<div class="playbook-card-title">⚡ <span id="spdT">BPM SPEEDS</span></div>
-<div class="playbook-step"><div class="playbook-step-num">🏋️</div><div class="playbook-step-text" id="sp1"><strong>Training (60 BPM)</strong> — 1 cell per second</div></div>
-<div class="playbook-step"><div class="playbook-step-num">🎯</div><div class="playbook-step-text" id="sp2"><strong>Tempo (90 BPM)</strong> — Faster rhythm</div></div>
-<div class="playbook-step"><div class="playbook-step-num">⚡</div><div class="playbook-step-text" id="sp3"><strong>Elite (120 BPM)</strong> — 2 cells per second!</div></div>
-<div class="playbook-tip">
-<div class="playbook-tip-title">💡 <span id="tipT">TIP</span></div>
-<div class="playbook-tip-text" id="tipTx">Keep your eyes on the whole grid — don't tunnel vision on one area!</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="demo-cta">
-<button class="play-now-btn" id="playNowBtn">▶ PLAY NOW</button>
-</div>
-<div class="ritnome-promo">
-<div class="pulse-dot"></div>
-<div class="ritnome-promo-text"><span id="pwBy">Powered by</span> <span>Reactific™</span></div>
-</div>
-</div>
-</div>
+
 <div class="screen" id="screen-trophy">
-<div class="trophy-container">
-<div class="trophy-header">
-<div class="trophy-icon">⚡</div>
-<h1 class="trophy-title" id="trT">YOUR PROGRESS</h1>
-<p class="trophy-subtitle" id="trS">Reaction Control Levels</p>
+  <div class="trophy-container">
+    <div class="trophy-header">
+      <div class="trophy-icon">⚡</div>
+      <h1 class="trophy-title" id="trT">YOUR PROGRESS</h1>
+      <p class="trophy-subtitle" id="trS">Reaction Control Levels</p>
+    </div>
+
+    <div class="bpm-section">
+      <div class="bpm-section-title" id="ssT">SELECT BPM SPEED</div>
+      <div class="bpm-tier active" id="tierSlow" data-speed="slow">
+        <div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🏋️</span><div><div class="bpm-tier-name">TRAINING</div><div class="bpm-tier-bpm">60 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsS">✓ FREE</span></div>
+        <div class="bpm-tier-progress"><span class="bpm-level-badge" id="lS">LEVEL 1</span><span class="bpm-score" id="sS">0 pts</span></div>
+      </div>
+      <div class="bpm-tier" id="tierMed" data-speed="med">
+        <div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🎯</span><div><div class="bpm-tier-name">TEMPO</div><div class="bpm-tier-bpm">90 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsM">✓ FREE</span></div>
+        <div class="bpm-tier-progress"><span class="bpm-level-badge" id="lM">LEVEL 1</span><span class="bpm-score" id="sM">0 pts</span></div>
+      </div>
+      <div class="bpm-tier" id="tierFast" data-speed="fast">
+        <div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">⚡</span><div><div class="bpm-tier-name">ELITE</div><div class="bpm-tier-bpm">120 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsF">✓ FREE</span></div>
+        <div class="bpm-tier-progress"><span class="bpm-level-badge" id="lF">LEVEL 1</span><span class="bpm-score" id="sF">0 pts</span></div>
+      </div>
+    </div>
+
+    <div class="level-section">
+      <div class="level-section-title" id="slT">SELECT LEVEL</div>
+      <div class="level-grid" id="levelGrid">
+        <button class="level-btn active" data-level="1">1</button><button class="level-btn" data-level="2">2</button><button class="level-btn" data-level="3">3</button><button class="level-btn" data-level="4">4</button><button class="level-btn" data-level="5">5</button><button class="level-btn" data-level="6">6</button><button class="level-btn" data-level="7">7</button><button class="level-btn" data-level="8">8</button><button class="level-btn" data-level="9">9</button><button class="level-btn" data-level="10">10</button>
+      </div>
+      <div class="level-info"><span class="level-info-label" id="cpbL">Cells per round:</span><span class="level-info-value" id="cpbV">3</span></div>
+    </div>
+
+    <button class="letsgo-btn" id="letsGoBtn">LET'S GO!</button>
+  </div>
 </div>
-<div class="bpm-section">
-<div class="bpm-section-title" id="ssT">SELECT BPM SPEED</div>
-<div class="bpm-tier active" id="tierSlow" data-speed="slow">
-<div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🏋️</span><div class="bpm-tier-info"><div class="bpm-tier-name">TRAINING</div><div class="bpm-tier-bpm">60 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsS">✓ FREE</span></div>
-<div class="bpm-tier-progress"><span class="bpm-level-badge" id="lS">LEVEL 1</span><span class="bpm-score" id="sS">0 pts</span></div>
-</div>
-<div class="bpm-tier" id="tierMed" data-speed="med">
-<div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🎯</span><div class="bpm-tier-info"><div class="bpm-tier-name">TEMPO</div><div class="bpm-tier-bpm">90 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsM">✓ FREE</span></div>
-<div class="bpm-tier-progress"><span class="bpm-level-badge" id="lM">LEVEL 1</span><span class="bpm-score" id="sM">0 pts</span></div>
-</div>
-<div class="bpm-tier" id="tierFast" data-speed="fast">
-<div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">⚡</span><div class="bpm-tier-info"><div class="bpm-tier-name">ELITE</div><div class="bpm-tier-bpm">120 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsF">✓ FREE</span></div>
-<div class="bpm-tier-progress"><span class="bpm-level-badge" id="lF">LEVEL 1</span><span class="bpm-score" id="sF">0 pts</span></div>
-</div>
-</div>
-<div class="level-section">
-<div class="level-section-title" id="slT">SELECT LEVEL</div>
-<div class="level-grid" id="levelGrid"><button class="level-btn active" data-level="1">1</button><button class="level-btn" data-level="2">2</button><button class="level-btn" data-level="3">3</button><button class="level-btn" data-level="4">4</button><button class="level-btn" data-level="5">5</button><button class="level-btn" data-level="6">6</button><button class="level-btn" data-level="7">7</button><button class="level-btn" data-level="8">8</button><button class="level-btn" data-level="9">9</button><button class="level-btn" data-level="10">10</button></div>
-<div class="level-info"><span class="level-info-label" id="cpbL">Cells per round:</span><span class="level-info-value" id="cpbV">3</span></div>
-</div>
-<button class="letsgo-btn" id="letsGoBtn">LET'S GO!</button>
-</div>
-</div>
+
 <div class="screen" id="screen-play">
-<div class="play-container">
-<div class="play-stats">
-<div class="play-stat"><div class="play-stat-value" id="pLv">1</div><div class="play-stat-label" id="pLvL">Level</div></div>
-<div class="play-stat"><div class="play-stat-value" id="pRd">0</div><div class="play-stat-label" id="pRdL">Round</div></div>
-<div class="play-stat"><div class="play-stat-value" id="pSt">0</div><div class="play-stat-label">🔥</div></div>
-<div class="play-stat"><div class="play-stat-value" id="pSc">0</div><div class="play-stat-label" id="pScL">Score</div></div>
+  <div class="play-container">
+    <div class="play-stats">
+      <div class="play-stat"><div class="play-stat-value" id="pLv">1</div><div class="play-stat-label" id="pLvL">Level</div></div>
+      <div class="play-stat"><div class="play-stat-value" id="pRd">0</div><div class="play-stat-label" id="pRdL">Round</div></div>
+      <div class="play-stat"><div class="play-stat-value" id="pSt">0</div><div class="play-stat-label">🔥</div></div>
+      <div class="play-stat"><div class="play-stat-value" id="pSc">0</div><div class="play-stat-label" id="pScL">Score</div></div>
+    </div>
+
+    <div class="play-message"><span class="play-message-text" id="pMsg">TAP TO START!</span></div>
+
+    <div class="play-progress"><span class="play-progress-label" id="luL">LEVEL UP:</span><div class="play-progress-stars"><span class="play-progress-star" id="st1">⭐</span><span class="play-progress-star" id="st2">⭐</span></div></div>
+
+    <div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
+
+    <div class="play-info">
+      <div class="play-info-badge" id="pBdg">L1 TRAINING</div>
+      <div class="play-info-lives" id="pLiv">♥♥♥</div>
+      <div class="play-info-taps" id="pTap">0/3</div>
+      <div class="play-info-score" id="pTot">0</div>
+    </div>
+
+    <button class="play-action-btn" id="pAct">LET'S GO</button>
+  </div>
 </div>
-<div class="play-message"><span class="play-message-text" id="pMsg">TAP TO START!</span></div>
-<div class="play-progress"><span class="play-progress-label" id="luL">LEVEL UP:</span><div class="play-progress-stars"><span class="play-progress-star" id="st1">⭐</span><span class="play-progress-star" id="st2">⭐</span></div></div>
-<div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
-<div class="play-info">
-<div class="play-info-badge" id="pBdg">L1 TRAINING</div>
-<div class="play-info-lives" id="pLiv">♥♥♥</div>
-<div class="play-info-taps" id="pTap">0/3</div>
-<div class="play-info-score" id="pTot">0</div>
-</div>
-<button class="play-action-btn" id="pAct">LET'S GO</button>
-</div>
-</div>
+
 <div class="overlay" id="luOvl">
-<div class="overlay-card">
-<div class="overlay-emoji">⭐</div>
-<h2 class="overlay-title" id="luTtl">LEVEL UP!</h2>
-<p class="overlay-message" id="luMsg"></p>
-<button class="overlay-btn" id="luBtn">LET'S GO!</button>
+  <div class="overlay-card">
+    <div class="overlay-emoji">⭐</div>
+    <h2 class="overlay-title" id="luTtl">LEVEL UP!</h2>
+    <p class="overlay-message" id="luMsg"></p>
+    <button class="overlay-btn" id="luBtn">LET'S GO!</button>
+  </div>
 </div>
-</div>
+
 <div class="emoji-container" id="emoC"></div>
 <div class="coach-message" id="coach"></div>
 <script>
