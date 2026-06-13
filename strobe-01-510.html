@@ -414,11 +414,11 @@ body{
   </main>
 
   <section class="controls">
-    <button class="hudbtn" id="practice">Practice<span>5×5</span></button>
-    <button class="hudbtn" id="compete">Compete<span>5×10</span></button>
+    <button class="hudbtn" id="practice">Practice<span>5×5 Free</span></button>
+    <button class="hudbtn" id="compete">Compete<span>5×10 Active</span></button>
     <button class="start" id="start">Start Round</button>
     <button class="hudbtn" id="fullscreen">Fullscreen<span>Toggle</span></button>
-    <button class="hudbtn" id="menu">Sign-Up | Sign-In<span>Home</span></button>
+    <button class="hudbtn" id="menu">Sign-Up | Sign-In<span>Account</span></button>
   </section>
 
   <footer class="bottom">
@@ -536,12 +536,15 @@ function tap(cell){
 }
 
 document.getElementById('fullscreen').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
-document.getElementById('menu').onclick=()=>location.href='/';
 document.getElementById('practice').onclick=()=>{
  location.href='https://reactificgaming.com/strobe-01.html';
 };
 
 document.getElementById('compete').onclick=()=>{
+ show('5×10 Active');
+};
+
+document.getElementById('menu').onclick=()=>{
  location.href='https://reactificgaming.com/compete/com-01.html';
 };
 
