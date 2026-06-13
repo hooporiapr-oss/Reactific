@@ -136,7 +136,7 @@ body{background:radial-gradient(circle at 16% 5%,rgba(0,140,255,.24),transparent
     <button class="hudbtn" id="compete">Compete<span>Subscribe</span></button>
     <button class="start" id="start">Start Round</button>
     <button class="hudbtn" id="fullscreen">Fullscreen<span>Toggle</span></button>
-    <button class="hudbtn" id="menu">Practice Free<span>5 × 5</span></button>
+    <button class="hudbtn" id="menu">Menu<span>Home</span></button>
   </section>
 
   <footer class="bottom">
@@ -150,7 +150,7 @@ body{background:radial-gradient(circle at 16% 5%,rgba(0,140,255,.24),transparent
 
 <script>
 (function(){
-let GRID_SIZE=50;let gridMode='5x10';
+const GRID_SIZE=50;
 const court=document.getElementById('court'),start=document.getElementById('start'),notice=document.getElementById('notice');
 const levelEl=document.getElementById('level'),targetCountEl=document.getElementById('targetCount'),streakEl=document.getElementById('streak');
 const targetDisplay=document.getElementById('targetDisplay'),clockDisplay=document.getElementById('clockDisplay'),scoreDisplay=document.getElementById('score');
@@ -212,27 +212,7 @@ function tap(cell){
 }
 
 document.getElementById('fullscreen').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
-document.getElementById('menu').onclick=()=>{
-  if(playing)return;
-  if(gridMode==='5x10'){
-    gridMode='5x5';GRID_SIZE=25;
-    court.style.gridTemplateColumns='repeat(5,1fr)';
-    court.style.aspectRatio='1';
-    document.querySelector('.grid-title').textContent='Free Practice — 5 × 5 Grid';
-    document.getElementById('menu').innerHTML='5 × 10 Challenge<span>Switch</span>';
-    document.querySelector('.brand-sub').textContent='Shot-Clock Challenges™ · STROBE™ Training';
-    document.querySelector('.header-left').textContent='Practice Mode';
-  }else{
-    gridMode='5x10';GRID_SIZE=50;
-    court.style.gridTemplateColumns='repeat(10,1fr)';
-    court.style.aspectRatio='2/1';
-    document.querySelector('.grid-title').textContent='5 × 10 Challenge — 50 Cells';
-    document.getElementById('menu').innerHTML='Practice Free<span>5 × 5</span>';
-    document.querySelector('.brand-sub').textContent='5 × 10 Challenge™ · STROBE™ Training';
-    document.querySelector('.header-left').textContent='5 × 10 Challenge';
-  }
-  level=1;streak=0;score=0;update();build();
-};
+document.getElementById('menu').onclick=()=>location.href='/';
 document.getElementById('compete').onclick=()=>location.href='https://reactificgaming.com/compete/com-01.html';
 
 start.onclick=startRound;build();update();
