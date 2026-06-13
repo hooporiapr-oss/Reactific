@@ -17,7 +17,7 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID;
-const CLIENT_URL = process.env.CLIENT_URL || 'https://reactific.co';
+const CLIENT_URL = process.env.CLIENT_URL || 'https://reactificgaming.com';
 
 const pool = new Pool({
   connectionString: DATABASE_URL,
