@@ -62,12 +62,12 @@ body:before{content:"";position:fixed;inset:0;background-image:radial-gradient(r
 .rc-court-stage{min-height:0;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,107,53,.55);background:rgba(17,17,24,.68);border-radius:22px;padding:16px;box-shadow:0 0 42px rgba(255,107,53,.16),inset 0 0 38px rgba(255,107,53,.06)}
 .demo-badge{display:inline-block;width:max-content;background:rgba(255,107,53,.14);color:var(--orange);padding:8px 16px;border-radius:999px;font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.15em;border:1px solid rgba(255,107,53,.32)}
 .demo-title{display:none}.demo-subtitle{display:none}
-.demo-court-wrap{position:relative}
+.demo-court-wrap{position:relative;display:flex;justify-content:center}
 .demo-label{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:rgba(5,5,8,.96);color:var(--gold);border:2px solid rgba(255,215,0,.28);padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;z-index:5}
 .demo-label.phase-watch{color:var(--gold);border-color:rgba(255,215,0,.45)}
 .demo-label.phase-recall{color:var(--orange);border-color:rgba(255,107,53,.55)}
 .demo-label.phase-success{color:var(--teal);border-color:rgba(0,217,165,.55)}
-.demo-court{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;width:min(90vw,1100px);height:min(45vh,550px);max-width:1100px;max-height:550px;padding:14px;border-radius:22px;position:relative}
+.demo-court{display:grid;grid-template-columns:repeat(10,1fr);margin:0 auto;gap:8px;width:min(90vw,1100px);height:min(45vh,550px);max-width:1100px;max-height:550px;padding:14px;border-radius:22px;position:relative}
 .demo-court::before{display:none}
 .demo-cell{border-radius:12px;background:rgba(255,255,255,.065);border:2px solid rgba(255,255,255,.14);transition:all .15s;color:transparent;display:flex;align-items:center;justify-content:center;font-size:clamp(1rem,2vw,2rem);font-weight:900}
 .demo-cell.lit{background:var(--orange);border-color:var(--gold);box-shadow:0 0 24px rgba(255,107,53,.85);color:#fff;transform:scale(1.06)}
