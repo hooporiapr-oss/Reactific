@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Reaction Control 5×10 | REACTIFIC™</title>
+<link rel="icon" type="image/png" href="bpm-basketball.png">
+<style>
+:root{
+  --purple:#9B59B6;--purple-light:#A873B8;--gold:#FFD700;--teal:#00D9A5;--pink:#FF1493;--orange:#FF6B35;
+  --dark:#0a0a0f;--darker:#050508;--card:#111118;--text:#FFFFFF;--muted:#8892a0;--border:rgba(255,255,255,0.12);--nav-height:64px;--accent:#9B59B6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;overflow-x:hidden;background:radial-gradient(circle at 14% 5%,rgba(155,89,182,.22),transparent 28%),radial-gradient(circle at 88% 12%,rgba(255,215,0,.08),transparent 30%),linear-gradient(180deg,#0a0a0f,#050508 72%,#030305);color:var(--text);font-family:Arial,Helvetica,sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+body:before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.mini-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding-top:env(safe-area-inset-top);background:rgba(10,10,15,.94);border-bottom:2px solid rgba(155,89,182,.75);box-shadow:0 0 24px rgba(155,89,182,.24);backdrop-filter:blur(12px)}
+.nav-row{height:64px;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.back-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:2px solid rgba(155,89,182,.6);background:rgba(155,89,182,.1);color:#fff;border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-decoration:none;text-transform:uppercase}
+.nav-title{color:var(--purple);font-size:clamp(1.15rem,2.4vw,1.8rem);font-weight:900;font-style:italic;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 0 16px rgba(155,89,182,.55)}
+.nav-title:after{content:"™";color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-lang{display:flex;gap:8px}
+.nav-lang-btn{border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--muted);border-radius:999px;padding:8px 12px;min-width:40px;min-height:36px;font-weight:900;cursor:pointer}
+.nav-lang-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.08)}
+.screen{display:none;width:100%;min-height:100dvh;padding-top:calc(var(--nav-height) + env(safe-area-inset-top))}.screen.active{display:block}
+.rc-shell{width:min(1280px,96vw);min-height:calc(100dvh - var(--nav-height));margin:0 auto;padding:18px 0 24px;display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.rc-header{display:grid;grid-template-columns:240px 1fr 240px;align-items:center;gap:16px}
+.rc-title{text-align:center}
+.rc-kicker{color:var(--gold);font-size:.78rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.rc-main-title{color:#fff;font-size:clamp(2rem,5vw,4.8rem);font-weight:900;line-height:.88;letter-spacing:.08em;font-style:italic;text-transform:uppercase}
+.rc-main-title span{color:var(--purple)}
+.rc-subtitle{margin-top:8px;color:var(--muted);font-weight:800;font-size:clamp(.85rem,1.3vw,1.1rem)}
+.rc-wing{min-height:76px;border:2px solid rgba(155,89,182,.45);background:rgba(17,17,24,.75);display:flex;align-items:center;justify-content:center;text-align:center;border-radius:18px;padding:12px;color:#fff;font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem}
+.rc-wing span{display:block;color:var(--gold);margin-top:4px}
+.rc-body{min-height:0;display:grid;grid-template-columns:220px 1fr 220px;gap:16px;align-items:stretch}
+.rc-rail{display:flex;flex-direction:column;gap:12px}
+.rc-card{border:2px solid rgba(155,89,182,.45);background:linear-gradient(180deg,rgba(17,17,24,.92),rgba(5,5,8,.95));border-radius:18px;padding:16px;box-shadow:0 0 22px rgba(155,89,182,.16),inset 0 0 28px rgba(155,89,182,.05)}
+.rc-card-title{color:var(--purple);font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:10px}
+.rc-big{text-align:center;color:#fff;font-size:clamp(2rem,3.2vw,3.2rem);font-weight:900;line-height:1}
+.rc-small{text-align:center;color:var(--muted);font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+.rc-btn{width:100%;min-height:48px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:.9rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 20px rgba(155,89,182,.35)}.rc-btn:active{transform:scale(.98)}
+.rc-center{min-height:0;display:grid;grid-template-rows:34px 1fr}
+.rc-court-label{justify-self:center;align-self:end;border:2px solid rgba(155,89,182,.55);border-bottom:none;background:rgba(5,5,8,.96);color:var(--gold);padding:8px 36px 5px;font-size:.86rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;border-radius:14px 14px 0 0}
+.rc-court-stage{min-height:0;display:flex;align-items:center;justify-content:center;border:2px solid rgba(155,89,182,.55);background:rgba(17,17,24,.68);border-radius:22px;padding:16px;box-shadow:0 0 42px rgba(155,89,182,.18),inset 0 0 38px rgba(155,89,182,.06)}
+.demo-left-copy{display:flex;flex-direction:column;gap:14px}
+.demo-badge{display:inline-block;width:max-content;background:rgba(155,89,182,.14);color:var(--purple);padding:8px 16px;border-radius:999px;font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.15em;border:1px solid rgba(155,89,182,.32)}
+.demo-title{display:none}.demo-subtitle{display:none}
+.demo-court-wrap{position:relative}
+.demo-label{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:rgba(5,5,8,.96);color:var(--gold);border:2px solid rgba(255,215,0,.28);padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;z-index:5}
+.demo-label.phase-react{color:var(--purple);border-color:rgba(155,89,182,.55)}
+.demo-label.phase-success{color:var(--teal);border-color:rgba(0,217,165,.55)}
+.demo-court{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;width:min(90vw,1100px);height:min(45vh,550px);max-width:1100px;max-height:550px;padding:14px;border-radius:22px;position:relative}
+.demo-cell{border-radius:12px;background:rgba(255,255,255,.065);border:2px solid rgba(255,255,255,.14);transition:all .1s}
+.demo-cell.lit{background:var(--purple);border-color:var(--purple-light);box-shadow:0 0 24px rgba(155,89,182,.85);transform:scale(1.06)}
+.demo-cell.correct{background:var(--teal);border-color:var(--teal);box-shadow:0 0 16px rgba(0,217,165,.6)}
+.demo-court.joy-pulse{animation:joyPulse .5s ease-out}
+@keyframes joyPulse{0%{box-shadow:0 0 0 0 rgba(155,89,182,.7)}50%{box-shadow:0 0 28px 10px rgba(155,89,182,.38)}100%{box-shadow:none}}
+.playbook-section{width:100%}
+.playbook-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 16px;background:rgba(155,89,182,.10);border:2px solid rgba(155,89,182,.36);border-radius:999px;cursor:pointer}
+.playbook-toggle-text{color:var(--purple);font-weight:900;letter-spacing:.15em;font-size:.76rem}
+.playbook-toggle-arrow{color:var(--purple);transition:transform .3s}
+.playbook-toggle.open .playbook-toggle-arrow{transform:rotate(180deg)}
+.playbook-content{max-height:0;overflow:hidden;transition:max-height .45s ease-out}.playbook-content.open{max-height:2200px}
+.playbook-inner{padding:12px 0}
+.playbook-card{background:rgba(17,17,24,.92);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;margin-bottom:10px}
+.playbook-card-title{color:var(--purple);font-size:.76rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.playbook-step{display:flex;gap:9px;margin-bottom:9px}
+.playbook-step-num{width:22px;height:22px;border-radius:50%;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900;flex-shrink:0}
+.playbook-step-text{color:#fff;font-size:.78rem;line-height:1.4}
+.playbook-step-text strong{color:var(--gold)}
+.playbook-tip{background:rgba(155,89,182,.08);border-left:4px solid var(--purple);padding:10px;border-radius:0 10px 10px 0}
+.playbook-tip-title{color:var(--purple);font-size:.6rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.playbook-tip-text{color:var(--muted);font-size:.72rem}
+.demo-cta{width:100%}
+.play-now-btn{width:100%;min-height:58px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 22px rgba(155,89,182,.42)}
+.ritnome-promo{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border-radius:999px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.16)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulseDot 1s infinite}
+@keyframes pulseDot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.ritnome-promo-text{color:var(--muted);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase}
+.ritnome-promo-text span{color:var(--gold);font-weight:900}
+.trophy-container{width:min(900px,94vw);margin:0 auto;padding:24px 0 40px}
+.trophy-header{text-align:center;margin-bottom:18px}.trophy-icon{font-size:2.8rem}
+.trophy-title{font-size:clamp(2rem,4vw,3.7rem);color:var(--gold);font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.trophy-subtitle{color:var(--muted);font-weight:800}
+.bpm-section{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.bpm-section-title{grid-column:1/-1;color:var(--purple);font-size:.8rem;font-weight:900;letter-spacing:.16em;text-align:center;text-transform:uppercase}
+.bpm-tier{background:rgba(17,17,24,.92);border:2px solid rgba(255,255,255,.12);border-radius:18px;padding:16px;cursor:pointer}
+.bpm-tier.active{border-color:var(--purple);background:rgba(155,89,182,.1);box-shadow:0 0 20px rgba(155,89,182,.2)}
+.bpm-tier-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.bpm-tier-left{display:flex;align-items:center;gap:10px}.bpm-tier-icon{font-size:1.4rem}
+.bpm-tier-name{font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.bpm-tier-bpm{color:var(--muted);font-size:.7rem;font-weight:900}
+.bpm-tier-status{color:var(--purple);font-size:.65rem;font-weight:900}
+.bpm-tier-progress{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem}
+.bpm-level-badge{color:var(--purple);font-weight:900}
+.level-section{background:rgba(17,17,24,.92);border:2px solid rgba(155,89,182,.32);border-radius:18px;padding:18px;margin-bottom:18px}
+.level-section-title{color:var(--purple);text-align:center;font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:.78rem;margin-bottom:12px}
+.level-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px}
+.level-btn{aspect-ratio:1;border:2px solid rgba(255,255,255,.12);background:transparent;color:var(--muted);border-radius:10px;font-weight:900;cursor:pointer}
+.level-btn.active{border-color:var(--purple);color:#fff;background:rgba(155,89,182,.16)}
+.level-info{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.level-info-label{color:var(--muted);font-size:.8rem}.level-info-value{color:var(--purple);font-weight:900}
+.letsgo-btn{width:100%;min-height:58px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.play-container{width:min(1280px,96vw);min-height:calc(100dvh - var(--nav-height));margin:0 auto;padding:18px 0 24px;display:grid;grid-template-rows:auto auto auto 1fr auto auto;gap:10px}
+.play-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.play-stat{background:rgba(17,17,24,.86);border:2px solid rgba(155,89,182,.30);border-radius:16px;padding:11px 10px;text-align:center}
+.play-stat-value{color:var(--purple);font-size:clamp(1.7rem,3vw,2.7rem);font-weight:900;line-height:1}
+.play-stat-label{color:var(--muted);font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.play-message{min-height:34px;display:flex;align-items:center;justify-content:center}
+.play-message-text{color:#fff;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.play-message-text.watch{color:var(--purple)}.play-message-text.go{color:var(--gold)}.play-message-text.perfect{color:var(--teal)}.play-message-text.good{color:var(--orange)}.play-message-text.miss{color:var(--pink)}
+.play-progress{display:flex;justify-content:center;align-items:center;gap:10px}
+.play-progress-label{color:var(--muted);font-size:.65rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.play-progress-stars{display:flex;gap:8px}.play-progress-star{opacity:.22}
+.play-progress-star.earned{opacity:1;transform:scale(1.2);filter:drop-shadow(0 0 4px var(--purple))}
+.play-court-wrap{max-width:min(90vw,1100px);width:100%;margin:0 auto}
+.play-court{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;padding:14px;background:rgba(17,17,24,.85);border:2px solid rgba(155,89,182,.48);border-radius:22px;aspect-ratio:2/1;box-shadow:0 0 42px rgba(155,89,182,.18),inset 0 0 38px rgba(155,89,182,.06)}
+.play-court.beat-pulse{border-color:var(--purple);box-shadow:0 0 22px rgba(155,89,182,.45)}
+.play-cell{border-radius:12px;background:rgba(255,255,255,.065);border:2px solid rgba(255,255,255,.14);cursor:pointer;transition:all .12s}
+.play-cell.target{background:var(--purple)!important;border-color:var(--purple-light)!important;box-shadow:0 0 24px rgba(155,89,182,.85);transform:scale(1.08)}
+.play-cell.correct{background:var(--teal)!important;border-color:var(--teal)!important}
+.play-cell.good-tap{background:var(--orange)!important;border-color:var(--orange)!important}
+.play-cell.missed{background:rgba(255,20,147,.3)!important;border-color:var(--pink)!important;animation:shake .3s ease-out}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.play-info{display:flex;justify-content:space-between;align-items:center;max-width:1100px;width:100%;margin:0 auto}
+.play-info-badge{color:var(--purple);font-weight:900;letter-spacing:.08em}
+.play-info-lives{color:var(--pink)}.play-info-taps{color:var(--muted)}.play-info-score{color:var(--gold);font-weight:900}
+.play-action-btn{width:100%;max-width:1100px;min-height:58px;margin:0 auto;border:none;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.play-action-btn:disabled{opacity:.45}
+.emoji-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.burst-emoji{position:absolute;font-size:1.6rem;animation:emojiBurst 1.2s ease-out forwards}
+@keyframes emojiBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.8) rotate(var(--rot))}}
+.coach-message{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;padding:11px 22px;border-radius:16px;font-weight:900;opacity:0;transition:.3s;z-index:100}
+.coach-message.show{transform:translateX(-50%) translateY(0);opacity:1}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}.overlay.show{display:flex}
+.overlay-card{background:rgba(17,17,24,.98);border:2px solid var(--purple);border-radius:18px;padding:28px;text-align:center;max-width:340px;width:100%}
+.overlay-emoji{font-size:3rem;margin-bottom:10px}
+.overlay-title{color:var(--purple);font-size:1.4rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.overlay-message{color:var(--muted);margin:12px 0 18px}
+.overlay-btn{min-height:48px;padding:12px 28px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:900px){:root{--nav-height:58px}.nav-row{height:58px;padding:0 10px}.nav-title{font-size:1rem}.back-btn{padding:8px 10px;font-size:.68rem}.nav-lang-btn{min-width:34px;min-height:32px;padding:6px 8px}.rc-shell{width:min(430px,94vw);min-height:auto;display:block;padding:14px 0 28px}.rc-header{display:block;text-align:center}.rc-wing{display:none}.rc-main-title{font-size:2rem;line-height:.95}.rc-subtitle{font-size:.78rem}.rc-body{display:flex;flex-direction:column;gap:12px}.rc-rail{gap:10px}.rc-card{padding:12px}.rc-center{display:block}.rc-court-label{display:block;text-align:center;margin:12px auto 0;width:max-content;max-width:100%;font-size:.68rem}.rc-court-stage{padding:10px;border-radius:18px}.demo-court{width:min(95vw,550px);height:min(48vw,275px);gap:4px;padding:10px}.demo-cell{border-radius:8px}.bpm-section{grid-template-columns:1fr}.level-grid{grid-template-columns:repeat(5,1fr)}.play-container{width:min(430px,94vw);min-height:calc(100dvh - var(--nav-height));padding:12px 0 28px;display:flex;flex-direction:column}.play-stats{gap:7px}.play-stat{padding:8px 6px}.play-stat-value{font-size:1.45rem}.play-court-wrap{max-width:min(95vw,550px)}.play-court{gap:4px;padding:9px;border-radius:16px}.play-cell{border-radius:7px}.play-info,.play-action-btn{max-width:550px}}
+@media(max-width:360px){.demo-court{width:95vw;height:48vw}.play-court-wrap{max-width:95vw}.play-court{gap:3px;padding:7px}}
+</style>
+</head>
+<body>
+<nav class="mini-nav"><div class="nav-row">
+<a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
+<div class="nav-title">Reactific</div>
+<div class="nav-right"><div class="nav-lang"><button class="nav-lang-btn" id="langEN">EN</button><button class="nav-lang-btn active" id="langES">ES</button></div></div>
+</div></nav>
+
+<div class="screen active" id="screen-demo"><div class="rc-shell">
+<header class="rc-header">
+<div class="rc-wing">Reaction<br><span>Training</span></div>
+<div class="rc-title"><div class="rc-kicker" id="demoBadge">Reaction Training</div><div class="rc-main-title">Reaction <span>Control</span></div><div class="rc-subtitle" id="demoSubtitle">The Single-Beat Brake Read</div></div>
+<div class="rc-wing">Purple Court<br><span>Beat Read</span></div>
+</header>
+<main class="rc-body">
+<aside class="rc-rail">
+<div class="rc-card"><div class="rc-card-title">Mission</div><div class="rc-small">See the light. Tap the cell. Reset instantly.</div></div>
+<div class="playbook-section">
+<div class="playbook-toggle" id="playbookToggle"><span class="playbook-toggle-icon">📖</span><span class="playbook-toggle-text" id="pbText">THE PLAYBOOK</span><span class="playbook-toggle-arrow">▼</span></div>
+<div class="playbook-content" id="playbookContent"><div class="playbook-inner">
+<div class="playbook-card"><div class="playbook-card-title">🎯 <span id="objT">OBJECTIVE</span></div>
+<div class="playbook-step"><div class="playbook-step-num">1</div><div class="playbook-step-text" id="s1">A cell <strong>lights up purple</strong> on the grid</div></div>
+<div class="playbook-step"><div class="playbook-step-num">2</div><div class="playbook-step-text" id="s2"><strong>Tap it</strong> as fast as you can!</div></div>
+<div class="playbook-step"><div class="playbook-step-num">3</div><div class="playbook-step-text" id="s3">Next cell lights up — <strong>react again!</strong></div></div></div>
+<div class="playbook-card"><div class="playbook-card-title">⭐ <span id="progT">PROGRESSION</span></div>
+<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p1">Get <strong>2 perfect rounds</strong> to level up</div></div>
+<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p2">Higher levels = <strong>more cells</strong> per round</div></div>
+<div class="playbook-step"><div class="playbook-step-num">→</div><div class="playbook-step-text" id="p3">You have <strong>3 lives (♥♥♥)</strong> per round</div></div></div>
+<div class="playbook-card"><div class="playbook-card-title">⚡ <span id="spdT">BPM SPEEDS</span></div>
+<div class="playbook-step"><div class="playbook-step-num">🏋️</div><div class="playbook-step-text" id="sp1"><strong>Training (60 BPM)</strong> — 1 cell per second</div></div>
+<div class="playbook-step"><div class="playbook-step-num">🎯</div><div class="playbook-step-text" id="sp2"><strong>Tempo (90 BPM)</strong> — Faster rhythm</div></div>
+<div class="playbook-step"><div class="playbook-step-num">⚡</div><div class="playbook-step-text" id="sp3"><strong>Elite (120 BPM)</strong> — 2 cells per second!</div></div>
+<div class="playbook-tip"><div class="playbook-tip-title">💡 <span id="tipT">TIP</span></div><div class="playbook-tip-text" id="tipTx">Keep your eyes on the whole grid — don't tunnel vision on one area!</div></div></div>
+</div></div></div>
+</aside>
+<section class="rc-center">
+<div class="rc-court-label">Live Demo Court</div>
+<div class="rc-court-stage"><div class="demo-court-wrap"><div class="demo-label" id="demoLabel">⚡ REACT!</div><div class="demo-court" id="demoCourt"></div></div></div>
+</section>
+<aside class="rc-rail">
+<div class="rc-card"><div class="rc-card-title">Reaction Rule</div><div class="rc-big">1</div><div class="rc-small">cell lights at a time</div></div>
+<div class="rc-card"><div class="rc-card-title">Start</div><div class="demo-cta"><button class="play-now-btn" id="playNowBtn">▶ PLAY NOW</button></div></div>
+<div class="ritnome-promo"><div class="pulse-dot"></div><div class="ritnome-promo-text"><span id="pwBy">Powered by</span> <span>Reactific™</span></div></div>
+</aside>
+</main></div></div>
+
+<div class="screen" id="screen-trophy"><div class="trophy-container">
+<div class="trophy-header"><div class="trophy-icon">⚡</div><h1 class="trophy-title" id="trT">YOUR PROGRESS</h1><p class="trophy-subtitle" id="trS">Reaction Control Levels</p></div>
+<div class="bpm-section">
+<div class="bpm-section-title" id="ssT">SELECT BPM SPEED</div>
+<div class="bpm-tier active" id="tierSlow" data-speed="slow"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🏋️</span><div><div class="bpm-tier-name">TRAINING</div><div class="bpm-tier-bpm">60 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsS">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-level-badge" id="lS">LEVEL 1</span><span class="bpm-score" id="sS">0 pts</span></div></div>
+<div class="bpm-tier" id="tierMed" data-speed="med"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🎯</span><div><div class="bpm-tier-name">TEMPO</div><div class="bpm-tier-bpm">90 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsM">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-level-badge" id="lM">LEVEL 1</span><span class="bpm-score" id="sM">0 pts</span></div></div>
+<div class="bpm-tier" id="tierFast" data-speed="fast"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">⚡</span><div><div class="bpm-tier-name">ELITE</div><div class="bpm-tier-bpm">120 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tsF">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-level-badge" id="lF">LEVEL 1</span><span class="bpm-score" id="sF">0 pts</span></div></div>
+</div>
+<div class="level-section"><div class="level-section-title" id="slT">SELECT LEVEL</div><div class="level-grid" id="levelGrid"><button class="level-btn active" data-level="1">1</button><button class="level-btn" data-level="2">2</button><button class="level-btn" data-level="3">3</button><button class="level-btn" data-level="4">4</button><button class="level-btn" data-level="5">5</button><button class="level-btn" data-level="6">6</button><button class="level-btn" data-level="7">7</button><button class="level-btn" data-level="8">8</button><button class="level-btn" data-level="9">9</button><button class="level-btn" data-level="10">10</button></div><div class="level-info"><span class="level-info-label" id="cpbL">Cells per round:</span><span class="level-info-value" id="cpbV">5</span></div></div>
+<button class="letsgo-btn" id="letsGoBtn">LET'S GO!</button>
+</div></div>
+
+<div class="screen" id="screen-play"><div class="play-container">
+<div class="play-stats"><div class="play-stat"><div class="play-stat-value" id="pLv">1</div><div class="play-stat-label" id="pLvL">Level</div></div><div class="play-stat"><div class="play-stat-value" id="pRd">0</div><div class="play-stat-label" id="pRdL">Round</div></div><div class="play-stat"><div class="play-stat-value" id="pSt">0</div><div class="play-stat-label">🔥</div></div><div class="play-stat"><div class="play-stat-value" id="pSc">0</div><div class="play-stat-label" id="pScL">Score</div></div></div>
+<div class="play-message"><span class="play-message-text" id="pMsg">TAP TO START!</span></div>
+<div class="play-progress"><span class="play-progress-label" id="luL">LEVEL UP:</span><div class="play-progress-stars"><span class="play-progress-star" id="st1">⭐</span><span class="play-progress-star" id="st2">⭐</span></div></div>
+<div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
+<div class="play-info"><div class="play-info-badge" id="pBdg">L1 TRAINING</div><div class="play-info-lives" id="pLiv">♥♥♥</div><div class="play-info-taps" id="pTap">0/5</div><div class="play-info-score" id="pTot">0</div></div>
+<button class="play-action-btn" id="pAct">LET'S GO</button>
+</div></div>
+
+<div class="overlay" id="luOvl"><div class="overlay-card"><div class="overlay-emoji">⭐</div><h2 class="overlay-title" id="luTtl">LEVEL UP!</h2><p class="overlay-message" id="luMsg"></p><button class="overlay-btn" id="luBtn">LET'S GO!</button></div></div>
+<div class="emoji-container" id="emoC"></div>
+<div class="coach-message" id="coach"></div>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)},$$=function(sel){return document.querySelectorAll(sel)};
+var curScr='demo';
+var cL='en';
+var T={en:{db:'Reaction Training',ds:'The Single-Beat Brake Read',dlr:'⚡ REACT!',dls:'✅ PERFECT!',pb:'THE PLAYBOOK',ot:'OBJECTIVE',s1:'A cell <strong>lights up purple</strong> on the grid',s2:'<strong>Tap it</strong> as fast as you can!',s3:'Next cell lights up — <strong>react again!</strong>',pt:'PROGRESSION',p1:'Get <strong>2 perfect rounds</strong> to level up',p2:'Higher levels = <strong>more cells</strong> per round',p3:'You have <strong>3 lives (♥♥♥)</strong> per round',st:'BPM SPEEDS',sp1:'<strong>Training (60 BPM)</strong> — 1 cell per second',sp2:'<strong>Tempo (90 BPM)</strong> — Faster rhythm',sp3:'<strong>Elite (120 BPM)</strong> — 2 cells per second!',tt:'TIP',tx:"Keep your eyes on the whole grid — don't tunnel vision on one area!",pn:'▶ PLAY NOW',pw:'Powered by',trt:'YOUR PROGRESS',trs:'Reaction Control Levels',ss:'SELECT BPM SPEED',tf:'✓ FREE',sl:'SELECT LEVEL',cb:'Cells per round:',lg:"LET'S GO!",ll:'Level',rl:'Round',scl:'Score',lu:'LEVEL UP:',tlg:"TAP LET'S GO!",gr:'GET READY...',react:'⚡ REACT!',pf:'✨ SWISH!',gd:'👍 BUCKET!',kg:'💨 KEEP GOING!',wc:'❌ WRONG CELL',ap:'🔥 ALL PERFECT!',li:'🔥 LOCKED IN!',ol:'OUT OF LIVES',ob:'OFF THE BEAT',ta:'💪 Try again!',cl:'🏀 Locked in!',cm:'🏀 Machine!',cn:'🏀 Nice!',cf:'🔥 On fire!',lm:'You are now Level {level}!<br>Cells: {cells} per round',lt:'LEVEL UP!',ml:'👑 MAX LEVEL!'},
+es:{db:'Reaction Training',ds:'La Lectura del Freno en un Solo Beat',dlr:'⚡ ¡REACCIONA!',dls:'✅ ¡PERFECTO!',pb:'EL MANUAL',ot:'OBJETIVO',s1:'Una celda <strong>se ilumina púrpura</strong> en la cuadrícula',s2:'<strong>¡Tócala</strong> lo más rápido que puedas!',s3:'La siguiente se ilumina — <strong>¡reacciona otra vez!</strong>',pt:'PROGRESIÓN',p1:'Consigue <strong>2 rondas perfectas</strong> para subir de nivel',p2:'Niveles más altos = <strong>más celdas</strong> por ronda',p3:'Tienes <strong>3 vidas (♥♥♥)</strong> por ronda',st:'VELOCIDADES BPM',sp1:'<strong>Entrenamiento (60 BPM)</strong> — 1 celda por segundo',sp2:'<strong>Tempo (90 BPM)</strong> — Ritmo más rápido',sp3:'<strong>Elite (120 BPM)</strong> — ¡2 celdas por segundo!',tt:'CONSEJO',tx:'¡Mantén los ojos en toda la cuadrícula — no te enfoques en una sola área!',pn:'▶ JUGAR AHORA',pw:'Impulsado por',trt:'TU PROGRESO',trs:'Niveles de Reaction Control',ss:'SELECCIONA VELOCIDAD BPM',tf:'✓ GRATIS',sl:'SELECCIONA NIVEL',cb:'Celdas por ronda:',lg:"¡PA'LANTE!",ll:'Nivel',rl:'Ronda',scl:'Puntos',lu:'SUBIR:',tlg:"¡TOCA PA'LANTE!",gr:'PREPÁRATE...',react:'⚡ ¡REACCIONA!',pf:'✨ ¡SWISH!',gd:'👍 ¡BUCKET!',kg:'💨 ¡SIGUE!',wc:'❌ CELDA INCORRECTA',ap:'🔥 ¡PERFECCIÓN TOTAL!',li:'🔥 ¡CONECTADO!',ol:'SIN VIDAS',ob:'FUERA DE RITMO',ta:'💪 ¡Otra vez!',cl:'🏀 ¡Conectado!',cm:'🏀 ¡Máquina!',cn:'🏀 ¡Bien!',cf:'🔥 ¡En fuego!',lm:'¡Ahora estás en Nivel {level}!<br>Celdas: {cells} por ronda',lt:'¡SUBISTE!',ml:'👑 ¡NIVEL MÁXIMO!'}};
+function t(k){return(T[cL]||T.en)[k]||k}
+function uUI(){$('demoBadge').textContent=t('db');$('demoSubtitle').textContent=t('ds');$('pbText').textContent=t('pb');$('objT').textContent=t('ot');$('s1').innerHTML=t('s1');$('s2').innerHTML=t('s2');$('s3').innerHTML=t('s3');$('progT').textContent=t('pt');$('p1').innerHTML=t('p1');$('p2').innerHTML=t('p2');$('p3').innerHTML=t('p3');$('spdT').textContent=t('st');$('sp1').innerHTML=t('sp1');$('sp2').innerHTML=t('sp2');$('sp3').innerHTML=t('sp3');$('tipT').textContent=t('tt');$('tipTx').textContent=t('tx');$('playNowBtn').textContent=t('pn');$('pwBy').textContent=t('pw');$('trT').textContent=t('trt');$('trS').textContent=t('trs');$('ssT').textContent=t('ss');$('tsS').textContent=t('tf');$('tsM').textContent=t('tf');$('tsF').textContent=t('tf');$('slT').textContent=t('sl');$('cpbL').textContent=t('cb');$('letsGoBtn').textContent=t('lg');$('pLvL').textContent=t('ll');$('pRdL').textContent=t('rl');$('pScL').textContent=t('scl');$('luL').textContent=t('lu');$('pAct').textContent=t('lg');$('luTtl').textContent=t('lt');$('luBtn').textContent=t('lg');$('langEN').classList.toggle('active',cL==='en');$('langES').classList.toggle('active',cL==='es')}
+function setLang(l){cL=l;localStorage.setItem('lc-lang',l);uUI()}
+$('langEN').onclick=function(){setLang('en')};$('langES').onclick=function(){setLang('es')};
+var savedLang=localStorage.getItem('lc-lang');if(savedLang)cL=savedLang;
+function showScr(name){$$('.screen').forEach(function(s){s.classList.remove('active')});curScr=name;document.querySelector('.nav-lang').style.display=name==='play'?'none':'flex';$('screen-'+name).classList.add('active');if(name==='demo')startDemo();if(name==='trophy')uTr()}
+
+var dCrt=$('demoCourt'),dLbl=$('demoLabel'),dCells=[],dEp=0,dTm=[];
+var DP=[3,17,8,21,12,37,44,29];
+function initDC(){dCrt.innerHTML='';dCells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='demo-cell';dCrt.appendChild(c);dCells.push(c)}}
+function sdt(fn,d){var id=setTimeout(function(){var i=dTm.indexOf(id);if(i>-1)dTm.splice(i,1);fn()},d);dTm.push(id);return id}
+function cdt(){dTm.forEach(function(id){clearTimeout(id)});dTm=[]}
+function runD(ep){if(ep!==dEp||curScr!=='demo')return;dCells.forEach(function(c){c.className='demo-cell'});dLbl.textContent=t('dlr');dLbl.className='demo-label phase-react';
+var bi=0;
+function beat(){if(ep!==dEp)return;dCells.forEach(function(c){c.className='demo-cell'});
+if(bi>=DP.length){dLbl.textContent=t('dls');dLbl.className='demo-label phase-success';dCrt.classList.add('joy-pulse');setTimeout(function(){dCrt.classList.remove('joy-pulse')},500);sdt(function(){runD(ep)},2000);return}
+dCells[DP[bi]].classList.add('lit');
+sdt(function(){if(ep!==dEp)return;dCells[DP[bi]].classList.remove('lit');dCells[DP[bi]].classList.add('correct');bi++;sdt(beat,400)},500)}
+sdt(beat,600)}
+function startDemo(){dEp++;cdt();runD(dEp)}
+function stopDemo(){dEp++;cdt()}
+$('playbookToggle').onclick=function(){$('playbookToggle').classList.toggle('open');$('playbookContent').classList.toggle('open')};
+$('playNowBtn').onclick=function(){stopDemo();showScr('trophy')};
+
+var g={speed:'slow',level:1,score:0,streak:0,pc:0,round:0,lives:3},ML=3,PW=300,GW=600;
+function gcc(lv){return lv*2+3}
+function getIV(){return g.speed==='fast'?500:g.speed==='med'?667:1000}
+function sk(sp,k){return'lc-reaction10-'+sp+'-'+k}
+function ld(sp){return{level:parseInt(localStorage.getItem(sk(sp,'level')))||1,score:parseInt(localStorage.getItem(sk(sp,'score')))||0,streak:parseInt(localStorage.getItem(sk(sp,'streak')))||0}}
+function sv(){localStorage.setItem(sk(g.speed,'level'),g.level);localStorage.setItem(sk(g.speed,'score'),g.score);localStorage.setItem(sk(g.speed,'streak'),g.streak);if(typeof syncCognitiveScore==='function')syncCognitiveScore(g.speed,g.level,g.score,g.streak,1)}
+
+function uTr(){var s=ld('slow'),m=ld('med'),f=ld('fast');$('lS').textContent='LEVEL '+s.level;$('sS').textContent=s.score+' pts';$('lM').textContent='LEVEL '+m.level;$('sM').textContent=m.score+' pts';$('lF').textContent='LEVEL '+f.level;$('sF').textContent=f.score+' pts';$$('.bpm-tier').forEach(function(t){t.classList.remove('active')});if(g.speed==='slow')$('tierSlow').classList.add('active');else if(g.speed==='med')$('tierMed').classList.add('active');else $('tierFast').classList.add('active');$$('.level-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.level)===g.level)});$('cpbV').textContent=gcc(g.level)}
+$$('.bpm-tier').forEach(function(tier){tier.onclick=function(){var sp=tier.dataset.speed;g.speed=sp;var d=ld(sp);g.level=d.level;g.score=d.score;g.streak=d.streak;g.pc=0;g.round=0;uTr()}});
+$$('.level-btn').forEach(function(btn){btn.onclick=function(){g.level=parseInt(btn.dataset.level);g.pc=0;g.round=0;sv();uTr()}});
+$('letsGoBtn').onclick=function(){showScr('play');initG()};
+
+var pCrt=$('playCourt'),pCells=[],pattern=[],tapRes=[],bTm=[],missTimer=null;
+var phase='idle',beatIdx=0,awaitingTap=false,tapReceived=false,currentBeatTime=0,currentTarget=-1;
+var aCtx=null;
+var LE=['😂','😆','🤣','😄','😁','🥳','😊','🏀'],PE=['🥳','🎉','😂','🤣','✨','💫','🏀','🏆'];
+
+function gAC(){if(!aCtx)try{aCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return aCtx}
+function bp(f,d,v,ty){var c=gAC();if(!c)return;try{if(c.state==='suspended')c.resume();var o=c.createOscillator(),g2=c.createGain();o.type=ty||'sine';o.frequency.value=f;o.connect(g2);g2.connect(c.destination);g2.gain.setValueAtTime(v||.15,c.currentTime);g2.gain.exponentialRampToValueAtTime(.01,c.currentTime+(d||.1));o.start();o.stop(c.currentTime+(d||.1)+.02)}catch(e){}}
+function tkS(){bp(880,.04,.12)}function pfS(){bp(1300,.08,.15);setTimeout(function(){bp(1600,.06,.12)},60)}function gdS(){bp(1000,.06,.1)}function flS(){bp(200,.25,.15,'sawtooth')}
+
+function initPC(){pCrt.innerHTML='';pCells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='play-cell';c.dataset.index=i;c.onclick=(function(idx){return function(){hTap(idx)}})(i);pCrt.appendChild(c);pCells.push(c)}}
+
+function uPU(){$('pLv').textContent=g.level;$('pRd').textContent=g.round;$('pSt').textContent=g.streak;$('pSc').textContent=g.score;$('pTot').textContent=g.score;var sp=g.speed==='slow'?'TRAINING':g.speed==='med'?'TEMPO':'ELITE';$('pBdg').textContent='L'+g.level+' '+sp;$('pTap').textContent=tapRes.length+'/'+gcc(g.level);$('st1').className=g.pc>=1?'play-progress-star earned':'play-progress-star';$('st2').className=g.pc>=2?'play-progress-star earned':'play-progress-star';var h='';for(var i=0;i<ML;i++)h+=i<g.lives?'♥':'♡';$('pLiv').textContent=h;$('pLiv').style.color=g.lives<=1?'var(--pink)':'var(--purple)'}
+
+function clrT(){bTm.forEach(function(t){clearTimeout(t)});bTm=[];if(missTimer){clearTimeout(missTimer);missTimer=null}}
+function clrC(){pCells.forEach(function(c){c.className='play-cell'})}
+
+function gCC(){var r=pCrt.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
+function cBE(emoji,x,y,type){var el=document.createElement('div');el.className='burst-emoji'+(type?' '+type:'');el.textContent=emoji;var a=Math.random()*Math.PI*2,d=50+Math.random()*80;el.style.cssText='left:'+x+'px;top:'+y+'px;--tx:'+Math.cos(a)*d+'px;--ty:'+Math.sin(a)*d+'px;--rot:'+(Math.random()-.5)*720+'deg';$('emoC').appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},2000)}
+function laugh(i){var c=gCC();var cnt=i==='party'?8:i==='big'?5:i==='medium'?3:2;var em=i==='party'?PE:LE;var ty=i==='party'?'party':i==='big'?'big':'';for(var j=0;j<cnt;j++){(function(x){setTimeout(function(){cBE(em[Math.floor(Math.random()*em.length)],c.x+(Math.random()-.5)*20,c.y+(Math.random()-.5)*20,ty)},x*35)})(j)}pCrt.classList.add('joy-pulse');setTimeout(function(){pCrt.classList.remove('joy-pulse')},500)}
+function coach(m){$('coach').textContent=m;$('coach').classList.add('show');setTimeout(function(){$('coach').classList.remove('show')},2000)}
+
+function genPat(){var len=gcc(g.level),indices=[];while(indices.length<len){var idx=Math.floor(Math.random()*50);if(indices.indexOf(idx)===-1)indices.push(idx)}return indices}
+
+function initG(){initPC();var d=ld(g.speed);g.level=d.level;g.score=d.score;g.streak=d.streak;g.pc=0;g.round=0;g.lives=ML;phase='idle';tapRes=[];uPU();$('pMsg').textContent=t('tlg');$('pAct').disabled=false}
+
+function startRound(){if(phase!=='idle')return;gAC();phase='playing';g.round++;g.lives=ML;tapRes=[];pattern=genPat();beatIdx=-1;$('pAct').disabled=true;uPU();clrC();$('pMsg').textContent=t('gr');$('pMsg').className='play-message-text watch';
+bTm.push(setTimeout(function(){$('pMsg').textContent=t('react');$('pMsg').className='play-message-text go';bTm.push(setTimeout(function(){fireBeat(0)},300))},700))}
+
+function fireBeat(idx){if(phase!=='playing'||idx<=beatIdx)return;var interval=getIV(),cellIdx=pattern[idx];
+pCells.forEach(function(c){if(c.classList.contains('target'))c.classList.remove('target')});
+pCells[cellIdx].classList.add('target');tkS();pCrt.classList.add('beat-pulse');bTm.push(setTimeout(function(){pCrt.classList.remove('beat-pulse')},150));
+beatIdx=idx;awaitingTap=true;tapReceived=false;currentBeatTime=performance.now();currentTarget=cellIdx;
+bTm.push(setTimeout(function(){if(pCells[cellIdx].classList.contains('target'))pCells[cellIdx].classList.remove('target')},interval*0.55));
+if(missTimer){clearTimeout(missTimer);missTimer=null}
+missTimer=setTimeout(function(){if(phase==='playing'&&!tapReceived&&beatIdx===idx){awaitingTap=false;g.lives--;pCells[cellIdx].classList.add('missed');flS();tapRes.push('miss');uPU();if(g.lives<=0){pCrt.classList.add('shake');setTimeout(function(){pCrt.classList.remove('shake')},300);endRound(false,t('ol'))}else{$('pMsg').textContent=t('kg');$('pMsg').className='play-message-text miss'}}},interval*0.9);
+if(idx<pattern.length-1){bTm.push(setTimeout(function(){fireBeat(idx+1)},interval))}else{bTm.push(setTimeout(function(){if(phase==='playing'&&tapRes.length>=pattern.length){endRound(true)}},interval))}}
+
+function hTap(idx){gAC();if(phase!=='playing'||!awaitingTap||tapReceived)return;tapReceived=true;if(missTimer){clearTimeout(missTimer);missTimer=null}var expected=currentTarget;var delta=performance.now()-currentBeatTime;var curBeat=beatIdx;
+if(idx!==expected){g.lives--;pCells[idx].classList.add('missed');flS();tapRes.push('miss');uPU();if(g.lives<=0){pCrt.classList.add('shake');setTimeout(function(){pCrt.classList.remove('shake')},300);endRound(false,t('ol'))}else{awaitingTap=false;$('pMsg').textContent=t('wc');$('pMsg').className='play-message-text miss'}return}
+var rating,points;if(delta<=PW){rating='perfect';points=20}else if(delta<=GW){rating='good';points=12}else{rating='good';points=5}
+pCells[idx].classList.remove('target');pCells[idx].classList.add(rating==='perfect'?'correct':'good-tap');tapRes.push(rating);g.score+=points;uPU();sv();
+if(rating==='perfect'){pfS();$('pMsg').textContent=t('pf');$('pMsg').className='play-message-text perfect'}else{gdS();$('pMsg').textContent=t('gd');$('pMsg').className='play-message-text good'}
+if(tapRes.length%4===0)laugh('small');awaitingTap=false;
+if(curBeat>=pattern.length-1){setTimeout(function(){endRound(true)},300)}}
+
+function endRound(won,reason){phase='idle';clrT();if(won){g.pc++;g.streak++;sv();uPU();var allP=tapRes.every(function(r){return r==='perfect'});var intensity=allP?'party':g.streak>=5?'big':'medium';laugh(intensity);if(allP){$('pMsg').textContent=t('ap');coach(t('cm'))}else{$('pMsg').textContent=t('li');coach(g.streak>=3?t('cf'):t('cn'))}$('pMsg').className='play-message-text perfect';setTimeout(function(){if(g.pc>=2){if(g.level<10){lvUp()}else{coach(t('ml'));g.pc=0;uPU();finRound()}}else{finRound()}},1200)}else{g.pc=0;g.streak=0;sv();uPU();$('pMsg').innerHTML='<span style="color:var(--pink)">'+(reason||t('ob'))+'</span>';$('pMsg').className='play-message-text miss';coach(t('ta'));setTimeout(finRound,1500)}}
+
+function lvUp(){g.level++;g.pc=0;sv();$$('.level-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.level)===g.level)});uPU();laugh('party');$('luMsg').innerHTML=t('lm').replace('{level}',g.level).replace('{cells}',gcc(g.level));$('luOvl').classList.add('show');uPU()}
+$('luBtn').onclick=function(){$('luOvl').classList.remove('show');finRound()};
+
+function finRound(){phase='idle';currentTarget=-1;g.lives=ML;clrC();uPU();$('pMsg').textContent=t('tlg');$('pMsg').className='play-message-text';$('pAct').disabled=false}
+$('pAct').onclick=startRound;
+
+initDC();uUI();startDemo();uTr();
+})();
+</script>
+<script>window.COGNITIVE_TEST_NAME='react';</script>
+<script src="/cognitive-sync.js"></script>
+</body>
+</html>
