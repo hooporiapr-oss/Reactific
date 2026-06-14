@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Pattern Recognition 5×10 | REACTIFIC™</title>
+<link rel="icon" type="image/png" href="bpm-basketball.png">
+<style>
+:root{
+  --orange:#FF6B35;
+  --orange-light:#ff8a5c;
+  --gold:#FFD700;
+  --teal:#00D9A5;
+  --pink:#FF1493;
+  --purple:#9B59B6;
+  --lime:#32CD32;
+  --dark:#0a0a0f;
+  --darker:#050508;
+  --card:#111118;
+  --text:#FFFFFF;
+  --muted:#8892a0;
+  --border:rgba(255,255,255,0.12);
+  --nav-height:64px;
+  --accent:#FF6B35;
+  --flash-color:#FF6B35;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  width:100%;min-height:100%;overflow-x:hidden;
+  background:radial-gradient(circle at 14% 5%,rgba(255,107,53,.22),transparent 28%),radial-gradient(circle at 88% 12%,rgba(255,215,0,.08),transparent 30%),linear-gradient(180deg,#0a0a0f,#050508 72%,#030305);
+  color:var(--text);font-family:Arial,Helvetica,sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+body:before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.mini-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding-top:env(safe-area-inset-top);background:rgba(10,10,15,.94);border-bottom:2px solid rgba(255,107,53,.75);box-shadow:0 0 24px rgba(255,107,53,.20);backdrop-filter:blur(12px)}
+.nav-row{height:64px;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.back-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:2px solid rgba(255,107,53,.6);background:rgba(255,107,53,.1);color:#fff;border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-decoration:none;text-transform:uppercase}
+.nav-title{color:var(--orange);font-size:clamp(1.15rem,2.4vw,1.8rem);font-weight:900;font-style:italic;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 0 16px rgba(255,107,53,.45)}
+.nav-title:after{content:"™";color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-lang{display:flex;gap:8px}
+.nav-lang-btn{border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--muted);border-radius:999px;padding:8px 12px;min-width:40px;min-height:36px;font-weight:900;cursor:pointer}
+.nav-lang-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.08)}
+.screen{display:none;width:100%;min-height:100dvh;padding-top:calc(var(--nav-height) + env(safe-area-inset-top))}
+.screen.active{display:block}
+.rc-shell{width:min(1280px,96vw);min-height:calc(100dvh - var(--nav-height));margin:0 auto;padding:18px 0 24px;display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.rc-header{display:grid;grid-template-columns:240px 1fr 240px;align-items:center;gap:16px}
+.rc-title{text-align:center}
+.rc-kicker{color:var(--gold);font-size:.78rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.rc-main-title{color:#fff;font-size:clamp(2rem,5vw,4.8rem);font-weight:900;line-height:.88;letter-spacing:.08em;font-style:italic;text-transform:uppercase}
+.rc-main-title span{color:var(--orange)}
+.rc-subtitle{margin-top:8px;color:var(--muted);font-weight:800;font-size:clamp(.85rem,1.3vw,1.1rem)}
+.rc-wing{min-height:76px;border:2px solid rgba(255,107,53,.45);background:rgba(17,17,24,.75);display:flex;align-items:center;justify-content:center;text-align:center;border-radius:18px;padding:12px;color:#fff;font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem}
+.rc-wing span{display:block;color:var(--gold);margin-top:4px}
+.rc-body{min-height:0;display:grid;grid-template-columns:220px 1fr 220px;gap:16px;align-items:stretch}
+.rc-rail{display:flex;flex-direction:column;gap:12px}
+.rc-card{border:2px solid rgba(255,107,53,.45);background:linear-gradient(180deg,rgba(17,17,24,.92),rgba(5,5,8,.95));border-radius:18px;padding:16px;box-shadow:0 0 22px rgba(255,107,53,.13),inset 0 0 28px rgba(255,107,53,.045)}
+.rc-card-title{color:var(--orange);font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:10px}
+.rc-big{text-align:center;color:#fff;font-size:clamp(2rem,3.2vw,3.2rem);font-weight:900;line-height:1}
+.rc-small{text-align:center;color:var(--muted);font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+.rc-center{min-height:0;display:grid;grid-template-rows:34px 1fr}
+.rc-court-label{justify-self:center;align-self:end;border:2px solid rgba(255,107,53,.55);border-bottom:none;background:rgba(5,5,8,.96);color:var(--gold);padding:8px 36px 5px;font-size:.86rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;border-radius:14px 14px 0 0}
+.rc-court-stage{min-height:0;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,107,53,.55);background:rgba(17,17,24,.68);border-radius:22px;padding:16px;box-shadow:0 0 42px rgba(255,107,53,.16),inset 0 0 38px rgba(255,107,53,.06)}
+.demo-badge{display:inline-block;width:max-content;background:rgba(255,107,53,.14);color:var(--orange);padding:8px 16px;border-radius:999px;font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.15em;border:1px solid rgba(255,107,53,.32)}
+.demo-title{display:none}.demo-subtitle{display:none}
+.demo-court-wrap{position:relative}
+.demo-label{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:rgba(5,5,8,.96);color:var(--gold);border:2px solid rgba(255,215,0,.28);padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;z-index:5}
+.demo-label.phase-watch{color:var(--gold);border-color:rgba(255,215,0,.45)}
+.demo-label.phase-recall{color:var(--orange);border-color:rgba(255,107,53,.55)}
+.demo-label.phase-success{color:var(--teal);border-color:rgba(0,217,165,.55)}
+.demo-court{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;width:min(90vw,1100px);height:min(45vh,550px);max-width:1100px;max-height:550px;padding:14px;border-radius:22px;position:relative}
+.demo-court::before{display:none}
+.demo-cell{border-radius:12px;background:rgba(255,255,255,.065);border:2px solid rgba(255,255,255,.14);transition:all .15s;color:transparent;display:flex;align-items:center;justify-content:center;font-size:clamp(1rem,2vw,2rem);font-weight:900}
+.demo-cell.lit{background:var(--orange);border-color:var(--gold);box-shadow:0 0 24px rgba(255,107,53,.85);color:#fff;transform:scale(1.06)}
+.demo-cell.correct{background:var(--teal);border-color:var(--teal);box-shadow:0 0 16px rgba(0,217,165,.6);color:#fff}
+.demo-court.joy-pulse{animation:joyPulse .5s ease-out}
+@keyframes joyPulse{0%{box-shadow:0 0 0 0 rgba(255,107,53,.7)}50%{box-shadow:0 0 28px 10px rgba(255,107,53,.38)}100%{box-shadow:none}}
+.htp-section{width:100%}
+.htp-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 16px;background:rgba(255,107,53,.10);border:2px solid rgba(255,107,53,.36);border-radius:999px;cursor:pointer}
+.htp-toggle-text{color:var(--orange);font-weight:900;letter-spacing:.15em;font-size:.76rem}
+.htp-toggle-arrow{color:var(--orange);transition:transform .3s}
+.htp-toggle.open .htp-toggle-arrow{transform:rotate(180deg)}
+.htp-content{max-height:0;overflow:hidden;transition:max-height .45s ease-out}
+.htp-content.open{max-height:2200px}
+.htp-inner{padding:12px 0}
+.htp-card{background:rgba(17,17,24,.92);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;margin-bottom:10px}
+.htp-card-title{color:var(--orange);font-size:.76rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.htp-step{display:flex;gap:9px;margin-bottom:9px}
+.htp-step-num{width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900;flex-shrink:0}
+.htp-step-text{color:#fff;font-size:.78rem;line-height:1.4}
+.htp-step-text strong{color:var(--gold)}
+.htp-tip{background:rgba(255,107,53,.08);border-left:4px solid var(--orange);padding:10px;border-radius:0 10px 10px 0}
+.htp-tip-title{color:var(--orange);font-size:.6rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.htp-tip-text{color:var(--muted);font-size:.72rem}
+.demo-cta{width:100%}
+.play-now-btn{width:100%;min-height:58px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 22px rgba(255,107,53,.42)}
+.ritnome-promo{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border-radius:999px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.16)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulseDot 1s infinite}
+@keyframes pulseDot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.ritnome-promo-text{color:var(--muted);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase}
+.ritnome-promo-text span{color:var(--gold);font-weight:900}
+.trophy-container{width:min(900px,94vw);margin:0 auto;padding:24px 0 40px}
+.trophy-header{text-align:center;margin-bottom:18px}
+.trophy-icon{font-size:2.8rem}
+.trophy-title{font-size:clamp(2rem,4vw,3.7rem);color:var(--gold);font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.trophy-subtitle{color:var(--muted);font-weight:800}
+.bpm-section{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.bpm-section-title{grid-column:1/-1;color:var(--orange);font-size:.8rem;font-weight:900;letter-spacing:.16em;text-align:center;text-transform:uppercase}
+.bpm-tier{background:rgba(17,17,24,.92);border:2px solid rgba(255,255,255,.12);border-radius:18px;padding:16px;cursor:pointer}
+.bpm-tier.active{border-color:var(--orange);background:rgba(255,107,53,.1);box-shadow:0 0 20px rgba(255,107,53,.18)}
+.bpm-tier-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.bpm-tier-left{display:flex;align-items:center;gap:10px}
+.bpm-tier-icon{font-size:1.4rem}
+.bpm-tier-name{font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.bpm-tier-bpm{color:var(--muted);font-size:.7rem;font-weight:900}
+.bpm-tier-status{color:var(--orange);font-size:.65rem;font-weight:900}
+.bpm-tier-progress{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.78rem}
+.bpm-gostars{letter-spacing:1px}
+.bpm-level{color:var(--orange);font-weight:900}
+.level-section{background:rgba(17,17,24,.92);border:2px solid rgba(255,107,53,.32);border-radius:18px;padding:18px;margin-bottom:18px}
+.level-section-title{color:var(--orange);text-align:center;font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:.78rem;margin-bottom:12px}
+.level-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px}
+.level-btn{aspect-ratio:1;border:2px solid rgba(255,255,255,.12);background:transparent;color:var(--muted);border-radius:10px;font-weight:900;cursor:pointer}
+.level-btn.active{border-color:var(--orange);color:#fff;background:rgba(255,107,53,.16)}
+.level-info{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.level-info-label{color:var(--muted);font-size:.8rem}
+.level-info-value{color:var(--orange);font-weight:900}
+.letsgo-btn{width:100%;min-height:58px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.play-container{width:min(1280px,96vw);min-height:calc(100dvh - var(--nav-height));margin:0 auto;padding:18px 0 24px;display:grid;grid-template-rows:auto auto auto 1fr auto auto;gap:10px}
+.play-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.play-stat{background:rgba(17,17,24,.86);border:2px solid rgba(255,107,53,.30);border-radius:16px;padding:11px 10px;text-align:center}
+.play-stat-value{color:var(--orange);font-size:clamp(1.7rem,3vw,2.7rem);font-weight:900;line-height:1}
+.play-stat-label{color:var(--muted);font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.play-message{min-height:34px;display:flex;align-items:center;justify-content:center}
+.play-message-text{color:#fff;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.play-message-text.watch{color:var(--gold)}
+.play-message-text.go{color:var(--orange)}
+.play-message-text.error{color:var(--pink)}
+.play-tiers{display:flex;justify-content:center;gap:6px}
+.play-tier-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18)}
+.play-tier-dot.completed{background:var(--orange);box-shadow:0 0 6px var(--orange)}
+.play-tier-dot.current{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.25)}
+.play-court-wrap{max-width:min(90vw,1100px);width:100%;margin:0 auto}
+.play-court{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;padding:14px;background:rgba(17,17,24,.85);border:2px solid rgba(255,107,53,.48);border-radius:22px;aspect-ratio:2/1;box-shadow:0 0 42px rgba(255,107,53,.16),inset 0 0 38px rgba(255,107,53,.06)}
+.play-cell{border-radius:12px;background:rgba(255,255,255,.065);border:2px solid rgba(255,255,255,.14);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.play-cell .cell-num{color:#fff;opacity:0;font-size:clamp(1rem,2.2vw,2.2rem);font-weight:900}
+.play-cell.lit{background:var(--orange)!important;border-color:var(--gold)!important;box-shadow:0 0 24px rgba(255,107,53,.75);transform:scale(1.06)}
+.play-cell.lit .cell-num,.play-cell.show-num .cell-num{opacity:1}
+.play-cell.correct{background:var(--teal)!important;border-color:var(--teal)!important}
+.play-cell.wrong{background:rgba(255,20,147,.3)!important;border-color:var(--pink)!important;animation:shake .4s}
+.play-cell.player-tap{background:rgba(255,255,255,.2)!important;border-color:rgba(255,255,255,.4)!important}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.play-info{display:flex;justify-content:space-between;align-items:center;max-width:1100px;width:100%;margin:0 auto}
+.play-info-badge{color:var(--orange);font-weight:900;letter-spacing:.08em}
+.play-info-cells{color:var(--muted)}
+.play-info-score{color:var(--gold);font-weight:900}
+.play-action-btn{width:100%;max-width:1100px;min-height:58px;margin:0 auto;border:none;border-radius:999px;background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;font-size:1rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.play-action-btn:disabled{opacity:.45}
+.emoji-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.burst-emoji{position:absolute;font-size:1.6rem;animation:emojiBurst 1.2s ease-out forwards}
+@keyframes emojiBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.8) rotate(var(--rot))}}
+.burst-emoji.big{font-size:2.2rem}.burst-emoji.party{font-size:1.8rem;animation-duration:2s}
+.coach-message{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;padding:11px 22px;border-radius:16px;font-weight:900;opacity:0;transition:.3s;z-index:100}
+.coach-message.show{transform:translateX(-50%) translateY(0);opacity:1}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+.overlay.show{display:flex}
+.overlay-card{background:rgba(17,17,24,.98);border:2px solid var(--orange);border-radius:18px;padding:28px;text-align:center;max-width:340px;width:100%}
+.overlay-emoji{font-size:3rem;margin-bottom:10px}
+.overlay-title{color:var(--orange);font-size:1.4rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.overlay-message{color:var(--muted);margin:12px 0 18px}
+.overlay-btn{min-height:48px;padding:12px 28px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:900px){
+  :root{--nav-height:58px}
+  .nav-row{height:58px;padding:0 10px}.nav-title{font-size:1rem}.back-btn{padding:8px 10px;font-size:.68rem}.nav-lang-btn{min-width:34px;min-height:32px;padding:6px 8px}
+  .rc-shell{width:min(430px,94vw);min-height:auto;display:block;padding:14px 0 28px}
+  .rc-header{display:block;text-align:center}.rc-wing{display:none}.rc-main-title{font-size:2rem;line-height:.95}.rc-subtitle{font-size:.78rem}
+  .rc-body{display:flex;flex-direction:column;gap:12px}.rc-rail{gap:10px}.rc-card{padding:12px}.rc-center{display:block}
+  .rc-court-label{display:block;text-align:center;margin:12px auto 0;width:max-content;max-width:100%;font-size:.68rem}
+  .rc-court-stage{padding:10px;border-radius:18px}
+  .demo-court{width:min(95vw,550px);height:min(48vw,275px);gap:4px;padding:10px}.demo-cell{border-radius:8px}
+  .bpm-section{grid-template-columns:1fr}.level-grid{grid-template-columns:repeat(5,1fr)}
+  .play-container{width:min(430px,94vw);min-height:calc(100dvh - var(--nav-height));padding:12px 0 28px;display:flex;flex-direction:column}
+  .play-stats{gap:7px}.play-stat{padding:8px 6px}.play-stat-value{font-size:1.45rem}
+  .play-court-wrap{max-width:min(95vw,550px)}.play-court{gap:4px;padding:9px;border-radius:16px}.play-cell{border-radius:7px}
+  .play-info,.play-action-btn{max-width:550px}
+}
+@media(max-width:360px){.demo-court{width:95vw;height:48vw}.play-court-wrap{max-width:95vw}.play-court{gap:3px;padding:7px}}
+</style>
+</head>
+<body>
+
+<nav class="mini-nav">
+  <div class="nav-row">
+    <a href="https://reactificgaming.com" class="back-btn" id="backBtn">← Back</a>
+    <div class="nav-title">Reactific</div>
+    <div class="nav-right">
+      <div class="nav-lang">
+        <button class="nav-lang-btn" id="langEN">EN</button>
+        <button class="nav-lang-btn active" id="langES">ES</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="screen active" id="screen-demo">
+  <div class="rc-shell">
+    <header class="rc-header">
+      <div class="rc-wing">Memory<br><span>Training</span></div>
+      <div class="rc-title">
+        <div class="rc-kicker" id="demoBadge">Reaction Training</div>
+        <div class="rc-main-title">Pattern <span>Recognition</span></div>
+        <div class="rc-subtitle" id="demoSubtitle">The Possession-Long Brake Memory</div>
+      </div>
+      <div class="rc-wing">Orange Court<br><span>Recall Order</span></div>
+    </header>
+    <main class="rc-body">
+      <aside class="rc-rail">
+        <div class="rc-card"><div class="rc-card-title">Mission</div><div class="rc-small">Watch the pattern. Remember the order. Tap it back.</div></div>
+        <div class="htp-section">
+          <div class="htp-toggle" id="htpToggle"><span class="htp-toggle-icon">📖</span><span class="htp-toggle-text" id="htpToggleText">HOW TO TRAIN</span><span class="htp-toggle-arrow">▼</span></div>
+          <div class="htp-content" id="htpContent"><div class="htp-inner">
+            <div class="htp-card"><div class="htp-card-title">🎯 <span id="objectiveTitle">OBJECTIVE</span></div>
+              <div class="htp-step"><div class="htp-step-num">1</div><div class="htp-step-text" id="step1"><strong>Watch</strong> the grid — numbered cells will light up</div></div>
+              <div class="htp-step"><div class="htp-step-num">2</div><div class="htp-step-text" id="step2"><strong>Memorize</strong> which cells have which numbers</div></div>
+              <div class="htp-step"><div class="htp-step-num">3</div><div class="htp-step-text" id="step3"><strong>Tap back</strong> in order: 1, 2, 3, 4, 5...</div></div></div>
+            <div class="htp-card"><div class="htp-card-title">⭐ <span id="progressionTitle">PROGRESSION</span></div>
+              <div class="htp-step"><div class="htp-step-num">→</div><div class="htp-step-text" id="prog1">Complete <strong>3 rounds</strong> to earn a GoStar</div></div>
+              <div class="htp-step"><div class="htp-step-num">→</div><div class="htp-step-text" id="prog2">Earn <strong>10 GoStars</strong> to master a level</div></div>
+              <div class="htp-step"><div class="htp-step-num">→</div><div class="htp-step-text" id="prog3">Higher levels = <strong>more cells</strong> to remember</div></div></div>
+            <div class="htp-card"><div class="htp-card-title">⚡ <span id="speedsTitle">BPM SPEEDS</span></div>
+              <div class="htp-step"><div class="htp-step-num">🏋️</div><div class="htp-step-text" id="speed1"><strong>Training (60 BPM)</strong> — Slower flash, more time</div></div>
+              <div class="htp-step"><div class="htp-step-num">🎯</div><div class="htp-step-text" id="speed2"><strong>Tempo (90 BPM)</strong> — Medium challenge</div></div>
+              <div class="htp-step"><div class="htp-step-num">⚡</div><div class="htp-step-text" id="speed3"><strong>Elite (120 BPM)</strong> — Fast flash, quick memory!</div></div>
+              <div class="htp-tip"><div class="htp-tip-title">💡 <span id="tipTitle">TIP</span></div><div class="htp-tip-text" id="tipText">Start with Training (60) to learn the patterns, then challenge yourself with faster speeds!</div></div></div>
+          </div></div>
+        </div>
+      </aside>
+      <section class="rc-center">
+        <div class="rc-court-label">Live Demo Court</div>
+        <div class="rc-court-stage"><div class="demo-court-wrap"><div class="demo-label" id="demoLabel">👀 WATCH...</div><div class="demo-court" id="demoCourt"></div></div></div>
+      </section>
+      <aside class="rc-rail">
+        <div class="rc-card"><div class="rc-card-title">Pattern Rule</div><div class="rc-big">1 → 10</div><div class="rc-small">recall the order</div></div>
+        <div class="rc-card"><div class="rc-card-title">Start</div><div class="demo-cta"><button class="play-now-btn" id="playNowBtn">▶ TRAIN NOW</button></div></div>
+        <div class="ritnome-promo"><div class="pulse-dot"></div><div class="ritnome-promo-text"><span id="poweredBy">Powered by</span> <span>Gostar Digital™</span></div></div>
+      </aside>
+    </main>
+  </div>
+</div>
+
+<div class="screen" id="screen-trophy"><div class="trophy-container">
+  <div class="trophy-header"><div class="trophy-icon">🏆</div><h1 class="trophy-title" id="trophyTitle">YOUR TROPHY ROOM</h1><p class="trophy-subtitle" id="trophySubtitle">Pattern Recognition Progress</p></div>
+  <div class="bpm-section">
+    <div class="bpm-section-title" id="selectSpeedTitle">SELECT BPM SPEED</div>
+    <div class="bpm-tier active" id="tierSlow" data-speed="slow"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🏋️</span><div><div class="bpm-tier-name">TRAINING</div><div class="bpm-tier-bpm">60 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tierSlowStatus">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-gostars" id="starsSlow">⭐☆☆☆☆☆☆☆☆☆</span><span class="bpm-level" id="levelSlowDisplay">L1</span></div></div>
+    <div class="bpm-tier" id="tierMed" data-speed="med"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">🎯</span><div><div class="bpm-tier-name">TEMPO</div><div class="bpm-tier-bpm">90 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tierMedStatus">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-gostars" id="starsMed">☆☆☆☆☆☆☆☆☆☆</span><span class="bpm-level" id="levelMedDisplay">L1</span></div></div>
+    <div class="bpm-tier" id="tierFast" data-speed="fast"><div class="bpm-tier-header"><div class="bpm-tier-left"><span class="bpm-tier-icon">⚡</span><div><div class="bpm-tier-name">ELITE</div><div class="bpm-tier-bpm">120 BPM</div></div></div><span class="bpm-tier-status unlocked" id="tierFastStatus">✓ FREE</span></div><div class="bpm-tier-progress"><span class="bpm-gostars" id="starsFast">☆☆☆☆☆☆☆☆☆☆</span><span class="bpm-level" id="levelFastDisplay">L1</span></div></div>
+  </div>
+  <div class="level-section"><div class="level-section-title" id="selectLevelTitle">SELECT LEVEL</div><div class="level-grid" id="levelGrid"><button class="level-btn active" data-level="1">1</button><button class="level-btn" data-level="2">2</button><button class="level-btn" data-level="3">3</button><button class="level-btn" data-level="4">4</button><button class="level-btn" data-level="5">5</button><button class="level-btn" data-level="6">6</button><button class="level-btn" data-level="7">7</button><button class="level-btn" data-level="8">8</button><button class="level-btn" data-level="9">9</button><button class="level-btn" data-level="10">10</button></div><div class="level-info"><span class="level-info-label" id="cellsLabel">Cells to remember:</span><span class="level-info-value" id="cellsDisplay">8</span></div></div>
+  <button class="letsgo-btn" id="letsGoBtn">LET'S GO!</button>
+</div></div>
+
+<div class="screen" id="screen-play"><div class="play-container">
+  <div class="play-stats"><div class="play-stat"><div class="play-stat-value" id="playTier">1</div><div class="play-stat-label">GoStars</div></div><div class="play-stat"><div class="play-stat-value" id="playRound">0/3</div><div class="play-stat-label" id="playRoundLabel">Round</div></div><div class="play-stat"><div class="play-stat-value" id="playStreak">0</div><div class="play-stat-label">🔥</div></div><div class="play-stat"><div class="play-stat-value" id="playScore">0</div><div class="play-stat-label" id="playScoreLabel">Score</div></div></div>
+  <div class="play-message"><span class="play-message-text" id="playMessage">TAP TO START!</span></div>
+  <div class="play-tiers" id="playTierDots"></div>
+  <div class="play-court-wrap"><div class="play-court" id="playCourt"></div></div>
+  <div class="play-info"><div class="play-info-badge" id="playBadge">L1 TRAINING</div><div class="play-info-cells" id="playCells">CELLS: 8</div><div class="play-info-score" id="playTotal">0</div></div>
+  <button class="play-action-btn" id="playActionBtn">LET'S GO</button>
+</div></div>
+
+<div class="overlay" id="tierupOverlay"><div class="overlay-card"><div class="overlay-emoji">⭐</div><h2 class="overlay-title" id="tierupTitle">GOSTAR EARNED!</h2><p class="overlay-message" id="tierupMessage"></p><button class="overlay-btn" id="tierupBtn">LET'S GO!</button></div></div>
+<div class="emoji-container" id="emojiContainer"></div>
+<div class="coach-message" id="coachMessage"></div>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var $$=function(sel){return document.querySelectorAll(sel)};
+var screenDemo=$('screen-demo'),screenTrophy=$('screen-trophy'),screenPlay=$('screen-play');
+var currentScreen='demo';
+var currentLang='en';
+var translations = {
+  en: {demoBadge:'Reaction Training',demoSubtitle:'The Possession-Long Brake Memory',demoLabelWatch:'👀 WATCH...',demoLabelRecall:'RECALL!',demoLabelTap:'TAP 1, 2, 3...',demoLabelPerfect:'✅ PERFECT!',htpToggle:'HOW TO TRAIN',objectiveTitle:'OBJECTIVE',step1:'<strong>Watch</strong> the grid — numbered cells will light up',step2:'<strong>Memorize</strong> which cells have which numbers',step3:'<strong>Tap back</strong> in order: 1, 2, 3, 4, 5...',progressionTitle:'PROGRESSION',prog1:'Complete <strong>3 rounds</strong> to earn a GoStar',prog2:'Earn <strong>10 GoStars</strong> to master a level',prog3:'Higher levels = <strong>more cells</strong> to remember',speedsTitle:'BPM SPEEDS',speed1:'<strong>Training (60 BPM)</strong> — Slower flash, more time',speed2:'<strong>Tempo (90 BPM)</strong> — Medium challenge',speed3:'<strong>Elite (120 BPM)</strong> — Fast flash, quick memory!',tipTitle:'TIP',tipText:'Start with Training (60) to learn the patterns, then challenge yourself with faster speeds!',playNow:'▶ TRAIN NOW',poweredBy:'Powered by',trophyTitle:'YOUR TROPHY ROOM',trophySubtitle:'Pattern Recognition Progress',selectSpeed:'SELECT BPM SPEED',tierFree:'✓ FREE',selectLevel:'SELECT LEVEL',cellsLabel:'Cells to remember:',letsGo:"LET'S GO!",roundLabel:'Round',scoreLabel:'Score',tapToStart:'TAP TO START!',tapLetsGo:"TAP LET'S GO!",memorize:'MEMORIZE!',tapInOrder:'TAP IN ORDER!',wrongOrder:'WRONG ORDER!',tierupTitle:'GOSTAR EARNED!',tierupMsg:'You earned GoStar {tier}!',tierupLevelMsg:' Now Level {level} ({cells} cells)',masterMsg:'🏆 10 GOSTARS - MASTER! 🏆'},
+  es: {demoBadge:'Reaction Training',demoSubtitle:'La Memoria de Freno de Toda la Posesión',demoLabelWatch:'👀 MIRA...',demoLabelRecall:'¡RECUERDA!',demoLabelTap:'TOCA 1, 2, 3...',demoLabelPerfect:'✅ ¡PERFECTO!',htpToggle:'CÓMO ENTRENAR',objectiveTitle:'OBJETIVO',step1:'<strong>Observa</strong> la cuadrícula — celdas numeradas se iluminarán',step2:'<strong>Memoriza</strong> qué celdas tienen qué números',step3:'<strong>Toca</strong> en orden: 1, 2, 3, 4, 5...',progressionTitle:'PROGRESIÓN',prog1:'Completa <strong>3 rondas</strong> para ganar un GoStar',prog2:'Gana <strong>10 GoStars</strong> para dominar un nivel',prog3:'Niveles más altos = <strong>más celdas</strong> para recordar',speedsTitle:'VELOCIDADES BPM',speed1:'<strong>Entrenamiento (60 BPM)</strong> — Destello lento, más tiempo',speed2:'<strong>Tempo (90 BPM)</strong> — Desafío medio',speed3:'<strong>Elite (120 BPM)</strong> — Destello rápido, ¡memoria veloz!',tipTitle:'CONSEJO',tipText:'¡Comienza con Entrenamiento (60) para aprender los patrones, luego desafíate con velocidades más rápidas!',playNow:'▶ ENTRENAR AHORA',poweredBy:'Impulsado por',trophyTitle:'TU VITRINA',trophySubtitle:'Progreso de Pattern Recognition',selectSpeed:'SELECCIONA VELOCIDAD BPM',tierFree:'✓ GRATIS',selectLevel:'SELECCIONA NIVEL',cellsLabel:'Celdas a recordar:',letsGo:"¡PA'LANTE!",roundLabel:'Ronda',scoreLabel:'Puntos',tapToStart:'¡TOCA PARA COMENZAR!',tapLetsGo:"¡TOCA PA'LANTE!",memorize:'¡MEMORIZA!',tapInOrder:'¡TOCA EN ORDEN!',wrongOrder:'¡ORDEN INCORRECTO!',tierupTitle:'¡GOSTAR GANADO!',tierupMsg:'¡Ganaste GoStar {tier}!',tierupLevelMsg:' Ahora Nivel {level} ({cells} celdas)',masterMsg:'🏆 10 GOSTARS - ¡MAESTRO! 🏆'}
+};
+function t(key){return translations[currentLang][key]||translations['en'][key]||key}
+function updateUILanguage(){$('demoBadge').textContent=t('demoBadge');$('demoSubtitle').textContent=t('demoSubtitle');$('htpToggleText').textContent=t('htpToggle');$('objectiveTitle').textContent=t('objectiveTitle');$('step1').innerHTML=t('step1');$('step2').innerHTML=t('step2');$('step3').innerHTML=t('step3');$('progressionTitle').textContent=t('progressionTitle');$('prog1').innerHTML=t('prog1');$('prog2').innerHTML=t('prog2');$('prog3').innerHTML=t('prog3');$('speedsTitle').textContent=t('speedsTitle');$('speed1').innerHTML=t('speed1');$('speed2').innerHTML=t('speed2');$('speed3').innerHTML=t('speed3');$('tipTitle').textContent=t('tipTitle');$('tipText').textContent=t('tipText');$('playNowBtn').textContent=t('playNow');$('poweredBy').textContent=t('poweredBy');$('trophyTitle').textContent=t('trophyTitle');$('trophySubtitle').textContent=t('trophySubtitle');$('selectSpeedTitle').textContent=t('selectSpeed');$('tierSlowStatus').textContent=t('tierFree');$('tierMedStatus').textContent=t('tierFree');$('tierFastStatus').textContent=t('tierFree');$('selectLevelTitle').textContent=t('selectLevel');$('cellsLabel').textContent=t('cellsLabel');$('letsGoBtn').textContent=t('letsGo');$('playRoundLabel').textContent=t('roundLabel');$('playScoreLabel').textContent=t('scoreLabel');$('playActionBtn').textContent=t('letsGo');$('tierupTitle').textContent=t('tierupTitle');$('tierupBtn').textContent=t('letsGo');$('langEN').classList.toggle('active',currentLang==='en');$('langES').classList.toggle('active',currentLang==='es')}
+function setLang(l){currentLang=l;localStorage.setItem('lc-lang',l);updateUILanguage()}
+$('langEN').onclick=function(){setLang('en')};$('langES').onclick=function(){setLang('es')};
+var savedLang=localStorage.getItem('lc-lang');if(savedLang)currentLang=savedLang;
+function showScreen(name){screenDemo.classList.remove('active');screenTrophy.classList.remove('active');screenPlay.classList.remove('active');currentScreen=name;document.querySelector('.nav-lang').style.display=name==='play'?'none':'flex';if(name==='demo')screenDemo.classList.add('active');else if(name==='trophy')screenTrophy.classList.add('active');else if(name==='play')screenPlay.classList.add('active')}
+var demoCourt=$('demoCourt'),demoLabel=$('demoLabel'),demoCells=[],demoEpoch=0,demoTimeouts=[];
+function initDemoCourt(){demoCourt.innerHTML='';demoCells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='demo-cell';demoCourt.appendChild(c);demoCells.push(c)}}
+function setDemoTimeout(fn,delay){var id=setTimeout(function(){var idx=demoTimeouts.indexOf(id);if(idx>-1)demoTimeouts.splice(idx,1);fn()},delay);demoTimeouts.push(id);return id}
+function clearDemoTimeouts(){demoTimeouts.forEach(function(id){clearTimeout(id)});demoTimeouts=[]}
+function randomPattern(count){var arr=[];for(var i=0;i<50;i++)arr.push(i);for(var j=arr.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1));var tmp=arr[j];arr[j]=arr[k];arr[k]=tmp}return arr.slice(0,count)}
+function runDemoRound(epoch){if(epoch!==demoEpoch||currentScreen!=='demo')return;var pattern=randomPattern(8);demoCells.forEach(function(c){c.className='demo-cell';c.textContent=''});setDemoTimeout(function(){if(epoch!==demoEpoch)return;demoLabel.textContent=t('demoLabelRecall');demoLabel.className='demo-label phase-watch';pattern.forEach(function(idx,num){demoCells[idx].classList.add('lit');demoCells[idx].textContent=num+1})},500);setDemoTimeout(function(){if(epoch!==demoEpoch)return;pattern.forEach(function(idx){demoCells[idx].classList.remove('lit');demoCells[idx].textContent=''});demoLabel.textContent=t('demoLabelTap');demoLabel.className='demo-label phase-recall'},2800);pattern.forEach(function(idx,i){setDemoTimeout(function(){if(epoch!==demoEpoch)return;demoCells[idx].classList.add('correct');demoCells[idx].textContent='✓'},3300+(i*400))});setDemoTimeout(function(){if(epoch!==demoEpoch)return;demoLabel.textContent=t('demoLabelPerfect');demoLabel.className='demo-label phase-success';demoCourt.classList.add('joy-pulse');setTimeout(function(){demoCourt.classList.remove('joy-pulse')},500)},3300+(8*400)+200);setDemoTimeout(function(){if(epoch!==demoEpoch)return;demoCells.forEach(function(c){c.className='demo-cell';c.textContent=''});demoLabel.textContent=t('demoLabelWatch');demoLabel.className='demo-label';runDemoRound(epoch)},7500)}
+function startDemo(){demoEpoch++;clearDemoTimeouts();runDemoRound(demoEpoch)}
+function stopDemo(){demoEpoch++;clearDemoTimeouts()}
+var htpToggle=$('htpToggle'),htpContent=$('htpContent');
+htpToggle.onclick=function(){htpToggle.classList.toggle('open');htpContent.classList.toggle('open')};
+$('playNowBtn').onclick=function(){stopDemo();showScreen('trophy')};
+var gameState={speed:'slow',level:1,tier:1,roundsCompleted:0,score:0,streak:0};
+var LEVEL_CELLS={1:8,2:10,3:12,4:14,5:16,6:18,7:20,8:22,9:24,10:26};
+function getSpeedKey(speed,key){return'lc-match10-'+speed+'-'+key}
+function loadSpeedState(speed){return{level:parseInt(localStorage.getItem(getSpeedKey(speed,'level')))||1,tier:parseInt(localStorage.getItem(getSpeedKey(speed,'tier')))||1,roundsCompleted:parseInt(localStorage.getItem(getSpeedKey(speed,'rounds')))||0,score:parseInt(localStorage.getItem(getSpeedKey(speed,'score')))||0,streak:parseInt(localStorage.getItem(getSpeedKey(speed,'streak')))||0}}
+function saveSpeedState(){localStorage.setItem(getSpeedKey(gameState.speed,'level'),gameState.level);localStorage.setItem(getSpeedKey(gameState.speed,'tier'),gameState.tier);localStorage.setItem(getSpeedKey(gameState.speed,'rounds'),gameState.roundsCompleted);localStorage.setItem(getSpeedKey(gameState.speed,'score'),gameState.score);localStorage.setItem(getSpeedKey(gameState.speed,'streak'),gameState.streak);if(typeof syncCognitiveScore==='function')syncCognitiveScore(gameState.speed,gameState.level,gameState.score,gameState.streak,gameState.tier)}
+function renderStars(tier){var s='';for(var i=0;i<10;i++)s+=i<tier?'⭐':'☆';return s}
+function updateTrophyUI(){var slowData=loadSpeedState('slow'),medData=loadSpeedState('med'),fastData=loadSpeedState('fast');$('starsSlow').textContent=renderStars(slowData.tier);$('starsMed').textContent=renderStars(medData.tier);$('starsFast').textContent=renderStars(fastData.tier);$('levelSlowDisplay').textContent='L'+slowData.level;$('levelMedDisplay').textContent='L'+medData.level;$('levelFastDisplay').textContent='L'+fastData.level;var tiers=$$('.bpm-tier');tiers.forEach(function(t){t.classList.remove('active')});if(gameState.speed==='slow')$('tierSlow').classList.add('active');else if(gameState.speed==='med')$('tierMed').classList.add('active');else $('tierFast').classList.add('active');$$('.level-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.level)===gameState.level)});$('cellsDisplay').textContent=LEVEL_CELLS[gameState.level]||8}
+$$('.bpm-tier').forEach(function(tier){tier.onclick=function(){var spd=tier.dataset.speed;gameState.speed=spd;var data=loadSpeedState(spd);gameState.level=data.level;gameState.tier=data.tier;gameState.roundsCompleted=data.roundsCompleted;gameState.score=data.score;gameState.streak=data.streak;updateTrophyUI()}});
+$$('.level-btn').forEach(function(btn){btn.onclick=function(){gameState.level=parseInt(btn.dataset.level);gameState.tier=1;gameState.roundsCompleted=0;saveSpeedState();updateTrophyUI()}});
+$('letsGoBtn').onclick=function(){showScreen('play');initGame()};
+var playCourt=$('playCourt'),playCells=[],playTimeouts=[];
+var SPEED_CFG={slow:{display:2500},med:{display:2000},fast:{display:1500}};
+var ROUNDS_PER_TIER=3,TOTAL_TIERS=10;
+var pattern=[],playerIndex=0,isPlaying=false,canTap=false;
+var LAUGH_EMOJIS=['😂','😆','🤣','😄','😁','🥳','😊','🏀'];
+var PARTY_EMOJIS=['🥳','🎉','😂','🤣','✨','💫','🏀','🏆'];
+var audioCtx=null;
+function setPlayTimeout(fn,delay){var id=setTimeout(function(){var idx=playTimeouts.indexOf(id);if(idx>-1)playTimeouts.splice(idx,1);fn()},delay);playTimeouts.push(id);return id}
+function clearPlayTimeouts(){playTimeouts.forEach(function(id){clearTimeout(id)});playTimeouts=[]}
+function initPlayCourt(){playCourt.innerHTML='';playCells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='play-cell';c.dataset.index=i;c.innerHTML='<span class="cell-num"></span>';c.onclick=function(){handleTap(parseInt(this.dataset.index))};playCourt.appendChild(c);playCells.push(c)}}
+function renderPlayTierDots(){var c=$('playTierDots');c.innerHTML='';for(var i=1;i<=TOTAL_TIERS;i++){var d=document.createElement('div');d.className='play-tier-dot'+(i<gameState.tier?' completed':'')+(i===gameState.tier?' current':'');c.appendChild(d)}}
+function updatePlayUI(){$('playTier').textContent=gameState.tier;$('playRound').textContent=gameState.roundsCompleted+'/'+ROUNDS_PER_TIER;$('playStreak').textContent=gameState.streak;$('playScore').textContent=gameState.score;$('playTotal').textContent=gameState.score;var spName=gameState.speed==='slow'?'TRAINING':gameState.speed==='med'?'TEMPO':'ELITE';$('playBadge').textContent='L'+gameState.level+' '+spName;$('playCells').textContent='CELLS: '+(LEVEL_CELLS[gameState.level]||8);renderPlayTierDots()}
+function initGame(){initPlayCourt();var data=loadSpeedState(gameState.speed);gameState.level=data.level;gameState.tier=data.tier;gameState.roundsCompleted=data.roundsCompleted;gameState.score=data.score;gameState.streak=data.streak;isPlaying=false;canTap=false;updatePlayUI();$('playMessage').textContent=t('tapLetsGo');$('playActionBtn').disabled=false}
+function generatePattern(){var count=LEVEL_CELLS[gameState.level]||8;var arr=[];for(var i=0;i<50;i++)arr.push(i);for(var j=arr.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1));var tmp=arr[j];arr[j]=arr[k];arr[k]=tmp}return arr.slice(0,count)}
+function playTone(freq,dur){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}try{if(audioCtx.state==='suspended')audioCtx.resume();var osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type='sine';osc.frequency.value=freq;osc.connect(gain);gain.connect(audioCtx.destination);gain.gain.setValueAtTime(0.3,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+dur);osc.start();osc.stop(audioCtx.currentTime+dur+0.05)}catch(e){}}
+function playFlash(){playTone(880,0.15)}
+function playTap(){playTone(660,0.08)}
+function playSuccess(){[523,659,784].forEach(function(f,i){setTimeout(function(){playTone(f,0.12)},i*80)})}
+function playError(){playTone(200,0.3)}
+function getCourtCenter(){var r=playCourt.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
+function createBurstEmoji(emoji,x,y,type){var el=document.createElement('div');el.className='burst-emoji'+(type?' '+type:'');el.textContent=emoji;var angle=Math.random()*Math.PI*2,dist=50+Math.random()*80;el.style.cssText='left:'+x+'px;top:'+y+'px;--tx:'+Math.cos(angle)*dist+'px;--ty:'+Math.sin(angle)*dist+'px;--rot:'+(Math.random()-0.5)*720+'deg';$('emojiContainer').appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},2000)}
+function laughCelebration(intensity){var center=getCourtCenter();var count=intensity==='party'?8:intensity==='big'?5:intensity==='medium'?3:2;var emojis=intensity==='party'?PARTY_EMOJIS:LAUGH_EMOJIS;var type=intensity==='party'?'party':intensity==='big'?'big':'';for(var i=0;i<count;i++){(function(idx){setTimeout(function(){createBurstEmoji(emojis[Math.floor(Math.random()*emojis.length)],center.x+(Math.random()-0.5)*20,center.y+(Math.random()-0.5)*20,type)},idx*35)})(i)}playCourt.classList.add('joy-pulse');setTimeout(function(){playCourt.classList.remove('joy-pulse')},500)}
+function showCoach(msg){$('coachMessage').textContent=msg;$('coachMessage').classList.add('show');setTimeout(function(){$('coachMessage').classList.remove('show')},2000)}
+function startRound(){if(isPlaying)return;clearPlayTimeouts();isPlaying=true;canTap=false;playerIndex=0;$('playActionBtn').disabled=true;playCells.forEach(function(c){c.className='play-cell';c.querySelector('.cell-num').textContent=''});pattern=generatePattern();$('playMessage').textContent=t('memorize');$('playMessage').className='play-message-text watch';setPlayTimeout(function(){if(!isPlaying)return;pattern.forEach(function(idx,num){playCells[idx].classList.add('lit');playCells[idx].querySelector('.cell-num').textContent=num+1});playFlash();var displayTime=SPEED_CFG[gameState.speed]?SPEED_CFG[gameState.speed].display:2500;setPlayTimeout(function(){if(!isPlaying)return;playCells.forEach(function(c){c.classList.remove('lit')});$('playMessage').textContent=t('tapInOrder');$('playMessage').className='play-message-text go';canTap=true},displayTime)},400)}
+function handleTap(idx){if(!canTap||!isPlaying)return;var cell=playCells[idx];cell.classList.add('player-tap');playTap();setPlayTimeout(function(){cell.classList.remove('player-tap')},150);if(idx===pattern[playerIndex]){cell.classList.add('correct','show-num');cell.querySelector('.cell-num').textContent=playerIndex+1;playerIndex++;if(playerIndex>2)laughCelebration('small');if(playerIndex>=pattern.length){canTap=false;roundComplete(true)}}else{cell.classList.add('wrong');playError();canTap=false;setPlayTimeout(function(){pattern.forEach(function(i,num){playCells[i].classList.add('lit','show-num');playCells[i].querySelector('.cell-num').textContent=num+1})},400);setPlayTimeout(function(){roundComplete(false)},2000)}}
+function roundComplete(success){isPlaying=false;canTap=false;if(success){var pts=pattern.length*20*(gameState.speed==='fast'?3:gameState.speed==='med'?2:1);gameState.score+=pts;gameState.streak++;gameState.roundsCompleted++;saveSpeedState();var intensity=gameState.streak>=5?'party':gameState.streak>=3?'big':'medium';var msgs=gameState.streak>=5?['🏆 LEGEND!','🏆 WOW!']:gameState.streak>=3?['🔥 FIRE!','🤣 AMAZING!']:['😄 NICE!','😊 GREAT!'];playSuccess();laughCelebration(intensity);showCoach(msgs[Math.floor(Math.random()*msgs.length)]);updatePlayUI();if(gameState.roundsCompleted>=ROUNDS_PER_TIER){setPlayTimeout(function(){gameState.tier<TOTAL_TIERS?tierUp():maxTier()},800)}else{setPlayTimeout(resetRound,1000)}}else{gameState.streak=0;saveSpeedState();updatePlayUI();$('playMessage').textContent=t('wrongOrder');$('playMessage').className='play-message-text error';setPlayTimeout(resetRound,2000)}}
+function tierUp(){gameState.tier++;gameState.roundsCompleted=0;var oldLevel=gameState.level;if(gameState.level<10)gameState.level++;saveSpeedState();laughCelebration('party');var msg=t('tierupMsg').replace('{tier}',gameState.tier);if(gameState.level>oldLevel){msg+=t('tierupLevelMsg').replace('{level}',gameState.level).replace('{cells}',LEVEL_CELLS[gameState.level]||8)}$('tierupMessage').innerHTML=msg;$('tierupOverlay').classList.add('show');updatePlayUI()}
+function maxTier(){gameState.roundsCompleted=0;if(gameState.level<10)gameState.level=10;saveSpeedState();$('tierupMessage').innerHTML=t('masterMsg');document.querySelector('#tierupOverlay .overlay-emoji').textContent='👑';$('tierupOverlay').classList.add('show');updatePlayUI()}
+$('tierupBtn').onclick=function(){$('tierupOverlay').classList.remove('show');document.querySelector('#tierupOverlay .overlay-emoji').textContent='⭐';resetRound()};
+function resetRound(){clearPlayTimeouts();isPlaying=false;canTap=false;playerIndex=0;pattern=[];playCells.forEach(function(c){c.className='play-cell';c.querySelector('.cell-num').textContent=''});$('playMessage').textContent=(gameState.roundsCompleted+1)+'/'+ROUNDS_PER_TIER+' - '+t('tapLetsGo');$('playMessage').className='play-message-text';$('playActionBtn').disabled=false;updatePlayUI()}
+$('playActionBtn').onclick=startRound;
+initDemoCourt();updateUILanguage();startDemo();updateTrophyUI();
+})();
+</script>
+<script>window.COGNITIVE_TEST_NAME='recall';</script>
+<script src="/cognitive-sync.js"></script>
+</body>
+</html>
