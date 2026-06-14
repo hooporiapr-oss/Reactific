@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Reactific Strobe Arena™</title>
+
+<style>
+:root{
+  --blue:#008cff;
+  --cyan:#00d9ff;
+  --orange:#ff6b00;
+  --gold:#d4af37;
+  --dark:#02050a;
+  --card:#07111f;
+  --text:#ffffff;
+  --muted:#9aa7b8;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(0,140,255,.28),transparent 32%),
+    radial-gradient(circle at 80% 20%,rgba(255,107,0,.22),transparent 30%),
+    linear-gradient(180deg,#02050a,#000);
+  color:var(--text);
+}
+
+.wrap{
+  width:min(1100px,94vw);
+  margin:0 auto;
+  padding:34px 0 50px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:34px;
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:.14em;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+
+.back{
+  color:var(--muted);
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,.18);
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:900;
+}
+
+.hero{
+  text-align:center;
+  padding:46px 18px;
+  border:2px solid rgba(0,140,255,.45);
+  border-radius:28px;
+  background:rgba(7,17,31,.72);
+  box-shadow:0 0 46px rgba(0,140,255,.22), inset 0 0 38px rgba(255,107,0,.06);
+}
+
+.kicker{
+  color:var(--gold);
+  font-weight:900;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-size:.8rem;
+  margin-bottom:14px;
+}
+
+h1{
+  font-size:clamp(3rem,8vw,7rem);
+  line-height:.88;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-style:italic;
+}
+
+h1 span{color:var(--orange)}
+
+.sub{
+  max-width:760px;
+  margin:22px auto 0;
+  color:var(--muted);
+  font-size:clamp(1rem,2vw,1.25rem);
+  line-height:1.5;
+  font-weight:700;
+}
+
+.ctas{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:32px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:230px;
+  min-height:58px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.primary{
+  background:linear-gradient(135deg,var(--orange),#ff9340);
+  color:#fff;
+  box-shadow:0 0 26px rgba(255,107,0,.45);
+}
+
+.secondary{
+  border:2px solid rgba(0,217,255,.45);
+  color:var(--cyan);
+  background:rgba(0,217,255,.06);
+}
+
+.grid{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.card{
+  background:rgba(7,17,31,.86);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+}
+
+.card h3{
+  color:var(--cyan);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:.9rem;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+
+.arena{
+  margin-top:30px;
+  border:2px solid rgba(255,107,0,.45);
+  border-radius:22px;
+  padding:18px;
+  background:rgba(0,0,0,.35);
+}
+
+.court{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  grid-template-rows:repeat(5,1fr);
+  gap:8px;
+  aspect-ratio:2/1;
+}
+
+.cell{
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.055);
+}
+
+.cell.hot{
+  background:var(--orange);
+  box-shadow:0 0 18px rgba(255,107,0,.75);
+}
+
+.footer{
+  text-align:center;
+  margin-top:26px;
+  color:var(--muted);
+  font-size:.85rem;
+  font-weight:700;
+}
+
+@media(max-width:760px){
+  .grid{grid-template-columns:1fr}
+  h1{font-size:3rem}
+  .court{gap:4px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="logo">Reactific™</div>
+    <a class="back" href="https://reactificgaming.com">← Back</a>
+  </div>
+
+  <section class="hero">
+    <div class="kicker">Competition Mode</div>
+
+    <h1>Reactific<br><span>Strobe Arena</span></h1>
+
+    <p class="sub">
+      The official 5×10 Reactific competition court. Enter the arena, beat the shot clock,
+      handle the strobe, rise through challenges, and compete for leaderboard position.
+    </p>
+
+    <div class="ctas">
+      <a class="btn primary" href="https://reactificgaming.com/compete/strobe-01-compete.html">Enter Arena</a>
+      <a class="btn secondary" href="https://reactificgaming.com/strobe-01.html">Practice 5×5</a>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>5×10 Arena</h3>
+      <p>More space. More scanning. More pressure. Built for desktop, tablet, and Promethean screens.</p>
+    </div>
+
+    <div class="card">
+      <h3>Strobe Pressure</h3>
+      <p>Train reaction under visual disruption with controlled strobe intensity and BPM rhythm.</p>
+    </div>
+
+    <div class="card">
+      <h3>Leaderboard Ready</h3>
+      <p>Subscribers compete, post scores, and climb the Reactific Arena rankings.</p>
+    </div>
+  </section>
+
+  <section class="arena">
+    <div class="court">
+      <div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hot"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    Practice builds skill. The Reactific Strobe Arena™ tests it.
+  </div>
+
+</div>
+</body>
+</html>
