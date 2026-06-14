@@ -40,6 +40,13 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:34px;
+  gap:14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
 }
 
 .logo{
@@ -47,6 +54,28 @@ body{
   letter-spacing:.14em;
   color:var(--cyan);
   text-transform:uppercase;
+}
+
+.lang-wrap{
+  display:flex;
+  gap:8px;
+}
+
+.lang{
+  width:44px;
+  height:36px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.05);
+  color:var(--muted);
+  font-weight:900;
+  cursor:pointer;
+}
+
+.lang.active{
+  border-color:var(--gold);
+  background:rgba(212,175,55,.12);
+  color:var(--gold);
 }
 
 .back{
@@ -194,9 +223,21 @@ h1 span{color:var(--orange)}
 }
 
 @media(max-width:760px){
-  .grid{grid-template-columns:1fr}
-  h1{font-size:3rem}
-  .court{gap:4px}
+  .top{
+    flex-direction:column;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:3rem;
+  }
+
+  .court{
+    gap:4px;
+  }
 }
 </style>
 </head>
@@ -205,40 +246,48 @@ h1 span{color:var(--orange)}
 <div class="wrap">
 
   <div class="top">
-    <div class="logo">Reactific™</div>
+    <div class="brand">
+      <div class="logo">Reactific™</div>
+
+      <div class="lang-wrap">
+        <button id="langEN" class="lang active">EN</button>
+        <button id="langES" class="lang">ES</button>
+      </div>
+    </div>
+
     <a class="back" href="https://reactificgaming.com">← Back</a>
   </div>
 
   <section class="hero">
-    <div class="kicker">Competition Mode</div>
+    <div class="kicker" id="kicker">Competition Mode</div>
 
     <h1>Reactific<br><span>Strobe Arena</span></h1>
 
-    <p class="sub">
+    <p class="sub" id="sub">
       The official 5×10 Reactific competition court. Enter the arena, beat the shot clock,
       handle the strobe, rise through challenges, and compete for leaderboard position.
     </p>
 
     <div class="ctas">
-      <a class="btn primary" href="https://reactificgaming.com/compete/strobe-01-compete.html">Enter Arena</a>
-      <a class="btn secondary" href="https://reactificgaming.com/strobe-01.html">Practice 5×5</a>
+      <a id="enterBtn" class="btn primary" href="https://reactificgaming.com/compete/strobe-01-compete.html">Enter Arena</a>
+      <a id="practiceBtn" class="btn secondary" href="https://reactificgaming.com/strobe-01.html">Practice 5×5</a>
     </div>
   </section>
 
   <section class="grid">
     <div class="card">
-      <h3>5×10 Arena</h3>
-      <p>More space. More scanning. More pressure. Built for desktop, tablet, and Promethean screens.</p>
+      <h3 id="c1">5×10 Arena</h3>
+      <p id="p1">More space. More scanning. More pressure. Built for desktop, tablet, and Promethean screens.</p>
     </div>
 
     <div class="card">
-      <h3>Strobe Pressure</h3>
-      <p>Train reaction under visual disruption with controlled strobe intensity and BPM rhythm.</p>
+      <h3 id="c2">Strobe Pressure</h3>
+      <p id="p2">Train reaction under visual disruption with controlled strobe intensity and BPM rhythm.</p>
     </div>
 
     <div class="card">
-      <h3>Leaderboard Ready</h3>
-      <p>Subscribers compete, post scores, and climb the Reactific Arena rankings.</p>
+      <h3 id="c3">Leaderboard Ready</h3>
+      <p id="p3">Subscribers compete, post scores, and climb the Reactific Arena rankings.</p>
     </div>
   </section>
 
@@ -252,10 +301,67 @@ h1 span{color:var(--orange)}
     </div>
   </section>
 
-  <div class="footer">
+  <div class="footer" id="footer">
     Practice builds skill. The Reactific Strobe Arena™ tests it.
   </div>
 
 </div>
+
+<script>
+const T={
+  en:{
+    kicker:"Competition Mode",
+    sub:"The official 5×10 Reactific competition court. Enter the arena, beat the shot clock, handle the strobe, rise through challenges, and compete for leaderboard position.",
+    enter:"Enter Arena",
+    practice:"Practice 5×5",
+    c1:"5×10 Arena",
+    p1:"More space. More scanning. More pressure. Built for desktop, tablet, and Promethean screens.",
+    c2:"Strobe Pressure",
+    p2:"Train reaction under visual disruption with controlled strobe intensity and BPM rhythm.",
+    c3:"Leaderboard Ready",
+    p3:"Subscribers compete, post scores, and climb the Reactific Arena rankings.",
+    footer:"Practice builds skill. The Reactific Strobe Arena™ tests it."
+  },
+  es:{
+    kicker:"Modo Competencia",
+    sub:"La cancha oficial Reactific 5×10. Entra a la arena, vence el shot clock, controla el strobe, supera desafíos y compite por posición en el leaderboard.",
+    enter:"Entrar Arena",
+    practice:"Practicar 5×5",
+    c1:"Arena 5×10",
+    p1:"Más espacio. Más escaneo visual. Más presión. Diseñada para desktop, tablet y pantallas Promethean.",
+    c2:"Presión Strobe",
+    p2:"Entrena reacción bajo interrupción visual con intensidad strobe controlada y ritmo BPM.",
+    c3:"Lista Para Leaderboard",
+    p3:"Los suscriptores compiten, publican puntuaciones y suben en el ranking de Reactific Arena.",
+    footer:"La práctica construye la habilidad. Reactific Strobe Arena™ la pone a prueba."
+  }
+};
+
+function setLang(l){
+  document.getElementById('langEN').classList.toggle('active',l==='en');
+  document.getElementById('langES').classList.toggle('active',l==='es');
+
+  document.getElementById('kicker').textContent=T[l].kicker;
+  document.getElementById('sub').textContent=T[l].sub;
+  document.getElementById('enterBtn').textContent=T[l].enter;
+  document.getElementById('practiceBtn').textContent=T[l].practice;
+
+  document.getElementById('c1').textContent=T[l].c1;
+  document.getElementById('p1').textContent=T[l].p1;
+  document.getElementById('c2').textContent=T[l].c2;
+  document.getElementById('p2').textContent=T[l].p2;
+  document.getElementById('c3').textContent=T[l].c3;
+  document.getElementById('p3').textContent=T[l].p3;
+  document.getElementById('footer').textContent=T[l].footer;
+
+  localStorage.setItem('arena-lang',l);
+}
+
+document.getElementById('langEN').onclick=()=>setLang('en');
+document.getElementById('langES').onclick=()=>setLang('es');
+
+setLang(localStorage.getItem('arena-lang')||'en');
+</script>
+
 </body>
 </html>
