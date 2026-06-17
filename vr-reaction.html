@@ -34,61 +34,40 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(155,89,182,.3)}
 .top-label{font-size:.5rem;color:#9B59B6;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
 .top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
-.lives-box .top-val{color:#FF1493;font-size:1.1rem;letter-spacing:3px}
+.speed-box .top-val{font-size:1rem;color:#ffd35a}
 .clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
-.clockbar-fill{height:100%;background:linear-gradient(90deg,#9B59B6,#A873B8);transition:width .1s linear}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#9B59B6,#A873B8);transition:width .05s linear}
 .msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
 .msg-bar.watch{color:#9B59B6}.msg-bar.go{color:#ffd35a}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
 .stars{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;padding:2px 0}
 .star{font-size:1rem;opacity:.2;transition:all .3s}
 .star.earned{opacity:1;filter:drop-shadow(0 0 6px #9B59B6);transform:scale(1.2)}
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;min-height:0;position:relative}
+.court{width:100%;height:100%;position:relative;border-radius:20px;background:radial-gradient(ellipse at center,#0a0014 0%,#000 80%);border:1px solid rgba(155,89,182,.15);overflow:hidden}
 
-/* COURT - no grid, just a dark space with floating circles */
-.court-area{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  padding:8px;min-height:0;position:relative;
-}
-.court{
-  width:100%;height:100%;
-  position:relative;
-  border-radius:20px;
-  background:radial-gradient(ellipse at center,#0a0014 0%,#000 80%);
-  border:1px solid rgba(155,89,182,.15);
-  overflow:hidden;
-}
-
-/* ROUND TARGETS */
+/* SHRINKING CIRCLE */
 .target-dot{
   position:absolute;
   border-radius:50%;
   cursor:pointer;
-  transition:transform .08s;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;font-weight:900;color:#fff;
-  transform:translate(-50%,-50%) scale(0);
-}
-.target-dot.active{
-  transform:translate(-50%,-50%) scale(1);
-  background:radial-gradient(circle at 35% 35%,#A873B8,#9B59B6);
-  box-shadow:0 0 40px rgba(155,89,182,1),0 0 80px rgba(155,89,182,.4);
-  animation:pulse-ring 1s infinite;
+  transform:translate(-50%,-50%);
+  transition:background .2s;
 }
 .target-dot.hit{
-  transform:translate(-50%,-50%) scale(1.3);
-  background:radial-gradient(circle at 35% 35%,#00D9A5,#00B894);
-  box-shadow:0 0 50px rgba(0,217,165,1);
-  animation:none;
+  background:radial-gradient(circle at 35% 35%,#00D9A5,#00B894)!important;
+  box-shadow:0 0 60px rgba(0,217,165,1)!important;
 }
 .target-dot.missed{
-  transform:translate(-50%,-50%) scale(1);
-  background:radial-gradient(circle at 35% 35%,#FF1493,#cc0066);
-  box-shadow:0 0 30px rgba(255,20,147,.8);
-  animation:none;
+  background:radial-gradient(circle at 35% 35%,#FF1493,#cc0066)!important;
+  box-shadow:0 0 40px rgba(255,20,147,.8)!important;
 }
-@keyframes pulse-ring{
-  0%{box-shadow:0 0 20px rgba(155,89,182,.8),0 0 0 0 rgba(155,89,182,.4)}
-  70%{box-shadow:0 0 40px rgba(155,89,182,1),0 0 0 20px rgba(155,89,182,0)}
-  100%{box-shadow:0 0 20px rgba(155,89,182,.8),0 0 0 0 rgba(155,89,182,0)}
+
+/* SPEED INDICATOR */
+.speed-indicator{
+  position:absolute;bottom:8px;right:12px;
+  font-size:.6rem;font-weight:900;letter-spacing:.15em;
+  text-transform:uppercase;color:rgba(155,89,182,.5);
 }
 
 .bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
@@ -103,30 +82,30 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <div id="screen-intro">
   <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">REACTION <span>CONTROL</span></div>
-  <div class="vrr-sub">5×10 VR Court · Reactific™</div>
-  <div class="vrr-rule">⚡ SEE IT — POINT — TRIGGER</div>
+  <div class="vrr-sub">VR Court · Reactific™</div>
+  <div class="vrr-rule">⚡ TAP IT BEFORE IT VANISHES</div>
   <div class="speed-row">
-    <button class="speed-btn active" data-iv="3000">SLOW<small>20 BPM</small></button>
-    <button class="speed-btn" data-iv="2000">TEMPO<small>30 BPM</small></button>
-    <button class="speed-btn" data-iv="1500">ELITE<small>40 BPM</small></button>
+    <button class="speed-btn active" data-time="3000">SLOW<small>3 SEC</small></button>
+    <button class="speed-btn" data-time="2000">TEMPO<small>2 SEC</small></button>
+    <button class="speed-btn" data-time="1500">ELITE<small>1.5 SEC</small></button>
   </div>
   <button class="big-btn" id="startBtn">⚡ ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>WATCH</strong> — a circle lights up on the court<br>
-    <strong>POINT</strong> — controller at it<br>
-    <strong>TRIGGER</strong> — before it disappears<br>
-    <strong>3 WINS</strong> — level up
+    <strong>CIRCLE APPEARS</strong> — then starts shrinking<br>
+    <strong>TAP IT</strong> — before it vanishes completely<br>
+    <strong>EVERY HIT</strong> — gets faster and smaller<br>
+    <strong>ONE MISS</strong> — session ends
   </div>
 </div>
 
 <div id="screen-game">
   <div class="topbar">
     <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
-    <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0</div></div>
+    <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hHits">0</div></div>
+    <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
     <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
     <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
-    <div class="top-box"><div class="top-label">Wins</div><div class="top-val" id="hCl">0/3</div></div>
-    <div class="top-box lives-box"><div class="top-label">Lives</div><div class="top-val" id="hLiv">♥♥♥</div></div>
+    <div class="top-box speed-box"><div class="top-label">Window</div><div class="top-val" id="hSpd">3.0s</div></div>
   </div>
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
   <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
@@ -136,7 +115,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <span class="star" id="ps3">⭐</span>
   </div>
   <div class="court-area">
-    <div class="court" id="court"></div>
+    <div class="court" id="court">
+      <div class="speed-indicator" id="speedInd"></div>
+    </div>
   </div>
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
@@ -149,113 +130,151 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <script>
 (function(){
 var $=id=>document.getElementById(id);
-var beatInterval=3000;
+var baseTime=3000, best=0;
 
-document.querySelectorAll('[data-iv]').forEach(btn=>{btn.onclick=function(){beatInterval=Number(btn.dataset.iv);document.querySelectorAll('[data-iv]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+document.querySelectorAll('[data-time]').forEach(btn=>{btn.onclick=function(){baseTime=Number(btn.dataset.time);document.querySelectorAll('[data-time]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
 
 $('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';initGame()};
-$('menuBtn').onclick=function(){$('screen-game').style.display='none';$('screen-intro').style.display='flex';stopRound()};
+$('menuBtn').onclick=function(){stopSession();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
-/* DOT SIZE based on level */
-function dotSize(lv){return Math.max(50, 120 - (lv-1)*8)}
+var g={lv:1,sc:0,hits:0,st:0};
+var phase='idle',shrinkRAF=null,missTimer=null,timers=[];
+var dot=null, dotSize=0, currentTime=0;
 
-/* Place dot at random position */
-function randomPos(size){
-  var court=$('court');
-  var w=court.offsetWidth, h=court.offsetHeight;
-  var pad=size/2+10;
-  return{
-    x:pad+Math.random()*(w-pad*2),
-    y:pad+Math.random()*(h-pad*2)
-  };
-}
+function clrT(){timers.forEach(clearTimeout);timers=[];if(missTimer){clearTimeout(missTimer);missTimer=null};if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
 
-var dot=null;
-function createDot(){
-  $('court').innerHTML='';
-  var g_lv=g.lv;
-  var size=dotSize(g_lv);
-  dot=document.createElement('div');
-  dot.className='target-dot';
-  dot.style.width=size+'px';
-  dot.style.height=size+'px';
-  var pos=randomPos(size);
-  dot.style.left=pos.x+'px';
-  dot.style.top=pos.y+'px';
-  dot.onclick=handleTap;
-  $('court').appendChild(dot);
-  setTimeout(function(){if(dot)dot.classList.add('active')},50);
-}
+/* Speed increases every 5 hits — minimum 600ms */
+function getWindow(){return Math.max(600, baseTime - (g.hits * 40))}
 
-var MAX_LIVES=3,PW=300,GW=600;
-var g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES};
-var phase='idle',startTime=0,timers=[],missTimer=null;
+/* Dot size decreases with level */
+function getDotSize(){return Math.max(40, 130 - (g.lv-1)*10 - Math.floor(g.hits/5)*3)}
 
-function clrT(){timers.forEach(clearTimeout);timers=[];if(missTimer){clearTimeout(missTimer);missTimer=null}}
 function updateHUD(){
-  $('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;
-  $('hSt').textContent=g.st;$('hCl').textContent=g.clears+'/3';
-  var h='';for(var i=0;i<MAX_LIVES;i++)h+=i<g.lives?'♥':'♡';
-  $('hLiv').textContent=h;$('hLiv').style.color=g.lives<=1?'#FF1493':'#9B59B6';
-  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.clears>=j?' earned':'');
+  $('hSc').textContent=g.sc;
+  $('hHits').textContent=g.hits;
+  $('hBest').textContent=best;
+  $('hLv').textContent=g.lv;
+  $('hSt').textContent=g.st;
+  $('hSpd').textContent=(getWindow()/1000).toFixed(1)+'s';
+  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.hits>=(j*10)?' earned':'');
+  $('speedInd').textContent=g.hits>0?'SPEED x'+(1+(g.hits*0.04)).toFixed(1):'';
 }
+
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
-function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES,hits:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('court').innerHTML=''}
 
-function stopRound(){clrT();phase='idle';if($('court'))$('court').innerHTML=''}
+function randomPos(size){
+  var c=$('court'),w=c.offsetWidth,h=c.offsetHeight,pad=size/2+10;
+  return{x:pad+Math.random()*(w-pad*2),y:pad+Math.random()*(h-pad*2)};
+}
 
-function startRound(){
+function initGame(){
+  g={lv:1,sc:0,hits:0,st:0};
+  updateHUD();msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;$('actBtn').onclick=startSession;
+  $('court').innerHTML='<div class="speed-indicator" id="speedInd"></div>';
+  $('clockFill').style.width='100%';
+}
+
+function stopSession(){clrT();phase='idle';$('court').innerHTML='<div class="speed-indicator" id="speedInd"></div>'}
+
+function startSession(){
   if(phase!=='idle')return;
-  phase='playing';g.rd=0;g.hits=0;
-  $('actBtn').disabled=true;updateHUD();
+  phase='playing';
+  $('actBtn').disabled=true;
   msg('GET READY...','watch');
   timers.push(setTimeout(function(){
-    msg('⚡ TAP THE CIRCLE!','go');
-    timers.push(setTimeout(function(){fireBeat()},300));
+    msg('⚡ TAP BEFORE IT VANISHES!','go');
+    timers.push(setTimeout(fireDot,400));
   },700));
 }
 
-function fireBeat(){
+function fireDot(){
   if(phase!=='playing')return;
   clrT();
-  createDot();
-  startTime=performance.now();
-  var iv=beatInterval;
-  missTimer=setTimeout(function(){
-    if(phase==='playing'){
-      if(dot){dot.classList.remove('active');dot.classList.add('missed')}
-      // miss — end session
-      phase='idle';clrT();
-      g.clears=0;g.st=0;updateHUD();
-      msg('MISSED! '+g.hits+' HITS','miss');
-      timers.push(setTimeout(finishRound,1400));
+
+  dotSize=getDotSize();
+  currentTime=getWindow();
+  var pos=randomPos(dotSize);
+
+  // Remove old dot
+  var old=$('court').querySelector('.target-dot');
+  if(old)old.remove();
+
+  // Create new dot at full size
+  dot=document.createElement('div');
+  dot.className='target-dot';
+  dot.style.width=dotSize+'px';
+  dot.style.height=dotSize+'px';
+  dot.style.left=pos.x+'px';
+  dot.style.top=pos.y+'px';
+  dot.style.background='radial-gradient(circle at 35% 35%,#A873B8,#9B59B6)';
+  dot.style.boxShadow='0 0 40px rgba(155,89,182,1),0 0 80px rgba(155,89,182,.4)';
+  dot.onclick=handleTap;
+  $('court').appendChild(dot);
+
+  // Animate shrinking
+  var startMs=performance.now();
+  $('clockFill').style.width='100%';
+
+  function shrink(){
+    var elapsed=performance.now()-startMs;
+    var pct=Math.max(0,1-(elapsed/currentTime));
+    var curSize=dotSize*pct;
+    if(dot){
+      dot.style.width=curSize+'px';
+      dot.style.height=curSize+'px';
+      // Color shifts red as it shrinks
+      if(pct<0.3){
+        dot.style.background='radial-gradient(circle at 35% 35%,#FF1493,#9B59B6)';
+        dot.style.boxShadow='0 0 40px rgba(255,20,147,.8)';
+      }else if(pct<0.6){
+        dot.style.background='radial-gradient(circle at 35% 35%,#ffd35a,#9B59B6)';
+        dot.style.boxShadow='0 0 40px rgba(255,211,90,.8)';
+      }
     }
-  },iv*.9);
+    $('clockFill').style.width=(pct*100)+'%';
+    if(pct<=0){
+      // Vanished — miss
+      onMiss();
+      return;
+    }
+    if(phase==='playing')shrinkRAF=requestAnimationFrame(shrink);
+  }
+  shrinkRAF=requestAnimationFrame(shrink);
 }
 
 function handleTap(){
   if(phase!=='playing')return;
-  if(missTimer){clearTimeout(missTimer);missTimer=null}
-  var delta=performance.now()-startTime;
-  var pts=delta<=PW?20:delta<=GW?12:5;
-  if(dot){dot.classList.remove('active');dot.classList.add('hit')}
-  g.sc+=pts;g.st++;g.hits++;g.clears++;updateHUD();
-  msg(delta<=PW?'✨ QUICK!':'👍 GOOD!',delta<=PW?'perfect':'go');
+  clrT();
+  var pts=20+g.hits;
+  if(dot){dot.classList.add('hit');dot.style.width=dotSize+'px';dot.style.height=dotSize+'px'}
+  g.sc+=pts;g.hits++;g.st++;
+  if(g.hits>best)best=g.hits;
   // level up every 10 hits
-  if(g.clears>=10){
-    if(g.lv<10){g.lv++;g.clears=0;}
-    updateHUD();
-    msg('🔥 LEVEL UP! L'+g.lv,'perfect');
-  }
-  // keep firing — no round break
-  timers.push(setTimeout(function(){
-    if(phase==='playing')fireBeat();
-  },400));
+  if(g.hits%10===0&&g.lv<10){g.lv++}
+  updateHUD();
+  msg('⚡ '+g.hits+' HITS!',g.hits%10===0?'perfect':'go');
+  timers.push(setTimeout(function(){if(phase==='playing')fireDot()},350));
 }
 
-function finishRound(){phase='idle';$('court').innerHTML='';updateHUD();msg("TAP LET'S GO! BEST: "+g.st+' HITS','watch');$('actBtn').disabled=false}
-$('actBtn').onclick=startRound;
+function onMiss(){
+  if(phase!=='playing')return;
+  phase='idle';clrT();
+  if(dot){dot.classList.add('missed');dot.style.width=dotSize+'px';dot.style.height=dotSize+'px'}
+  if(g.hits>best)best=g.hits;
+  g.st=0;updateHUD();
+  msg('GONE! '+g.hits+' HITS','miss');
+  timers.push(setTimeout(function(){
+    $('court').innerHTML='<div class="speed-indicator" id="speedInd"></div>';
+    $('clockFill').style.width='100%';
+    updateHUD();
+    msg("TAP LET'S GO! BEST: "+best,'watch');
+    $('actBtn').disabled=false;
+  },1500));
+}
+
+$('actBtn').onclick=startSession;
 })();
 </script>
 </body>
