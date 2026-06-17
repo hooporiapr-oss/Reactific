@@ -94,7 +94,8 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <strong>CIRCLE APPEARS</strong> — then starts shrinking<br>
     <strong>TAP IT</strong> — before it vanishes completely<br>
     <strong>EVERY HIT</strong> — gets faster and smaller<br>
-    <strong>ONE MISS</strong> — session ends
+    <strong>DECOYS APPEAR</strong> — tap only the purple<br>
+    <strong>WRONG TAP</strong> — session ends instantly
   </div>
 </div>
 
@@ -184,10 +185,19 @@ function startSession(){
   $('actBtn').disabled=true;
   msg('GET READY...','watch');
   timers.push(setTimeout(function(){
-    msg('⚡ TAP BEFORE IT VANISHES!','go');
+    var dc=getDecoyCount();msg(dc>0?'⚡ TAP PURPLE — IGNORE DECOYS!':'⚡ TAP BEFORE IT VANISHES!','go');
     timers.push(setTimeout(fireDot,400));
   },700));
 }
+
+function getDecoyCount(){
+  if(g.lv<=3)return 0;
+  if(g.lv<=6)return 1;
+  if(g.lv<=9)return 2;
+  return 3;
+}
+
+var decoys=[];
 
 function fireDot(){
   if(phase!=='playing')return;
@@ -195,13 +205,27 @@ function fireDot(){
 
   dotSize=getDotSize();
   currentTime=getWindow();
+
+  // Remove all old dots
+  $('court').querySelectorAll('.target-dot,.decoy-dot').forEach(function(d){d.remove()});
+  decoys=[];
+
+  // Create decoys first
+  var decoyCount=getDecoyCount();
+  var usedPositions=[];
+  for(var d=0;d<decoyCount;d++){
+    var dpos=randomPos(dotSize);
+    usedPositions.push(dpos);
+    var decoy=document.createElement('div');
+    decoy.className='decoy-dot';
+    decoy.style.cssText='position:absolute;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);width:'+dotSize+'px;height:'+dotSize+'px;left:'+dpos.x+'px;top:'+dpos.y+'px;background:radial-gradient(circle at 35% 35%,#334,#222);border:2px solid rgba(155,89,182,.3);box-shadow:0 0 10px rgba(100,100,150,.3)';
+    decoy.onclick=onWrongTap;
+    $('court').appendChild(decoy);
+    decoys.push(decoy);
+  }
+
+  // Create target
   var pos=randomPos(dotSize);
-
-  // Remove old dot
-  var old=$('court').querySelector('.target-dot');
-  if(old)old.remove();
-
-  // Create new dot at full size
   dot=document.createElement('div');
   dot.className='target-dot';
   dot.style.width=dotSize+'px';
@@ -221,10 +245,11 @@ function fireDot(){
     var elapsed=performance.now()-startMs;
     var pct=Math.max(0,1-(elapsed/currentTime));
     var curSize=dotSize*pct;
+    // Shrink decoys too
+    decoys.forEach(function(d){d.style.width=curSize+'px';d.style.height=curSize+'px'});
     if(dot){
       dot.style.width=curSize+'px';
       dot.style.height=curSize+'px';
-      // Color shifts red as it shrinks
       if(pct<0.3){
         dot.style.background='radial-gradient(circle at 35% 35%,#FF1493,#9B59B6)';
         dot.style.boxShadow='0 0 40px rgba(255,20,147,.8)';
@@ -242,6 +267,23 @@ function fireDot(){
     if(phase==='playing')shrinkRAF=requestAnimationFrame(shrink);
   }
   shrinkRAF=requestAnimationFrame(shrink);
+}
+
+function onWrongTap(){
+  if(phase!=='playing')return;
+  clrT();phase='idle';
+  // Flash red on wrong decoy
+  decoys.forEach(function(d){d.style.background='radial-gradient(circle at 35% 35%,#FF1493,#cc0066)';d.style.boxShadow='0 0 30px rgba(255,20,147,.8)'});
+  if(g.hits>best)best=g.hits;
+  g.st=0;updateHUD();
+  msg('WRONG CIRCLE! '+g.hits+' HITS','miss');
+  timers.push(setTimeout(function(){
+    $('court').innerHTML='<div class="speed-indicator" id="speedInd"></div>';
+    $('clockFill').style.width='100%';
+    updateHUD();
+    msg("TAP LET'S GO! BEST: "+best,'watch');
+    $('actBtn').disabled=false;
+  },1500));
 }
 
 function handleTap(){
