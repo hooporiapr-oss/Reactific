@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VR Sequence Control | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;
+  background:#000a08;
+  font-family:Arial,sans-serif;
+  color:#fff;overflow:hidden;
+  user-select:none;-webkit-user-select:none;
+}
+.screen{display:none;width:100%;height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+/* ── INTRO ── */
+#screen-intro{
+  background:radial-gradient(ellipse at 20% 20%,rgba(0,217,165,.18),transparent 40%),
+             radial-gradient(ellipse at 80% 80%,rgba(0,217,165,.12),transparent 40%),
+             linear-gradient(180deg,#000a08,#00050a);
+}
+.vr-badge{display:inline-block;background:rgba(0,217,165,.15);border:1px solid rgba(0,217,165,.4);border-radius:999px;padding:5px 18px;font-size:.65rem;font-weight:900;letter-spacing:.25em;text-transform:uppercase;color:#00D9A5;margin-bottom:10px}
+.vrr-logo{font-size:3.5rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-align:center;line-height:1;text-shadow:0 0 60px rgba(0,217,165,1),0 0 120px rgba(0,217,165,.4);margin-bottom:6px}
+.vrr-logo span{color:#00D9A5}
+.vrr-sub{font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;color:#00D9A5;margin-bottom:20px;text-align:center}
+.sel-row{display:flex;gap:24px;margin-bottom:20px;align-items:flex-start;justify-content:center}
+.sel-group{display:flex;flex-direction:column;align-items:center;gap:8px}
+.sel-label{color:#FFD700;font-size:.72rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.sel-btns{display:flex;gap:8px}
+.sel-btn{min-width:70px;height:58px;border:2px solid rgba(0,217,165,.35);background:rgba(0,217,165,.06);border-radius:12px;color:#fff;font-size:.85rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+.sel-btn strong{display:block;font-size:1.2rem;line-height:1}
+.sel-btn small{font-size:.55rem;color:#a7adba;letter-spacing:.1em}
+.sel-btn.active{border-color:#00D9A5;background:rgba(0,217,165,.2);color:#00D9A5;box-shadow:0 0 20px rgba(0,217,165,.5)}
+.speed-row{display:flex;gap:12px;margin-bottom:20px}
+.speed-btn{width:150px;height:72px;border:2px solid rgba(0,217,165,.35);background:rgba(0,217,165,.06);border-radius:16px;color:#fff;font-size:1.2rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.08em}
+.speed-btn small{display:block;font-size:.65rem;color:#a7adba;letter-spacing:.1em}
+.speed-btn.active{border-color:#00D9A5;background:rgba(0,217,165,.18);box-shadow:0 0 24px rgba(0,217,165,.5);color:#00D9A5}
+.big-btn{width:500px;height:110px;border:none;border-radius:24px;background:linear-gradient(135deg,#00D9A5,#00B894);color:#000;font-size:2rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 60px rgba(0,217,165,.8);margin-bottom:20px}
+.big-btn:hover{transform:scale(1.03)}
+.intro-info{font-size:.9rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2.2}
+.intro-info strong{color:#FFD700}
+
+/* ── PLAY ── */
+#screen-play{
+  background:radial-gradient(ellipse at center,#001810 0%,#00050a 70%);
+  justify-content:space-between;padding:12px 16px;
+}
+.topbar{width:100%;display:grid;grid-template-columns:repeat(6,1fr);gap:8px;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;padding:8px;background:rgba(0,0,0,.4);border:2px solid rgba(0,217,165,.3)}
+.top-label{font-size:.6rem;color:#00D9A5;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+.top-val{font-size:1.8rem;font-weight:900;line-height:1;color:#fff}
+.seq-box{border-color:#FFD700;background:rgba(255,215,0,.05)!important}
+.seq-box .top-label{color:#FFD700}
+.seq-box .top-val{color:#00D9A5;font-size:1.4rem}
+.msg{font-size:1.8rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.msg.watch{color:#FFD700}
+.msg.go{color:#00D9A5}
+.msg.perfect{color:#00D9A5}
+.msg.miss{color:#FF1493}
+.stars{display:flex;gap:8px;align-items:center;justify-content:center;flex-shrink:0}
+.star{font-size:1.2rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 8px #00D9A5);transform:scale(1.2)}
+.court-wrap{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
+.court{
+  display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);
+  gap:6px;width:100%;height:100%;max-height:100%;min-width:0;min-height:0;
+  padding:10px;background:rgba(0,217,165,.04);
+  border:2px solid rgba(0,217,165,.4);border-radius:20px;
+  box-shadow:0 0 50px rgba(0,217,165,.15),inset 0 0 30px rgba(0,217,165,.05);flex-shrink:0;
+}
+.court.strobe-soft{filter:brightness(.62) contrast(1.08)}
+.court.strobe-medium{filter:brightness(.42) contrast(1.15)}
+.court.strobe-hard{opacity:.18}
+.cell{
+  border-radius:8px;background:rgba(0,217,165,.08);
+  border:2px solid rgba(0,217,165,.45);cursor:pointer;transition:all .1s;
+  min-height:0;min-width:0;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(.9rem,2vw,2rem);font-weight:900;color:transparent;
+}
+.cell:hover{background:rgba(0,217,165,.22);border-color:rgba(0,217,165,.9)}
+.cell.lit{background:#FFD700!important;border-color:#FFD700!important;box-shadow:0 0 30px rgba(255,215,0,1)!important;color:#000!important;transform:scale(1.06)}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important;color:#000!important}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
+.cell.player-tap{background:rgba(0,217,165,.25)!important;border-color:#00D9A5!important}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.bottombar{display:flex;justify-content:center;align-items:center;padding:8px 16px 10px;gap:16px;flex-shrink:0}
+.bot-btn{height:62px;padding:0 28px;border:2px solid rgba(0,217,165,.4);background:rgba(0,0,0,.4);border-radius:14px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#00D9A5;font-size:.6rem;margin-top:2px}
+.start-btn{border-color:#00D9A5;background:linear-gradient(135deg,#00D9A5,#00B894);color:#000;font-size:1.3rem;padding:0 40px;box-shadow:0 0 24px rgba(0,217,165,.6)}
+.start-btn:disabled{opacity:.4}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="screen active" id="screen-intro">
+  <div class="vr-badge">🥽 Virtual Reaction Reality™</div>
+  <div class="vrr-logo">SEQUENCE <span>CONTROL</span></div>
+  <div class="vrr-sub">5×10 VR Court · Reactific™</div>
+
+  <div class="speed-row">
+    <button class="speed-btn active" data-show="800" data-gap="300">SLOW<small>60 BPM</small></button>
+    <button class="speed-btn" data-show="500" data-gap="200">TEMPO<small>90 BPM</small></button>
+    <button class="speed-btn" data-show="300" data-gap="150">ELITE<small>120 BPM</small></button>
+  </div>
+
+  <div class="sel-row">
+    <div class="sel-group">
+      <div class="sel-label">BPM</div>
+      <div class="sel-btns">
+        <button class="sel-btn" data-bpm="60"><strong>60</strong><small>BPM</small></button>
+        <button class="sel-btn active" data-bpm="90"><strong>90</strong><small>BPM</small></button>
+        <button class="sel-btn" data-bpm="120"><strong>120</strong><small>BPM</small></button>
+      </div>
+    </div>
+    <div class="sel-group">
+      <div class="sel-label">Strobe™</div>
+      <div class="sel-btns">
+        <button class="sel-btn" data-strobe="off"><strong>OFF</strong></button>
+        <button class="sel-btn active" data-strobe="soft"><strong>SOFT</strong></button>
+        <button class="sel-btn" data-strobe="medium"><strong>MED</strong></button>
+        <button class="sel-btn" data-strobe="hard"><strong>HARD</strong></button>
+      </div>
+    </div>
+  </div>
+
+  <button class="big-btn" id="startBtn">▶ ENTER THE COURT</button>
+  <div class="intro-info">
+    <strong>WATCH</strong> — cells light up one by one<br>
+    <strong>REMEMBER</strong> — the exact order<br>
+    <strong>REPLAY</strong> — tap them back in sequence<br>
+    <strong>3 ROUNDS</strong> — earn a GoStar
+  </div>
+</div>
+
+<!-- PLAY -->
+<div class="screen" id="screen-play">
+  <div class="topbar">
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
+    <div class="top-box seq-box"><div class="top-label">Sequence</div><div class="top-val" id="hSeq">5 steps</div></div>
+    <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0/3</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
+    <div class="top-box"><div class="top-label">GoStars</div><div class="top-val" id="hTr">1</div></div>
+  </div>
+
+  <div class="msg" id="msg">TAP LET'S GO!</div>
+
+  <div class="stars" id="tierDots"></div>
+
+  <div class="court-wrap">
+    <div class="court" id="court"></div>
+  </div>
+
+  <div class="bottombar">
+    <button class="bot-btn" id="menuBtn">← Home<span>VR Menu</span></button>
+    <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
+    <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+
+/* ── SELECTORS ── */
+var showMs=800, gapMs=300, bpm=90, strobe='soft', strobeTimer=null;
+
+document.querySelectorAll('[data-show]').forEach(btn=>{
+  btn.onclick=function(){
+    showMs=Number(btn.dataset.show);gapMs=Number(btn.dataset.gap);
+    document.querySelectorAll('[data-show]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+document.querySelectorAll('[data-bpm]').forEach(btn=>{
+  btn.onclick=function(){
+    bpm=Number(btn.dataset.bpm);
+    document.querySelectorAll('[data-bpm]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+document.querySelectorAll('[data-strobe]').forEach(btn=>{
+  btn.onclick=function(){
+    strobe=btn.dataset.strobe;
+    document.querySelectorAll('[data-strobe]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+
+function stopStrobe(){
+  if(strobeTimer){clearInterval(strobeTimer);strobeTimer=null;}
+  var court=$('court');
+  if(court)court.classList.remove('strobe-soft','strobe-medium','strobe-hard');
+}
+function startStrobe(){
+  stopStrobe();if(strobe==='off')return;
+  var court=$('court');
+  var cls=strobe==='soft'?'strobe-soft':strobe==='medium'?'strobe-medium':'strobe-hard';
+  var beat=60000/bpm;var flash=Math.max(80,Math.min(170,beat*.25));
+  strobeTimer=setInterval(function(){
+    court.classList.add(cls);setTimeout(function(){court.classList.remove(cls)},flash);
+  },beat);
+}
+
+/* ── START ── */
+$('startBtn').onclick=function(){
+  $('screen-intro').classList.remove('active');
+  $('screen-play').classList.add('active');
+  buildCourt();initGame();
+};
+
+/* ── COURT ── */
+var cells=[];
+function buildCourt(){
+  var court=$('court');court.innerHTML='';cells=[];
+  for(var i=0;i<50;i++){
+    var c=document.createElement('div');c.className='cell';c.dataset.i=i;
+    c.onclick=(function(idx){return function(){handleTap(idx)}})(i);
+    court.appendChild(c);cells.push(c);
+  }
+}
+
+function cellSt(i,st,num){
+  cells[i].className='cell';cells[i].textContent='';cells[i].style.color='transparent';
+  if(st){cells[i].classList.add(st);if(num!==undefined){cells[i].textContent=num;cells[i].style.color=st==='lit'?'#000':'#000'}}
+}
+function resetCells(){cells.forEach((_,i)=>cellSt(i))}
+
+/* ── GAME ── */
+var LEVEL_BASE={1:5,2:6,3:7,4:8,5:9,6:10,7:11,8:12,9:13,10:14};
+var ROUNDS_PER_TIER=3,TOTAL_TIERS=10;
+var g={lv:1,tier:1,rd:0,sc:0,st:0};
+function gsl(){return LEVEL_BASE[g.lv]||5}
+
+function renderTierDots(){
+  var el=$('tierDots');el.innerHTML='';
+  for(var i=1;i<=TOTAL_TIERS;i++){
+    var d=document.createElement('span');
+    d.className='star';
+    d.textContent='⭐';
+    if(i<g.tier)d.classList.add('earned');
+    el.appendChild(d);
+  }
+}
+
+function updateHUD(){
+  $('hSc').textContent=g.sc;$('hRd').textContent=g.rd+'/'+ROUNDS_PER_TIER;
+  $('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hTr').textContent=g.tier;
+  $('hSeq').textContent=gsl()+' steps';
+  renderTierDots();
+}
+
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg '+(cls||'')}
+
+function initGame(){
+  g={lv:1,tier:1,rd:0,sc:0,st:0};
+  updateHUD();msg("TAP LET'S GO!",'');$('actBtn').disabled=false;
+  $('actBtn').onclick=startRound;
+}
+
+var phase='idle',sequence=[],playerIdx=0,timers=[];
+function clrT(){timers.forEach(clearTimeout);timers=[]}
+
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}
+  return arr;
+}
+
+function genSeq(){return shuffle(Array.from({length:50},(_,i)=>i)).slice(0,gsl())}
+
+var NOTES=[262,294,330,349,392,440,494,523,587,659,698,784,880,988,1047];
+var audioCtx=null;
+function playTone(freq,dur){
+  try{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    var o=audioCtx.createOscillator(),g2=audioCtx.createGain();
+    o.type='sine';o.frequency.value=freq;o.connect(g2);g2.connect(audioCtx.destination);
+    g2.gain.setValueAtTime(.25,audioCtx.currentTime);
+    g2.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+dur);
+    o.start();o.stop(audioCtx.currentTime+dur+.05);
+  }catch(e){}
+}
+function playNote(idx){playTone(NOTES[idx%15],.18)}
+
+function startRound(){
+  if(phase!=='idle')return;
+  clrT();phase='showing';playerIdx=0;
+  resetCells();stopStrobe();$('actBtn').disabled=true;updateHUD();
+  sequence=genSeq();
+  $('hSeq').textContent=gsl()+' steps';
+  msg('WATCH THE SEQUENCE...','watch');
+
+  timers.push(setTimeout(function(){
+    var i=0;
+    function next(){
+      if(phase!=='showing')return;
+      if(i>0){cellSt(sequence[i-1])}
+      if(i<sequence.length){
+        cellSt(sequence[i],'lit',i+1);
+        playNote(sequence[i]);
+        i++;
+        timers.push(setTimeout(next,showMs+gapMs));
+      }else{
+        timers.push(setTimeout(function(){
+          cellSt(sequence[sequence.length-1]);
+          msg('YOUR TURN! TAP IN ORDER','go');
+          phase='tapping';
+          startStrobe();
+        },300));
+      }
+    }
+    next();
+  },600));
+}
+
+function handleTap(idx){
+  if(phase!=='tapping')return;
+  var cell=cells[idx];
+  cell.classList.add('player-tap');
+  playNote(idx);
+  timers.push(setTimeout(function(){cell.classList.remove('player-tap')},200));
+
+  if(idx===sequence[playerIdx]){
+    cellSt(idx,'correct',playerIdx+1);
+    playerIdx++;
+    if(playerIdx>=sequence.length){
+      phase='idle';clrT();stopStrobe();
+      g.sc+=gsl()*10*g.lv;g.st++;g.rd++;
+      updateHUD();
+      msg('✅ PERFECT!','perfect');
+      if(g.rd>=ROUNDS_PER_TIER){
+        timers.push(setTimeout(tierUp,900));
+      }else{
+        timers.push(setTimeout(finishRound,1200));
+      }
+    }
+  }else{
+    phase='idle';clrT();stopStrobe();
+    cellSt(idx,'wrong');g.st=0;updateHUD();
+    msg('❌ WRONG ORDER!','miss');
+    timers.push(setTimeout(function(){
+      sequence.forEach(function(si,n){cellSt(si,'correct',n+1)});
+      timers.push(setTimeout(finishRound,1800));
+    },500));
+  }
+}
+
+function tierUp(){
+  g.tier++;g.rd=0;
+  if(g.tier>TOTAL_TIERS){g.tier=TOTAL_TIERS}
+  if(g.lv<10){g.lv++;}
+  updateHUD();resetCells();
+  msg('⭐ GOSTAR! LEVEL UP! L'+g.lv,'perfect');
+  timers.push(setTimeout(finishRound,1200));
+}
+
+function finishRound(){
+  phase='idle';clrT();resetCells();updateHUD();
+  msg("TAP LET'S GO!",'');$('actBtn').disabled=false;
+}
+
+/* ── BUTTONS ── */
+$('menuBtn').onclick=function(){
+  stopStrobe();
+  $('screen-play').classList.remove('active');
+  $('screen-intro').classList.add('active');
+};
+$('fsBtn').onclick=async function(){
+  try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
+  else await document.exitFullscreen()}catch(e){}
+};
+
+buildCourt();
+})();
+</script>
+</body>
+</html>
