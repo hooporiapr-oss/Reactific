@@ -201,13 +201,13 @@ function updateHUD(){
   for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.clears>=j?' earned':'');
 }
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
-function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('court').innerHTML=''}
+function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES,hits:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('court').innerHTML=''}
 
 function stopRound(){clrT();phase='idle';if($('court'))$('court').innerHTML=''}
 
 function startRound(){
   if(phase!=='idle')return;
-  phase='playing';g.rd++;g.lives=MAX_LIVES;
+  phase='playing';g.rd=0;g.hits=0;
   $('actBtn').disabled=true;updateHUD();
   msg('GET READY...','watch');
   timers.push(setTimeout(function(){
@@ -225,7 +225,11 @@ function fireBeat(){
   missTimer=setTimeout(function(){
     if(phase==='playing'){
       if(dot){dot.classList.remove('active');dot.classList.add('missed')}
-      endRound(false,'MISSED!');
+      // miss — end session
+      phase='idle';clrT();
+      g.clears=0;g.st=0;updateHUD();
+      msg('MISSED! '+g.hits+' HITS','miss');
+      timers.push(setTimeout(finishRound,1400));
     }
   },iv*.9);
 }
@@ -236,35 +240,21 @@ function handleTap(){
   var delta=performance.now()-startTime;
   var pts=delta<=PW?20:delta<=GW?12:5;
   if(dot){dot.classList.remove('active');dot.classList.add('hit')}
-  g.sc+=pts;updateHUD();
+  g.sc+=pts;g.st++;g.hits++;g.clears++;updateHUD();
   msg(delta<=PW?'✨ QUICK!':'👍 GOOD!',delta<=PW?'perfect':'go');
+  // level up every 10 hits
+  if(g.clears>=10){
+    if(g.lv<10){g.lv++;g.clears=0;}
+    updateHUD();
+    msg('🔥 LEVEL UP! L'+g.lv,'perfect');
+  }
+  // keep firing — no round break
   timers.push(setTimeout(function(){
-    endRound(true);
+    if(phase==='playing')fireBeat();
   },400));
 }
 
-function endRound(won){
-  if(phase==='idle')return;
-  phase='idle';clrT();
-  if(won){
-    g.clears++;g.st++;updateHUD();msg('✅ ROUND CLEAR','perfect');
-    if(g.clears>=3){
-      timers.push(setTimeout(function(){
-        if(g.lv<10){g.lv++;g.clears=0}
-        updateHUD();$('court').innerHTML='';
-        msg('🔥 LEVEL UP! L'+g.lv,'perfect');
-        timers.push(setTimeout(finishRound,900));
-      },1000));
-    }else{timers.push(setTimeout(function(){
-      phase='playing';fireBeat();
-    },600))}
-  }else{
-    g.clears=0;g.st=0;updateHUD();msg('MISSED!','miss');
-    timers.push(setTimeout(finishRound,1200));
-  }
-}
-
-function finishRound(){phase='idle';g.lives=MAX_LIVES;$('court').innerHTML='';updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false}
+function finishRound(){phase='idle';$('court').innerHTML='';updateHUD();msg("TAP LET'S GO! BEST: "+g.st+' HITS','watch');$('actBtn').disabled=false}
 $('actBtn').onclick=startRound;
 })();
 </script>
