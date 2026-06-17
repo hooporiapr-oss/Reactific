@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VRR Pattern Recognition | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;
+  background:#0a0005;
+  font-family:Arial,sans-serif;
+  color:#fff;
+  overflow:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+.screen{display:none;width:100%;height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+/* ── INTRO ── */
+#screen-intro{
+  background:radial-gradient(ellipse at center,#1a0a00 0%,#0a0005 70%);
+}
+.vrr-logo{
+  font-size:3.2rem;font-weight:900;font-style:italic;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;text-align:center;line-height:1.1;
+  text-shadow:0 0 60px rgba(255,107,53,1),0 0 120px rgba(255,107,53,.4);
+  margin-bottom:10px;
+}
+.vrr-logo span{color:#FF6B35}
+.vrr-sub{
+  font-size:1rem;letter-spacing:.3em;text-transform:uppercase;
+  color:#FF6B35;margin-bottom:50px;text-align:center;
+}
+.big-btn{
+  width:500px;height:110px;border:none;border-radius:24px;
+  background:linear-gradient(135deg,#FF6B35,#ff8a5c);
+  color:#fff;font-size:2rem;font-weight:900;
+  letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 60px rgba(255,107,53,.8),0 0 120px rgba(255,107,53,.3);
+  margin-bottom:30px;
+}
+.big-btn:hover{transform:scale(1.04)}
+.intro-info{
+  font-size:1rem;color:#8892a0;letter-spacing:.1em;
+  text-transform:uppercase;text-align:center;line-height:2.2;
+}
+.intro-info strong{color:#FFD700}
+
+/* ── PLAY ── */
+#screen-play{
+  background:radial-gradient(ellipse at center,#120800 0%,#050003 70%);
+  justify-content:space-between;
+  padding:14px 20px;
+}
+
+/* HUD */
+.hud{
+  width:100%;display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+.hud-box{
+  background:rgba(255,107,53,.12);
+  border:2px solid rgba(255,107,53,.4);
+  border-radius:14px;
+  padding:10px;text-align:center;
+}
+.hud-val{font-size:2rem;font-weight:900;color:#FF6B35;line-height:1}
+.hud-lbl{font-size:.65rem;color:#8892a0;text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+
+/* MESSAGE */
+.msg{
+  font-size:2rem;font-weight:900;
+  letter-spacing:.15em;text-transform:uppercase;
+  text-align:center;min-height:52px;
+  display:flex;align-items:center;justify-content:center;
+  text-shadow:0 0 30px currentColor;
+}
+.msg.watch{color:#FFD700}
+.msg.go{color:#FF6B35}
+.msg.perfect{color:#00D9A5}
+.msg.miss{color:#FF1493}
+
+/* STARS */
+.stars{display:flex;gap:12px;align-items:center;justify-content:center}
+.star{font-size:1.6rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 10px #FF6B35);transform:scale(1.2)}
+
+/* COURT */
+.court-wrap{display:flex;align-items:center;justify-content:center;width:100%}
+.court{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  width:min(54vmin,520px);
+  height:min(54vmin,520px);
+  padding:12px;
+  background:rgba(255,107,53,.05);
+  border:3px solid rgba(255,107,53,.25);
+  border-radius:24px;
+  box-shadow:0 0 60px rgba(255,107,53,.15),inset 0 0 40px rgba(255,107,53,.04);
+}
+.cell{
+  border-radius:10px;
+  background:rgba(255,255,255,.05);
+  border:2px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.4rem,4vmin,3rem);
+  font-weight:900;color:transparent;
+}
+.cell:hover{background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.4)}
+.cell.lit{
+  background:#FF6B35!important;
+  border-color:#FFD700!important;
+  box-shadow:0 0 30px rgba(255,107,53,.9),0 0 60px rgba(255,107,53,.4);
+  color:#fff!important;
+  transform:scale(1.06);
+}
+.cell.correct{
+  background:#00D9A5!important;
+  border-color:#00D9A5!important;
+  box-shadow:0 0 24px rgba(0,217,165,.7);
+  color:#fff!important;
+}
+.cell.wrong{
+  background:rgba(255,20,147,.35)!important;
+  border-color:#FF1493!important;
+  animation:shake .3s;
+}
+.cell.reveal{
+  background:#FF6B35!important;
+  border-color:#FFD700!important;
+  color:#fff!important;
+  opacity:.5;
+}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* BOTTOM */
+.bottom{
+  width:100%;display:flex;
+  justify-content:space-between;align-items:center;
+}
+.score-big{font-size:1.4rem;font-weight:900;color:#FFD700}
+.cells-info{font-size:1.1rem;color:#8892a0;font-weight:900}
+.action-btn{
+  height:64px;padding:0 36px;border:none;border-radius:16px;
+  background:linear-gradient(135deg,#FF6B35,#ff8a5c);
+  color:#fff;font-size:1.4rem;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 30px rgba(255,107,53,.6);
+}
+.action-btn:disabled{opacity:.4}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="screen active" id="screen-intro">
+  <div class="vrr-logo">VIRTUAL REACTION<br><span>REALITY™</span></div>
+  <div class="vrr-sub">Pattern Recognition · Reactific™</div>
+  <button class="big-btn" id="startBtn">▶ ENTER THE COURT</button>
+  <div class="intro-info">
+    <strong>WATCH</strong> — numbered cells light up<br>
+    <strong>REMEMBER</strong> — the positions go dark<br>
+    <strong>TAP</strong> — recall them in order: 1, 2, 3...
+  </div>
+</div>
+
+<!-- PLAY -->
+<div class="screen" id="screen-play">
+  <div class="hud">
+    <div class="hud-box"><div class="hud-val" id="hLv">1</div><div class="hud-lbl">Level</div></div>
+    <div class="hud-box"><div class="hud-val" id="hSc">0</div><div class="hud-lbl">Score</div></div>
+    <div class="hud-box"><div class="hud-val" id="hRd">0</div><div class="hud-lbl">Round</div></div>
+    <div class="hud-box"><div class="hud-val" id="hSt">0</div><div class="hud-lbl">🔥</div></div>
+  </div>
+
+  <div class="msg" id="msg">TAP LET'S GO!</div>
+
+  <div class="stars">
+    <span class="star" id="ps1">⭐</span>
+    <span class="star" id="ps2">⭐</span>
+    <span class="star" id="ps3">⭐</span>
+  </div>
+
+  <div class="court-wrap">
+    <div class="court" id="court"></div>
+  </div>
+
+  <div class="bottom">
+    <div class="cells-info" id="cellsInfo">CELLS: 5</div>
+    <div class="score-big" id="scoreBig">0</div>
+    <button class="action-btn" id="actBtn">LET'S GO</button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+
+$('startBtn').onclick=function(){
+  $('screen-intro').classList.remove('active');
+  $('screen-play').classList.add('active');
+  initGame();
+};
+
+// LEVEL CELLS: L1=5 up to L10=14
+var LEVEL_CELLS={1:5,2:6,3:7,4:8,5:9,6:10,7:11,8:12,9:13,10:14};
+var DISPLAY_TIME=2500; // ms cells are shown
+
+var cells=[], court=$('court');
+function buildCourt(){
+  court.innerHTML='';cells=[];
+  for(var i=0;i<25;i++){
+    var c=document.createElement('div');
+    c.className='cell';
+    c.dataset.i=i;
+    c.onclick=(function(idx){return function(){handleTap(idx)}})(i);
+    court.appendChild(c);
+    cells.push(c);
+  }
+}
+
+function cellSt(i,st,num){
+  cells[i].className='cell';
+  cells[i].textContent='';
+  cells[i].style.color='transparent';
+  if(st){
+    cells[i].classList.add(st);
+    if(num!==undefined){cells[i].textContent=num;cells[i].style.color='#fff'}
+  }
+}
+function resetCells(){cells.forEach((_,i)=>cellSt(i))}
+
+function msg(txt,cls){
+  var el=$('msg');el.textContent=txt;
+  el.className='msg '+(cls||'');
+}
+
+var g={lv:1,sc:0,rd:0,st:0,pf:0};
+function gcc(){return LEVEL_CELLS[g.lv]||5}
+
+function updateHUD(){
+  $('hLv').textContent=g.lv;
+  $('hSc').textContent=g.sc;
+  $('hRd').textContent=g.rd;
+  $('hSt').textContent=g.st;
+  $('cellsInfo').textContent='CELLS: '+gcc();
+  $('scoreBig').textContent=g.sc;
+  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'');
+}
+
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=arr[i];arr[i]=arr[j];arr[j]=t;
+  }
+  return arr;
+}
+
+var phase='idle',pattern=[],playerIdx=0,timers=[];
+function clrT(){timers.forEach(clearTimeout);timers=[]}
+
+function initGame(){
+  g={lv:1,sc:0,rd:0,st:0,pf:0};
+  buildCourt();updateHUD();
+  msg("TAP LET'S GO!",'');
+  $('actBtn').disabled=false;
+  $('actBtn').onclick=startRound;
+}
+
+function startRound(){
+  if(phase!=='idle')return;
+  clrT();
+  phase='showing';g.rd++;playerIdx=0;
+  resetCells();$('actBtn').disabled=true;updateHUD();
+
+  // Generate pattern
+  var indices=shuffle(Array.from({length:25},(_,i)=>i)).slice(0,gcc());
+  pattern=indices;
+
+  msg('MEMORIZE!','watch');
+
+  // Show pattern with numbers
+  timers.push(setTimeout(function(){
+    pattern.forEach(function(idx,n){cellSt(idx,'lit',n+1)});
+
+    // Hide after display time
+    timers.push(setTimeout(function(){
+      pattern.forEach(function(idx){cellSt(idx)});
+      msg('TAP IN ORDER!','go');
+      phase='tapping';
+    },DISPLAY_TIME));
+  },600));
+}
+
+function handleTap(idx){
+  if(phase!=='tapping')return;
+  var expected=pattern[playerIdx];
+
+  if(idx===expected){
+    cellSt(idx,'correct',playerIdx+1);
+    playerIdx++;
+    if(playerIdx>=pattern.length){
+      // Round complete
+      phase='idle';clrT();
+      g.sc+=gcc()*20;g.st++;g.pf++;updateHUD();
+      msg('✅ PERFECT!','perfect');
+      if(g.pf>=3){
+        timers.push(setTimeout(function(){
+          if(g.lv<10){g.lv++;g.pf=0;}
+          updateHUD();resetCells();
+          msg('🔥 LEVEL UP!','perfect');
+          timers.push(setTimeout(finishRound,1000));
+        },1200));
+      }else{
+        timers.push(setTimeout(finishRound,1200));
+      }
+    }
+  }else{
+    // Wrong tap — reveal correct pattern
+    phase='idle';clrT();
+    cellSt(idx,'wrong');
+    g.st=0;g.pf=0;updateHUD();
+    msg('WRONG ORDER!','miss');
+    timers.push(setTimeout(function(){
+      pattern.forEach(function(pi,n){cellSt(pi,'reveal',n+1)});
+      timers.push(setTimeout(finishRound,1800));
+    },500));
+  }
+}
+
+function finishRound(){
+  phase='idle';clrT();
+  resetCells();updateHUD();
+  msg("TAP LET'S GO!",'');
+  $('actBtn').disabled=false;
+}
+
+buildCourt();
+})();
+</script>
+</body>
+</html>
