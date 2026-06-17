@@ -138,9 +138,9 @@ html,body{
   min-width:0;min-height:0;
   padding:10px;
   background:rgba(255,107,53,.04);
-  border:2px solid rgba(255,107,53,.2);
+  border:2px solid rgba(255,107,53,.5);
   border-radius:20px;
-  box-shadow:0 0 50px rgba(255,107,53,.12),inset 0 0 30px rgba(255,107,53,.04);
+  box-shadow:0 0 60px rgba(255,107,53,.25),inset 0 0 40px rgba(255,107,53,.08);
   flex-shrink:0;
 }
 .court.strobe-soft{filter:brightness(.62) contrast(1.08)}
@@ -148,14 +148,15 @@ html,body{
 .court.strobe-hard{opacity:.18}
 .cell{
   border-radius:8px;
-  background:rgba(255,255,255,.05);
-  border:2px solid rgba(255,107,53,.2);
+  background:rgba(255,107,53,.08);
+  border:2px solid rgba(255,107,53,.55);
   cursor:pointer;transition:all .12s;
   display:flex;align-items:center;justify-content:center;
   font-size:clamp(.9rem,2vw,2rem);font-weight:900;color:transparent;
   min-height:0;min-width:0;overflow:hidden;
+  box-shadow:inset 0 0 8px rgba(255,107,53,.08);
 }
-.cell:hover{background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.5)}
+.cell:hover{background:rgba(255,107,53,.22);border-color:rgba(255,107,53,.9);box-shadow:0 0 12px rgba(255,107,53,.4)}
 .cell.lit{
   background:#FF6B35!important;border-color:#FFD700!important;
   box-shadow:0 0 24px rgba(255,107,53,.9);color:#fff!important;transform:scale(1.05);
@@ -311,7 +312,7 @@ function startStrobe(){
 $('startBtn').onclick=function(){
   $('screen-intro').classList.remove('active');
   $('screen-play').classList.add('active');
-  buildCourt();updateHUD();startStrobe();
+  buildCourt();updateHUD();
 };
 
 /* ── COURT ── */
@@ -362,11 +363,13 @@ function startRound(){
   $('hFind').textContent=gcc()+' cells';
   msg('MEMORIZE!','watch');
   timers.push(setTimeout(function(){
+    stopStrobe();
     pattern.forEach(function(idx,n){cellSt(idx,'lit',n+1)});
     timers.push(setTimeout(function(){
       pattern.forEach(function(idx){cellSt(idx)});
       msg('TAP IN ORDER!','go');
       phase='tapping';
+      startStrobe();
     },displayTime));
   },600));
 }
@@ -390,7 +393,7 @@ function handleTap(idx){
       }else{timers.push(setTimeout(finishRound,1200))}
     }
   }else{
-    phase='idle';clrT();
+    phase='idle';clrT();stopStrobe();
     cellSt(idx,'wrong');g.st=0;g.pf=0;updateHUD();
     msg('WRONG ORDER!','miss');
     timers.push(setTimeout(function(){
@@ -401,7 +404,7 @@ function handleTap(idx){
 }
 
 function finishRound(){
-  phase='idle';clrT();resetCells();updateHUD();
+  phase='idle';clrT();stopStrobe();resetCells();updateHUD();
   msg("TAP LET'S GO!",'');$('actBtn').disabled=false;
 }
 
