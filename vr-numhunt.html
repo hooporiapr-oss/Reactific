@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VR Number Hunt | REACTIFIC\u2122</title>
+<title>VR Number Hunt | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
@@ -25,7 +25,7 @@ html,body{
   z-index:100;
 }
 .vrr-logo{
-  font-size:3.8rem;font-weight:900;font-style:italic;
+  font-size:2.4rem;font-weight:900;font-style:italic;
   letter-spacing:.1em;text-transform:uppercase;
   text-align:center;line-height:1;
   color:#fff;
@@ -34,31 +34,31 @@ html,body{
 }
 .vrr-logo span{color:#008cff}
 .vrr-sub{
-  font-size:1rem;letter-spacing:.3em;text-transform:uppercase;
-  color:#008cff;margin-bottom:16px;text-align:center;
+  font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;
+  color:#008cff;margin-bottom:8px;text-align:center;
 }
 .vrr-rule{
-  font-size:1.4rem;color:#ffd35a;font-weight:900;
+  font-size:.9rem;color:#ffd35a;font-weight:900;
   letter-spacing:.2em;text-transform:uppercase;
-  margin-bottom:50px;text-align:center;
+  margin-bottom:20px;text-align:center;
 }
 .big-btn{
-  width:520px;height:120px;border:none;border-radius:24px;
+  width:420px;height:80px;border:none;border-radius:24px;
   background:linear-gradient(135deg,#008cff,#00b7ff);
-  color:#fff;font-size:2.2rem;font-weight:900;
+  color:#fff;font-size:1.6rem;font-weight:900;
   letter-spacing:.15em;text-transform:uppercase;
   cursor:pointer;
-  box-shadow:0 0 60px rgba(0,140,255,.8),0 0 120px rgba(0,140,255,.3);
-  margin-bottom:28px;
+  box-shadow:0 0 40px rgba(0,140,255,.7);
+  margin-bottom:14px;
 }
 .big-btn:hover{transform:scale(1.03)}
 .speed-row{
-  display:flex;gap:16px;margin-bottom:28px;
+  display:flex;gap:12px;margin-bottom:14px;
 }
 .speed-btn{
-  width:160px;height:80px;border:3px solid rgba(0,140,255,.4);
+  width:130px;height:64px;border:3px solid rgba(0,140,255,.4);
   background:rgba(0,140,255,.08);border-radius:18px;
-  color:#fff;font-size:1.4rem;font-weight:900;
+  color:#fff;font-size:1.1rem;font-weight:900;
   cursor:pointer;text-transform:uppercase;letter-spacing:.1em;
 }
 .speed-btn.active{
@@ -69,8 +69,8 @@ html,body{
 }
 .speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
 .intro-info{
-  font-size:.95rem;color:#8892a0;letter-spacing:.1em;
-  text-transform:uppercase;text-align:center;line-height:2.2;
+  font-size:.75rem;color:#8892a0;letter-spacing:.1em;
+  text-transform:uppercase;text-align:center;line-height:1.8;
 }
 .intro-info strong{color:#ffd35a}
 
@@ -102,7 +102,7 @@ html,body{
 .top-label{font-size:.65rem;color:#ff6b00;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
 .top-val{font-size:2rem;font-weight:900;line-height:1;color:#fff}
 
-/* FIND BOX \u2014 center hero */
+/* FIND BOX — center hero */
 .findbox{
   border-color:#ff6b00;
   box-shadow:0 0 30px rgba(255,107,0,.4);
@@ -154,7 +154,7 @@ html,body{
   perspective:800px;
 }
 
-/* THE GRID \u2014 wide 10x5, slight 3D tilt for VR feel */
+/* THE GRID — wide 10x5, slight 3D tilt for VR feel */
 .court{
   display:grid;
   grid-template-columns:repeat(10,1fr);
@@ -256,9 +256,9 @@ html,body{
 <!-- INTRO -->
 <div id="screen-intro">
   <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
-  <div class="vrr-logo">VR NUMBER<span> HUNT\u2122</span></div>
-  <div class="vrr-sub">Virtual Reaction Reality \u00b7 Reactific\u2122</div>
-  <div class="vrr-rule">\u26a1 FIND THE NUMBER BEFORE THE CLOCK RUNS OUT</div>
+  <div class="vrr-logo">VR NUMBER<span> HUNT™</span></div>
+  <div class="vrr-sub">Virtual Reaction Reality · Reactific™</div>
+  <div class="vrr-rule">⚡ FIND THE NUMBER BEFORE THE CLOCK RUNS OUT</div>
 
   <div class="speed-row">
     <button class="speed-btn" data-dur="7">7<small>SEC CLOCK</small></button>
@@ -266,12 +266,12 @@ html,body{
     <button class="speed-btn" data-dur="3">3<small>SEC CLOCK</small></button>
   </div>
 
-  <button class="big-btn" id="startBtn">\u25b6 ENTER THE HUNT</button>
+  <button class="big-btn" id="startBtn">▶ ENTER THE HUNT</button>
   <div class="intro-info">
-    <strong>FIND</strong> \u2014 the target number in the grid<br>
-    <strong>POINT</strong> \u2014 controller at it<br>
-    <strong>TRIGGER</strong> \u2014 before the clock runs out<br>
-    <strong>LEVEL UP</strong> \u2014 3 hits in a row
+    <strong>FIND</strong> — the target number in the grid<br>
+    <strong>POINT</strong> — controller at it<br>
+    <strong>TRIGGER</strong> — before the clock runs out<br>
+    <strong>LEVEL UP</strong> — 3 hits in a row
   </div>
 </div>
 
@@ -285,7 +285,7 @@ html,body{
     </div>
     <div class="top-box findbox">
       <div class="find-label">FIND</div>
-      <div class="find-num" id="findNum">\u2014</div>
+      <div class="find-num" id="findNum">—</div>
     </div>
     <div class="top-box">
       <div class="top-label">Shot Clock</div>
@@ -395,7 +395,7 @@ function resetCells(){
 function highlightTarget(){
   cells.forEach(function(c){
     if(Number(c.dataset.num)===target){
-      // subtle pulse \u2014 not obvious, just a hint
+      // subtle pulse — not obvious, just a hint
       // removed: we want them to HUNT not be guided
     }
   });
@@ -405,12 +405,12 @@ function startRound(){
   if(phase!=='idle')return;
   phase='playing';
   $('roundBtn').disabled=true;
-  // Rebuild grid \u2014 fresh shuffle every round
+  // Rebuild grid — fresh shuffle every round
   buildCourt();
   // Pick target
   target=Math.ceil(Math.random()*50);
   $('findNum').textContent=target;
-  msg('\u26a1 FIND '+target+'!','go');
+  msg('⚡ FIND '+target+'!','go');
   // Start clock
   timeLeftMs=duration*1000;
   updateClock();
@@ -459,15 +459,15 @@ function tap(num){
       $('roundBtn').disabled=false;
       resetCells();
       msg('TAP START ROUND','ready');
-      $('findNum').textContent='\u2014';
+      $('findNum').textContent='—';
       $('clock').textContent=duration.toFixed(1);
       $('clockFill').style.width='100%';
     },1000));
   }else{
     // WRONG
     cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('wrong')});
-    msg('\u274c WRONG! KEEP HUNTING!','miss');
-    // Don't end round \u2014 keep hunting
+    msg('❌ WRONG! KEEP HUNTING!','miss');
+    // Don't end round — keep hunting
     timers.push(setTimeout(function(){
       cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.remove('wrong')});
     },400));
@@ -484,12 +484,12 @@ function fail(){
       c.classList.add('target');
     }
   });
-  msg('\u23f1 TIME! It was '+target,'miss');
+  msg('⏱ TIME! It was '+target,'miss');
   timers.push(setTimeout(function(){
     $('roundBtn').disabled=false;
     resetCells();
     msg('TAP START ROUND','ready');
-    $('findNum').textContent='\u2014';
+    $('findNum').textContent='—';
     $('clock').textContent=duration.toFixed(1);
     $('clockFill').style.width='100%';
   },1800));
