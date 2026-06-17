@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VRR Reaction Control | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;
+  background:#0a0010;
+  font-family:Arial,sans-serif;
+  color:#fff;
+  overflow:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+/* SCREENS */
+.screen{display:none;width:100%;height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+/* ── INTRO SCREEN ── */
+#screen-intro{
+  background:radial-gradient(ellipse at center,#1a0030 0%,#0a0010 70%);
+}
+.vrr-logo{
+  font-size:3.5rem;font-weight:900;font-style:italic;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;text-align:center;line-height:1;
+  text-shadow:0 0 60px rgba(155,89,182,1),0 0 120px rgba(155,89,182,.5);
+  margin-bottom:10px;
+}
+.vrr-logo span{color:#9B59B6}
+.vrr-sub{
+  font-size:1.1rem;letter-spacing:.3em;text-transform:uppercase;
+  color:#9B59B6;margin-bottom:60px;text-align:center;
+}
+.big-btn{
+  width:500px;height:120px;border:none;border-radius:24px;
+  background:linear-gradient(135deg,#9B59B6,#A873B8);
+  color:#fff;font-size:2.2rem;font-weight:900;
+  letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 60px rgba(155,89,182,.8),0 0 120px rgba(155,89,182,.3);
+  margin-bottom:30px;
+}
+.big-btn:hover{transform:scale(1.04)}
+.intro-info{
+  font-size:1rem;color:#8892a0;letter-spacing:.1em;
+  text-transform:uppercase;text-align:center;line-height:2;
+}
+
+/* ── PLAY SCREEN ── */
+#screen-play{
+  background:radial-gradient(ellipse at center,#120020 0%,#050008 70%);
+  justify-content:space-between;
+  padding:30px;
+}
+
+/* TOP HUD */
+.hud{
+  width:100%;display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.hud-box{
+  background:rgba(155,89,182,.15);
+  border:3px solid rgba(155,89,182,.5);
+  border-radius:20px;
+  padding:16px;text-align:center;
+}
+.hud-val{
+  font-size:3rem;font-weight:900;
+  color:#9B59B6;line-height:1;
+}
+.hud-lbl{
+  font-size:.85rem;color:#8892a0;
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-top:4px;
+}
+
+/* MESSAGE */
+.msg{
+  font-size:2.8rem;font-weight:900;
+  letter-spacing:.15em;text-transform:uppercase;
+  text-align:center;min-height:80px;
+  display:flex;align-items:center;justify-content:center;
+  text-shadow:0 0 30px currentColor;
+}
+.msg.watch{color:#9B59B6}
+.msg.go{color:#FFD700}
+.msg.perfect{color:#00D9A5}
+.msg.miss{color:#FF1493}
+
+/* PROGRESS STARS */
+.stars{
+  display:flex;gap:20px;align-items:center;justify-content:center;
+}
+.star{font-size:2.5rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 10px #9B59B6);transform:scale(1.2)}
+
+/* COURT */
+.court-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  width:100%;
+}
+.court{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+  width:min(70vh,700px);
+  height:min(70vh,700px);
+  padding:18px;
+  background:rgba(155,89,182,.06);
+  border:3px solid rgba(155,89,182,.3);
+  border-radius:28px;
+  box-shadow:0 0 80px rgba(155,89,182,.2),inset 0 0 60px rgba(155,89,182,.05);
+}
+.cell{
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  border:3px solid rgba(255,255,255,.12);
+  cursor:pointer;
+  transition:all .1s;
+}
+.cell:hover{
+  background:rgba(155,89,182,.2);
+  border-color:rgba(155,89,182,.5);
+}
+.cell.target{
+  background:#9B59B6!important;
+  border-color:#A873B8!important;
+  box-shadow:0 0 40px rgba(155,89,182,1),0 0 80px rgba(155,89,182,.5);
+  transform:scale(1.08);
+}
+.cell.correct{
+  background:#00D9A5!important;
+  border-color:#00D9A5!important;
+  box-shadow:0 0 30px rgba(0,217,165,.8);
+}
+.cell.good{
+  background:#FF6B35!important;
+  border-color:#FF6B35!important;
+}
+.cell.missed,.cell.wrong{
+  background:rgba(255,20,147,.4)!important;
+  border-color:#FF1493!important;
+  animation:shake .3s;
+}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* BOTTOM INFO */
+.bottom{
+  width:100%;display:flex;
+  justify-content:space-between;align-items:center;
+  padding:0 10px;
+}
+.lives{font-size:2.2rem;letter-spacing:8px;color:#9B59B6}
+.taps{font-size:1.6rem;color:#8892a0;font-weight:900}
+.action-btn{
+  height:90px;padding:0 50px;border:none;border-radius:20px;
+  background:linear-gradient(135deg,#9B59B6,#A873B8);
+  color:#fff;font-size:1.8rem;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 40px rgba(155,89,182,.6);
+}
+.action-btn:disabled{opacity:.4}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="screen active" id="screen-intro">
+  <div class="vrr-logo">VIRTUAL REACTION<br><span>REALITY™</span></div>
+  <div class="vrr-sub">Reaction Control · Reactific™</div>
+  <button class="big-btn" id="startBtn">⚡ ENTER THE COURT</button>
+  <div class="intro-info">
+    Point controller at a cell<br>
+    Pull trigger to tap<br>
+    React faster than the clock
+  </div>
+</div>
+
+<!-- PLAY -->
+<div class="screen" id="screen-play">
+  <div class="hud">
+    <div class="hud-box"><div class="hud-val" id="hLv">1</div><div class="hud-lbl">Level</div></div>
+    <div class="hud-box"><div class="hud-val" id="hSc">0</div><div class="hud-lbl">Score</div></div>
+    <div class="hud-box"><div class="hud-val" id="hRd">0</div><div class="hud-lbl">Round</div></div>
+    <div class="hud-box"><div class="hud-val" id="hSt">0</div><div class="hud-lbl">🔥</div></div>
+  </div>
+
+  <div class="msg" id="msg">TAP LET'S GO!</div>
+
+  <div class="stars">
+    <span class="star" id="ps1">⭐</span>
+    <span class="star" id="ps2">⭐</span>
+    <span class="star" id="ps3">⭐</span>
+  </div>
+
+  <div class="court-wrap">
+    <div class="court" id="court"></div>
+  </div>
+
+  <div class="bottom">
+    <div class="lives" id="lives">♥♥♥</div>
+    <div class="taps" id="taps">0/3</div>
+    <button class="action-btn" id="actBtn">LET'S GO</button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+
+// SCREENS
+$('startBtn').onclick=function(){
+  $('screen-intro').classList.remove('active');
+  $('screen-play').classList.add('active');
+  initGame();
+};
+
+// COURT
+var cells=[], court=$('court');
+function buildCourt(){
+  court.innerHTML='';cells=[];
+  for(var i=0;i<25;i++){
+    var c=document.createElement('div');
+    c.className='cell';
+    c.dataset.i=i;
+    c.onclick=(function(idx){return function(){handleTap(idx)}})(i);
+    court.appendChild(c);
+    cells.push(c);
+  }
+}
+
+// GAME
+var g={lv:1,sc:0,rd:0,st:0,pf:0,lives:3};
+var ML=3,PW=350,GW=700;
+function gcc(lv){return lv+2}
+function iv(){return 1200}
+
+var phase='idle',pattern=[],beatIdx=-1,target=-1,t0=0,tapCount=0,tapRes=[];
+var timers=[],missT=null;
+
+function clrT(){timers.forEach(clearTimeout);timers=[];if(missT){clearTimeout(missT);missT=null}}
+function cellSt(i,s){
+  cells[i].className='cell';
+  if(s)cells[i].classList.add(s);
+}
+function resetCells(){cells.forEach((_,i)=>cellSt(i))}
+
+function msg(txt,cls){
+  var el=$('msg');el.textContent=txt;
+  el.className='msg '+(cls||'');
+}
+
+function updateHUD(){
+  $('hLv').textContent=g.lv;
+  $('hSc').textContent=g.sc;
+  $('hRd').textContent=g.rd;
+  $('hSt').textContent=g.st;
+  var h='';for(var i=0;i<ML;i++)h+=i<g.lives?'♥':'♡';
+  $('lives').textContent=h;
+  $('taps').textContent=tapCount+'/'+gcc(g.lv);
+  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'');
+}
+
+function makePat(){
+  var len=gcc(g.lv),arr=[];
+  while(arr.length<len){var n=Math.floor(Math.random()*25);if(arr.indexOf(n)===-1)arr.push(n)}
+  return arr;
+}
+
+function initGame(){
+  g={lv:1,sc:0,rd:0,st:0,pf:0,lives:ML};
+  buildCourt();updateHUD();
+  msg("TAP LET'S GO!",'');
+  $('actBtn').disabled=false;
+  $('actBtn').onclick=startRound;
+}
+
+function startRound(){
+  if(phase!=='idle')return;
+  phase='playing';g.rd++;g.lives=ML;tapCount=0;tapRes=[];
+  pattern=makePat();beatIdx=-1;target=-1;
+  resetCells();$('actBtn').disabled=true;updateHUD();
+  msg('GET READY...','watch');
+  timers.push(setTimeout(function(){
+    msg('⚡ REACT!','go');
+    timers.push(setTimeout(()=>fireBeat(0),400));
+  },800));
+}
+
+function fireBeat(i){
+  if(phase!=='playing')return;
+  clrT();beatIdx=i;target=pattern[i];t0=performance.now();
+  cells.forEach((_,j)=>{if(cells[j].classList.contains('target'))cellSt(j)});
+  cellSt(target,'target');
+  var interval=iv();
+  timers.push(setTimeout(()=>{if(cells[target].classList.contains('target'))cellSt(target)},interval*.55));
+  missT=setTimeout(function(){
+    if(phase==='playing'&&target===pattern[i]){
+      g.lives--;tapRes.push('miss');tapCount++;
+      cellSt(target,'missed');updateHUD();
+      if(g.lives<=0){endRound(false,'OUT OF LIVES')}
+      else{msg('💨 KEEP GOING!','miss');nextBeat(i)}
+    }
+  },interval*.9);
+}
+
+function nextBeat(i){
+  if(phase!=='playing')return;
+  if(i<pattern.length-1){timers.push(setTimeout(()=>fireBeat(i+1),200))}
+  else{timers.push(setTimeout(()=>endRound(true),300))}
+}
+
+function handleTap(idx){
+  if(phase!=='playing'||target<0)return;
+  if(missT){clearTimeout(missT);missT=null}
+  var delta=performance.now()-t0;
+  if(idx!==target){
+    g.lives--;tapRes.push('miss');tapCount++;
+    cellSt(idx,'wrong');updateHUD();
+    if(g.lives<=0){endRound(false,'OUT OF LIVES')}
+    else{msg('❌ WRONG!','miss');nextBeat(beatIdx)}
+    return;
+  }
+  var pts=delta<=PW?20:delta<=GW?12:5;
+  cellSt(idx,delta<=PW?'correct':'good');
+  tapRes.push(delta<=PW?'perfect':'good');
+  tapCount++;g.sc+=pts;updateHUD();
+  msg(delta<=PW?'✨ SWISH!':'👍 BUCKET!',delta<=PW?'perfect':'go');
+  nextBeat(beatIdx);
+}
+
+function endRound(won,reason){
+  if(phase==='idle')return;
+  phase='idle';clrT();target=-1;
+  if(won){
+    g.pf++;g.st++;updateHUD();
+    msg(g.pf>=3?'🔥 LEVEL UP!':'🔥 LOCKED IN!','perfect');
+    if(g.pf>=3){
+      timers.push(setTimeout(function(){
+        if(g.lv<23){g.lv++;g.pf=0;}
+        updateHUD();resetCells();
+        timers.push(setTimeout(startRound,800));
+      },1200));
+    }else{timers.push(setTimeout(()=>{resetCells();finishRound()},1200));}
+  }else{
+    g.st=0;g.pf=0;updateHUD();
+    msg(reason||'OUT OF LIVES','miss');
+    timers.push(setTimeout(finishRound,1500));
+  }
+}
+
+function finishRound(){
+  phase='idle';g.lives=ML;tapCount=0;
+  resetCells();updateHUD();
+  msg("TAP LET'S GO!",'');
+  $('actBtn').disabled=false;
+}
+
+buildCourt();
+})();
+</script>
+</body>
+</html>
