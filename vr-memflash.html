@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VR Memory Flash | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+
+#screen-intro{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#000a14 0%,#000 70%);z-index:100;
+}
+.vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(0,191,255,1);margin-bottom:8px}
+.vrr-logo span{color:#00BFFF}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#00BFFF;margin-bottom:8px;text-align:center}
+.vrr-rule{font-size:.9rem;color:#fff;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;text-align:center}
+.big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#00BFFF,#0080ff);color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(0,191,255,.7);margin-bottom:14px}
+.big-btn:hover{transform:scale(1.03)}
+.speed-row{display:flex;gap:12px;margin-bottom:14px}
+.speed-btn{width:130px;height:64px;border:3px solid rgba(0,191,255,.4);background:rgba(0,191,255,.08);border-radius:18px;color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+.speed-btn.active{border-color:#00BFFF;background:rgba(0,191,255,.22);box-shadow:0 0 30px rgba(0,191,255,.6);color:#00BFFF}
+.speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
+.intro-info{font-size:.75rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8}
+.intro-info strong{color:#00BFFF}
+
+#screen-game{
+  position:fixed;inset:0;display:none;flex-direction:column;
+  background:radial-gradient(circle at 50% 50%,#000a14 0%,#000 70%);
+}
+.topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;padding:6px 10px 4px;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(0,191,255,.3)}
+.top-label{font-size:.5rem;color:#00BFFF;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
+
+/* FLASH NUMBER display */
+.flash-display{
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;height:80px;
+  position:relative;
+}
+.flash-number{
+  font-size:4rem;font-weight:900;letter-spacing:.2em;
+  color:#00BFFF;
+  text-shadow:0 0 40px rgba(0,191,255,1),0 0 80px rgba(0,191,255,.5);
+  transition:opacity .1s;
+  opacity:0;
+  position:absolute;
+}
+.flash-number.visible{opacity:1}
+.flash-prompt{
+  font-size:1rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;color:#a7adba;
+  opacity:0;transition:opacity .2s;
+}
+.flash-prompt.visible{opacity:1}
+
+.clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#00BFFF,#0080ff);transition:width .05s linear}
+.msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.msg-bar.watch{color:#00BFFF}.msg-bar.go{color:#fff}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
+
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;min-height:0;position:relative}
+.court{width:100%;height:100%;position:relative;border-radius:20px;background:radial-gradient(ellipse at center,#000a14 0%,#000 80%);border:1px solid rgba(0,191,255,.1);overflow:hidden}
+
+.answer-circle{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transform:translate(-50%,-50%);
+  font-weight:900;
+  color:#fff;
+  border:3px solid rgba(0,191,255,.4);
+  background:radial-gradient(circle at 35% 35%,#003366,#001a33);
+  box-shadow:0 0 20px rgba(0,191,255,.3);
+  transition:width .05s, height .05s;
+}
+.answer-circle.correct-flash{
+  background:radial-gradient(circle at 35% 35%,#00D9A5,#00B894)!important;
+  box-shadow:0 0 60px rgba(0,217,165,1)!important;
+  border-color:#00D9A5!important;
+}
+.answer-circle.wrong-flash{
+  background:radial-gradient(circle at 35% 35%,#FF1493,#cc0066)!important;
+  box-shadow:0 0 40px rgba(255,20,147,.8)!important;
+  border-color:#FF1493!important;
+}
+
+.bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
+.bot-btn{height:48px;border:2px solid rgba(0,191,255,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#00BFFF;font-size:.55rem;margin-top:1px}
+.start-btn{border-color:#00BFFF;background:linear-gradient(180deg,#00BFFF,#0080ff);color:#000;font-size:1.1rem;box-shadow:0 0 18px rgba(0,191,255,.7)}
+.start-btn:disabled{opacity:.5}
+</style>
+</head>
+<body>
+
+<div id="screen-intro">
+  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
+  <div class="vrr-logo">MEMORY <span>FLASH</span></div>
+  <div class="vrr-sub">VR Court · Reactific™</div>
+  <div class="vrr-rule">⚡ SEE IT · REMEMBER IT · FIND IT</div>
+  <div class="speed-row">
+    <button class="speed-btn active" data-time="3000">SLOW<small>3 SEC</small></button>
+    <button class="speed-btn" data-time="2000">TEMPO<small>2 SEC</small></button>
+    <button class="speed-btn" data-time="1500">ELITE<small>1.5 SEC</small></button>
+  </div>
+  <button class="big-btn" id="startBtn">⚡ ENTER THE COURT</button>
+  <div class="intro-info">
+    <strong>A NUMBER FLASHES</strong> — memorize it instantly<br>
+    <strong>IT VANISHES</strong> — four circles appear<br>
+    <strong>FIND THE MATCH</strong> — tap it before circles shrink<br>
+    <strong>NUMBERS GET LONGER</strong> — flash gets shorter
+  </div>
+</div>
+
+<div id="screen-game">
+  <div class="topbar">
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
+    <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hHits">0</div></div>
+    <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Digits</div><div class="top-val" id="hDig">1</div></div>
+    <div class="top-box"><div class="top-label">Flash</div><div class="top-val" id="hFlash">1.0s</div></div>
+  </div>
+
+  <div class="flash-display">
+    <div class="flash-number" id="flashNum"></div>
+    <div class="flash-prompt" id="flashPrompt">WHAT WAS THE NUMBER?</div>
+  </div>
+
+  <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
+  <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
+
+  <div class="court-area">
+    <div class="court" id="court"></div>
+  </div>
+
+  <div class="bottombar">
+    <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
+    <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+var baseTime=3000, best=0;
+
+document.querySelectorAll('[data-time]').forEach(btn=>{btn.onclick=function(){baseTime=Number(btn.dataset.time);document.querySelectorAll('[data-time]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+
+$('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';initGame()};
+$('menuBtn').onclick=function(){stopSession();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
+$('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+
+var g={lv:1,sc:0,hits:0,st:0};
+var phase='idle',shrinkRAF=null,timers=[];
+var targetNum='', circleEls=[], dotSize=0, currentTime=0;
+
+function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
+
+/* Digits increase with level */
+function getDigits(){
+  if(g.lv<=3)return 1;
+  if(g.lv<=6)return 2;
+  return 3;
+}
+
+/* Flash time decreases with level and hits */
+function getFlashTime(){return Math.max(200, 1000-(g.lv-1)*100-(g.hits*8))}
+
+/* Window time decreases with hits */
+function getWindow(){return Math.max(600, baseTime-(g.hits*35))}
+
+function getDotSize(){return Math.max(55, 140-(g.lv-1)*8)}
+
+function updateHUD(){
+  $('hSc').textContent=g.sc;$('hHits').textContent=g.hits;
+  $('hBest').textContent=best;$('hLv').textContent=g.lv;
+  $('hDig').textContent=getDigits();
+  $('hFlash').textContent=(getFlashTime()/1000).toFixed(1)+'s';
+}
+
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
+
+/* Generate a random number with given digits */
+function randNum(digits){
+  var min=Math.pow(10,digits-1), max=Math.pow(10,digits)-1;
+  if(digits===1){min=1;max=9}
+  return Math.floor(min+Math.random()*(max-min+1));
+}
+
+/* Generate wrong answers — similar looking numbers */
+function genWrongAnswers(correct, digits, count){
+  var wrongs=[], str=String(correct);
+  var attempts=0;
+  while(wrongs.length<count&&attempts<100){
+    attempts++;
+    var wrong;
+    if(digits===1){
+      wrong=Math.floor(1+Math.random()*9);
+    }else{
+      // Scramble digits or change one digit
+      var arr=str.split('');
+      var method=Math.random();
+      if(method<0.5){
+        // Swap two digits
+        var i=Math.floor(Math.random()*arr.length);
+        var j=Math.floor(Math.random()*arr.length);
+        var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+      }else{
+        // Change one digit
+        var pos=Math.floor(Math.random()*arr.length);
+        var newDigit=Math.floor(Math.random()*10);
+        // Avoid leading zero
+        if(pos===0)newDigit=Math.floor(1+Math.random()*9);
+        arr[pos]=String(newDigit);
+      }
+      wrong=parseInt(arr.join(''));
+    }
+    if(wrong!==correct&&wrongs.indexOf(wrong)===-1&&wrong>0){
+      wrongs.push(wrong);
+    }
+  }
+  return wrongs;
+}
+
+function randomPos(size, existing){
+  var c=$('court'),w=c.offsetWidth,h=c.offsetHeight,pad=size/2+16;
+  var attempts=0, pos;
+  do{
+    pos={x:pad+Math.random()*(w-pad*2), y:pad+Math.random()*(h-pad*2)};
+    attempts++;
+    var ok=true;
+    existing.forEach(function(e){
+      var dx=pos.x-e.x, dy=pos.y-e.y;
+      if(Math.sqrt(dx*dx+dy*dy)<size*2.2)ok=false;
+    });
+    if(ok||attempts>20)break;
+  }while(true);
+  return pos;
+}
+
+function initGame(){
+  g={lv:1,sc:0,hits:0,st:0};
+  updateHUD();msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;$('actBtn').onclick=startSession;
+  $('court').innerHTML='';$('clockFill').style.width='100%';
+  $('flashNum').className='flash-number';
+  $('flashPrompt').className='flash-prompt';
+}
+
+function stopSession(){clrT();phase='idle';$('court').innerHTML=''}
+
+function startSession(){
+  if(phase!=='idle')return;
+  phase='playing';
+  $('actBtn').disabled=true;
+  msg('GET READY...','watch');
+  timers.push(setTimeout(function(){
+    msg('MEMORIZE THE NUMBER!','go');
+    timers.push(setTimeout(fireRound,400));
+  },700));
+}
+
+function fireRound(){
+  if(phase!=='playing')return;
+  clrT();
+  $('court').innerHTML='';
+  circleEls=[];
+  $('flashPrompt').className='flash-prompt';
+
+  var digits=getDigits();
+  var flashTime=getFlashTime();
+  currentTime=getWindow();
+  dotSize=getDotSize();
+
+  // Generate target number
+  targetNum=randNum(digits);
+  var fontSize=Math.max(1.2, 3.5-(digits-1)*0.8)+'rem';
+
+  // Flash the number
+  $('flashNum').textContent=targetNum;
+  $('flashNum').className='flash-number visible';
+  msg('MEMORIZE!','watch');
+
+  // After flash time — hide number, show circles
+  timers.push(setTimeout(function(){
+    if(phase!=='playing')return;
+    $('flashNum').className='flash-number';
+    $('flashPrompt').className='flash-prompt visible';
+    msg('FIND IT!','go');
+
+    timers.push(setTimeout(function(){
+      if(phase!=='playing')return;
+      $('flashPrompt').className='flash-prompt';
+
+      // Generate answers
+      var wrongs=genWrongAnswers(targetNum, digits, 3);
+      var answers=[targetNum].concat(wrongs);
+      // Shuffle
+      answers.sort(function(){return Math.random()-.5});
+
+      // Place circles
+      var positions=[];
+      answers.forEach(function(num){
+        var pos=randomPos(dotSize, positions);
+        positions.push(pos);
+        var el=document.createElement('div');
+        el.className='answer-circle';
+        el.style.width=dotSize+'px';
+        el.style.height=dotSize+'px';
+        el.style.left=pos.x+'px';
+        el.style.top=pos.y+'px';
+        el.style.fontSize=fontSize;
+        el.textContent=num;
+        var isTarget=(num===targetNum);
+        el.onclick=(function(it,n){return function(){handleTap(it,n,el)}})(isTarget,num);
+        $('court').appendChild(el);
+        circleEls.push({el:el, isTarget:isTarget});
+      });
+
+      // Shrink animation
+      var startMs=performance.now();
+      $('clockFill').style.width='100%';
+
+      function shrink(){
+        var elapsed=performance.now()-startMs;
+        var pct=Math.max(0,1-(elapsed/currentTime));
+        var curSize=dotSize*pct;
+        var curFont=Math.max(0.4,parseFloat(fontSize)*pct)+'rem';
+        circleEls.forEach(function(c){
+          c.el.style.width=curSize+'px';
+          c.el.style.height=curSize+'px';
+          c.el.style.fontSize=curFont;
+        });
+        $('clockFill').style.width=(pct*100)+'%';
+        if(pct<=0){onMiss('GONE!');return}
+        if(phase==='playing')shrinkRAF=requestAnimationFrame(shrink);
+      }
+      shrinkRAF=requestAnimationFrame(shrink);
+
+    },200));
+  },flashTime));
+}
+
+function handleTap(isTarget, num, el){
+  if(phase!=='playing')return;
+  clrT();
+  if(isTarget){
+    var pts=10+(g.hits*2);
+    g.sc+=pts;g.hits++;g.st++;
+    if(g.hits>best)best=g.hits;
+    if(g.hits%10===0&&g.lv<10)g.lv++;
+    updateHUD();
+    el.classList.add('correct-flash');
+    msg('✅ '+targetNum+'! '+g.hits+' HITS','perfect');
+    timers.push(setTimeout(function(){
+      $('court').innerHTML='';
+      $('flashNum').className='flash-number';
+      if(phase==='playing')fireRound();
+    },350));
+  }else{
+    el.classList.add('wrong-flash');
+    // Show correct answer
+    circleEls.forEach(function(c){if(c.isTarget)c.el.classList.add('correct-flash')});
+    onMiss('WRONG! WAS '+targetNum);
+  }
+}
+
+function onMiss(reason){
+  phase='idle';clrT();
+  if(g.hits>best)best=g.hits;
+  g.st=0;updateHUD();
+  msg(reason+' — '+g.hits+' HITS','miss');
+  $('flashNum').className='flash-number';
+  timers.push(setTimeout(function(){
+    $('court').innerHTML='';
+    $('clockFill').style.width='100%';
+    updateHUD();
+    msg("TAP LET'S GO! BEST: "+best,'watch');
+    $('actBtn').disabled=false;
+  },1800));
+}
+
+$('actBtn').onclick=startSession;
+})();
+</script>
+</body>
+</html>
