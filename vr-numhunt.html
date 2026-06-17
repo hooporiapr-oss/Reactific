@@ -6,274 +6,73 @@
 <title>VR Number Hunt | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  width:100%;height:100%;
-  background:#000;
-  font-family:Arial,sans-serif;
-  color:#fff;
-  overflow:hidden;
-  user-select:none;
-  -webkit-user-select:none;
-}
-
-/* ── INTRO ── */
-#screen-intro{
-  position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at center,#001428 0%,#000 70%);
-  z-index:100;
-}
-.vrr-logo{
-  font-size:3.8rem;font-weight:900;font-style:italic;
-  letter-spacing:.1em;text-transform:uppercase;
-  text-align:center;line-height:1;
-  color:#fff;
-  text-shadow:0 0 60px rgba(0,140,255,1),0 0 120px rgba(0,140,255,.5);
-  margin-bottom:8px;
-}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+#screen-intro{background:radial-gradient(ellipse at center,#001428 0%,#000 70%);position:relative}
+.back-home{position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.4);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none}
+.vrr-logo{font-size:3.8rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(0,140,255,1);margin-bottom:8px}
 .vrr-logo span{color:#008cff}
-.vrr-sub{
-  font-size:1rem;letter-spacing:.3em;text-transform:uppercase;
-  color:#008cff;margin-bottom:16px;text-align:center;
-}
-.vrr-rule{
-  font-size:1.4rem;color:#ffd35a;font-weight:900;
-  letter-spacing:.2em;text-transform:uppercase;
-  margin-bottom:50px;text-align:center;
-}
-.big-btn{
-  width:520px;height:120px;border:none;border-radius:24px;
-  background:linear-gradient(135deg,#008cff,#00b7ff);
-  color:#fff;font-size:2.2rem;font-weight:900;
-  letter-spacing:.15em;text-transform:uppercase;
-  cursor:pointer;
-  box-shadow:0 0 60px rgba(0,140,255,.8),0 0 120px rgba(0,140,255,.3);
-  margin-bottom:28px;
-}
-.big-btn:hover{transform:scale(1.03)}
-.speed-row{
-  display:flex;gap:16px;margin-bottom:28px;
-}
-.speed-btn{
-  width:160px;height:80px;border:3px solid rgba(0,140,255,.4);
-  background:rgba(0,140,255,.08);border-radius:18px;
-  color:#fff;font-size:1.4rem;font-weight:900;
-  cursor:pointer;text-transform:uppercase;letter-spacing:.1em;
-}
-.speed-btn.active{
-  border-color:#008cff;
-  background:rgba(0,140,255,.22);
-  box-shadow:0 0 30px rgba(0,140,255,.6);
-  color:#008cff;
-}
-.speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
-.strobe-row{
-  display:flex;gap:30px;margin-bottom:20px;align-items:flex-start;justify-content:center;
-}
+.vrr-sub{font-size:1rem;letter-spacing:.3em;text-transform:uppercase;color:#008cff;margin-bottom:16px;text-align:center}
+.vrr-rule{font-size:1.4rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:40px;text-align:center}
+.speed-row{display:flex;gap:16px;margin-bottom:20px}
+.speed-btn{width:160px;height:80px;border:3px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:18px;color:#fff;font-size:1.4rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+.speed-btn.active{border-color:#008cff;background:rgba(0,140,255,.22);box-shadow:0 0 30px rgba(0,140,255,.6);color:#008cff}
+.speed-btn small{display:block;font-size:.7rem;color:#a7adba}
+.strobe-row{display:flex;gap:30px;margin-bottom:20px;align-items:flex-start;justify-content:center}
 .sel-group{display:flex;flex-direction:column;align-items:center;gap:8px}
 .sel-label{color:#ffd35a;font-size:.75rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
 .sel-btns{display:flex;gap:8px}
-.sel-btn{
-  min-width:70px;height:60px;border:2px solid rgba(0,140,255,.35);
-  background:rgba(0,140,255,.06);border-radius:12px;
-  color:#fff;font-size:.9rem;font-weight:900;cursor:pointer;
-  text-transform:uppercase;letter-spacing:.06em;
-}
+.sel-btn{min-width:70px;height:60px;border:2px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:12px;color:#fff;font-size:.9rem;font-weight:900;cursor:pointer;text-transform:uppercase}
 .sel-btn strong{display:block;font-size:1.2rem;line-height:1}
-.sel-btn small{font-size:.55rem;color:#a7adba;letter-spacing:.1em}
-.sel-btn.active{
-  border-color:#008cff;background:rgba(0,140,255,.2);
-  color:#008cff;box-shadow:0 0 20px rgba(0,140,255,.5);
-}
+.sel-btn small{font-size:.6rem;color:#a7adba}
+.sel-btn.active{border-color:#008cff;background:rgba(0,140,255,.22);box-shadow:0 0 20px rgba(0,140,255,.5);color:#008cff}
+.big-btn{width:520px;height:120px;border:none;border-radius:24px;background:linear-gradient(135deg,#008cff,#00b7ff);color:#fff;font-size:2.2rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 60px rgba(0,140,255,.8);margin-bottom:20px}
+.intro-info{font-size:.95rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2.2}
+.intro-info strong{color:#ffd35a}
+
+#screen-game{background:linear-gradient(180deg,#030814,#010306 68%,#02050a);justify-content:space-between;padding:12px 0}
+.topbar{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:0 16px;width:100%;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;padding:8px;background:rgba(0,0,0,.4);border:2px solid rgba(0,140,255,.3)}
+.top-label{font-size:.6rem;color:#ff6b00;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+.top-val{font-size:2rem;font-weight:900;line-height:1;color:#fff}
+.findbox{border-color:#ff6b00;background:rgba(255,107,0,.08)!important}
+.find-label{color:#ffd35a;font-size:.8rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.find-num{font-size:4rem;font-weight:900;line-height:1;color:#39FF14;text-shadow:0 0 30px rgba(57,255,20,.7)}
+.clockbar{height:10px;background:rgba(255,255,255,.08);width:100%;flex-shrink:0}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#39FF14,#008cff);transition:width .1s linear}
+.msg-bar{text-align:center;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;min-height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.msg-bar.hit{color:#39FF14}.msg-bar.miss{color:#ff3030}.msg-bar.ready{color:#ffd35a}.msg-bar.go{color:#008cff}
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 12px;width:100%;min-height:300px}
+.court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:6px;width:100%;aspect-ratio:2/1;border:2px solid rgba(0,140,255,.25);border-radius:18px;padding:10px;background:rgba(3,8,15,.85)}
+.cell{border-radius:8px;background:rgba(0,140,255,.08);border:2px solid rgba(0,170,255,.5);display:flex;align-items:center;justify-content:center;font-size:clamp(.8rem,1.8vw,1.8rem);font-weight:900;color:#ccc;cursor:pointer;transition:all .08s}
+.cell.target{background:rgba(255,107,0,.15)!important;border-color:#ff6b00!important;color:#ff9b22!important;box-shadow:0 0 20px rgba(255,107,0,.5)}
+.cell.hit{background:#39FF14!important;border-color:#39FF14!important;color:#001400!important;box-shadow:0 0 30px rgba(57,255,20,.9)!important}
+.cell.wrong{background:rgba(255,48,48,.4)!important;border-color:#ff3030!important}
 .court.strobe-soft{filter:brightness(.62) contrast(1.08)}
 .court.strobe-medium{filter:brightness(.42) contrast(1.15)}
 .court.strobe-hard{opacity:.18}
-.intro-info{
-  font-size:.95rem;color:#8892a0;letter-spacing:.1em;
-  text-transform:uppercase;text-align:center;line-height:2.2;
-}
-.intro-info strong{color:#ffd35a}
-
-/* ── GAME ── */
-#screen-game{
-  position:fixed;inset:0;
-  display:none;flex-direction:column;
-  background:
-    radial-gradient(circle at 16% 5%,rgba(0,140,255,.2),transparent 30%),
-    radial-gradient(circle at 88% 8%,rgba(255,107,0,.15),transparent 30%),
-    linear-gradient(180deg,#030814,#010306 68%,#02050a);
-}
-
-/* TOP BAR */
-.topbar{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;
-  gap:10px;
-  padding:12px 16px 8px;
-  flex-shrink:0;
-}
-.top-box{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  border-radius:14px;padding:8px;
-  background:rgba(0,0,0,.4);
-  border:2px solid rgba(0,140,255,.3);
-}
-.top-label{font-size:.65rem;color:#ff6b00;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
-.top-val{font-size:2rem;font-weight:900;line-height:1;color:#fff}
-
-/* FIND BOX — center hero */
-.findbox{
-  border-color:#ff6b00;
-  box-shadow:0 0 30px rgba(255,107,0,.4);
-  background:rgba(255,107,0,.08)!important;
-}
-.find-label{color:#ffd35a;font-size:.8rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
-.find-num{
-  font-size:4rem;font-weight:900;line-height:1;
-  color:#39FF14;
-  text-shadow:0 0 30px rgba(57,255,20,.7);
-}
-
-/* CLOCK BAR */
-.clockbar{
-  height:10px;
-  background:rgba(255,255,255,.08);
-  flex-shrink:0;
-  position:relative;
-  overflow:hidden;
-}
-.clockbar-fill{
-  height:100%;
-  background:linear-gradient(90deg,#39FF14,#008cff);
-  transition:width .1s linear;
-  box-shadow:0 0 12px rgba(57,255,20,.6);
-}
-
-/* MSG */
-.msg-bar{
-  text-align:center;
-  font-size:1.6rem;font-weight:900;
-  letter-spacing:.15em;text-transform:uppercase;
-  min-height:44px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;padding:0 10px;
-}
-.msg-bar.hit{color:#39FF14;text-shadow:0 0 20px rgba(57,255,20,.7)}
-.msg-bar.miss{color:#ff3030}
-.msg-bar.ready{color:#ffd35a}
-.msg-bar.go{color:#008cff}
-
-/* COURT AREA */
-.court-area{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:8px 12px;
-  min-height:0;
-  perspective:800px;
-}
-
-/* THE GRID — wide 10x5, slight 3D tilt for VR feel */
-.court{
-  display:grid;
-  grid-template-columns:repeat(10,1fr);
-  grid-template-rows:repeat(5,1fr);
-  gap:6px;
-  width:100%;
-  height:100%;
-  max-height:100%;
-  transform:rotateX(6deg);
-  transform-origin:center bottom;
-  border:2px solid rgba(0,140,255,.25);
-  border-radius:18px;
-  padding:10px;
-  background:rgba(3,8,15,.85);
-  box-shadow:
-    0 0 60px rgba(0,140,255,.3),
-    inset 0 0 40px rgba(0,140,255,.06),
-    0 20px 60px rgba(0,0,0,.8);
-}
-.cell{
-  border-radius:8px;
-  background:radial-gradient(circle at 50% 30%,rgba(0,140,255,.1),rgba(0,0,0,.6));
-  border:2px solid rgba(0,170,255,.5);
-  display:flex;align-items:center;justify-content:center;
-  font-size:clamp(1rem,2.2vw,2.2rem);
-  font-weight:900;color:#ccc;
-  cursor:pointer;
-  transition:all .08s;
-  text-shadow:0 1px 0 #000;
-}
-.cell:hover{
-  background:rgba(0,140,255,.2);
-  border-color:#008cff;
-  transform:scale(1.05);
-}
-.cell.target{
-  background:rgba(255,107,0,.15)!important;
-  border-color:#ff6b00!important;
-  color:#ff9b22!important;
-  box-shadow:0 0 20px rgba(255,107,0,.5);
-  animation:pulse .6s infinite alternate;
-}
-@keyframes pulse{from{box-shadow:0 0 10px rgba(255,107,0,.4)}to{box-shadow:0 0 30px rgba(255,107,0,.9)}}
-.cell.hit{
-  background:#39FF14!important;
-  border-color:#39FF14!important;
-  color:#001400!important;
-  box-shadow:0 0 30px rgba(57,255,20,.9)!important;
-  transform:scale(1.1)!important;
-  animation:none!important;
-}
-.cell.wrong{
-  background:rgba(255,48,48,.4)!important;
-  border-color:#ff3030!important;
-  animation:shake .3s!important;
-}
-@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-
-/* BOTTOM */
-.bottombar{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;
-  padding:8px 16px 12px;
-  gap:10px;
-  flex-shrink:0;
-}
-.bot-btn{
-  height:64px;border:2px solid rgba(0,140,255,.5);
-  background:rgba(0,0,0,.4);border-radius:12px;
-  color:#fff;font-size:1rem;font-weight:900;
-  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
-}
-.bot-btn span{display:block;color:#ff6b00;font-size:.65rem;margin-top:2px}
-.start-btn{
-  border-color:#ff6b00;
-  background:linear-gradient(180deg,#ff9b22,#ff6b00);
-  font-size:1.4rem;
-  box-shadow:0 0 24px rgba(255,107,0,.7);
-}
+.bottombar{display:flex;justify-content:center;align-items:center;padding:8px 16px 12px;gap:10px;flex-shrink:0;width:100%}
+.bot-btn{height:64px;padding:0 20px;border:2px solid rgba(0,140,255,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.9rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#ff6b00;font-size:.6rem;margin-top:2px}
+.start-btn{border-color:#ff6b00;background:linear-gradient(180deg,#ff9b22,#ff6b00);font-size:1.2rem;box-shadow:0 0 24px rgba(255,107,0,.7)}
 .start-btn:disabled{opacity:.5}
-
-
+.games-btn{border-color:#ffd35a;color:#ffd35a}
+.games-btn span{color:#ffd35a}
 </style>
 </head>
 <body>
 
-<!-- INTRO -->
-<div id="screen-intro">
+<div class="screen active" id="screen-intro">
+  <a class="back-home" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">VR NUMBER<span> HUNT™</span></div>
   <div class="vrr-sub">Virtual Reaction Reality · Reactific™</div>
   <div class="vrr-rule">⚡ FIND THE NUMBER BEFORE THE CLOCK RUNS OUT</div>
-
   <div class="speed-row">
     <button class="speed-btn" data-dur="7">7<small>SEC CLOCK</small></button>
     <button class="speed-btn active" data-dur="5">5<small>SEC CLOCK</small></button>
     <button class="speed-btn" data-dur="3">3<small>SEC CLOCK</small></button>
   </div>
-
   <div class="strobe-row">
     <div class="sel-group">
       <div class="sel-label">BPM</div>
@@ -302,275 +101,63 @@ html,body{
   </div>
 </div>
 
-<!-- GAME -->
-<div id="screen-game">
-
+<div class="screen" id="screen-game">
   <div class="topbar">
-    <div class="top-box">
-      <div class="top-label">Score</div>
-      <div class="top-val" id="score">0</div>
-    </div>
-    <div class="top-box findbox">
-      <div class="find-label">FIND</div>
-      <div class="find-num" id="findNum">—</div>
-    </div>
-    <div class="top-box">
-      <div class="top-label">Shot Clock</div>
-      <div class="top-val" id="clock">5.0</div>
-    </div>
-    <div class="top-box">
-      <div class="top-label">Level</div>
-      <div class="top-val" id="level">1</div>
-    </div>
-    <div class="top-box">
-      <div class="top-label">Streak</div>
-      <div class="top-val" id="streak">0</div>
-    </div>
-    <div class="top-box">
-      <div class="top-label">Level Up</div>
-      <div class="top-val" id="hits">0/3</div>
-    </div>
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="score">0</div></div>
+    <div class="top-box findbox"><div class="find-label">FIND</div><div class="find-num" id="findNum">—</div></div>
+    <div class="top-box"><div class="top-label">Shot Clock</div><div class="top-val" id="clock">5.0</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="level">1</div></div>
+    <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="streak">0</div></div>
+    <div class="top-box"><div class="top-label">Level Up</div><div class="top-val" id="hits">0/3</div></div>
   </div>
-
-  <div class="clockbar">
-    <div class="clockbar-fill" id="clockFill" style="width:100%"></div>
-  </div>
-
+  <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
   <div class="msg-bar ready" id="msg">TAP START ROUND</div>
-
-  <div class="court-area">
-    <div class="court" id="court"></div>
-  </div>
-
+  <div class="court-area"><div class="court" id="court"></div></div>
   <div class="bottombar">
-    <button class="bot-btn" id="menuBtn">Menu<span>Home</span></button>
+    <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="roundBtn">START ROUND</button>
+    <button class="bot-btn games-btn" id="gamesBtn">⊞ Games<span>All 6</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
-
-
 </div>
 
 <script>
 (function(){
 var $=id=>document.getElementById(id);
+var duration=5,bpm=90,strobe='soft',strobeTimer=null;
 
-/* ── SPEED SELECT ── */
-var duration=5;
-document.querySelectorAll('[data-dur]').forEach(btn=>{
-  btn.onclick=function(){
-    duration=Number(btn.dataset.dur);
-    document.querySelectorAll('[data-dur]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  };
-});
+document.querySelectorAll('[data-dur]').forEach(btn=>{btn.onclick=function(){duration=Number(btn.dataset.dur);document.querySelectorAll('[data-dur]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+document.querySelectorAll('[data-bpm]').forEach(btn=>{btn.onclick=function(){bpm=Number(btn.dataset.bpm);document.querySelectorAll('[data-bpm]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+document.querySelectorAll('[data-strobe]').forEach(btn=>{btn.onclick=function(){strobe=btn.dataset.strobe;document.querySelectorAll('[data-strobe]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
 
-/* ── BPM + STROBE SELECT ── */
-var bpm=90, strobe='soft', strobeTimer=null;
-document.querySelectorAll('[data-bpm]').forEach(btn=>{
-  btn.onclick=function(){
-    bpm=Number(btn.dataset.bpm);
-    document.querySelectorAll('[data-bpm]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  };
-});
-document.querySelectorAll('[data-strobe]').forEach(btn=>{
-  btn.onclick=function(){
-    strobe=btn.dataset.strobe;
-    document.querySelectorAll('[data-strobe]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  };
-});
-function stopStrobe(){
-  if(strobeTimer){clearInterval(strobeTimer);strobeTimer=null;}
-  var court=$('court');
-  if(court){court.classList.remove('strobe-soft','strobe-medium','strobe-hard');}
-}
-function startStrobe(){
-  stopStrobe();
-  if(strobe==='off')return;
-  var court=$('court');
-  var cls=strobe==='soft'?'strobe-soft':strobe==='medium'?'strobe-medium':'strobe-hard';
-  var beat=60000/bpm;
-  var flash=Math.max(80,Math.min(170,beat*.25));
-  strobeTimer=setInterval(function(){
-    court.classList.add(cls);
-    setTimeout(function(){court.classList.remove(cls)},flash);
-  },beat);
-}
+function stopStrobe(){if(strobeTimer){clearInterval(strobeTimer);strobeTimer=null}var c=$('court');if(c)c.classList.remove('strobe-soft','strobe-medium','strobe-hard')}
+function startStrobe(){stopStrobe();if(strobe==='off')return;var c=$('court');var cls=strobe==='soft'?'strobe-soft':strobe==='medium'?'strobe-medium':'strobe-hard';var beat=60000/bpm;var flash=Math.max(80,Math.min(170,beat*.25));strobeTimer=setInterval(function(){c.classList.add(cls);setTimeout(function(){c.classList.remove(cls)},flash)},beat)}
 
-/* ── START ── */
-$('startBtn').onclick=function(){
-  $('screen-intro').style.display='none';
-  $('screen-game').style.display='flex';
-  startStrobe();
-  $('clock').textContent=duration.toFixed(1);
-  buildCourt();
-  updateHUD();
-};
+$('startBtn').onclick=function(){$('screen-intro').classList.remove('active');$('screen-game').classList.add('active');$('clock').textContent=duration.toFixed(1);buildCourt();updateHUD();startStrobe()};
+$('menuBtn').onclick=function(){stopStrobe();$('screen-game').classList.remove('active');$('screen-intro').classList.add('active')};
+$('gamesBtn').onclick=function(){stopStrobe();location.href='/vr-home.html'};
+$('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
-/* ── COURT ── */
-var cells=[], nums=[];
+var cells=[],nums=[];
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function buildCourt(){var court=$('court');court.innerHTML='';cells=[];nums=shuffle(Array.from({length:50},(_,i)=>i+1));nums.forEach(function(n){var c=document.createElement('div');c.className='cell';c.textContent=n;c.dataset.num=n;c.onclick=function(){tap(n)};court.appendChild(c);cells.push(c)})}
 
-function buildCourt(){
-  var court=$('court');
-  court.innerHTML='';cells=[];
-  nums=shuffle(Array.from({length:50},(_,i)=>i+1));
-  nums.forEach(function(n){
-    var c=document.createElement('div');
-    c.className='cell';
-    c.textContent=n;
-    c.dataset.num=n;
-    c.onclick=function(){tap(n)};
-    court.appendChild(c);
-    cells.push(c);
-  });
-}
-
-/* ── GAME STATE ── */
 var g={level:1,score:0,streak:0,hits:0};
 var phase='idle',target=0,timeLeftMs=5000,clockTimer=null,timers=[];
-
 function clrT(){timers.forEach(clearTimeout);timers=[];if(clockTimer){clearInterval(clockTimer);clockTimer=null}}
+function updateHUD(){$('score').textContent=g.score;$('level').textContent=g.level;$('streak').textContent=g.streak;$('hits').textContent=g.hits+'/3';$('clock').textContent=duration.toFixed(1)}
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'ready')}
+function resetCells(){cells.forEach(function(c){c.className='cell'})}
 
-function updateHUD(){
-  $('score').textContent=g.score;
-  $('level').textContent=g.level;
-  $('streak').textContent=g.streak;
-  $('hits').textContent=g.hits+'/3';
-  $('clock').textContent=duration.toFixed(1);
-}
+function startRound(){if(phase!=='idle')return;phase='playing';$('roundBtn').disabled=true;buildCourt();target=Math.ceil(Math.random()*50);$('findNum').textContent=target;msg('⚡ FIND '+target+'!','go');timeLeftMs=duration*1000;updateClock();clockTimer=setInterval(function(){timeLeftMs-=100;updateClock();if(timeLeftMs<=0){clearInterval(clockTimer);clockTimer=null;fail()}},100)}
 
-function msg(txt,cls){
-  var el=$('msg');el.textContent=txt;
-  el.className='msg-bar '+(cls||'ready');
-}
+function updateClock(){var secs=Math.max(0,timeLeftMs/1000);$('clock').textContent=secs.toFixed(1);var pct=(timeLeftMs/(duration*1000))*100;$('clockFill').style.width=Math.max(0,pct)+'%';if(pct<30)$('clockFill').style.background='linear-gradient(90deg,#ff3030,#ff6b00)';else if(pct<60)$('clockFill').style.background='linear-gradient(90deg,#ffd35a,#008cff)';else $('clockFill').style.background='linear-gradient(90deg,#39FF14,#008cff)'}
 
-function resetCells(){
-  cells.forEach(function(c){
-    c.className='cell';
-  });
-}
+function tap(num){if(phase!=='playing')return;if(num===target){clrT();cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('hit')});var bonus=Math.floor(timeLeftMs/100);g.score+=(g.level*10)+bonus;g.streak++;g.hits++;updateHUD();msg('🎯 FOUND IT!','hit');if(g.hits>=3){if(g.level<10)g.level++;g.hits=0;updateHUD();msg('🔥 LEVEL UP! L'+g.level,'hit')}phase='idle';timers.push(setTimeout(function(){$('roundBtn').disabled=false;resetCells();msg('TAP START ROUND','ready');$('findNum').textContent='—';$('clock').textContent=duration.toFixed(1);$('clockFill').style.width='100%'},1000))}else{cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('wrong')});msg('❌ WRONG! KEEP HUNTING!','miss');timers.push(setTimeout(function(){cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.remove('wrong')})},400))}}
 
-function highlightTarget(){
-  cells.forEach(function(c){
-    if(Number(c.dataset.num)===target){
-      // subtle pulse — not obvious, just a hint
-      // removed: we want them to HUNT not be guided
-    }
-  });
-}
+function fail(){if(phase!=='playing')return;phase='idle';clrT();g.streak=0;updateHUD();cells.forEach(function(c){if(Number(c.dataset.num)===target)c.classList.add('target')});msg('⏱ TIME! It was '+target,'miss');timers.push(setTimeout(function(){$('roundBtn').disabled=false;resetCells();msg('TAP START ROUND','ready');$('findNum').textContent='—';$('clock').textContent=duration.toFixed(1);$('clockFill').style.width='100%'},1800))}
 
-function startRound(){
-  if(phase!=='idle')return;
-  phase='playing';
-  $('roundBtn').disabled=true;
-  // Rebuild grid — fresh shuffle every round
-  buildCourt();
-  // Pick target
-  target=Math.ceil(Math.random()*50);
-  $('findNum').textContent=target;
-  msg('⚡ FIND '+target+'!','go');
-  // Start clock
-  timeLeftMs=duration*1000;
-  updateClock();
-  clockTimer=setInterval(function(){
-    timeLeftMs-=100;
-    updateClock();
-    if(timeLeftMs<=0){
-      clearInterval(clockTimer);clockTimer=null;
-      fail();
-    }
-  },100);
-}
-
-function updateClock(){
-  var secs=Math.max(0,timeLeftMs/1000);
-  $('clock').textContent=secs.toFixed(1);
-  var pct=(timeLeftMs/(duration*1000))*100;
-  $('clockFill').style.width=Math.max(0,pct)+'%';
-  // Color warning
-  if(pct<30) $('clockFill').style.background='linear-gradient(90deg,#ff3030,#ff6b00)';
-  else if(pct<60) $('clockFill').style.background='linear-gradient(90deg,#ffd35a,#008cff)';
-  else $('clockFill').style.background='linear-gradient(90deg,#39FF14,#008cff)';
-}
-
-function tap(num){
-  if(phase!=='playing')return;
-  if(num===target){
-    // HIT
-    clrT();
-    // Flash the cell green
-    cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('hit')});
-    var bonus=Math.floor(timeLeftMs/100);
-    g.score+=(g.level*10)+bonus;
-    g.streak++;g.hits++;
-    updateHUD();
-    msg('🎯 FOUND IT! +'+((g.level*10)+bonus),'hit');
-    // Level up after 3 hits
-    if(g.hits>=3){
-      if(g.level<10)g.level++;
-      g.hits=0;
-      updateHUD();
-      msg('🔥 LEVEL UP! L'+g.level,'hit');
-    }
-    phase='idle';
-    timers.push(setTimeout(function(){
-      $('roundBtn').disabled=false;
-      resetCells();
-      msg('TAP START ROUND','ready');
-      $('findNum').textContent='—';
-      $('clock').textContent=duration.toFixed(1);
-      $('clockFill').style.width='100%';
-    },1000));
-  }else{
-    // WRONG
-    cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('wrong')});
-    msg('❌ WRONG! KEEP HUNTING!','miss');
-    // Don't end round — keep hunting
-    timers.push(setTimeout(function(){
-      cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.remove('wrong')});
-    },400));
-  }
-}
-
-function fail(){
-  if(phase!=='playing')return;
-  phase='idle';clrT();
-  g.streak=0;updateHUD();
-  // Reveal target
-  cells.forEach(function(c){
-    if(Number(c.dataset.num)===target){
-      c.classList.add('target');
-    }
-  });
-  msg('⏱ TIME! It was '+target,'miss');
-  timers.push(setTimeout(function(){
-    $('roundBtn').disabled=false;
-    resetCells();
-    msg('TAP START ROUND','ready');
-    $('findNum').textContent='—';
-    $('clock').textContent=duration.toFixed(1);
-    $('clockFill').style.width='100%';
-  },1800));
-}
-
-/* ── BUTTONS ── */
 $('roundBtn').onclick=startRound;
-$('menuBtn').onclick=function(){stopStrobe();$('screen-game').style.display='none';$('screen-intro').style.display='flex';};
-$('fsBtn').onclick=async function(){
-  try{
-    if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
-    else await document.exitFullscreen();
-  }catch(e){}
-};
-
-/* ── RESIZE ── */
-window.addEventListener('resize',function(){
-  // Court redraws naturally via CSS
-});
-
 buildCourt();
 })();
 </script>
