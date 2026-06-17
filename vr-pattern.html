@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VRR Pattern Recognition | REACTIFIC™</title>
+<title>VR Pattern Recognition | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
@@ -15,71 +15,102 @@ html,body{
   user-select:none;
   -webkit-user-select:none;
 }
-
 .screen{display:none;width:100%;height:100vh;flex-direction:column;align-items:center;justify-content:center}
 .screen.active{display:flex}
 
 /* ── INTRO ── */
 #screen-intro{
-  background:radial-gradient(ellipse at center,#1a0a00 0%,#0a0005 70%);
+  background:radial-gradient(ellipse at 20% 20%,rgba(255,107,53,.15),transparent 40%),
+             radial-gradient(ellipse at 80% 80%,rgba(255,107,53,.1),transparent 40%),
+             linear-gradient(180deg,#0a0005,#050003);
+}
+.vr-badge{
+  display:inline-block;background:rgba(255,107,53,.15);
+  border:1px solid rgba(255,107,53,.4);border-radius:999px;
+  padding:5px 18px;font-size:.65rem;font-weight:900;
+  letter-spacing:.25em;text-transform:uppercase;color:#FF6B35;margin-bottom:10px;
 }
 .vrr-logo{
-  font-size:3.2rem;font-weight:900;font-style:italic;
+  font-size:3.5rem;font-weight:900;font-style:italic;
   letter-spacing:.1em;text-transform:uppercase;
-  color:#fff;text-align:center;line-height:1.1;
+  color:#fff;text-align:center;line-height:1;
   text-shadow:0 0 60px rgba(255,107,53,1),0 0 120px rgba(255,107,53,.4);
-  margin-bottom:10px;
+  margin-bottom:6px;
 }
 .vrr-logo span{color:#FF6B35}
-.vrr-sub{
-  font-size:1rem;letter-spacing:.3em;text-transform:uppercase;
-  color:#FF6B35;margin-bottom:50px;text-align:center;
+.vrr-sub{font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;color:#FF6B35;margin-bottom:20px;text-align:center}
+
+/* SELECTORS ROW */
+.sel-row{display:flex;gap:24px;margin-bottom:20px;align-items:flex-start;justify-content:center}
+.sel-group{display:flex;flex-direction:column;align-items:center;gap:8px}
+.sel-label{color:#ffd35a;font-size:.72rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.sel-btns{display:flex;gap:8px}
+.sel-btn{
+  min-width:70px;height:58px;border:2px solid rgba(255,107,53,.35);
+  background:rgba(255,107,53,.06);border-radius:12px;
+  color:#fff;font-size:.85rem;font-weight:900;cursor:pointer;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.sel-btn strong{display:block;font-size:1.2rem;line-height:1}
+.sel-btn small{font-size:.55rem;color:#a7adba;letter-spacing:.1em}
+.sel-btn.active{
+  border-color:#FF6B35;background:rgba(255,107,53,.2);
+  color:#FF6B35;box-shadow:0 0 20px rgba(255,107,53,.5);
+}
+
+/* SPEED ROW */
+.speed-row{display:flex;gap:12px;margin-bottom:20px}
+.speed-btn{
+  width:150px;height:72px;border:2px solid rgba(255,107,53,.35);
+  background:rgba(255,107,53,.06);border-radius:16px;
+  color:#fff;font-size:1.3rem;font-weight:900;
+  cursor:pointer;text-transform:uppercase;letter-spacing:.1em;
+}
+.speed-btn small{display:block;font-size:.65rem;color:#a7adba;letter-spacing:.1em}
+.speed-btn.active{
+  border-color:#FF6B35;background:rgba(255,107,53,.18);
+  box-shadow:0 0 24px rgba(255,107,53,.5);color:#FF6B35;
 }
 .big-btn{
   width:500px;height:110px;border:none;border-radius:24px;
   background:linear-gradient(135deg,#FF6B35,#ff8a5c);
   color:#fff;font-size:2rem;font-weight:900;
   letter-spacing:.15em;text-transform:uppercase;
-  cursor:pointer;
-  box-shadow:0 0 60px rgba(255,107,53,.8),0 0 120px rgba(255,107,53,.3);
-  margin-bottom:30px;
+  cursor:pointer;box-shadow:0 0 60px rgba(255,107,53,.8);margin-bottom:20px;
 }
-.big-btn:hover{transform:scale(1.04)}
-.intro-info{
-  font-size:1rem;color:#8892a0;letter-spacing:.1em;
-  text-transform:uppercase;text-align:center;line-height:2.2;
-}
+.big-btn:hover{transform:scale(1.03)}
+.intro-info{font-size:.9rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2.2}
 .intro-info strong{color:#FFD700}
 
 /* ── PLAY ── */
 #screen-play{
   background:radial-gradient(ellipse at center,#120800 0%,#050003 70%);
   justify-content:space-between;
-  padding:14px 20px;
+  padding:12px 16px;
 }
 
-/* HUD */
-.hud{
+/* TOPBAR */
+.topbar{
   width:100%;display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
+  grid-template-columns:repeat(6,1fr);
+  gap:8px;flex-shrink:0;
 }
-.hud-box{
-  background:rgba(255,107,53,.12);
-  border:2px solid rgba(255,107,53,.4);
-  border-radius:14px;
-  padding:10px;text-align:center;
+.top-box{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:12px;padding:8px;
+  background:rgba(0,0,0,.4);border:2px solid rgba(255,107,53,.3);
 }
-.hud-val{font-size:2rem;font-weight:900;color:#FF6B35;line-height:1}
-.hud-lbl{font-size:.65rem;color:#8892a0;text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.top-label{font-size:.6rem;color:#FF6B35;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+.top-val{font-size:1.8rem;font-weight:900;line-height:1;color:#fff}
+.find-box{border-color:#ffd35a;background:rgba(255,215,0,.06)!important}
+.find-box .top-label{color:#ffd35a}
+.find-box .top-val{color:#39FF14;font-size:2rem;text-shadow:0 0 20px rgba(57,255,20,.6)}
 
-/* MESSAGE */
+/* MSG */
 .msg{
-  font-size:2rem;font-weight:900;
-  letter-spacing:.15em;text-transform:uppercase;
-  text-align:center;min-height:52px;
-  display:flex;align-items:center;justify-content:center;
-  text-shadow:0 0 30px currentColor;
+  font-size:1.8rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;
+  text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;
+  text-shadow:0 0 24px currentColor;flex-shrink:0;
 }
 .msg.watch{color:#FFD700}
 .msg.go{color:#FF6B35}
@@ -87,109 +118,128 @@ html,body{
 .msg.miss{color:#FF1493}
 
 /* STARS */
-.stars{display:flex;gap:12px;align-items:center;justify-content:center}
-.star{font-size:1.6rem;opacity:.2;transition:all .3s}
-.star.earned{opacity:1;filter:drop-shadow(0 0 10px #FF6B35);transform:scale(1.2)}
+.stars{display:flex;gap:12px;align-items:center;justify-content:center;flex-shrink:0}
+.star{font-size:1.5rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 8px #FF6B35);transform:scale(1.2)}
 
 /* COURT */
-.court-wrap{display:flex;align-items:center;justify-content:center;width:100%;flex-shrink:0;}
+.court-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  width:100%;min-height:0;
+}
 .court{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(10,1fr);
   grid-template-rows:repeat(5,1fr);
-  gap:8px;
-  width:min(54vmin,520px);
-  height:min(54vmin,520px);
-  min-width:min(54vmin,520px);
-  min-height:min(54vmin,520px);
-  max-width:min(54vmin,520px);
-  max-height:min(54vmin,520px);
-  padding:12px;
-  background:rgba(255,107,53,.05);
-  border:3px solid rgba(255,107,53,.25);
-  border-radius:24px;
-  box-shadow:0 0 60px rgba(255,107,53,.15),inset 0 0 40px rgba(255,107,53,.04);
+  gap:6px;
+  width:100%;
+  height:100%;
+  max-height:100%;
+  min-width:0;min-height:0;
+  padding:10px;
+  background:rgba(255,107,53,.04);
+  border:2px solid rgba(255,107,53,.2);
+  border-radius:20px;
+  box-shadow:0 0 50px rgba(255,107,53,.12),inset 0 0 30px rgba(255,107,53,.04);
   flex-shrink:0;
 }
+.court.strobe-soft{filter:brightness(.62) contrast(1.08)}
+.court.strobe-medium{filter:brightness(.42) contrast(1.15)}
+.court.strobe-hard{opacity:.18}
 .cell{
-  border-radius:10px;
+  border-radius:8px;
   background:rgba(255,255,255,.05);
-  border:2px solid rgba(255,255,255,.1);
-  cursor:pointer;
-  transition:all .15s;
+  border:2px solid rgba(255,107,53,.2);
+  cursor:pointer;transition:all .12s;
   display:flex;align-items:center;justify-content:center;
-  font-size:clamp(1.4rem,4vmin,3rem);
-  font-weight:900;color:transparent;
-  min-height:0;
-  min-width:0;
-  overflow:hidden;
+  font-size:clamp(.9rem,2vw,2rem);font-weight:900;color:transparent;
+  min-height:0;min-width:0;overflow:hidden;
 }
-.cell:hover{background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.4)}
+.cell:hover{background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.5)}
 .cell.lit{
-  background:#FF6B35!important;
-  border-color:#FFD700!important;
-  box-shadow:0 0 30px rgba(255,107,53,.9),0 0 60px rgba(255,107,53,.4);
-  color:#fff!important;
-  transform:scale(1.06);
+  background:#FF6B35!important;border-color:#FFD700!important;
+  box-shadow:0 0 24px rgba(255,107,53,.9);color:#fff!important;transform:scale(1.05);
 }
 .cell.correct{
-  background:#00D9A5!important;
-  border-color:#00D9A5!important;
-  box-shadow:0 0 24px rgba(0,217,165,.7);
-  color:#fff!important;
+  background:#00D9A5!important;border-color:#00D9A5!important;
+  box-shadow:0 0 18px rgba(0,217,165,.7);color:#fff!important;
 }
-.cell.wrong{
-  background:rgba(255,20,147,.35)!important;
-  border-color:#FF1493!important;
-  animation:shake .3s;
-}
-.cell.reveal{
-  background:#FF6B35!important;
-  border-color:#FFD700!important;
-  color:#fff!important;
-  opacity:.5;
-}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
+.cell.reveal{background:#FF6B35!important;border-color:#FFD700!important;color:#fff!important;opacity:.5}
 @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
 /* BOTTOM */
-.bottom{
-  width:100%;display:flex;
-  justify-content:space-between;align-items:center;
+.bottombar{
+  display:flex;justify-content:center;align-items:center;
+  padding:8px 16px 10px;gap:16px;flex-shrink:0;
 }
-.score-big{font-size:1.4rem;font-weight:900;color:#FFD700}
-.cells-info{font-size:1.1rem;color:#8892a0;font-weight:900}
-.action-btn{
-  height:64px;padding:0 36px;border:none;border-radius:16px;
+.bot-btn{
+  height:62px;padding:0 28px;border:2px solid rgba(255,107,53,.4);
+  background:rgba(0,0,0,.4);border-radius:14px;
+  color:#fff;font-size:1rem;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+}
+.bot-btn span{display:block;color:#FF6B35;font-size:.6rem;margin-top:2px}
+.start-btn{
+  border-color:#FF6B35;
   background:linear-gradient(135deg,#FF6B35,#ff8a5c);
-  color:#fff;font-size:1.4rem;font-weight:900;
-  letter-spacing:.12em;text-transform:uppercase;
-  cursor:pointer;
-  box-shadow:0 0 30px rgba(255,107,53,.6);
+  font-size:1.3rem;padding:0 40px;
+  box-shadow:0 0 24px rgba(255,107,53,.6);
 }
-.action-btn:disabled{opacity:.4}
+.start-btn:disabled{opacity:.4}
 </style>
 </head>
 <body>
 
 <!-- INTRO -->
 <div class="screen active" id="screen-intro">
-  <div class="vrr-logo">VIRTUAL REACTION<br><span>REALITY™</span></div>
-  <div class="vrr-sub">Pattern Recognition · Reactific™</div>
+  <div class="vr-badge">🥽 Virtual Reaction Reality™</div>
+  <div class="vrr-logo">PATTERN <span>RECOGNITION</span></div>
+  <div class="vrr-sub">5×10 VR Court · Reactific™</div>
+
+  <div class="speed-row">
+    <button class="speed-btn" data-display="3500">3.5<small>SEC FLASH</small></button>
+    <button class="speed-btn active" data-display="2500">2.5<small>SEC FLASH</small></button>
+    <button class="speed-btn" data-display="1500">1.5<small>SEC FLASH</small></button>
+  </div>
+
+  <div class="sel-row">
+    <div class="sel-group">
+      <div class="sel-label">BPM</div>
+      <div class="sel-btns">
+        <button class="sel-btn" data-bpm="60"><strong>60</strong><small>BPM</small></button>
+        <button class="sel-btn active" data-bpm="90"><strong>90</strong><small>BPM</small></button>
+        <button class="sel-btn" data-bpm="120"><strong>120</strong><small>BPM</small></button>
+      </div>
+    </div>
+    <div class="sel-group">
+      <div class="sel-label">Strobe™</div>
+      <div class="sel-btns">
+        <button class="sel-btn" data-strobe="off"><strong>OFF</strong></button>
+        <button class="sel-btn active" data-strobe="soft"><strong>SOFT</strong></button>
+        <button class="sel-btn" data-strobe="medium"><strong>MED</strong></button>
+        <button class="sel-btn" data-strobe="hard"><strong>HARD</strong></button>
+      </div>
+    </div>
+  </div>
+
   <button class="big-btn" id="startBtn">▶ ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>WATCH</strong> — numbered cells light up<br>
-    <strong>REMEMBER</strong> — the positions go dark<br>
+    <strong>WATCH</strong> — numbered cells light up across 50 cells<br>
+    <strong>REMEMBER</strong> — positions go dark<br>
     <strong>TAP</strong> — recall them in order: 1, 2, 3...
   </div>
 </div>
 
 <!-- PLAY -->
 <div class="screen" id="screen-play">
-  <div class="hud">
-    <div class="hud-box"><div class="hud-val" id="hLv">1</div><div class="hud-lbl">Level</div></div>
-    <div class="hud-box"><div class="hud-val" id="hSc">0</div><div class="hud-lbl">Score</div></div>
-    <div class="hud-box"><div class="hud-val" id="hRd">0</div><div class="hud-lbl">Round</div></div>
-    <div class="hud-box"><div class="hud-val" id="hSt">0</div><div class="hud-lbl">🔥</div></div>
+  <div class="topbar">
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
+    <div class="top-box find-box"><div class="top-label">Memorize</div><div class="top-val" id="hFind">—</div></div>
+    <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
+    <div class="top-box"><div class="top-label">Level Up</div><div class="top-val" id="hPf">0/3</div></div>
   </div>
 
   <div class="msg" id="msg">TAP LET'S GO!</div>
@@ -204,10 +254,10 @@ html,body{
     <div class="court" id="court"></div>
   </div>
 
-  <div class="bottom">
-    <div class="cells-info" id="cellsInfo">CELLS: 5</div>
-    <div class="score-big" id="scoreBig">0</div>
-    <button class="action-btn" id="actBtn">LET'S GO</button>
+  <div class="bottombar">
+    <button class="bot-btn" id="menuBtn">← Home<span>VR Menu</span></button>
+    <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
+    <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
 
@@ -215,111 +265,118 @@ html,body{
 (function(){
 var $=id=>document.getElementById(id);
 
+/* ── SELECTORS ── */
+var displayTime=2500, bpm=90, strobe='soft', strobeTimer=null;
+
+document.querySelectorAll('[data-display]').forEach(btn=>{
+  btn.onclick=function(){
+    displayTime=Number(btn.dataset.display);
+    document.querySelectorAll('[data-display]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+document.querySelectorAll('[data-bpm]').forEach(btn=>{
+  btn.onclick=function(){
+    bpm=Number(btn.dataset.bpm);
+    document.querySelectorAll('[data-bpm]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+document.querySelectorAll('[data-strobe]').forEach(btn=>{
+  btn.onclick=function(){
+    strobe=btn.dataset.strobe;
+    document.querySelectorAll('[data-strobe]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
+});
+
+function stopStrobe(){
+  if(strobeTimer){clearInterval(strobeTimer);strobeTimer=null;}
+  var court=$('court');
+  if(court)court.classList.remove('strobe-soft','strobe-medium','strobe-hard');
+}
+function startStrobe(){
+  stopStrobe();if(strobe==='off')return;
+  var court=$('court');
+  var cls=strobe==='soft'?'strobe-soft':strobe==='medium'?'strobe-medium':'strobe-hard';
+  var beat=60000/bpm;
+  var flash=Math.max(80,Math.min(170,beat*.25));
+  strobeTimer=setInterval(function(){
+    court.classList.add(cls);
+    setTimeout(function(){court.classList.remove(cls)},flash);
+  },beat);
+}
+
+/* ── START ── */
 $('startBtn').onclick=function(){
   $('screen-intro').classList.remove('active');
   $('screen-play').classList.add('active');
-  initGame();
+  buildCourt();updateHUD();startStrobe();
 };
 
-// LEVEL CELLS: L1=5 up to L10=14
-var LEVEL_CELLS={1:5,2:6,3:7,4:8,5:9,6:10,7:11,8:12,9:13,10:14};
-var DISPLAY_TIME=2500; // ms cells are shown
-
-var cells=[], court=$('court');
+/* ── COURT ── */
+var cells=[];
 function buildCourt(){
-  court.innerHTML='';cells=[];
-  for(var i=0;i<25;i++){
-    var c=document.createElement('div');
-    c.className='cell';
-    c.dataset.i=i;
+  var court=$('court');court.innerHTML='';cells=[];
+  for(var i=0;i<50;i++){
+    var c=document.createElement('div');c.className='cell';c.dataset.i=i;
     c.onclick=(function(idx){return function(){handleTap(idx)}})(i);
-    court.appendChild(c);
-    cells.push(c);
+    court.appendChild(c);cells.push(c);
   }
 }
 
 function cellSt(i,st,num){
-  cells[i].className='cell';
-  cells[i].textContent='';
-  cells[i].style.color='transparent';
-  if(st){
-    cells[i].classList.add(st);
-    if(num!==undefined){cells[i].textContent=num;cells[i].style.color='#fff'}
-  }
+  cells[i].className='cell';cells[i].textContent='';cells[i].style.color='transparent';
+  if(st){cells[i].classList.add(st);if(num!==undefined){cells[i].textContent=num;cells[i].style.color='#fff'}}
 }
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
-function msg(txt,cls){
-  var el=$('msg');el.textContent=txt;
-  el.className='msg '+(cls||'');
-}
-
+/* ── GAME ── */
+var LEVEL_CELLS={1:5,2:6,3:7,4:8,5:10,6:12,7:14,8:16,9:18,10:20};
 var g={lv:1,sc:0,rd:0,st:0,pf:0};
 function gcc(){return LEVEL_CELLS[g.lv]||5}
 
 function updateHUD(){
-  $('hLv').textContent=g.lv;
-  $('hSc').textContent=g.sc;
-  $('hRd').textContent=g.rd;
-  $('hSt').textContent=g.st;
-  $('cellsInfo').textContent='CELLS: '+gcc();
-  $('scoreBig').textContent=g.sc;
+  $('hSc').textContent=g.sc;$('hRd').textContent=g.rd;
+  $('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/3';
+  $('hFind').textContent=gcc()+' cells';
   for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'');
 }
 
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg '+(cls||'')}
+
 function shuffle(arr){
-  for(var i=arr.length-1;i>0;i--){
-    var j=Math.floor(Math.random()*(i+1));
-    var t=arr[i];arr[i]=arr[j];arr[j]=t;
-  }
+  for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}
   return arr;
 }
 
 var phase='idle',pattern=[],playerIdx=0,timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
 
-function initGame(){
-  g={lv:1,sc:0,rd:0,st:0,pf:0};
-  buildCourt();updateHUD();
-  msg("TAP LET'S GO!",'');
-  $('actBtn').disabled=false;
-  $('actBtn').onclick=startRound;
-}
-
 function startRound(){
   if(phase!=='idle')return;
-  clrT();
-  phase='showing';g.rd++;playerIdx=0;
+  clrT();phase='showing';g.rd++;playerIdx=0;
   resetCells();$('actBtn').disabled=true;updateHUD();
-
-  // Generate pattern
-  var indices=shuffle(Array.from({length:25},(_,i)=>i)).slice(0,gcc());
+  var indices=shuffle(Array.from({length:50},(_,i)=>i)).slice(0,gcc());
   pattern=indices;
-
+  $('hFind').textContent=gcc()+' cells';
   msg('MEMORIZE!','watch');
-
-  // Show pattern with numbers
   timers.push(setTimeout(function(){
     pattern.forEach(function(idx,n){cellSt(idx,'lit',n+1)});
-
-    // Hide after display time
     timers.push(setTimeout(function(){
       pattern.forEach(function(idx){cellSt(idx)});
       msg('TAP IN ORDER!','go');
       phase='tapping';
-    },DISPLAY_TIME));
+    },displayTime));
   },600));
 }
 
 function handleTap(idx){
   if(phase!=='tapping')return;
-  var expected=pattern[playerIdx];
-
-  if(idx===expected){
+  if(idx===pattern[playerIdx]){
     cellSt(idx,'correct',playerIdx+1);
     playerIdx++;
     if(playerIdx>=pattern.length){
-      // Round complete
       phase='idle';clrT();
       g.sc+=gcc()*20;g.st++;g.pf++;updateHUD();
       msg('✅ PERFECT!','perfect');
@@ -328,17 +385,13 @@ function handleTap(idx){
           if(g.lv<10){g.lv++;g.pf=0;}
           updateHUD();resetCells();
           msg('🔥 LEVEL UP!','perfect');
-          timers.push(setTimeout(finishRound,1000));
+          timers.push(setTimeout(finishRound,900));
         },1200));
-      }else{
-        timers.push(setTimeout(finishRound,1200));
-      }
+      }else{timers.push(setTimeout(finishRound,1200))}
     }
   }else{
-    // Wrong tap — reveal correct pattern
     phase='idle';clrT();
-    cellSt(idx,'wrong');
-    g.st=0;g.pf=0;updateHUD();
+    cellSt(idx,'wrong');g.st=0;g.pf=0;updateHUD();
     msg('WRONG ORDER!','miss');
     timers.push(setTimeout(function(){
       pattern.forEach(function(pi,n){cellSt(pi,'reveal',n+1)});
@@ -348,11 +401,21 @@ function handleTap(idx){
 }
 
 function finishRound(){
-  phase='idle';clrT();
-  resetCells();updateHUD();
-  msg("TAP LET'S GO!",'');
-  $('actBtn').disabled=false;
+  phase='idle';clrT();resetCells();updateHUD();
+  msg("TAP LET'S GO!",'');$('actBtn').disabled=false;
 }
+
+/* ── BUTTONS ── */
+$('actBtn').onclick=startRound;
+$('menuBtn').onclick=function(){
+  stopStrobe();
+  $('screen-play').classList.remove('active');
+  $('screen-intro').classList.add('active');
+};
+$('fsBtn').onclick=async function(){
+  try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
+  else await document.exitFullscreen()}catch(e){}
+};
 
 buildCourt();
 })();
