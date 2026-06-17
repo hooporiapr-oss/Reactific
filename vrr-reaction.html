@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Virtual Reaction Reality™</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  background:#050508;
+  font-family:Arial,Helvetica,sans-serif;
+}
+#hud{
+  position:fixed;
+  top:16px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  color:white;
+  text-align:center;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(155,89,182,.65);
+  border-radius:14px;
+  padding:10px 18px;
+}
+#title{
+  font-weight:900;
+  letter-spacing:.12em;
+  color:#9B59B6;
+}
+#status{
+  margin-top:4px;
+  font-size:13px;
+  color:#FFD700;
+}
+</style>
+</head>
+
+<body>
+
+<div id="hud">
+  <div id="title">VIRTUAL REACTION REALITY™</div>
+  <div id="status">Look at the purple target and press trigger</div>
+</div>
+
+<a-scene background="color:#050508" vr-mode-ui="enabled:true">
+
+  <a-assets>
+    <audio id="hitSound" src=""></audio>
+  </a-assets>
+
+  <!-- Camera / Player -->
+  <a-entity id="player" position="0 1.6 0">
+    <a-camera>
+      <a-cursor
+        id="cursor"
+        fuse="false"
+        raycaster="objects:.target"
+        color="#FFD700">
+      </a-cursor>
+    </a-camera>
+  </a-entity>
+
+  <!-- Arena title -->
+  <a-text
+    value="Virtual Reaction Reality"
+    position="0 3.15 -3"
+    align="center"
+    color="#FFFFFF"
+    width="5">
+  </a-text>
+
+  <a-text
+    id="levelText"
+    value="Level 1 | Perfects 0/3 | Score 0"
+    position="0 2.85 -3"
+    align="center"
+    color="#FFD700"
+    width="5">
+  </a-text>
+
+  <!-- Reaction wall -->
+  <a-entity id="grid" position="0 1.55 -3"></a-entity>
+
+  <!-- Floor -->
+  <a-plane
+    rotation="-90 0 0"
+    width="8"
+    height="8"
+    color="#08080c"
+    material="roughness:1">
+  </a-plane>
+
+  <!-- Lighting -->
+  <a-light type="ambient" color="#777"></a-light>
+  <a-light type="point" position="0 3 1" intensity="1.3" color="#9B59B6"></a-light>
+
+</a-scene>
+
+<script>
+var grid=document.getElementById('grid');
+var levelText=document.getElementById('levelText');
+var statusText=document.getElementById('status');
+
+var cells=[];
+var activeIndex=-1;
+
+var level=1;
+var score=0;
+var perfects=0;
+var roundHits=0;
+
+var targetCount=3;
+var reactionStart=0;
+var accepting=false;
+
+function cellsForLevel(){
+  return Math.min(25, level + 2);
+}
+
+function updateHUD(){
+  levelText.setAttribute(
+    'value',
+    'Level '+level+' | Perfects '+perfects+'/3 | Score '+score
+  );
+}
+
+function createGrid(){
+  var spacing=.42;
+  var startX=-spacing*2;
+  var startY=spacing*2;
+
+  for(var r=0;r<5;r++){
+    for(var c=0;c<5;c++){
+      var i=r*5+c;
+
+      var box=document.createElement('a-box');
+      box.setAttribute('class','target');
+      box.setAttribute('id','cell'+i);
+      box.setAttribute('width','.32');
+      box.setAttribute('height','.32');
+      box.setAttribute('depth','.08');
+      box.setAttribute('position',{
+        x:startX+c*spacing,
+        y:startY-r*spacing,
+        z:0
+      });
+      box.setAttribute('color','#181820');
+      box.setAttribute('material','emissive:#000000; emissiveIntensity:0.2');
+      box.dataset.index=i;
+
+      box.addEventListener('click',function(){
+        hitCell(parseInt(this.dataset.index));
+      });
+
+      grid.appendChild(box);
+      cells.push(box);
+    }
+  }
+}
+
+function resetCells(){
+  for(var i=0;i<cells.length;i++){
+    cells[i].setAttribute('color','#181820');
+    cells[i].setAttribute('material','emissive:#000000; emissiveIntensity:0.2');
+    cells[i].setAttribute('scale','1 1 1');
+  }
+}
+
+function lightTarget(){
+  resetCells();
+
+  activeIndex=Math.floor(Math.random()*25);
+  var cell=cells[activeIndex];
+
+  cell.setAttribute('color','#9B59B6');
+  cell.setAttribute('material','emissive:#9B59B6; emissiveIntensity:1.5');
+  cell.setAttribute('scale','1.2 1.2 1.2');
+
+  reactionStart=performance.now();
+  accepting=true;
+
+  statusText.textContent='React!';
+}
+
+function hitCell(index){
+  if(!accepting)return;
+
+  accepting=false;
+
+  if(index!==activeIndex){
+    perfects=0;
+    roundHits=0;
+    statusText.textContent='Wrong target — reset';
+    resetCells();
+    updateHUD();
+    setTimeout(startRound,900);
+    return;
+  }
+
+  var reactionTime=performance.now()-reactionStart;
+
+  var points=5;
+  if(reactionTime<=650){
+    points=20;
+    perfects++;
+    statusText.textContent='Perfect reaction';
+  }else{
+    points=10;
+    perfects=0;
+    statusText.textContent='Good reaction';
+  }
+
+  score+=points;
+  roundHits++;
+
+  cells[index].setAttribute('color','#00D9A5');
+  cells[index].setAttribute('material','emissive:#00D9A5; emissiveIntensity:1.5');
+
+  updateHUD();
+
+  if(perfects>=3){
+    levelUp();
+    return;
+  }
+
+  if(roundHits>=cellsForLevel()){
+    roundHits=0;
+    statusText.textContent='Round clear';
+    setTimeout(startRound,900);
+  }else{
+    setTimeout(lightTarget,450);
+  }
+}
+
+function levelUp(){
+  if(level<23){
+    level++;
+    perfects=0;
+    roundHits=0;
+    targetCount=cellsForLevel();
+    statusText.textContent='LEVEL UP — Level '+level;
+    updateHUD();
+    resetCells();
+    setTimeout(startRound,1400);
+  }else{
+    statusText.textContent='MAX LEVEL — Full 25 Target Reality';
+    resetCells();
+  }
+}
+
+function startRound(){
+  targetCount=cellsForLevel();
+  updateHUD();
+  statusText.textContent='Get ready';
+  setTimeout(lightTarget,800);
+}
+
+createGrid();
+updateHUD();
+setTimeout(startRound,1000);
+</script>
+
+</body>
+</html>
