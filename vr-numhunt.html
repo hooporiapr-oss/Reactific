@@ -6,56 +6,69 @@
 <title>VR Number Hunt | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
-.screen{display:none;width:100%;height:100vh;max-height:100vh;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}
+html,body{width:1200px;height:1200px;overflow:hidden;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
+.screen{display:none;width:1200px;height:1200px;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}
 .screen.active{display:flex}
+
+/* INTRO */
 #screen-intro{background:radial-gradient(ellipse at center,#001428 0%,#000 70%);position:relative}
-.back-home{position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.4);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none}
-.vrr-logo{font-size:3.8rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(0,140,255,1);margin-bottom:8px}
+.back-home{position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.9rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none}
+.vrr-logo{font-size:5rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(0,140,255,1);margin-bottom:10px}
 .vrr-logo span{color:#008cff}
-.vrr-sub{font-size:1rem;letter-spacing:.3em;text-transform:uppercase;color:#008cff;margin-bottom:16px;text-align:center}
-.vrr-rule{font-size:1.4rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:40px;text-align:center}
+.vrr-sub{font-size:1rem;letter-spacing:.25em;text-transform:uppercase;color:#008cff;margin-bottom:24px;text-align:center}
 .speed-row{display:flex;gap:16px;margin-bottom:20px}
-.speed-btn{width:160px;height:80px;border:3px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:18px;color:#fff;font-size:1.4rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+.speed-btn{width:180px;height:90px;border:3px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:18px;color:#fff;font-size:1.8rem;font-weight:900;cursor:pointer;text-transform:uppercase}
+.speed-btn small{display:block;font-size:.8rem;color:#a7adba}
 .speed-btn.active{border-color:#008cff;background:rgba(0,140,255,.22);box-shadow:0 0 30px rgba(0,140,255,.6);color:#008cff}
-.speed-btn small{display:block;font-size:.7rem;color:#a7adba}
-.strobe-row{display:flex;gap:30px;margin-bottom:20px;align-items:flex-start;justify-content:center}
-.sel-group{display:flex;flex-direction:column;align-items:center;gap:8px}
-.sel-label{color:#ffd35a;font-size:.75rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
-.sel-btns{display:flex;gap:8px}
-.sel-btn{min-width:70px;height:60px;border:2px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:12px;color:#fff;font-size:.9rem;font-weight:900;cursor:pointer;text-transform:uppercase}
-.sel-btn strong{display:block;font-size:1.2rem;line-height:1}
+.sel-row{display:flex;gap:30px;margin-bottom:24px;align-items:flex-start;justify-content:center}
+.sel-group{display:flex;flex-direction:column;align-items:center;gap:10px}
+.sel-label{color:#ffd35a;font-size:.85rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.sel-btns{display:flex;gap:10px}
+.sel-btn{min-width:90px;height:72px;border:3px solid rgba(0,140,255,.4);background:rgba(0,140,255,.08);border-radius:14px;color:#fff;font-size:1rem;font-weight:900;cursor:pointer;text-transform:uppercase}
+.sel-btn strong{display:block;font-size:1.4rem;line-height:1}
 .sel-btn small{font-size:.6rem;color:#a7adba}
-.sel-btn.active{border-color:#008cff;background:rgba(0,140,255,.22);box-shadow:0 0 20px rgba(0,140,255,.5);color:#008cff}
-.big-btn{width:520px;height:120px;border:none;border-radius:24px;background:linear-gradient(135deg,#008cff,#00b7ff);color:#fff;font-size:2.2rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 60px rgba(0,140,255,.8);margin-bottom:20px}
-.intro-info{font-size:.95rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2.2}
+.sel-btn.active{border-color:#008cff;background:rgba(0,140,255,.22);color:#008cff;box-shadow:0 0 20px rgba(0,140,255,.5)}
+.big-btn{width:600px;height:140px;border:none;border-radius:24px;background:linear-gradient(135deg,#008cff,#00b7ff);color:#fff;font-size:2.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 60px rgba(0,140,255,.8);margin-bottom:20px}
+.intro-info{font-size:1rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2.2}
 .intro-info strong{color:#ffd35a}
 
-#screen-game{background:linear-gradient(180deg,#030814,#010306 68%,#02050a);justify-content:space-between;padding:12px 0}
-.topbar{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:0 16px;width:100%;flex-shrink:0}
-.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;padding:8px;background:rgba(0,0,0,.4);border:2px solid rgba(0,140,255,.3)}
-.top-label{font-size:.6rem;color:#ff6b00;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+/* GAME */
+#screen-game{background:linear-gradient(180deg,#030814,#010306);justify-content:space-between;padding:12px 16px}
+
+/* TOP HUD */
+.topbar{width:100%;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;padding:10px;background:rgba(0,0,0,.5);border:2px solid rgba(0,140,255,.3)}
+.top-label{font-size:.65rem;color:#ff6b00;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
 .top-val{font-size:2rem;font-weight:900;line-height:1;color:#fff}
-.findbox{border-color:#ff6b00;background:rgba(255,107,0,.08)!important}
-.find-label{color:#ffd35a;font-size:.8rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
-.find-num{font-size:4rem;font-weight:900;line-height:1;color:#39FF14;text-shadow:0 0 30px rgba(57,255,20,.7)}
-.clockbar{height:10px;background:rgba(255,255,255,.08);width:100%;flex-shrink:0}
-.clockbar-fill{height:100%;background:linear-gradient(90deg,#39FF14,#008cff);transition:width .1s linear}
-.msg-bar{text-align:center;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;min-height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.findbox{border-color:#ff6b00;background:rgba(255,107,0,.1)!important}
+.find-label{color:#ffd35a;font-size:.7rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+.find-num{font-size:3rem;font-weight:900;line-height:1;color:#39FF14;text-shadow:0 0 30px rgba(57,255,20,.7)}
+
+/* CLOCK BAR */
+.clockbar{height:10px;background:rgba(255,255,255,.08);width:100%;flex-shrink:0;border-radius:4px}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#39FF14,#008cff);border-radius:4px;transition:width .1s linear}
+
+/* MSG */
+.msg-bar{text-align:center;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;height:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .msg-bar.hit{color:#39FF14}.msg-bar.miss{color:#ff3030}.msg-bar.ready{color:#ffd35a}.msg-bar.go{color:#008cff}
-.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 12px;width:100%;min-height:300px}
-.court{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(10,1fr);gap:6px;width:100%;aspect-ratio:2/1;border:2px solid rgba(0,140,255,.25);border-radius:18px;padding:10px;background:rgba(3,8,15,.85)}
-.cell{border-radius:8px;background:rgba(0,140,255,.08);border:2px solid rgba(0,170,255,.5);display:flex;align-items:center;justify-content:center;font-size:clamp(.8rem,1.8vw,1.8rem);font-weight:900;color:#ccc;cursor:pointer;transition:all .08s}
-.cell.target{background:rgba(255,107,0,.15)!important;border-color:#ff6b00!important;color:#ff9b22!important;box-shadow:0 0 20px rgba(255,107,0,.5)}
+
+/* COURT */
+.court-area{flex:1;display:flex;align-items:stretch;justify-content:center;width:100%;min-height:0;padding:4px 0}
+.court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:6px;width:100%;height:100%;border:2px solid rgba(0,140,255,.3);border-radius:16px;padding:10px;background:rgba(3,8,15,.9);box-shadow:0 0 40px rgba(0,140,255,.2)}
+.cell{border-radius:8px;background:rgba(0,140,255,.1);border:2px solid rgba(0,170,255,.4);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;color:#bbb;cursor:pointer;transition:all .08s}
+.cell:hover{background:rgba(0,140,255,.25);border-color:#008cff;transform:scale(1.05)}
+.cell.target{background:rgba(255,107,0,.2)!important;border-color:#ff6b00!important;color:#ff9b22!important;box-shadow:0 0 20px rgba(255,107,0,.6)}
 .cell.hit{background:#39FF14!important;border-color:#39FF14!important;color:#001400!important;box-shadow:0 0 30px rgba(57,255,20,.9)!important}
 .cell.wrong{background:rgba(255,48,48,.4)!important;border-color:#ff3030!important}
 .court.strobe-soft{filter:brightness(.62) contrast(1.08)}
 .court.strobe-medium{filter:brightness(.42) contrast(1.15)}
 .court.strobe-hard{opacity:.18}
-.bottombar{display:flex;justify-content:center;align-items:center;padding:8px 16px 12px;gap:10px;flex-shrink:0;width:100%}
-.bot-btn{height:64px;padding:0 20px;border:2px solid rgba(0,140,255,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.9rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-.bot-btn span{display:block;color:#ff6b00;font-size:.6rem;margin-top:2px}
-.start-btn{border-color:#ff6b00;background:linear-gradient(180deg,#ff9b22,#ff6b00);font-size:1.2rem;box-shadow:0 0 24px rgba(255,107,0,.7)}
+
+/* BOTTOM BAR */
+.bottombar{display:flex;justify-content:center;align-items:center;gap:12px;flex-shrink:0;height:70px}
+.bot-btn{height:56px;padding:0 24px;border:2px solid rgba(0,140,255,.4);background:rgba(0,0,0,.5);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#ff6b00;font-size:.65rem;margin-top:2px}
+.start-btn{border-color:#ff6b00;background:linear-gradient(180deg,#ff9b22,#ff6b00);font-size:1.3rem;padding:0 40px;box-shadow:0 0 24px rgba(255,107,0,.6)}
 .start-btn:disabled{opacity:.5}
 .games-btn{border-color:#ffd35a;color:#ffd35a}
 .games-btn span{color:#ffd35a}
@@ -67,13 +80,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:Ari
   <a class="back-home" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">VR NUMBER<span> HUNT™</span></div>
   <div class="vrr-sub">Virtual Reaction Reality · Reactific™</div>
-  <div class="vrr-rule">⚡ FIND THE NUMBER BEFORE THE CLOCK RUNS OUT</div>
   <div class="speed-row">
-    <button class="speed-btn" data-dur="7">7<small>SEC CLOCK</small></button>
-    <button class="speed-btn active" data-dur="5">5<small>SEC CLOCK</small></button>
-    <button class="speed-btn" data-dur="3">3<small>SEC CLOCK</small></button>
+    <button class="speed-btn" data-dur="7">7<small>SEC</small></button>
+    <button class="speed-btn active" data-dur="5">5<small>SEC</small></button>
+    <button class="speed-btn" data-dur="3">3<small>SEC</small></button>
   </div>
-  <div class="strobe-row">
+  <div class="sel-row">
     <div class="sel-group">
       <div class="sel-label">BPM</div>
       <div class="sel-btns">
@@ -94,10 +106,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:Ari
   </div>
   <button class="big-btn" id="startBtn">▶ ENTER THE HUNT</button>
   <div class="intro-info">
-    <strong>FIND</strong> — the target number in the grid<br>
-    <strong>POINT</strong> — controller at it<br>
-    <strong>TRIGGER</strong> — before the clock runs out<br>
-    <strong>LEVEL UP</strong> — 3 hits in a row
+    <strong>FIND</strong> the number · <strong>POINT</strong> controller · <strong>TRIGGER</strong> before clock runs out
   </div>
 </div>
 
@@ -105,10 +114,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:Ari
   <div class="topbar">
     <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="score">0</div></div>
     <div class="top-box findbox"><div class="find-label">FIND</div><div class="find-num" id="findNum">—</div></div>
-    <div class="top-box"><div class="top-label">Shot Clock</div><div class="top-val" id="clock">5.0</div></div>
+    <div class="top-box"><div class="top-label">Clock</div><div class="top-val" id="clock">5.0</div></div>
     <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="level">1</div></div>
     <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="streak">0</div></div>
-    <div class="top-box"><div class="top-label">Level Up</div><div class="top-val" id="hits">0/3</div></div>
+    <div class="top-box"><div class="top-label">Lvl Up</div><div class="top-val" id="hits">0/3</div></div>
   </div>
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
   <div class="msg-bar ready" id="msg">TAP START ROUND</div>
@@ -148,15 +157,10 @@ function clrT(){timers.forEach(clearTimeout);timers=[];if(clockTimer){clearInter
 function updateHUD(){$('score').textContent=g.score;$('level').textContent=g.level;$('streak').textContent=g.streak;$('hits').textContent=g.hits+'/3';$('clock').textContent=duration.toFixed(1)}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'ready')}
 function resetCells(){cells.forEach(function(c){c.className='cell'})}
-
 function startRound(){if(phase!=='idle')return;phase='playing';$('roundBtn').disabled=true;buildCourt();target=Math.ceil(Math.random()*50);$('findNum').textContent=target;msg('⚡ FIND '+target+'!','go');timeLeftMs=duration*1000;updateClock();clockTimer=setInterval(function(){timeLeftMs-=100;updateClock();if(timeLeftMs<=0){clearInterval(clockTimer);clockTimer=null;fail()}},100)}
-
 function updateClock(){var secs=Math.max(0,timeLeftMs/1000);$('clock').textContent=secs.toFixed(1);var pct=(timeLeftMs/(duration*1000))*100;$('clockFill').style.width=Math.max(0,pct)+'%';if(pct<30)$('clockFill').style.background='linear-gradient(90deg,#ff3030,#ff6b00)';else if(pct<60)$('clockFill').style.background='linear-gradient(90deg,#ffd35a,#008cff)';else $('clockFill').style.background='linear-gradient(90deg,#39FF14,#008cff)'}
-
 function tap(num){if(phase!=='playing')return;if(num===target){clrT();cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('hit')});var bonus=Math.floor(timeLeftMs/100);g.score+=(g.level*10)+bonus;g.streak++;g.hits++;updateHUD();msg('🎯 FOUND IT!','hit');if(g.hits>=3){if(g.level<10)g.level++;g.hits=0;updateHUD();msg('🔥 LEVEL UP! L'+g.level,'hit')}phase='idle';timers.push(setTimeout(function(){$('roundBtn').disabled=false;resetCells();msg('TAP START ROUND','ready');$('findNum').textContent='—';$('clock').textContent=duration.toFixed(1);$('clockFill').style.width='100%'},1000))}else{cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.add('wrong')});msg('❌ WRONG! KEEP HUNTING!','miss');timers.push(setTimeout(function(){cells.forEach(function(c){if(Number(c.dataset.num)===num)c.classList.remove('wrong')})},400))}}
-
 function fail(){if(phase!=='playing')return;phase='idle';clrT();g.streak=0;updateHUD();cells.forEach(function(c){if(Number(c.dataset.num)===target)c.classList.add('target')});msg('⏱ TIME! It was '+target,'miss');timers.push(setTimeout(function(){$('roundBtn').disabled=false;resetCells();msg('TAP START ROUND','ready');$('findNum').textContent='—';$('clock').textContent=duration.toFixed(1);$('clockFill').style.width='100%'},1800))}
-
 $('roundBtn').onclick=startRound;
 buildCourt();
 })();
