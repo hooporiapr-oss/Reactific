@@ -28,7 +28,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 #screen-game{
   position:fixed;inset:0;display:none;flex-direction:column;
-  background:radial-gradient(circle at 16% 5%,rgba(155,89,182,.2),transparent 30%),linear-gradient(180deg,#0a0018,#05000a);
+  background:radial-gradient(circle at 50% 50%,#0e0018 0%,#000 70%);
 }
 .topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;padding:6px 10px 4px;flex-shrink:0}
 .top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(155,89,182,.3)}
@@ -42,15 +42,55 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .stars{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;padding:2px 0}
 .star{font-size:1rem;opacity:.2;transition:all .3s}
 .star.earned{opacity:1;filter:drop-shadow(0 0 6px #9B59B6);transform:scale(1.2)}
-.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
-.court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(155,89,182,.25);border-radius:14px;padding:6px;background:rgba(8,0,15,.85);box-shadow:0 0 60px rgba(155,89,182,.3),inset 0 0 40px rgba(155,89,182,.04),0 20px 60px rgba(0,0,0,.8)}
-.cell{border-radius:8px;background:rgba(155,89,182,.08);border:2px solid rgba(155,89,182,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0}
-.cell:hover{background:rgba(155,89,182,.2);border-color:#9B59B6;transform:scale(1.05)}
-.cell.target{background:#9B59B6!important;border-color:#A873B8!important;box-shadow:0 0 30px rgba(155,89,182,1)!important;transform:scale(1.06)}
-.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important}
-.cell.good-tap{background:#FF6B35!important;border-color:#FF6B35!important}
-.cell.missed,.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
-@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* COURT - no grid, just a dark space with floating circles */
+.court-area{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:8px;min-height:0;position:relative;
+}
+.court{
+  width:100%;height:100%;
+  position:relative;
+  border-radius:20px;
+  background:radial-gradient(ellipse at center,#0a0014 0%,#000 80%);
+  border:1px solid rgba(155,89,182,.15);
+  overflow:hidden;
+}
+
+/* ROUND TARGETS */
+.target-dot{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  transition:transform .08s;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;font-weight:900;color:#fff;
+  transform:translate(-50%,-50%) scale(0);
+}
+.target-dot.active{
+  transform:translate(-50%,-50%) scale(1);
+  background:radial-gradient(circle at 35% 35%,#A873B8,#9B59B6);
+  box-shadow:0 0 40px rgba(155,89,182,1),0 0 80px rgba(155,89,182,.4);
+  animation:pulse-ring 1s infinite;
+}
+.target-dot.hit{
+  transform:translate(-50%,-50%) scale(1.3);
+  background:radial-gradient(circle at 35% 35%,#00D9A5,#00B894);
+  box-shadow:0 0 50px rgba(0,217,165,1);
+  animation:none;
+}
+.target-dot.missed{
+  transform:translate(-50%,-50%) scale(1);
+  background:radial-gradient(circle at 35% 35%,#FF1493,#cc0066);
+  box-shadow:0 0 30px rgba(255,20,147,.8);
+  animation:none;
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 20px rgba(155,89,182,.8),0 0 0 0 rgba(155,89,182,.4)}
+  70%{box-shadow:0 0 40px rgba(155,89,182,1),0 0 0 20px rgba(155,89,182,0)}
+  100%{box-shadow:0 0 20px rgba(155,89,182,.8),0 0 0 0 rgba(155,89,182,0)}
+}
+
 .bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
 .bot-btn{height:48px;border:2px solid rgba(155,89,182,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 .bot-btn span{display:block;color:#9B59B6;font-size:.55rem;margin-top:1px}
@@ -72,7 +112,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
   <button class="big-btn" id="startBtn">⚡ ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>SEE</strong> — a cell lights up purple<br>
+    <strong>WATCH</strong> — a circle lights up on the court<br>
     <strong>POINT</strong> — controller at it<br>
     <strong>TRIGGER</strong> — before it disappears<br>
     <strong>3 WINS</strong> — level up
@@ -95,7 +135,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <span class="star" id="ps2">⭐</span>
     <span class="star" id="ps3">⭐</span>
   </div>
-  <div class="court-area"><div class="court" id="court"></div></div>
+  <div class="court-area">
+    <div class="court" id="court"></div>
+  </div>
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
@@ -111,18 +153,46 @@ var beatInterval=3000;
 
 document.querySelectorAll('[data-iv]').forEach(btn=>{btn.onclick=function(){beatInterval=Number(btn.dataset.iv);document.querySelectorAll('[data-iv]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
 
-$('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';buildCourt();initGame()};
-$('menuBtn').onclick=function(){$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
+$('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';initGame()};
+$('menuBtn').onclick=function(){$('screen-game').style.display='none';$('screen-intro').style.display='flex';stopRound()};
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
-var cells=[];
-function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.onclick=(function(idx){return function(){handleTap(idx)}})(i);court.appendChild(c);cells.push(c)}}
-function cellSt(i,st){cells[i].className='cell';if(st)cells[i].classList.add(st)}
-function resetCells(){cells.forEach((_,i)=>cellSt(i))}
+/* DOT SIZE based on level */
+function dotSize(lv){return Math.max(50, 120 - (lv-1)*8)}
+
+/* Place dot at random position */
+function randomPos(size){
+  var court=$('court');
+  var w=court.offsetWidth, h=court.offsetHeight;
+  var pad=size/2+10;
+  return{
+    x:pad+Math.random()*(w-pad*2),
+    y:pad+Math.random()*(h-pad*2)
+  };
+}
+
+var dot=null;
+function createDot(){
+  $('court').innerHTML='';
+  var g_lv=g.lv;
+  var size=dotSize(g_lv);
+  dot=document.createElement('div');
+  dot.className='target-dot';
+  dot.style.width=size+'px';
+  dot.style.height=size+'px';
+  var pos=randomPos(size);
+  dot.style.left=pos.x+'px';
+  dot.style.top=pos.y+'px';
+  dot.onclick=handleTap;
+  $('court').appendChild(dot);
+  setTimeout(function(){if(dot)dot.classList.add('active')},50);
+}
 
 var MAX_LIVES=3,PW=300,GW=600;
 var g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES};
-function gcc(){return Math.min(50,g.lv+2)}
+var phase='idle',startTime=0,timers=[],missTimer=null;
+
+function clrT(){timers.forEach(clearTimeout);timers=[];if(missTimer){clearTimeout(missTimer);missTimer=null}}
 function updateHUD(){
   $('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;
   $('hSt').textContent=g.st;$('hCl').textContent=g.clears+'/3';
@@ -131,68 +201,71 @@ function updateHUD(){
   for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.clears>=j?' earned':'');
 }
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
-function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound}
+function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0,lives:MAX_LIVES};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('court').innerHTML=''}
 
-var phase='idle',pattern=[],beatIndex=-1,currentTarget=-1,startTime=0;
-var timers=[],missTimer=null;
-function clrT(){timers.forEach(clearTimeout);timers=[];if(missTimer){clearTimeout(missTimer);missTimer=null}}
-function makePattern(){var len=gcc(),arr=[];while(arr.length<len){var n=Math.floor(Math.random()*50);if(arr.indexOf(n)===-1)arr.push(n)}return arr}
+function stopRound(){clrT();phase='idle';if($('court'))$('court').innerHTML=''}
 
 function startRound(){
   if(phase!=='idle')return;
   phase='playing';g.rd++;g.lives=MAX_LIVES;
-  pattern=makePattern();beatIndex=-1;currentTarget=-1;
-  resetCells();$('actBtn').disabled=true;updateHUD();
+  $('actBtn').disabled=true;updateHUD();
   msg('GET READY...','watch');
-  timers.push(setTimeout(function(){msg('⚡ SEE IT · TAP IT','go');timers.push(setTimeout(function(){fireBeat(0)},300))},700));
+  timers.push(setTimeout(function(){
+    msg('⚡ TAP THE CIRCLE!','go');
+    timers.push(setTimeout(function(){fireBeat()},300));
+  },700));
 }
 
-function fireBeat(i){
+function fireBeat(){
   if(phase!=='playing')return;
-  clrT();beatIndex=i;currentTarget=pattern[i];startTime=performance.now();
-  cells.forEach(function(c){c.classList.remove('target')});
-  cellSt(currentTarget,'target');
+  clrT();
+  createDot();
+  startTime=performance.now();
   var iv=beatInterval;
-  timers.push(setTimeout(function(){if(cells[currentTarget]&&cells[currentTarget].classList.contains('target'))cellSt(currentTarget)},iv*.55));
   missTimer=setTimeout(function(){
-    if(phase==='playing'&&currentTarget===pattern[i]){cellSt(currentTarget,'missed');endRound(false,'MISSED TARGET')}
+    if(phase==='playing'){
+      if(dot){dot.classList.remove('active');dot.classList.add('missed')}
+      endRound(false,'MISSED!');
+    }
   },iv*.9);
 }
 
-function nextBeat(){
+function handleTap(){
   if(phase!=='playing')return;
-  if(beatIndex<pattern.length-1){timers.push(setTimeout(function(){fireBeat(beatIndex+1)},180))}
-  else{timers.push(setTimeout(function(){endRound(true)},250))}
-}
-
-function handleTap(idx){
-  if(phase!=='playing'||currentTarget<0)return;
   if(missTimer){clearTimeout(missTimer);missTimer=null}
   var delta=performance.now()-startTime;
-  if(idx!==currentTarget){cellSt(idx,'wrong');endRound(false,'WRONG TAP');return}
   var pts=delta<=PW?20:delta<=GW?12:5;
-  cellSt(idx,delta<=PW?'correct':'good-tap');
+  if(dot){dot.classList.remove('active');dot.classList.add('hit')}
   g.sc+=pts;updateHUD();
   msg(delta<=PW?'✨ QUICK!':'👍 GOOD!',delta<=PW?'perfect':'go');
-  nextBeat();
+  timers.push(setTimeout(function(){
+    endRound(true);
+  },400));
 }
 
-function endRound(won,reason){
+function endRound(won){
   if(phase==='idle')return;
-  phase='idle';clrT();currentTarget=-1;
+  phase='idle';clrT();
   if(won){
     g.clears++;g.st++;updateHUD();msg('✅ ROUND CLEAR','perfect');
-    if(g.clears>=3){timers.push(setTimeout(function(){if(g.lv<23){g.lv++;g.clears=0}updateHUD();resetCells();msg('🔥 LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(finishRound,900))},1000))}
-    else{timers.push(setTimeout(finishRound,1000))}
+    if(g.clears>=3){
+      timers.push(setTimeout(function(){
+        if(g.lv<10){g.lv++;g.clears=0}
+        updateHUD();$('court').innerHTML='';
+        msg('🔥 LEVEL UP! L'+g.lv,'perfect');
+        timers.push(setTimeout(finishRound,900));
+      },1000));
+    }else{timers.push(setTimeout(function(){
+      phase='playing';fireBeat();
+    },600))}
   }else{
-    g.clears=0;g.st=0;updateHUD();msg(reason||'ROUND FAILED','miss');
+    g.clears=0;g.st=0;updateHUD();msg('MISSED!','miss');
     timers.push(setTimeout(finishRound,1200));
   }
 }
 
-function finishRound(){phase='idle';g.lives=MAX_LIVES;resetCells();updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false}
+function finishRound(){phase='idle';g.lives=MAX_LIVES;$('court').innerHTML='';updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false}
 $('actBtn').onclick=startRound;
-buildCourt();
 })();
 </script>
 </body>
