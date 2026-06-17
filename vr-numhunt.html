@@ -87,7 +87,7 @@ html,body{
 /* TOP BAR */
 .topbar{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;
   gap:10px;
   padding:12px 16px 8px;
   flex-shrink:0;
@@ -291,6 +291,18 @@ html,body{
       <div class="top-label">Shot Clock</div>
       <div class="top-val" id="clock">5.0</div>
     </div>
+    <div class="top-box">
+      <div class="top-label">Level</div>
+      <div class="top-val" id="level">1</div>
+    </div>
+    <div class="top-box">
+      <div class="top-label">Streak</div>
+      <div class="top-val" id="streak">0</div>
+    </div>
+    <div class="top-box">
+      <div class="top-label">Level Up</div>
+      <div class="top-val" id="hits">0/3</div>
+    </div>
   </div>
 
   <div class="clockbar">
@@ -310,11 +322,6 @@ html,body{
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 
-  <div class="lvl-info">
-    <div class="lvl-box"><div class="lvl-val" id="level">1</div><div class="lvl-lbl">Level</div></div>
-    <div class="lvl-box"><div class="lvl-val" id="streak">0</div><div class="lvl-lbl">Streak</div></div>
-    <div class="lvl-box"><div class="lvl-val" id="hits">0/3</div><div class="lvl-lbl">Level Up</div></div>
-  </div>
 
 </div>
 
