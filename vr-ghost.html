@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VR Ghost Target | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+
+#screen-intro{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#000814 0%,#000 70%);z-index:100;
+}
+.vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(100,200,255,1);margin-bottom:8px}
+.vrr-logo span{color:#64C8FF}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#64C8FF;margin-bottom:8px;text-align:center}
+.vrr-rule{font-size:.9rem;color:#fff;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;text-align:center}
+.big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#64C8FF,#0080ff);color:#000;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(100,200,255,.7);margin-bottom:14px}
+.big-btn:hover{transform:scale(1.03)}
+.speed-row{display:flex;gap:12px;margin-bottom:14px}
+.speed-btn{width:130px;height:64px;border:3px solid rgba(100,200,255,.4);background:rgba(100,200,255,.08);border-radius:18px;color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+.speed-btn.active{border-color:#64C8FF;background:rgba(100,200,255,.22);box-shadow:0 0 30px rgba(100,200,255,.6);color:#64C8FF}
+.speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
+.intro-info{font-size:.75rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8}
+.intro-info strong{color:#64C8FF}
+
+#screen-game{
+  position:fixed;inset:0;display:none;flex-direction:column;
+  background:radial-gradient(circle at 50% 50%,#000814 0%,#000 70%);
+}
+.topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;padding:6px 10px 4px;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(100,200,255,.3)}
+.top-label{font-size:.5rem;color:#64C8FF;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
+
+.clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#64C8FF,#0080ff);transition:width .05s linear}
+.msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.msg-bar.watch{color:#64C8FF}.msg-bar.go{color:#fff}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
+.stars{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;padding:2px 0}
+.star{font-size:1rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 6px #64C8FF);transform:scale(1.2)}
+
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;min-height:0}
+.court{width:100%;height:100%;position:relative;border-radius:20px;background:radial-gradient(ellipse at center,#000814 0%,#000 85%);border:1px solid rgba(100,200,255,.08);overflow:hidden}
+
+/* GHOST TARGET */
+.ghost{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  transition:none;
+}
+.ghost.clickable{pointer-events:all}
+
+/* Hit zone — invisible but clickable */
+.hit-zone{
+  position:absolute;
+  border-radius:50%;
+  cursor:crosshair;
+  transform:translate(-50%,-50%);
+  background:transparent;
+  z-index:10;
+}
+
+/* Trail particles */
+.trail{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  animation:trailFade .6s ease-out forwards;
+}
+@keyframes trailFade{
+  0%{opacity:.4;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.2)}
+}
+
+/* Hit explosion */
+.explosion{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  animation:explode .5s ease-out forwards;
+}
+@keyframes explode{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(0.5)}
+  50%{opacity:.8;transform:translate(-50%,-50%) scale(2)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(3)}
+}
+
+.bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
+.bot-btn{height:48px;border:2px solid rgba(100,200,255,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#64C8FF;font-size:.55rem;margin-top:1px}
+.start-btn{border-color:#64C8FF;background:linear-gradient(180deg,#64C8FF,#0080ff);color:#000;font-size:1.1rem;box-shadow:0 0 18px rgba(100,200,255,.7)}
+.start-btn:disabled{opacity:.5}
+</style>
+</head>
+<body>
+
+<div id="screen-intro">
+  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
+  <div class="vrr-logo">GHOST <span>TARGET</span></div>
+  <div class="vrr-sub">VR Court · Reactific™</div>
+  <div class="vrr-rule">👻 TRACK IT · LEAD IT · TRIGGER</div>
+  <div class="speed-row">
+    <button class="speed-btn active" data-speed="2">SLOW<small>SPEED 2</small></button>
+    <button class="speed-btn" data-speed="3.5">TEMPO<small>SPEED 3.5</small></button>
+    <button class="speed-btn" data-speed="5">ELITE<small>SPEED 5</small></button>
+  </div>
+  <button class="big-btn" id="startBtn">👻 ENTER THE COURT</button>
+  <div class="intro-info">
+    <strong>CIRCLE FLASHES</strong> — memorize its position<br>
+    <strong>GOES INVISIBLE</strong> — only a ghost trail remains<br>
+    <strong>TRACK AND TRIGGER</strong> — hit it before it fades<br>
+    <strong>MISS THE GHOST</strong> — session ends
+  </div>
+</div>
+
+<div id="screen-game">
+  <div class="topbar">
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
+    <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hHits">0</div></div>
+    <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
+    <div class="top-box"><div class="top-label">Speed</div><div class="top-val" id="hSpd">2x</div></div>
+  </div>
+  <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
+  <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
+  <div class="stars">
+    <span class="star" id="ps1">⭐</span>
+    <span class="star" id="ps2">⭐</span>
+    <span class="star" id="ps3">⭐</span>
+  </div>
+  <div class="court-area">
+    <div class="court" id="court"></div>
+  </div>
+  <div class="bottombar">
+    <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
+    <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+var baseSpeed=2, best=0;
+
+document.querySelectorAll('[data-speed]').forEach(btn=>{btn.onclick=function(){baseSpeed=Number(btn.dataset.speed);document.querySelectorAll('[data-speed]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+
+$('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';initGame()};
+$('menuBtn').onclick=function(){stopSession();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
+$('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+
+var g={lv:1,sc:0,hits:0,st:0};
+var phase='idle', animRAF=null, timers=[];
+var ghostX=0, ghostY=0, ghostSize=0;
+var velX=0, velY=0, ghostOpacity=0;
+var ghostEl=null, hitZoneEl=null;
+var totalLife=0, lifeStart=0;
+
+function clrT(){timers.forEach(clearTimeout);timers=[];if(animRAF){cancelAnimationFrame(animRAF);animRAF=null}}
+function getSpeed(){return baseSpeed+(g.lv-1)*0.3+(g.hits*0.05)}
+function getSize(){return Math.max(40, 110-(g.lv-1)*8)}
+function getLife(){return Math.max(2000, 4000-(g.hits*40)-(g.lv*100))}
+
+function updateHUD(){
+  $('hSc').textContent=g.sc;$('hHits').textContent=g.hits;
+  $('hBest').textContent=best;$('hLv').textContent=g.lv;
+  $('hSt').textContent=g.st;
+  $('hSpd').textContent=getSpeed().toFixed(1)+'x';
+  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.hits>=(j*10)?' earned':'');
+}
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
+
+function initGame(){
+  g={lv:1,sc:0,hits:0,st:0};
+  updateHUD();msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;$('actBtn').onclick=startSession;
+  $('court').innerHTML='';$('clockFill').style.width='100%';
+}
+
+function stopSession(){clrT();phase='idle';$('court').innerHTML=''}
+
+function startSession(){
+  if(phase!=='idle')return;
+  phase='playing';
+  $('actBtn').disabled=true;
+  msg('GET READY...','watch');
+  timers.push(setTimeout(function(){
+    msg('👻 TRACK THE GHOST!','go');
+    timers.push(setTimeout(fireGhost,400));
+  },700));
+}
+
+function fireGhost(){
+  if(phase!=='playing')return;
+  clrT();
+  $('court').innerHTML='';
+  ghostEl=null;hitZoneEl=null;
+
+  var court=$('court');
+  var W=court.offsetWidth, H=court.offsetHeight;
+  ghostSize=getSize();
+  var pad=ghostSize/2+10;
+
+  // Random start position
+  ghostX=pad+Math.random()*(W-pad*2);
+  ghostY=pad+Math.random()*(H-pad*2);
+
+  // Random direction — normalize
+  var angle=Math.random()*Math.PI*2;
+  var spd=getSpeed();
+  velX=Math.cos(angle)*spd;
+  velY=Math.sin(angle)*spd;
+
+  totalLife=getLife();
+  lifeStart=performance.now();
+  ghostOpacity=1;
+
+  // Create ghost element
+  ghostEl=document.createElement('div');
+  ghostEl.className='ghost';
+  ghostEl.style.width=ghostSize+'px';
+  ghostEl.style.height=ghostSize+'px';
+  ghostEl.style.left=ghostX+'px';
+  ghostEl.style.top=ghostY+'px';
+  ghostEl.style.background='radial-gradient(circle at 35% 35%,#64C8FF,#0080ff)';
+  ghostEl.style.boxShadow='0 0 40px rgba(100,200,255,1),0 0 80px rgba(100,200,255,.5)';
+  court.appendChild(ghostEl);
+
+  // Hit zone — slightly larger than ghost for easier controller targeting
+  hitZoneEl=document.createElement('div');
+  hitZoneEl.className='hit-zone clickable';
+  hitZoneEl.style.width=(ghostSize*1.4)+'px';
+  hitZoneEl.style.height=(ghostSize*1.4)+'px';
+  hitZoneEl.style.left=ghostX+'px';
+  hitZoneEl.style.top=ghostY+'px';
+  hitZoneEl.onclick=onHit;
+  court.appendChild(hitZoneEl);
+
+  // Flash bright then go ghost
+  timers.push(setTimeout(function(){
+    if(phase!=='playing')return;
+    // Go ghost — reduce opacity dramatically
+    ghostOpacity=0.15;
+    ghostEl.style.background='radial-gradient(circle at 35% 35%,rgba(100,200,255,.3),rgba(0,128,255,.1))';
+    ghostEl.style.boxShadow='0 0 10px rgba(100,200,255,.2)';
+    ghostEl.style.border='2px dashed rgba(100,200,255,.25)';
+    msg('👻 WHERE IS IT?','go');
+  },400));
+
+  // Animate ghost movement
+  var lastTrail=0;
+  function animate(){
+    if(phase!=='playing')return;
+    var now=performance.now();
+    var elapsed=now-lifeStart;
+    var pct=Math.max(0,1-(elapsed/totalLife));
+
+    // Move
+    ghostX+=velX;ghostY+=velY;
+
+    // Bounce off walls
+    var W2=$('court').offsetWidth, H2=$('court').offsetHeight;
+    var pad2=ghostSize/2;
+    if(ghostX<pad2){ghostX=pad2;velX=Math.abs(velX)}
+    if(ghostX>W2-pad2){ghostX=W2-pad2;velX=-Math.abs(velX)}
+    if(ghostY<pad2){ghostY=pad2;velY=Math.abs(velY)}
+    if(ghostY>H2-pad2){ghostY=H2-pad2;velY=-Math.abs(velY)}
+
+    // Update positions
+    if(ghostEl){ghostEl.style.left=ghostX+'px';ghostEl.style.top=ghostY+'px'}
+    if(hitZoneEl){hitZoneEl.style.left=ghostX+'px';hitZoneEl.style.top=ghostY+'px'}
+
+    // Fade out as time runs out
+    if(elapsed>400){
+      var fade=Math.max(0.05, 0.15*pct);
+      if(ghostEl){ghostEl.style.opacity=fade}
+    }
+
+    // Trail particles every 80ms
+    if(now-lastTrail>80&&elapsed>400){
+      lastTrail=now;
+      var trail=document.createElement('div');
+      trail.className='trail';
+      trail.style.cssText='position:absolute;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);left:'+ghostX+'px;top:'+ghostY+'px;width:'+(ghostSize*0.3)+'px;height:'+(ghostSize*0.3)+'px;background:rgba(100,200,255,0.15);animation:trailFade .6s ease-out forwards';
+      $('court').appendChild(trail);
+      setTimeout(function(){if(trail.parentNode)trail.remove()},600);
+    }
+
+    // Clock bar
+    $('clockFill').style.width=(pct*100)+'%';
+
+    if(pct<=0){onMiss();return}
+    animRAF=requestAnimationFrame(animate);
+  }
+  animRAF=requestAnimationFrame(animate);
+}
+
+function onHit(){
+  if(phase!=='playing')return;
+  clrT();
+  var pts=20+g.hits;
+  g.sc+=pts;g.hits++;g.st++;
+  if(g.hits>best)best=g.hits;
+  if(g.hits%10===0&&g.lv<10)g.lv++;
+  updateHUD();
+
+  // Explosion
+  var exp=document.createElement('div');
+  exp.className='explosion';
+  exp.style.cssText='position:absolute;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);left:'+ghostX+'px;top:'+ghostY+'px;width:'+ghostSize+'px;height:'+ghostSize+'px;background:radial-gradient(circle,#00D9A5,rgba(0,217,165,0));animation:explode .5s ease-out forwards';
+  $('court').appendChild(exp);
+  setTimeout(function(){if(exp.parentNode)exp.remove()},500);
+
+  if(ghostEl)ghostEl.style.display='none';
+  if(hitZoneEl)hitZoneEl.style.display='none';
+
+  msg('✅ GOT IT! '+g.hits+' HITS','perfect');
+  timers.push(setTimeout(function(){
+    if(phase==='playing')fireGhost();
+  },400));
+}
+
+function onMiss(){
+  if(phase!=='playing')return;
+  phase='idle';clrT();
+  if(g.hits>best)best=g.hits;
+  g.st=0;updateHUD();
+  msg('👻 ESCAPED! '+g.hits+' HITS','miss');
+  timers.push(setTimeout(function(){
+    $('court').innerHTML='';
+    $('clockFill').style.width='100%';
+    updateHUD();
+    msg("TAP LET'S GO! BEST: "+best,'watch');
+    $('actBtn').disabled=false;
+  },1600));
+}
+
+$('actBtn').onclick=startSession;
+})();
+</script>
+</body>
+</html>
