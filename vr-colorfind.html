@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VR Color Find | REACTIFIC™</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+#screen-intro{background:radial-gradient(ellipse at center,#001400 0%,#000 70%);position:relative}
+.back-home{position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none}
+.vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;animation:logoGlow 1.5s ease-in-out infinite alternate;margin-bottom:6px}
+.vrr-logo span{color:#00FF88}
+@keyframes logoGlow{from{text-shadow:0 0 40px rgba(0,255,136,.6)}to{text-shadow:0 0 80px rgba(0,255,136,1),0 0 120px rgba(0,255,136,.4)}}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#00FF88;margin-bottom:6px;text-align:center}
+.vrr-rule{font-size:.9rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;text-align:center}
+
+/* ANIMATED DEMO */
+.intro-demo{position:relative;width:200px;height:200px;margin-bottom:16px;flex-shrink:0}
+.demo-center{
+  position:absolute;top:50%;left:50%;
+  width:56px;height:56px;border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:centerPulse 2.5s ease-in-out infinite;
+  border:3px solid rgba(255,255,255,.4);
+}
+@keyframes centerPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  40%{transform:translate(-50%,-50%) scale(1.15)}
+  60%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  80%{transform:translate(-50%,-50%) scale(0);opacity:0}
+}
+.demo-orb{
+  position:absolute;border-radius:50%;width:28px;height:28px;
+  animation:orbAppear 2.5s ease-in-out infinite;
+  border:2px solid rgba(255,255,255,.3);
+}
+@keyframes orbAppear{
+  0%,55%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  70%{transform:translate(-50%,-50%) scale(1.1);opacity:1}
+  90%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8}
+}
+
+.speed-row{display:flex;gap:12px;margin-bottom:14px}
+.speed-btn{width:130px;height:64px;border:3px solid rgba(0,255,136,.4);background:rgba(0,255,136,.08);border-radius:18px;color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+.speed-btn.active{border-color:#00FF88;background:rgba(0,255,136,.2);box-shadow:0 0 30px rgba(0,255,136,.5);color:#00FF88}
+.speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
+.big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#00CC66,#00FF88);color:#000;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(0,255,136,.7);margin-bottom:14px;animation:btnPulse 2s ease-in-out infinite}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 40px rgba(0,255,136,.7)}50%{box-shadow:0 0 80px rgba(0,255,136,1)}}
+.intro-info{font-size:.75rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8}
+.intro-info strong{color:#ffd35a}
+
+/* GAME */
+#screen-game{background:radial-gradient(ellipse at center,#001a08 0%,#000 70%);justify-content:space-between;padding:12px 16px}
+.topbar{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;flex-shrink:0}
+.top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(0,255,136,.3)}
+.top-label{font-size:.5rem;color:#00FF88;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
+
+/* CENTER COLOR DISPLAY */
+.color-display{
+  flex-shrink:0;height:90px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+}
+.center-circle{
+  width:70px;height:70px;border-radius:50%;
+  border:3px solid rgba(255,255,255,.5);
+  transition:all .3s;
+  flex-shrink:0;
+}
+.center-label{font-size:.65rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#a7adba}
+.center-arrow{font-size:1.8rem;color:rgba(255,255,255,.3)}
+
+.clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
+.clockbar-fill{height:100%;background:linear-gradient(90deg,#00FF88,#00CC66);transition:width .05s linear}
+.msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.msg-bar.watch{color:#ffd35a}.msg-bar.go{color:#00FF88}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
+.stars{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;padding:2px 0}
+.star{font-size:1rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 6px #00FF88);transform:scale(1.2)}
+
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;min-height:0}
+.court{width:100%;height:100%;position:relative;border-radius:20px;background:radial-gradient(ellipse at center,#001a08 0%,#000 80%);border:1px solid rgba(0,255,136,.15);overflow:hidden}
+
+.color-circle{
+  position:absolute;border-radius:50%;cursor:pointer;
+  transform:translate(-50%,-50%);
+  border:3px solid rgba(255,255,255,.25);
+  transition:opacity .1s;
+}
+.color-circle.correct-flash{
+  box-shadow:0 0 80px #fff!important;
+  transform:translate(-50%,-50%) scale(1.3)!important;
+  border-color:#fff!important;
+}
+.color-circle.wrong-flash{
+  box-shadow:0 0 60px rgba(255,20,147,.9)!important;
+  border-color:#FF1493!important;
+}
+
+.bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
+.bot-btn{height:48px;border:2px solid rgba(0,255,136,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.bot-btn span{display:block;color:#00FF88;font-size:.55rem;margin-top:1px}
+.start-btn{border-color:#00FF88;background:linear-gradient(180deg,#00FF88,#00CC66);color:#000;font-size:1.1rem;box-shadow:0 0 18px rgba(0,255,136,.7)}
+.start-btn:disabled{opacity:.5}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="screen-intro">
+  <a class="back-home" href="/vr-home.html">← Games</a>
+  <div class="vrr-logo">COLOR <span>FIND</span></div>
+  <div class="vrr-sub">VR Court · Reactific™</div>
+  <div class="vrr-rule">🎨 MEMORIZE · VANISHES · FIND THE MATCH</div>
+
+  <!-- ANIMATED DEMO -->
+  <div class="intro-demo">
+    <div class="demo-center" style="background:radial-gradient(circle at 35% 35%,#ff8a5c,#FF6B35)"></div>
+    <div class="demo-orb" style="left:20%;top:25%;background:radial-gradient(circle at 35% 35%,#A873B8,#9B59B6);animation-delay:.1s"></div>
+    <div class="demo-orb" style="left:75%;top:20%;background:radial-gradient(circle at 35% 35%,#ff8a5c,#FF6B35);animation-delay:.15s"></div>
+    <div class="demo-orb" style="left:85%;top:65%;background:radial-gradient(circle at 35% 35%,#40E0D0,#00CED1);animation-delay:.2s"></div>
+    <div class="demo-orb" style="left:15%;top:75%;background:radial-gradient(circle at 35% 35%,#B8E050,#9ACD32);animation-delay:.25s"></div>
+    <div class="demo-orb" style="left:55%;top:85%;background:radial-gradient(circle at 35% 35%,#FFE55C,#FFD700);animation-delay:.3s"></div>
+  </div>
+
+  <div class="speed-row">
+    <button class="speed-btn active" data-flash="slow">SLOW<small>STEADY</small></button>
+    <button class="speed-btn" data-flash="tempo">TEMPO<small>1 FLASH</small></button>
+    <button class="speed-btn" data-flash="elite">ELITE<small>3 FLASHES</small></button>
+  </div>
+  <button class="big-btn" id="startBtn">🎨 ENTER THE COURT</button>
+  <div class="intro-info">
+    <strong>CENTER COLOR GLOWS</strong> — burn it into memory<br>
+    <strong>IT VANISHES</strong> — circles appear across the court<br>
+    <strong>FIND THE MATCH</strong> — tap its color<br>
+    <strong>MORE CIRCLES</strong> — every level up
+  </div>
+</div>
+
+<div class="screen" id="screen-game">
+  <div class="topbar">
+    <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
+    <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hHits">0</div></div>
+    <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
+    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
+    <div class="top-box"><div class="top-label">Circles</div><div class="top-val" id="hCirc">5</div></div>
+  </div>
+
+  <div class="color-display">
+    <div class="center-label">MEMORIZE</div>
+    <div class="center-circle" id="centerCircle"></div>
+    <div class="center-arrow" id="centerArrow">→</div>
+    <div class="center-label" id="centerPrompt">FIND THE MATCH</div>
+  </div>
+
+  <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
+  <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
+  <div class="stars">
+    <span class="star" id="ps1">⭐</span>
+    <span class="star" id="ps2">⭐</span>
+    <span class="star" id="ps3">⭐</span>
+  </div>
+  <div class="court-area">
+    <div class="court" id="court"></div>
+  </div>
+  <div class="bottombar">
+    <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
+    <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+var $=id=>document.getElementById(id);
+var flashMode="slow", best=0;
+
+// Rich color palette — similar enough to be challenging
+var COLORS=[
+  {name:'ORANGE',  bg:'radial-gradient(circle at 35% 35%,#ff8a5c,#FF6B35)', hex:'#FF6B35'},
+  {name:'PURPLE',  bg:'radial-gradient(circle at 35% 35%,#A873B8,#9B59B6)', hex:'#9B59B6'},
+  {name:'CYAN',    bg:'radial-gradient(circle at 35% 35%,#40E0D0,#00CED1)', hex:'#00CED1'},
+  {name:'LIME',    bg:'radial-gradient(circle at 35% 35%,#B8E050,#9ACD32)', hex:'#9ACD32'},
+  {name:'GOLD',    bg:'radial-gradient(circle at 35% 35%,#FFE55C,#FFD700)', hex:'#FFD700'},
+  {name:'PINK',    bg:'radial-gradient(circle at 35% 35%,#ff69b4,#FF1493)', hex:'#FF1493'},
+  {name:'TEAL',    bg:'radial-gradient(circle at 35% 35%,#00D9A5,#00B894)', hex:'#00D9A5'},
+  {name:'RED',     bg:'radial-gradient(circle at 35% 35%,#ff6666,#CC0000)', hex:'#CC0000'},
+  {name:'BLUE',    bg:'radial-gradient(circle at 35% 35%,#64C8FF,#0080ff)', hex:'#0080ff'},
+  {name:'WHITE',   bg:'radial-gradient(circle at 35% 35%,#ffffff,#cccccc)', hex:'#fff'},
+];
+
+document.querySelectorAll('[data-flash]').forEach(btn=>{btn.onclick=function(){flashMode=btn.dataset.flash;document.querySelectorAll('[data-flash]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
+
+$('startBtn').onclick=function(){$('screen-intro').classList.remove('active');$('screen-game').classList.add('active');initGame()};
+$('menuBtn').onclick=function(){stopSession();$('screen-game').classList.remove('active');$('screen-intro').classList.add('active')};
+$('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+
+var g={lv:1,sc:0,hits:0,st:0};
+var phase='idle', shrinkRAF=null, timers=[], circleEls=[];
+var targetColor=null, circleSize=0, currentTime=0;
+
+function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
+function getCircleCount(){return Math.min(4+g.lv, COLORS.length)}
+function getCircleSize(){return Math.max(50,120-(g.lv-1)*8-(Math.floor(g.hits/5)*3))}
+function getWindow(){return Math.max(800,3500-(g.hits*40)-(g.lv*80))}
+
+function updateHUD(){
+  $('hSc').textContent=g.sc;$('hHits').textContent=g.hits;
+  $('hBest').textContent=best;$('hLv').textContent=g.lv;
+  $('hSt').textContent=g.st;$('hCirc').textContent=getCircleCount();
+  for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.hits>=(j*10)?' earned':'');
+}
+function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
+
+function randomPos(size, existing){
+  var c=$('court'),w=c.offsetWidth,h=c.offsetHeight,pad=size/2+14;
+  var attempts=0,pos;
+  do{
+    pos={x:pad+Math.random()*(w-pad*2),y:pad+Math.random()*(h-pad*2)};
+    attempts++;
+    var ok=true;
+    existing.forEach(function(e){var dx=pos.x-e.x,dy=pos.y-e.y;if(Math.sqrt(dx*dx+dy*dy)<size*2.2)ok=false});
+    if(ok||attempts>30)break;
+  }while(true);
+  return pos;
+}
+
+function initGame(){
+  g={lv:1,sc:0,hits:0,st:0};
+  $('centerCircle').style.background='rgba(255,255,255,.1)';
+  $('centerCircle').style.boxShadow='none';
+  $('centerArrow').style.opacity='0';
+  $('centerPrompt').textContent='FIND THE MATCH';
+  updateHUD();msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;$('actBtn').onclick=startSession;
+  $('clockFill').style.width='100%';
+}
+
+function stopSession(){clrT();phase='idle';$('court').innerHTML='';$('centerCircle').style.background='rgba(255,255,255,.1)';$('centerCircle').style.boxShadow='none';$('centerArrow').style.opacity='0'}
+
+function startSession(){
+  if(phase!=='idle')return;
+  phase='showing';$('actBtn').disabled=true;
+  msg('MEMORIZE THE COLOR!','watch');
+  fireRound();
+}
+
+function flashCenter(col, done){
+  var el=$('centerCircle');
+  if(flashMode==='slow'){
+    // Steady 2 seconds
+    el.style.background=col.bg;
+    el.style.boxShadow='0 0 30px '+col.hex+',0 0 60px '+col.hex;
+    el.style.opacity='1';
+    timers.push(setTimeout(done, 2000));
+  } else if(flashMode==='tempo'){
+    // On 600ms — off 200ms — done
+    el.style.background=col.bg;
+    el.style.boxShadow='0 0 30px '+col.hex+',0 0 60px '+col.hex;
+    el.style.opacity='1';
+    timers.push(setTimeout(function(){
+      el.style.opacity='0';
+      timers.push(setTimeout(done, 200));
+    }, 600));
+  } else {
+    // Elite — flash 3 times: 250ms on, 150ms off
+    var flashes=0;
+    function nextFlash(){
+      if(flashes>=3){done();return}
+      el.style.background=col.bg;
+      el.style.boxShadow='0 0 30px '+col.hex+',0 0 60px '+col.hex;
+      el.style.opacity='1';
+      timers.push(setTimeout(function(){
+        el.style.opacity='0';
+        flashes++;
+        timers.push(setTimeout(nextFlash, 120));
+      }, 250));
+    }
+    nextFlash();
+  }
+}
+
+function fireRound(){
+  if(phase==='idle')return;
+  clrT();$('court').innerHTML='';circleEls=[];
+
+  // Pick colors for this round
+  var count=getCircleCount();
+  var shuffled=COLORS.slice().sort(function(){return Math.random()-.5});
+  var roundColors=shuffled.slice(0,count);
+  var targetIdx=Math.floor(Math.random()*count);
+  targetColor=roundColors[targetIdx];
+  circleSize=getCircleSize();
+  currentTime=getWindow();
+
+  $('centerArrow').style.opacity='0';
+  $('centerPrompt').textContent='MEMORIZE!';
+  msg('MEMORIZE THE COLOR!','watch');
+
+  // Flash the center color based on mode then show circles
+  flashCenter(targetColor, function(){
+    if(phase==='idle')return;
+    $('centerCircle').style.opacity='0';
+    $('centerCircle').style.boxShadow='none';
+    $('centerArrow').style.opacity='.5';
+    $('centerPrompt').textContent='FIND THE MATCH!';
+    msg('FIND THE MATCH!','go');
+    phase='finding';
+
+    timers.push(setTimeout(function(){
+      if(phase!=='finding')return;
+
+      // Place circles
+      var positions=[];
+      roundColors.forEach(function(col,idx){
+        var pos=randomPos(circleSize,positions);
+        positions.push(pos);
+        var el=document.createElement('div');
+        el.className='color-circle';
+        el.style.cssText='position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%);width:'+circleSize+'px;height:'+circleSize+'px;left:'+pos.x+'px;top:'+pos.y+'px;background:'+col.bg+';box-shadow:0 0 20px '+col.hex+';border:3px solid rgba(255,255,255,.25)';
+        var isTarget=(idx===targetIdx);
+        el.onclick=(function(it){return function(){handleTap(it,el)}})(isTarget);
+        $('court').appendChild(el);
+        circleEls.push({el:el,isTarget:isTarget});
+      });
+
+      // Shrink timer
+      var startMs=performance.now();
+      $('clockFill').style.width='100%';
+      function shrink(){
+        var elapsed=performance.now()-startMs;
+        var pct=Math.max(0,1-(elapsed/currentTime));
+        var curSize=circleSize*pct;
+        circleEls.forEach(function(c){c.el.style.width=curSize+'px';c.el.style.height=curSize+'px';c.el.style.opacity=Math.max(.15,pct)});
+        $('clockFill').style.width=(pct*100)+'%';
+        if(pct<=0){onMiss('GONE!');return}
+        if(phase==='finding')shrinkRAF=requestAnimationFrame(shrink);
+      }
+      shrinkRAF=requestAnimationFrame(shrink);
+    },200));
+  },showTime));
+}
+
+function handleTap(isTarget, el){
+  if(phase!=='finding')return;
+  clrT();
+  if(isTarget){
+    el.classList.add('correct-flash');
+    // Restore full size for flash
+    el.style.width=circleSize+'px';el.style.height=circleSize+'px';el.style.opacity='1';
+    var pts=15+g.hits;
+    g.sc+=pts;g.hits++;g.st++;
+    if(g.hits>best)best=g.hits;
+    if(g.hits%10===0&&g.lv<10)g.lv++;
+    updateHUD();
+    msg('✅ '+targetColor.name+'! '+g.hits+' HITS','perfect');
+    // Show center color briefly as confirmation
+    $('centerCircle').style.background=targetColor.bg;
+    $('centerCircle').style.boxShadow='0 0 30px '+targetColor.hex;
+    $('centerCircle').style.opacity='.6';
+    phase='idle';
+    timers.push(setTimeout(function(){
+      $('court').innerHTML='';
+      phase='showing';
+      fireRound();
+    },400));
+  }else{
+    el.classList.add('wrong-flash');
+    el.style.width=circleSize+'px';el.style.height=circleSize+'px';el.style.opacity='1';
+    // Reveal correct
+    circleEls.forEach(function(c){if(c.isTarget){c.el.style.width=circleSize+'px';c.el.style.height=circleSize+'px';c.el.style.opacity='1';c.el.classList.add('correct-flash')}});
+    // Show target color in center
+    $('centerCircle').style.background=targetColor.bg;
+    $('centerCircle').style.boxShadow='0 0 30px '+targetColor.hex;
+    $('centerCircle').style.opacity='1';
+    onMiss('WRONG COLOR!');
+  }
+}
+
+function onMiss(reason){
+  phase='idle';clrT();
+  if(g.hits>best)best=g.hits;
+  g.st=0;updateHUD();
+  msg(reason+' '+g.hits+' HITS','miss');
+  timers.push(setTimeout(function(){
+    $('court').innerHTML='';
+    $('clockFill').style.width='100%';
+    $('centerCircle').style.opacity='0';$('centerCircle').style.boxShadow='none';
+    $('centerArrow').style.opacity='0';
+    $('centerPrompt').textContent='FIND THE MATCH';
+    updateHUD();msg("TAP LET'S GO! BEST: "+best,'watch');
+    $('actBtn').disabled=false;
+  },1800));
+}
+
+$('actBtn').onclick=startSession;
+})();
+</script>
+</body>
+</html>
