@@ -636,3 +636,88 @@ app.get('/api/health', async (req, res) => {
 
 // ── Start ───────────────────────────────────────────────
 app.listen(PORT, () => console.log(`Reactific API running on port ${PORT}`));
+
+// ── STUDENT LOGIN — email + class code ─────────────────
+app.post('/api/auth/student-login', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    const cleanCode = String(code || '').toUpperCase().trim();
+
+    if (!cleanEmail || !cleanCode)
+      return res.status(400).json({ error: 'Email and class code required' });
+    if (!/^\S+@\S+\.\S+$/.test(cleanEmail))
+      return res.status(400).json({ error: 'Valid email required' });
+    if (cleanCode.length !== 6)
+      return res.status(400).json({ error: 'Class code must be 6 letters' });
+
+    // Find class by code
+    const classResult = await pool.query(
+      `SELECT id, name FROM classes WHERE code = $1`,
+      [cleanCode]
+    );
+    if (!classResult.rows.length)
+      return res.status(404).json({ error: 'Class code not found — check with your teacher' });
+
+    const cls = classResult.rows[0];
+
+    // Find or create student
+    let userResult = await pool.query(
+      `SELECT id, email, username, subscription_status, role, class_id FROM users WHERE email = $1`,
+      [cleanEmail]
+    );
+
+    let user;
+    if (userResult.rows.length > 0) {
+      user = userResult.rows[0];
+    } else {
+      // Auto-create student account from email
+      const username = cleanEmail.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 20);
+      const uniqueUsername = username + '_' + Math.floor(Math.random() * 999);
+      const newUser = await pool.query(
+        `INSERT INTO users (email, username, role, class_id)
+         VALUES ($1, $2, 'student', $3)
+         RETURNING id, email, username, subscription_status, role, class_id`,
+        [cleanEmail, uniqueUsername, cls.id]
+      );
+      user = newUser.rows[0];
+    }
+
+    // Join class if not already in it
+    await pool.query(
+      `INSERT INTO class_students (class_id, user_id)
+       VALUES ($1, $2) ON CONFLICT (class_id, user_id) DO NOTHING`,
+      [cls.id, user.id]
+    );
+
+    // Update class_id if needed
+    if (user.class_id !== cls.id) {
+      await pool.query(
+        `UPDATE users SET class_id = $1, updated_at = NOW() WHERE id = $2`,
+        [cls.id, user.id]
+      );
+      user.class_id = cls.id;
+    }
+
+    const publicUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      subscription_status: user.subscription_status,
+      role: 'student',
+      class_id: cls.id,
+      class_name: cls.name
+    };
+
+    const token = makeToken(publicUser);
+    res.json({ user: publicUser, token });
+
+  } catch (err) {
+    if (err.code === '23505') {
+      // Username collision — retry with different suffix
+      return res.status(409).json({ error: 'Please try again' });
+    }
+    console.error('Student login error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
