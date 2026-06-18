@@ -16,7 +16,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(255,107,0,1);margin-bottom:8px}
 .vrr-logo span{color:#ff6b00}
 .vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#ff6b00;margin-bottom:8px;text-align:center}
-.vrr-rule{font-size:.9rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;text-align:center}
+.vrr-rule{font-size:.9rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;text-align:center}
 .big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#ff6b00,#ff9500);color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(255,107,0,.7);margin-bottom:14px}
 .big-btn:hover{transform:scale(1.03)}
 .speed-row{display:flex;gap:12px;margin-bottom:14px}
@@ -30,46 +30,50 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   position:fixed;inset:0;display:none;flex-direction:column;
   background:radial-gradient(circle at 16% 5%,rgba(255,107,0,.15),transparent 30%),linear-gradient(180deg,#140800,#080300);
 }
-.topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;padding:6px 10px 4px;flex-shrink:0}
+.topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:8px;padding:6px 10px 4px;flex-shrink:0}
 .top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(255,107,0,.3)}
 .top-label{font-size:.5rem;color:#ff6b00;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
 .top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
 .stage-box{border-color:#ffd35a!important}
 .stage-box .top-label{color:#ffd35a}
-.stage-box .top-val{color:#ffd35a;font-size:1rem}
+.stage-box .top-val{color:#ffd35a}
 
 /* TARGET DISPLAY */
 .target-bar{
-  flex-shrink:0;padding:4px 10px;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  flex-wrap:wrap;
+  flex-shrink:0;padding:4px 10px 2px;
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
 }
-.target-label{font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#a7adba}
+.target-label{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;flex-shrink:0}
 .target-num{
-  font-size:1.8rem;font-weight:900;color:#ffd35a;
-  background:rgba(255,211,90,.1);border:2px solid rgba(255,211,90,.4);
-  border-radius:10px;padding:2px 14px;min-width:56px;text-align:center;
+  font-size:2rem;font-weight:900;color:#ffd35a;
+  background:rgba(255,211,90,.1);border:2px solid rgba(255,211,90,.5);
+  border-radius:10px;padding:2px 16px;min-width:60px;text-align:center;
   transition:all .3s;
 }
 .target-num.found{color:#00D9A5;background:rgba(0,217,165,.1);border-color:rgba(0,217,165,.4);text-decoration:line-through;opacity:.5}
 
-.clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
+.clockbar{height:8px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
 .clockbar-fill{height:100%;background:linear-gradient(90deg,#ff6b00,#ff9500);transition:width .05s linear}
-.msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
-.msg-bar.watch{color:#ff6b00}.msg-bar.go{color:#ffd35a}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
-.stars{display:flex;gap:6px;justify-content:center;align-items:center;flex-shrink:0;padding:1px 0}
-.star{font-size:.85rem;opacity:.2;transition:all .3s}
-.star.earned{opacity:1;filter:drop-shadow(0 0 5px #ff6b00);transform:scale(1.2)}
+.msg-bar{text-align:center;font-size:1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
+.msg-bar.watch{color:#ff6b00}.msg-bar.go{color:#ffd35a}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}.msg-bar.preview{color:#a7adba}
+
+/* PROGRESS BAR */
+.progress-row{display:flex;gap:4px;justify-content:center;padding:2px 10px;flex-shrink:0}
+.prog-dot{width:18px;height:6px;border-radius:3px;background:rgba(255,107,0,.2);border:1px solid rgba(255,107,0,.3);transition:all .3s}
+.prog-dot.done{background:#ff6b00;border-color:#ff9500;box-shadow:0 0 6px rgba(255,107,0,.6)}
+.prog-dot.current{background:rgba(255,211,90,.4);border-color:#ffd35a}
 
 .court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
 .court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(255,107,0,.25);border-radius:14px;padding:6px;background:rgba(15,5,0,.85);box-shadow:0 0 60px rgba(255,107,0,.25),inset 0 0 40px rgba(255,107,0,.04),0 20px 60px rgba(0,0,0,.8)}
-.cell{border-radius:8px;background:rgba(255,107,0,.06);border:2px solid rgba(255,107,0,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0;font-size:clamp(1rem,2vw,1.8rem);font-weight:900;color:rgba(255,255,255,.7)}
-.cell.active{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.5)}
-.cell.active:hover{background:rgba(255,107,0,.25);border-color:#ff6b00;transform:scale(1.05)}
-.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important;color:#000!important}
-.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
-.cell.reveal{border:2px solid #ffd35a!important;background:rgba(255,211,90,.15)!important;color:#ffd35a!important}
-.cell.empty{background:rgba(0,0,0,.2);border-color:rgba(255,107,0,.08);color:transparent;cursor:default}
+.cell{border-radius:8px;background:rgba(255,107,0,.06);border:2px solid rgba(255,107,0,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0;font-size:clamp(.7rem,1.4vw,1.2rem);font-weight:900;color:rgba(255,255,255,.35)}
+.cell.preview{background:rgba(255,107,0,.1);border-color:rgba(255,107,0,.4);color:rgba(255,255,255,.6);cursor:default}
+.cell.active{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.5);color:rgba(255,255,255,.8)}
+.cell.active:hover{background:rgba(255,107,0,.28);border-color:#ff6b00;transform:scale(1.06);color:#fff}
+.cell.target-glow{background:rgba(255,107,0,.18)!important;border-color:#ff9500!important;color:#fff!important;box-shadow:0 0 12px rgba(255,107,0,.5)!important}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.9)!important;color:#000!important;transform:scale(1.08)!important}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s;color:#fff!important}
+.cell.reveal{border:2px solid #ffd35a!important;background:rgba(255,211,90,.2)!important;color:#ffd35a!important;box-shadow:0 0 14px rgba(255,211,90,.5)!important}
+.cell.inactive{background:rgba(0,0,0,.15);border-color:rgba(255,107,0,.06);color:transparent;cursor:default}
 @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 
 .bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
@@ -85,7 +89,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">NUMBER <span>HUNT</span></div>
   <div class="vrr-sub">5×10 VR Court · Reactific™</div>
-  <div class="vrr-rule">🎯 FIND THE NUMBER — TAP IT FAST</div>
+  <div class="vrr-rule">🎯 SCAN THE COURT — FIND THE NUMBER</div>
   <div class="speed-row">
     <button class="speed-btn active" data-time="5000">SLOW<small>5 SEC</small></button>
     <button class="speed-btn" data-time="3000">TEMPO<small>3 SEC</small></button>
@@ -93,32 +97,34 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
   <button class="big-btn" id="startBtn">🎯 ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>STAGE 1</strong> — Find 1 number · 5 targets shown<br>
-    <strong>STAGE 2</strong> — Find 2 numbers · 7 targets shown<br>
-    <strong>STAGE 3</strong> — Find 3 numbers · 10 targets shown<br>
-    <strong>LEVEL UP</strong> — more numbers fill the court
+    <strong>ALL 50 CELLS</strong> — numbered before each round<br>
+    <strong>TARGET APPEARS</strong> — clock starts<br>
+    <strong>10 ROUNDS</strong> — 5 cells added each round<br>
+    <strong>5 STAGES</strong> — find 1 · 2 · 3 · 4 · 5 numbers
   </div>
 </div>
 
 <div id="screen-game">
   <div class="topbar">
     <div class="top-box stage-box"><div class="top-label">Stage</div><div class="top-val" id="hStage">1</div></div>
-    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
+    <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">1/10</div></div>
+    <div class="top-box"><div class="top-label">Find</div><div class="top-val" id="hFind">1</div></div>
     <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
-    <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0</div></div>
     <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
     <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
   </div>
 
-  <!-- TARGET NUMBERS DISPLAY -->
   <div class="target-bar" id="targetBar">
     <div class="target-label">FIND →</div>
   </div>
 
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
-  <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
-  <div class="stars" id="starRow"></div>
+  <div class="msg-bar preview" id="msg">SCAN THE COURT</div>
+
+  <div class="progress-row" id="progressRow"></div>
+
   <div class="court-area"><div class="court" id="court"></div></div>
+
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
@@ -131,21 +137,15 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 (function(){
 var $=id=>document.getElementById(id);
 var timeLimit=5000,best=0;
+var TOTAL_ROUNDS=10,TOTAL_STAGES=5;
 
-// Stage config: {targets to find, pool size shown}
-var STAGES=[
-  {find:1, pool:5},
-  {find:2, pool:7},
-  {find:3, pool:10},
-];
-
-// Cells active per level (L1=10, L2=15 ... L10=50)
-function getCellCount(lv){return Math.min(10+(lv-1)*5,50)}
+// Cells active per round: round 1=5, round 2=10 ... round 10=50
+function getCellCount(round){return round*5}
 
 document.querySelectorAll('[data-time]').forEach(btn=>{btn.onclick=function(){timeLimit=Number(btn.dataset.time);document.querySelectorAll('[data-time]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
 
 $('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';buildCourt();initGame()};
-$('menuBtn').onclick=function(){clrT();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
+$('menuBtn').onclick=function(){clrT();resetAll();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
@@ -159,24 +159,24 @@ function buildCourt(){
   }
 }
 
-var g={stage:0,lv:1,sc:0,rd:0,st:0};
+var g={stage:1,round:1,sc:0,st:0};
 var phase='idle',targets=[],found=[],courtNums=[],timers=[],shrinkRAF=null;
 
 function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
 
 function updateHUD(){
-  $('hStage').textContent=g.stage+1;
-  $('hLv').textContent=g.lv;
+  $('hStage').textContent=g.stage;
+  $('hRd').textContent=g.round+'/'+TOTAL_ROUNDS;
+  $('hFind').textContent=g.stage;
   $('hSc').textContent=g.sc;
-  $('hRd').textContent=g.rd;
   $('hSt').textContent=g.st;
   $('hBest').textContent=best;
-  // Stars — 10 per stage
-  var sr=$('starRow');sr.innerHTML='';
-  for(var i=1;i<=10;i++){
-    var s=document.createElement('span');
-    s.className='star'+(g.lv>=i?' earned':'');
-    s.textContent='⭐';sr.appendChild(s);
+  // Progress dots
+  var pr=$('progressRow');pr.innerHTML='';
+  for(var i=1;i<=TOTAL_ROUNDS;i++){
+    var d=document.createElement('div');
+    d.className='prog-dot'+(i<g.round?' done':i===g.round?' current':'');
+    pr.appendChild(d);
   }
 }
 
@@ -184,75 +184,93 @@ function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '
 
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 
-function initGame(){
-  g={stage:0,lv:1,sc:0,rd:0,st:0};
-  updateHUD();msg("TAP LET'S GO!",'watch');
-  $('actBtn').disabled=false;$('actBtn').onclick=startRound;
-  $('clockFill').style.width='100%';
+function resetAll(){
+  cells.forEach(function(c){c.className='cell inactive';c.textContent=''});
   $('targetBar').innerHTML='<div class="target-label">FIND →</div>';
-  resetCells();
+  $('clockFill').style.width='100%';
 }
 
-function resetCells(){
-  cells.forEach(function(c){c.className='cell empty';c.textContent='';c.style.fontSize=''});
+function initGame(){
+  g={stage:1,round:1,sc:0,st:0};
+  updateHUD();resetAll();
+  msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;$('actBtn').onclick=startRound;
 }
 
 function startRound(){
   if(phase!=='idle')return;
-  clrT();phase='playing';g.rd++;found=[];
+  clrT();phase='preview';found=[];
   $('actBtn').disabled=true;updateHUD();
 
-  var stg=STAGES[g.stage];
-  var cellCount=getCellCount(g.lv);
+  var cellCount=getCellCount(g.round);
+  var findCount=g.stage;
 
-  // Generate pool of numbers to show
-  var allNums=[];
-  for(var i=1;i<=99;i++)allNums.push(i);
-  shuffle(allNums);
-  var pool=allNums.slice(0,stg.pool);
-  targets=pool.slice(0,stg.find);
+  // Generate shuffled numbers 1-50 for active cells
+  var nums=[];for(var i=1;i<=50;i++)nums.push(i);
+  shuffle(nums);
 
-  // Show target display
-  var bar=$('targetBar');
-  bar.innerHTML='<div class="target-label">FIND →</div>';
-  targets.forEach(function(n){
-    var el=document.createElement('div');
-    el.className='target-num';el.textContent=n;el.id='tgt-'+n;
-    bar.appendChild(el);
-  });
+  // Assign to all 50 cells — active ones get numbers, rest inactive
+  var activeCells=[];
+  for(var i=0;i<50;i++)activeCells.push(i);
+  shuffle(activeCells);
+  var activeSet=activeCells.slice(0,cellCount);
 
-  // Fill court cells
-  resetCells();
-  var activeCells=shuffle(Array.from({length:50},(_,i)=>i)).slice(0,cellCount);
-  // Assign pool numbers to active cells — ensure all pool numbers appear
-  var numAssign=pool.slice();
-  // Fill remaining active cells with random non-pool numbers
-  while(numAssign.length<cellCount){
-    var extra=Math.floor(Math.random()*99)+1;
-    if(pool.indexOf(extra)===-1&&numAssign.indexOf(extra)===-1)numAssign.push(extra);
-  }
-  shuffle(numAssign);
   courtNums=new Array(50).fill(null);
-  activeCells.forEach(function(ci,i){
-    courtNums[ci]=numAssign[i];
-    cells[ci].className='cell active';
-    cells[ci].textContent=numAssign[i];
-    var fs=cellCount>35?'clamp(.7rem,1.4vw,1.2rem)':cellCount>20?'clamp(.85rem,1.7vw,1.5rem)':'clamp(1rem,2vw,1.8rem)';
-    cells[ci].style.fontSize=fs;
+  activeSet.forEach(function(ci,i){courtNums[ci]=nums[i]});
+
+  // Show ALL 50 cells numbered (preview)
+  cells.forEach(function(c,i){
+    if(courtNums[i]!==null){
+      c.className='cell preview';
+      c.textContent=courtNums[i];
+    }else{
+      c.className='cell inactive';
+      c.textContent='';
+    }
   });
 
-  msg('🎯 FIND THE NUMBER'+(stg.find>1?'S':'')+'!','go');
+  // Pick targets from active cells
+  shuffle(activeSet);
+  targets=activeSet.slice(0,findCount).map(function(ci){return courtNums[ci]});
 
-  // Clock
-  var startMs=performance.now();
-  $('clockFill').style.width='100%';
-  function tick(){
-    var pct=Math.max(0,1-(performance.now()-startMs)/timeLimit);
-    $('clockFill').style.width=(pct*100)+'%';
-    if(pct<=0){onMiss("TIME'S UP!");return}
-    if(phase==='playing')shrinkRAF=requestAnimationFrame(tick);
-  }
-  shrinkRAF=requestAnimationFrame(tick);
+  msg('SCAN THE COURT — MEMORIZE THE LAYOUT','preview');
+  $('targetBar').innerHTML='<div class="target-label">READY →</div>';
+
+  // Preview period — show court for 1.5 seconds then reveal targets and start clock
+  timers.push(setTimeout(function(){
+    if(phase!=='preview')return;
+
+    // Show targets in bar
+    var bar=$('targetBar');
+    bar.innerHTML='<div class="target-label">FIND →</div>';
+    targets.forEach(function(n){
+      var el=document.createElement('div');
+      el.className='target-num';el.textContent=n;el.id='tgt-'+n;
+      bar.appendChild(el);
+    });
+
+    // Switch cells to active (clickable)
+    cells.forEach(function(c,i){
+      if(courtNums[i]!==null){
+        c.className='cell active';
+      }
+    });
+
+    phase='playing';
+    msg('🎯 FIND '+(findCount>1?'THEM':'IT')+'!','go');
+
+    // Start clock
+    var startMs=performance.now();
+    $('clockFill').style.width='100%';
+    function tick(){
+      var pct=Math.max(0,1-(performance.now()-startMs)/timeLimit);
+      $('clockFill').style.width=(pct*100)+'%';
+      if(pct<=0){onMiss("TIME'S UP!");return}
+      if(phase==='playing')shrinkRAF=requestAnimationFrame(tick);
+    }
+    shrinkRAF=requestAnimationFrame(tick);
+
+  },1500));
 }
 
 function handleTap(idx){
@@ -261,67 +279,69 @@ function handleTap(idx){
   if(num===null)return;
   var isTarget=targets.indexOf(num)!==-1;
   var alreadyFound=found.indexOf(num)!==-1;
+
   if(isTarget&&!alreadyFound){
     cells[idx].className='cell correct';
     found.push(num);
-    // Strike through in target bar
     var te=$('tgt-'+num);if(te)te.classList.add('found');
-    var stg=STAGES[g.stage];
-    if(found.length>=stg.find){
-      // All targets found — success
-      clrT();
-      g.sc+=stg.find*10*g.lv;g.st++;
+
+    if(found.length>=targets.length){
+      // Round complete
+      clrT();phase='idle';
+      g.sc+=g.stage*g.round*10;g.st++;
       if(g.st>best)best=g.st;
-      // Level up
-      if(g.lv<10){
-        g.lv++;
-        updateHUD();
-        msg('🔥 LEVEL '+g.lv+'! NEXT ROUND','perfect');
-      }else{
+      updateHUD();
+
+      if(g.round>=TOTAL_ROUNDS){
         // Stage complete
-        if(g.stage<STAGES.length-1){
-          g.stage++;g.lv=1;
-          updateHUD();
-          msg('⭐ STAGE '+(g.stage+1)+'! NEW CHALLENGE','perfect');
+        if(g.stage>=TOTAL_STAGES){
+          msg('🏆 CHAMPION! ALL 5 STAGES MASTERED!','perfect');
+          timers.push(setTimeout(resetAllAndRestart,2500));
         }else{
-          updateHUD();
-          msg('🏆 CHAMPION! ALL STAGES COMPLETE','perfect');
+          g.stage++;g.round=1;
+          msg('⭐ STAGE '+g.stage+' UNLOCKED! FIND '+g.stage+' NUMBERS!','perfect');
+          timers.push(setTimeout(nextRound,1800));
         }
+      }else{
+        g.round++;
+        msg('✅ ROUND CLEAR! +5 CELLS','perfect');
+        timers.push(setTimeout(nextRound,1000));
       }
-      phase='idle';
-      timers.push(setTimeout(function(){
-        resetCells();$('clockFill').style.width='100%';
-        $('targetBar').innerHTML='<div class="target-label">FIND →</div>';
-        msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;
-      },1400));
     }else{
-      msg('✅ '+found.length+'/'+stg.find+' FOUND — KEEP GOING!','perfect');
+      msg('✅ '+found.length+'/'+targets.length+' — KEEP GOING!','perfect');
     }
-  }else if(isTarget&&alreadyFound){
-    // Already found — ignore
-  }else{
-    // Wrong number
+  }else if(!alreadyFound){
     cells[idx].className='cell wrong';
     onMiss('WRONG NUMBER!');
   }
 }
 
+function nextRound(){
+  resetAll();updateHUD();
+  msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;
+}
+
+function resetAllAndRestart(){
+  g={stage:1,round:1,sc:0,st:0};
+  resetAll();updateHUD();
+  msg("TAP LET'S GO!",'watch');
+  $('actBtn').disabled=false;
+}
+
 function onMiss(reason){
-  if(phase!=='playing')return;
+  if(phase==='idle')return;
   clrT();phase='idle';
-  // Reveal targets
+  // Reveal unfound targets
   cells.forEach(function(c,i){
     if(courtNums[i]!==null&&targets.indexOf(courtNums[i])!==-1&&found.indexOf(courtNums[i])===-1){
       c.className='cell reveal';
     }
   });
-  g.st=0;updateHUD();
-  msg(reason,'miss');
-  timers.push(setTimeout(function(){
-    resetCells();$('clockFill').style.width='100%';
-    $('targetBar').innerHTML='<div class="target-label">FIND →</div>';
-    updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;
-  },2000));
+  g.st=0;g.round=1;// Reset round within stage on miss
+  updateHUD();
+  msg(reason+' — ROUND RESET','miss');
+  timers.push(setTimeout(nextRound,2000));
 }
 
 $('actBtn').onclick=startRound;
