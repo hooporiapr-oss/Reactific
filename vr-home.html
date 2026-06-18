@@ -25,39 +25,50 @@ body::before{
   pointer-events:none;
 }
 .wrap{width:100%;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.header{text-align:center;padding:10px 16px 6px;flex-shrink:0}
+.header{text-align:center;padding:10px 16px 4px;flex-shrink:0}
 .vr-badge{display:inline-block;background:rgba(0,140,255,.15);border:1px solid rgba(0,140,255,.4);border-radius:999px;padding:3px 14px;font-size:.55rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#008cff;margin-bottom:5px}
 .vr-logo{font-size:2rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 30px rgba(0,140,255,.6)}
 .vr-logo span{color:#008cff}
 .vr-sub{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:3px}
-.games{
-  flex:1;display:grid;
+
+/* TWO CATEGORY SECTIONS */
+.categories{
+  flex:1;display:flex;flex-direction:column;
+  padding:6px 14px 8px;gap:8px;min-height:0;overflow:hidden;
+}
+.cat-label{
+  font-size:.55rem;font-weight:900;letter-spacing:.25em;
+  text-transform:uppercase;padding:0 4px;margin-bottom:2px;
+}
+.games-row{
+  display:grid;
   grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  gap:10px;
-  padding:8px 14px 10px;
-  min-height:0;
+  gap:8px;flex:1;min-height:0;
 }
 .game-tile{
-  border-radius:16px;padding:10px;
+  border-radius:14px;padding:8px;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   cursor:pointer;text-decoration:none;
-  border:2px solid rgba(255,255,255,.1);
+  border:2px solid rgba(255,255,255,.08);
   background:rgba(0,0,0,.4);
   position:relative;overflow:hidden;
   transition:transform .15s,box-shadow .15s;
+  min-height:0;
 }
 .game-tile::before{content:'';position:absolute;inset:0;background:var(--tc);opacity:.07;transition:opacity .15s}
 .game-tile:hover::before{opacity:.16}
-.game-tile:hover{transform:scale(1.03);box-shadow:0 0 28px var(--tg)}
-.tile-border{position:absolute;inset:0;border-radius:16px;border:2px solid var(--tc);opacity:.3;pointer-events:none}
-.tile-icon{font-size:2.2rem;margin-bottom:6px;line-height:1}
-.tile-name{font-size:.85rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.1}
-.tile-sub{font-size:.5rem;color:#a7adba;letter-spacing:.1em;text-transform:uppercase;margin-top:4px;text-align:center}
-.tile-badge{position:absolute;top:8px;right:8px;background:var(--tc);color:#fff;font-size:.45rem;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:999px;text-transform:uppercase}
-.footer{text-align:center;padding:4px 16px 8px;flex-shrink:0}
-.footer-text{font-size:.5rem;color:#2a3240;letter-spacing:.12em;text-transform:uppercase}
+.game-tile:hover{transform:scale(1.03);box-shadow:0 0 24px var(--tg)}
+.tile-border{position:absolute;inset:0;border-radius:14px;border:2px solid var(--tc);opacity:.3;pointer-events:none}
+.tile-icon{font-size:1.8rem;margin-bottom:4px;line-height:1}
+.tile-name{font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.15}
+.tile-sub{font-size:.45rem;color:#a7adba;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;text-align:center}
+.tile-badge{position:absolute;top:6px;right:6px;background:var(--tc);color:#fff;font-size:.4rem;font-weight:900;letter-spacing:.08em;padding:2px 6px;border-radius:999px;text-transform:uppercase}
+
+.divider{height:1px;background:rgba(255,255,255,.06);margin:0 4px}
+
+.footer{text-align:center;padding:3px 16px 6px;flex-shrink:0}
+.footer-text{font-size:.45rem;color:#2a3240;letter-spacing:.12em;text-transform:uppercase}
 .footer-text span{color:#008cff}
 </style>
 </head>
@@ -70,61 +81,69 @@ body::before{
     <div class="vr-sub">Pico VR · Gostar Digital™</div>
   </div>
 
-  <div class="games">
+  <div class="categories">
 
-    <!-- 1 Reaction Control -->
-    <a class="game-tile" href="/vr-reaction.html" style="--tc:#9B59B6;--tg:rgba(155,89,182,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">⚡</div>
-      <div class="tile-name">Reaction Control</div>
-      <div class="tile-sub">See it · Tap it · React</div>
-      <div class="tile-badge">Reflex</div>
-    </a>
+    <!-- REFLEX ARENA -->
+    <div class="cat-label" style="color:#FF1493">⚡ REFLEX ARENA</div>
+    <div class="games-row">
 
-    <!-- 2 Pattern Recognition -->
-    <a class="game-tile" href="/vr-pattern.html" style="--tc:#FF6B35;--tg:rgba(255,107,53,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">🧩</div>
-      <div class="tile-name">Pattern Recognition</div>
-      <div class="tile-sub">Watch · Remember · Tap</div>
-      <div class="tile-badge">Memory</div>
-    </a>
+      <a class="game-tile" href="/vr-reaction.html" style="--tc:#9B59B6;--tg:rgba(155,89,182,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">⚡</div>
+        <div class="tile-name">Reaction Control</div>
+        <div class="tile-sub">Tap · Before · It Vanishes</div>
+        <div class="tile-badge">Reflex</div>
+      </a>
 
-    <!-- 3 Flash Recall -->
-    <a class="game-tile" href="/vr-sequence.html" style="--tc:#00CED1;--tg:rgba(0,206,209,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">🔢</div>
-      <div class="tile-name">Flash Recall</div>
-      <div class="tile-sub">Watch · Remember · Find</div>
-      <div class="tile-badge">Memory</div>
-    </a>
+      <a class="game-tile" href="/vr-colormatch.html" style="--tc:#FFD700;--tg:rgba(255,215,0,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">🎨</div>
+        <div class="tile-name">Color Match</div>
+        <div class="tile-sub">Read · Decide · Tap</div>
+        <div class="tile-badge">Decision</div>
+      </a>
 
-    <!-- 4 Sequence Control -->
-    <a class="game-tile" href="/vr-focus.html" style="--tc:#00D9A5;--tg:rgba(0,217,165,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">🎵</div>
-      <div class="tile-name">Sequence Control</div>
-      <div class="tile-sub">Watch · Remember · Replay</div>
-      <div class="tile-badge">Sequence</div>
-    </a>
+      <a class="game-tile" href="/vr-memflash.html" style="--tc:#00BFFF;--tg:rgba(0,191,255,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">💡</div>
+        <div class="tile-name">Memory Flash</div>
+        <div class="tile-sub">See · Remember · Find</div>
+        <div class="tile-badge">Visual</div>
+      </a>
 
-    <!-- 5 Echo Recall -->
-    <a class="game-tile" href="/vr-recovery.html" style="--tc:#9ACD32;--tg:rgba(154,205,50,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">🌱</div>
-      <div class="tile-name">Echo Recall</div>
-      <div class="tile-sub">Watch · Echo · Spot Change</div>
-      <div class="tile-badge">Recovery</div>
-    </a>
+    </div>
 
-    <!-- 6 Number Hunt -->
-    <a class="game-tile" href="/vr-numhunt.html" style="--tc:#ff6b00;--tg:rgba(255,107,0,.5)">
-      <div class="tile-border"></div>
-      <div class="tile-icon">🎯</div>
-      <div class="tile-name">Number Hunt</div>
-      <div class="tile-sub">Find · Point · Trigger</div>
-      <div class="tile-badge">Flagship</div>
-    </a>
+    <div class="divider"></div>
+
+    <!-- COGNITIVE COURT -->
+    <div class="cat-label" style="color:#00D9A5">🧠 COGNITIVE COURT</div>
+    <div class="games-row">
+
+      <a class="game-tile" href="/vr-pattern.html" style="--tc:#FF6B35;--tg:rgba(255,107,53,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">🧩</div>
+        <div class="tile-name">Pattern Recognition</div>
+        <div class="tile-sub">Watch · Remember · Tap</div>
+        <div class="tile-badge">Memory</div>
+      </a>
+
+      <a class="game-tile" href="/vr-sequence.html" style="--tc:#00CED1;--tg:rgba(0,206,209,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">🔢</div>
+        <div class="tile-name">Flash Recall</div>
+        <div class="tile-sub">Watch · Remember · Find</div>
+        <div class="tile-badge">Memory</div>
+      </a>
+
+      <a class="game-tile" href="/vr-focus.html" style="--tc:#00D9A5;--tg:rgba(0,217,165,.5)">
+        <div class="tile-border"></div>
+        <div class="tile-icon">🎵</div>
+        <div class="tile-name">Sequence Control</div>
+        <div class="tile-sub">Watch · Remember · Replay</div>
+        <div class="tile-badge">Sequence</div>
+      </a>
+
+    </div>
 
   </div>
 
