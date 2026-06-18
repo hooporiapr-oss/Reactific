@@ -7,73 +7,55 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
 
-#screen-intro{
-  position:fixed;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at center,#0a0a00 0%,#000 70%);z-index:100;
-}
-.vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(255,215,0,1);margin-bottom:8px}
+#screen-intro{background:radial-gradient(ellipse at center,#0a0a00 0%,#000 70%);position:relative}
+.back-home{position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none}
+.vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;animation:logoGlow 1.5s ease-in-out infinite alternate;margin-bottom:6px}
 .vrr-logo span{color:#FFD700}
-.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#FFD700;margin-bottom:8px;text-align:center}
-.vrr-rule{font-size:.9rem;color:#fff;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;text-align:center}
-.big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(255,215,0,.7);margin-bottom:14px}
-.big-btn:hover{transform:scale(1.03)}
+@keyframes logoGlow{from{text-shadow:0 0 40px rgba(255,215,0,.6)}to{text-shadow:0 0 80px rgba(255,215,0,1),0 0 120px rgba(255,215,0,.4)}}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#FFD700;margin-bottom:6px;text-align:center}
+.vrr-rule{font-size:.9rem;color:#ffd35a;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;text-align:center}
+
+.intro-demo{width:260px;height:100px;margin-bottom:16px;flex-shrink:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,1fr);gap:4px}
+.demo-cell{border-radius:6px;border:1px solid rgba(255,255,255,.1);transition:all .3s}
+
 .speed-row{display:flex;gap:12px;margin-bottom:14px}
 .speed-btn{width:130px;height:64px;border:3px solid rgba(255,215,0,.4);background:rgba(255,215,0,.08);border-radius:18px;color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
-.speed-btn.active{border-color:#FFD700;background:rgba(255,215,0,.22);box-shadow:0 0 30px rgba(255,215,0,.6);color:#FFD700}
+.speed-btn.active{border-color:#FFD700;background:rgba(255,215,0,.2);box-shadow:0 0 30px rgba(255,215,0,.5);color:#FFD700}
 .speed-btn small{display:block;font-size:.7rem;color:#a7adba;letter-spacing:.1em}
+.big-btn{width:420px;height:80px;border:none;border-radius:24px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-size:1.6rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(255,215,0,.7);margin-bottom:14px;animation:btnPulse 2s ease-in-out infinite}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 40px rgba(255,215,0,.7)}50%{box-shadow:0 0 80px rgba(255,215,0,1)}}
 .intro-info{font-size:.75rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8}
 .intro-info strong{color:#FFD700}
 
-#screen-game{
-  position:fixed;inset:0;display:none;flex-direction:column;
-  background:radial-gradient(circle at 50% 50%,#0a0a00 0%,#000 70%);
-}
-.topbar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;padding:6px 10px 4px;flex-shrink:0}
+#screen-game{background:radial-gradient(ellipse at center,#0a0a00 0%,#000 70%);justify-content:space-between;padding:12px 16px;min-height:100vh}
+.topbar{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;flex-shrink:0}
 .top-box{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;padding:4px 6px;background:rgba(0,0,0,.4);border:2px solid rgba(255,215,0,.3)}
 .top-label{font-size:.5rem;color:#FFD700;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
 .top-val{font-size:1.3rem;font-weight:900;line-height:1;color:#fff}
 
-/* TAP THIS indicator */
-.tap-indicator{
-  display:flex;align-items:center;justify-content:center;gap:16px;
-  flex-shrink:0;padding:4px 10px;
-}
-.tap-label{font-size:.7rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#a7adba}
-.tap-circle{
-  width:60px;height:60px;border-radius:50%;
-  border:4px solid rgba(255,255,255,.3);
-  transition:all .2s;
-  box-shadow:0 0 30px currentColor;
-}
-.tap-arrow{font-size:1.4rem;color:#fff;opacity:.6}
+/* COLOR INDICATOR */
+.color-indicator{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:16px;padding:4px 0}
+.ind-label{font-size:.65rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#a7adba}
+.ind-circle{width:56px;height:56px;border-radius:50%;border:3px solid rgba(255,255,255,.4);transition:all .3s;box-shadow:0 0 20px currentColor;flex-shrink:0}
+.ind-name{font-size:1.2rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;min-width:80px;text-align:left}
 
 .clockbar{height:6px;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}
 .clockbar-fill{height:100%;background:linear-gradient(90deg,#FFD700,#FFA500);transition:width .05s linear}
 .msg-bar{text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 10px}
 .msg-bar.watch{color:#FFD700}.msg-bar.go{color:#fff}.msg-bar.perfect{color:#00D9A5}.msg-bar.miss{color:#FF1493}
-
-.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;min-height:0;position:relative}
-.court{width:100%;height:100%;position:relative;border-radius:20px;background:radial-gradient(ellipse at center,#0a0a00 0%,#000 80%);border:1px solid rgba(255,215,0,.1);overflow:hidden}
-
-.circle{
-  position:absolute;
-  border-radius:50%;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transform:translate(-50%,-50%);
-  transition:opacity .1s;
-  border:3px solid rgba(255,255,255,.2);
-}
-.circle.correct-flash{
-  box-shadow:0 0 80px #fff!important;
-  transform:translate(-50%,-50%) scale(1.3)!important;
-}
-.circle.wrong-flash{
-  box-shadow:0 0 80px rgba(255,20,147,.9)!important;
-}
-
+.stars{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;padding:2px 0}
+.star{font-size:1rem;opacity:.2;transition:all .3s}
+.star.earned{opacity:1;filter:drop-shadow(0 0 6px #FFD700);transform:scale(1.2)}
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
+.court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(255,215,0,.2);border-radius:14px;padding:6px;background:rgba(10,10,0,.85);box-shadow:0 0 60px rgba(255,215,0,.2),0 20px 60px rgba(0,0,0,.8)}
+.cell{border-radius:8px;background:rgba(255,215,0,.06);border:2px solid rgba(255,215,0,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0}
+.cell:hover{background:rgba(255,215,0,.15);border-color:#FFD700;transform:scale(1.05)}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 30px rgba(0,217,165,.8)!important}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .bottombar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:4px 10px 6px;gap:8px;flex-shrink:0}
 .bot-btn{height:48px;border:2px solid rgba(255,215,0,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 .bot-btn span{display:block;color:#FFD700;font-size:.55rem;margin-top:1px}
@@ -83,26 +65,27 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 </head>
 <body>
 
-<div id="screen-intro">
-  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
+<div class="screen active" id="screen-intro">
+  <a class="back-home" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">COLOR <span>MATCH</span></div>
-  <div class="vrr-sub">VR Court · Reactific™</div>
-  <div class="vrr-rule">🎯 READ THE COLOR — TAP THE MATCH</div>
+  <div class="vrr-sub">5×10 VR Court · Reactific™</div>
+  <div class="vrr-rule">🎨 READ THE COLOR — TAP THE MATCH</div>
+  <div class="intro-demo" id="introDemo"></div>
   <div class="speed-row">
     <button class="speed-btn active" data-time="3000">SLOW<small>3 SEC</small></button>
     <button class="speed-btn" data-time="2000">TEMPO<small>2 SEC</small></button>
     <button class="speed-btn" data-time="1500">ELITE<small>1.5 SEC</small></button>
   </div>
-  <button class="big-btn" id="startBtn">🎯 ENTER THE COURT</button>
+  <button class="big-btn" id="startBtn">🎨 ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>TWO CIRCLES</strong> — appear on the court<br>
-    <strong>READ THE INDICATOR</strong> — which color to tap<br>
-    <strong>TAP THE MATCH</strong> — before they shrink<br>
+    <strong>COLOR INDICATOR</strong> — shows target color<br>
+    <strong>COLORED CELLS</strong> — appear across the 5×10 court<br>
+    <strong>TAP THE MATCH</strong> — find the right color<br>
     <strong>WRONG TAP</strong> — session ends instantly
   </div>
 </div>
 
-<div id="screen-game">
+<div class="screen" id="screen-game">
   <div class="topbar">
     <div class="top-box"><div class="top-label">Score</div><div class="top-val" id="hSc">0</div></div>
     <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hHits">0</div></div>
@@ -112,19 +95,16 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="top-box"><div class="top-label">Window</div><div class="top-val" id="hSpd">3.0s</div></div>
   </div>
 
-  <!-- TAP THIS INDICATOR -->
-  <div class="tap-indicator">
-    <div class="tap-label">TAP</div>
-    <div class="tap-circle" id="tapCircle"></div>
-    <div class="tap-arrow">→</div>
-    <div class="tap-label" id="tapName" style="font-size:1rem;color:#fff;font-weight:900;letter-spacing:.1em"></div>
+  <div class="color-indicator">
+    <div class="ind-label">TAP</div>
+    <div class="ind-circle" id="indCircle"></div>
+    <div class="ind-name" id="indName" style="color:#FFD700">—</div>
   </div>
 
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
   <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
-  <div class="court-area">
-    <div class="court" id="court"></div>
-  </div>
+  <div class="stars"><span class="star" id="ps1">⭐</span><span class="star" id="ps2">⭐</span><span class="star" id="ps3">⭐</span></div>
+  <div class="court-area"><div class="court" id="court"></div></div>
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
@@ -136,177 +116,133 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <script>
 (function(){
 var $=id=>document.getElementById(id);
-var baseTime=3000, best=0;
+var baseTime=3000,best=0;
 
-// Color palette
 var COLORS=[
-  {name:'PURPLE', bg:'radial-gradient(circle at 35% 35%,#A873B8,#9B59B6)', glow:'rgba(155,89,182,1)', hex:'#9B59B6'},
-  {name:'CYAN',   bg:'radial-gradient(circle at 35% 35%,#40E0D0,#00CED1)', glow:'rgba(0,206,209,1)',  hex:'#00CED1'},
-  {name:'ORANGE', bg:'radial-gradient(circle at 35% 35%,#ff8a5c,#FF6B35)', glow:'rgba(255,107,53,1)', hex:'#FF6B35'},
-  {name:'LIME',   bg:'radial-gradient(circle at 35% 35%,#B8E050,#9ACD32)', glow:'rgba(154,205,50,1)', hex:'#9ACD32'},
-  {name:'PINK',   bg:'radial-gradient(circle at 35% 35%,#ff69b4,#FF1493)', glow:'rgba(255,20,147,1)', hex:'#FF1493'},
-  {name:'TEAL',   bg:'radial-gradient(circle at 35% 35%,#00D9A5,#00B894)', glow:'rgba(0,217,165,1)',  hex:'#00D9A5'},
+  {name:'PURPLE', bg:'#9B59B6', glow:'rgba(155,89,182,.9)'},
+  {name:'CYAN',   bg:'#00CED1', glow:'rgba(0,206,209,.9)'},
+  {name:'ORANGE', bg:'#FF6B35', glow:'rgba(255,107,53,.9)'},
+  {name:'LIME',   bg:'#9ACD32', glow:'rgba(154,205,50,.9)'},
+  {name:'PINK',   bg:'#FF1493', glow:'rgba(255,20,147,.9)'},
+  {name:'TEAL',   bg:'#00D9A5', glow:'rgba(0,217,165,.9)'},
 ];
+
+// Animate intro demo
+(function(){
+  var demo=$('introDemo');
+  COLORS.slice(0,10).forEach(function(c,i){
+    var cell=document.createElement('div');
+    cell.className='demo-cell';
+    if(i<6)cell.style.background=COLORS[i%6].bg;
+    else cell.style.background='rgba(255,215,0,.08)';
+    demo.appendChild(cell);
+  });
+})();
 
 document.querySelectorAll('[data-time]').forEach(btn=>{btn.onclick=function(){baseTime=Number(btn.dataset.time);document.querySelectorAll('[data-time]').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}});
 
-$('startBtn').onclick=function(){$('screen-intro').style.display='none';$('screen-game').style.display='flex';initGame()};
-$('menuBtn').onclick=function(){stopSession();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
+$('startBtn').onclick=function(){$('screen-intro').classList.remove('active');$('screen-game').classList.add('active');buildCourt();initGame()};
+$('menuBtn').onclick=function(){stopSession();$('screen-game').classList.remove('active');$('screen-intro').classList.add('active')};
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
+var cells=[];
+function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.onclick=(function(idx){return function(){handleTap(idx)}})(i);court.appendChild(c);cells.push(c)}}
+function cellSt(i,bg,glow){cells[i].className='cell';if(bg){cells[i].style.background=bg;cells[i].style.borderColor=bg;cells[i].style.boxShadow='0 0 14px '+glow}else{cells[i].style.background='';cells[i].style.borderColor='';cells[i].style.boxShadow=''}}
+function resetCells(){cells.forEach((_,i)=>cellSt(i))}
+
 var g={lv:1,sc:0,hits:0,st:0};
-var phase='idle',shrinkRAF=null,timers=[];
-var targetColor=null, circleEls=[], dotSize=0, currentTime=0;
-
-function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
-function getWindow(){return Math.max(600, baseTime-(g.hits*35))}
-function getDotSize(){return Math.max(45, 130-(g.lv-1)*8)}
-function getCircleCount(){
-  // More circles at higher levels — more color choices
-  if(g.lv<=3)return 2;
-  if(g.lv<=6)return 3;
-  if(g.lv<=9)return 4;
-  return 5;
-}
-
-function updateHUD(){
-  $('hSc').textContent=g.sc;$('hHits').textContent=g.hits;
-  $('hBest').textContent=best;$('hLv').textContent=g.lv;
-  $('hSt').textContent=g.st;$('hSpd').textContent=(getWindow()/1000).toFixed(1)+'s';
-}
+function getColorCount(){return Math.min(3+Math.floor(g.lv/2),6)}
+function getWindow(){return Math.max(800,baseTime-(g.hits*35))}
+function updateHUD(){$('hSc').textContent=g.sc;$('hHits').textContent=g.hits;$('hBest').textContent=best;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hSpd').textContent=(getWindow()/1000).toFixed(1)+'s';for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.hits>=(j*10)?' earned':'')}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 
-function randomPos(size, existing){
-  var c=$('court'),w=c.offsetWidth,h=c.offsetHeight,pad=size/2+16;
-  var attempts=0, pos;
-  do{
-    pos={x:pad+Math.random()*(w-pad*2), y:pad+Math.random()*(h-pad*2)};
-    attempts++;
-    var ok=true;
-    existing.forEach(function(e){
-      var dx=pos.x-e.x, dy=pos.y-e.y;
-      if(Math.sqrt(dx*dx+dy*dy)<size*2.2)ok=false;
-    });
-    if(ok||attempts>20)break;
-  }while(true);
-  return pos;
-}
+function initGame(){g={lv:1,sc:0,hits:0,st:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startSession;$('clockFill').style.width='100%';resetCells();$('indCircle').style.background='';$('indName').textContent='—'}
+function stopSession(){clrT();phase='idle';resetCells()}
 
-function initGame(){
-  g={lv:1,sc:0,hits:0,st:0};
-  updateHUD();msg("TAP LET'S GO!",'watch');
-  $('actBtn').disabled=false;$('actBtn').onclick=startSession;
-  $('court').innerHTML='';$('clockFill').style.width='100%';
-  $('tapCircle').style.background='';$('tapName').textContent='';
-}
-
-function stopSession(){clrT();phase='idle';$('court').innerHTML=''}
+var phase='idle',targetColorIdx=-1,colorAssignments=[],shrinkRAF=null,timers=[];
+function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
 
 function startSession(){
   if(phase!=='idle')return;
-  phase='playing';
-  $('actBtn').disabled=true;
+  phase='playing';$('actBtn').disabled=true;
   msg('GET READY...','watch');
   timers.push(setTimeout(function(){
-    msg('READ THE COLOR — TAP IT!','go');
-    timers.push(setTimeout(fireDot,400));
+    msg('TAP THE MATCHING COLOR!','go');
+    timers.push(setTimeout(fireRound,400));
   },700));
 }
 
-function fireDot(){
+function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
+
+function fireRound(){
   if(phase!=='playing')return;
-  clrT();
-  dotSize=getDotSize();
-  currentTime=getWindow();
+  clrT();resetCells();
 
-  // Clear court
-  $('court').innerHTML='';
-  circleEls=[];
-
-  // Pick colors for this round
-  var count=getCircleCount();
-  var shuffled=COLORS.slice().sort(function(){return Math.random()-.5});
-  var roundColors=shuffled.slice(0,count);
-
-  // Pick which one is the target
-  var targetIdx=Math.floor(Math.random()*count);
-  targetColor=roundColors[targetIdx];
+  var count=getColorCount();
+  var colorPool=shuffle(COLORS.slice()).slice(0,count);
+  targetColorIdx=Math.floor(Math.random()*count);
+  var target=colorPool[targetColorIdx];
 
   // Show indicator
-  $('tapCircle').style.cssText='width:60px;height:60px;border-radius:50%;border:4px solid rgba(255,255,255,.5);background:'+targetColor.bg+';box-shadow:0 0 20px '+targetColor.glow;
-  $('tapName').textContent=targetColor.name;
-  $('tapName').style.color=targetColor.hex;
+  $('indCircle').style.background=target.bg;
+  $('indCircle').style.boxShadow='0 0 20px '+target.glow;
+  $('indName').textContent=target.name;
+  $('indName').style.color=target.bg;
 
-  // Place circles
-  var positions=[];
-  roundColors.forEach(function(col, idx){
-    var pos=randomPos(dotSize, positions);
-    positions.push(pos);
-    var el=document.createElement('div');
-    el.className='circle';
-    el.style.cssText='position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%);width:'+dotSize+'px;height:'+dotSize+'px;left:'+pos.x+'px;top:'+pos.y+'px;background:'+col.bg+';box-shadow:0 0 30px '+col.glow+';border:3px solid rgba(255,255,255,.2)';
-    var isTarget=(idx===targetIdx);
-    el.onclick=(function(it,c){return function(){handleTap(it,c)}})(isTarget,col);
-    $('court').appendChild(el);
-    circleEls.push({el:el, isTarget:isTarget});
+  // Assign colors to random cells — each color gets 4-8 cells
+  colorAssignments=new Array(50).fill(-1);
+  var cellsPerColor=Math.floor(50/count);
+  var allCells=shuffle(Array.from({length:50},(_,i)=>i));
+  colorPool.forEach(function(col,ci){
+    allCells.slice(ci*cellsPerColor,(ci+1)*cellsPerColor).forEach(function(idx){
+      colorAssignments[idx]=ci;
+      cellSt(idx,col.bg,col.glow);
+    });
   });
 
-  // Shrink animation
-  var startMs=performance.now();
+  // Shrink — cells fade over time
+  var cw=getWindow(),startMs=performance.now();
   $('clockFill').style.width='100%';
-
   function shrink(){
-    var elapsed=performance.now()-startMs;
-    var pct=Math.max(0,1-(elapsed/currentTime));
-    var curSize=dotSize*pct;
-    circleEls.forEach(function(c){
-      c.el.style.width=curSize+'px';
-      c.el.style.height=curSize+'px';
-    });
+    var pct=Math.max(0,1-(performance.now()-startMs)/cw);
     $('clockFill').style.width=(pct*100)+'%';
-    if(pct<=0){onMiss('GONE!');return}
+    // Fade cells
+    cells.forEach(function(c){c.style.opacity=Math.max(.15,pct)});
+    if(pct<=0){onMiss('TIME\'S UP!');return}
     if(phase==='playing')shrinkRAF=requestAnimationFrame(shrink);
   }
   shrinkRAF=requestAnimationFrame(shrink);
 }
 
-function handleTap(isTarget, col){
+function handleTap(idx){
   if(phase!=='playing')return;
   clrT();
-  if(isTarget){
-    // Correct
-    var pts=15+g.hits;
-    g.sc+=pts;g.hits++;g.st++;
+  cells.forEach(function(c){c.style.opacity='1'});
+  if(colorAssignments[idx]===targetColorIdx){
+    cells[idx].className='cell correct';
+    var pts=15+g.hits;g.sc+=pts;g.hits++;g.st++;
     if(g.hits>best)best=g.hits;
-    if(g.hits%10===0&&g.lv<10){g.lv++}
-    updateHUD();
-    msg('✅ '+targetColor.name+'! '+g.hits+' HITS','perfect');
-    // Flash correct
-    circleEls.forEach(function(c){if(c.isTarget)c.el.style.boxShadow='0 0 80px #fff'});
-    timers.push(setTimeout(function(){if(phase==='playing')fireDot()},350));
+    if(g.hits%10===0&&g.lv<10)g.lv++;
+    updateHUD();msg('✅ '+g.hits+' HITS!','perfect');
+    timers.push(setTimeout(function(){if(phase==='playing')fireRound()},350));
   }else{
-    // Wrong color
+    cells[idx].className='cell wrong';
     onMiss('WRONG COLOR!');
   }
 }
 
 function onMiss(reason){
-  if(phase!=='playing'&&reason!=='GONE!')return;
   phase='idle';clrT();
+  cells.forEach(function(c){c.style.opacity='1'});
   if(g.hits>best)best=g.hits;
   g.st=0;updateHUD();
   msg(reason+' '+g.hits+' HITS','miss');
-  // Flash wrong
-  circleEls.forEach(function(c){
-    if(!c.isTarget)c.el.style.boxShadow='0 0 40px rgba(255,20,147,.9)';
-  });
   timers.push(setTimeout(function(){
-    $('court').innerHTML='';$('clockFill').style.width='100%';
-    $('tapCircle').style.background='';$('tapName').textContent='';
-    updateHUD();
-    msg("TAP LET'S GO! BEST: "+best,'watch');
+    resetCells();$('clockFill').style.width='100%';
+    $('indCircle').style.background='';$('indName').textContent='—';
+    updateHUD();msg("TAP LET'S GO! BEST: "+best,'watch');
     $('actBtn').disabled=false;
-  },1500));
+  },1800));
 }
 
 $('actBtn').onclick=startSession;
