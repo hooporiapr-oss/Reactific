@@ -43,12 +43,12 @@ body::before{
   transition:transform .15s,box-shadow .15s;
   min-height:0;
 }
-.game-tile::before{content:'';position:absolute;inset:0;background:var(--tc);opacity:.06;transition:opacity .15s}
-.game-tile:hover::before{opacity:.14}
+.game-tile::before{content:'';position:absolute;inset:0;background:var(--tc);opacity:.07;transition:opacity .15s}
+.game-tile:hover::before{opacity:.16}
 .game-tile:hover{transform:scale(1.03);box-shadow:0 0 24px var(--tg)}
 .tile-border{position:absolute;inset:0;border-radius:14px;border:2px solid var(--tc);opacity:.3;pointer-events:none}
-.tile-art{width:64px;height:64px;margin-bottom:5px;flex-shrink:0}
-.tile-name{font-size:.72rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.15}
+.tile-icon{font-size:2rem;margin-bottom:5px;line-height:1}
+.tile-name{font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.15}
 .tile-sub{font-size:.44rem;color:#a7adba;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;text-align:center}
 .tile-badge{position:absolute;top:6px;right:6px;background:var(--tc);color:#fff;font-size:.4rem;font-weight:900;letter-spacing:.08em;padding:2px 6px;border-radius:999px;text-transform:uppercase}
 .divider{height:1px;background:rgba(255,255,255,.06);margin:0 4px}
@@ -71,87 +71,28 @@ body::before{
     <div class="cat-label" style="color:#FF1493">⚡ REFLEX ARENA</div>
     <div class="games-row">
 
-      <!-- REACTION CONTROL -->
       <a class="game-tile" href="/vr-reaction.html" style="--tc:#9B59B6;--tg:rgba(155,89,182,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <defs><radialGradient id="rg1" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#A873B8"/><stop offset="100%" stop-color="#6C2E8A"/></radialGradient></defs>
-          <!-- 5x10 mini grid -->
-          <rect x="2" y="18" width="60" height="30" rx="4" fill="rgba(155,89,182,.08)" stroke="#9B59B6" stroke-width="1" opacity=".4"/>
-          <!-- Grid cells - 2 rows x 5 cols simplified -->
-          <rect x="5" y="21" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="18" y="21" width="10" height="10" rx="2" fill="url(#rg1)"/>
-          <rect x="31" y="21" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="44" y="21" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="5" y="34" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="18" y="34" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="31" y="34" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <rect x="44" y="34" width="10" height="10" rx="2" fill="rgba(155,89,182,.15)" stroke="#9B59B6" stroke-width=".8" opacity=".5"/>
-          <!-- Glow on active cell -->
-          <rect x="18" y="21" width="10" height="10" rx="2" fill="none" stroke="#C89FD8" stroke-width="1.5" opacity=".8"/>
-          <circle cx="23" cy="26" r="2" fill="white" opacity=".4"/>
-          <!-- Shrink rings -->
-          <circle cx="23" cy="26" r="7" fill="none" stroke="#9B59B6" stroke-width="1" opacity=".3"/>
-          <circle cx="23" cy="26" r="12" fill="none" stroke="#9B59B6" stroke-width=".8" opacity=".15"/>
-          <!-- Score -->
-          <text x="32" y="13" text-anchor="middle" fill="#9B59B6" font-size="7" font-weight="bold" opacity=".7">REACT</text>
-        </svg>
+        <div class="tile-icon">⚡</div>
         <div class="tile-name">Reaction Control</div>
         <div class="tile-sub">See It · Tap It · React</div>
         <div class="tile-badge">Reflex</div>
       </a>
 
-      <!-- COLOR MATCH -->
-      <a class="game-tile" href="/vr-colormatch.html" style="--tc:#FFD700;--tg:rgba(255,215,0,.5)">
+      <a class="game-tile" href="/vr-numhunt.html" style="--tc:#ff6b00;--tg:rgba(255,107,0,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <defs>
-            <radialGradient id="cg1" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#FFE55C"/><stop offset="100%" stop-color="#FFA500"/></radialGradient>
-            <radialGradient id="cg2" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#A873B8"/><stop offset="100%" stop-color="#6C2E8A"/></radialGradient>
-            <radialGradient id="cg3" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#40E0D0"/><stop offset="100%" stop-color="#008B8B"/></radialGradient>
-            <radialGradient id="cg4" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#B8E050"/><stop offset="100%" stop-color="#6B8E23"/></radialGradient>
-          </defs>
-          <!-- Grid with colored cells -->
-          <rect x="2" y="18" width="60" height="30" rx="4" fill="rgba(255,215,0,.06)" stroke="#FFD700" stroke-width="1" opacity=".3"/>
-          <rect x="5" y="21" width="12" height="12" rx="3" fill="url(#cg1)"/>
-          <rect x="20" y="21" width="12" height="12" rx="3" fill="url(#cg2)"/>
-          <rect x="35" y="21" width="12" height="12" rx="3" fill="url(#cg3)"/>
-          <rect x="5" y="36" width="12" height="12" rx="3" fill="url(#cg4)"/>
-          <rect x="20" y="36" width="12" height="12" rx="3" fill="url(#cg1)"/>
-          <rect x="35" y="36" width="12" height="12" rx="3" fill="rgba(255,215,0,.15)" stroke="#FFD700" stroke-width="1.5"/>
-          <!-- Target indicator -->
-          <rect x="50" y="21" width="12" height="12" rx="3" fill="url(#cg1)" opacity=".9"/>
-          <text x="56" y="12" text-anchor="middle" fill="#FFD700" font-size="6" font-weight="bold">TAP</text>
-          <line x1="56" y1="14" x2="56" y2="20" stroke="#FFD700" stroke-width="1" opacity=".6"/>
-        </svg>
-        <div class="tile-name">Color Match</div>
-        <div class="tile-sub">Read · Decide · Tap</div>
-        <div class="tile-badge">Decision</div>
+        <div class="tile-icon">🎯</div>
+        <div class="tile-name">Number Hunt</div>
+        <div class="tile-sub">Find · Point · Trigger</div>
+        <div class="tile-badge">Flagship</div>
       </a>
 
-      <!-- MEMORY FLASH -->
-      <a class="game-tile" href="/vr-memflash.html" style="--tc:#00BFFF;--tg:rgba(0,191,255,.5)">
+      <a class="game-tile" href="/vr-recovery.html" style="--tc:#9ACD32;--tg:rgba(154,205,50,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <defs><radialGradient id="mg1" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#64C8FF"/><stop offset="100%" stop-color="#0050AA"/></radialGradient></defs>
-          <!-- Grid -->
-          <rect x="2" y="18" width="60" height="30" rx="4" fill="rgba(0,191,255,.06)" stroke="#00BFFF" stroke-width="1" opacity=".3"/>
-          <!-- Number flashing in center cell -->
-          <rect x="22" y="22" width="20" height="20" rx="3" fill="url(#mg1)"/>
-          <text x="32" y="37" text-anchor="middle" fill="white" font-size="14" font-weight="900">7</text>
-          <!-- Other cells dimmed -->
-          <rect x="5" y="22" width="14" height="9" rx="2" fill="rgba(0,191,255,.1)" stroke="#00BFFF" stroke-width=".8" opacity=".4"/>
-          <rect x="45" y="22" width="14" height="9" rx="2" fill="rgba(0,191,255,.1)" stroke="#00BFFF" stroke-width=".8" opacity=".4"/>
-          <rect x="5" y="34" width="14" height="9" rx="2" fill="rgba(0,191,255,.1)" stroke="#00BFFF" stroke-width=".8" opacity=".4"/>
-          <rect x="45" y="34" width="14" height="9" rx="2" fill="rgba(0,191,255,.1)" stroke="#00BFFF" stroke-width=".8" opacity=".4"/>
-          <!-- Question marks on answer cells -->
-          <text x="12" y="40" text-anchor="middle" fill="#00BFFF" font-size="8" opacity=".5">?</text>
-          <text x="52" y="40" text-anchor="middle" fill="#00BFFF" font-size="8" opacity=".5">?</text>
-          <text x="32" y="12" text-anchor="middle" fill="#00BFFF" font-size="7" font-weight="bold" opacity=".7">FLASH</text>
-        </svg>
-        <div class="tile-name">Memory Flash</div>
-        <div class="tile-sub">See · Remember · Find</div>
-        <div class="tile-badge">Visual</div>
+        <div class="tile-icon">🌱</div>
+        <div class="tile-name">Echo Recall</div>
+        <div class="tile-sub">Watch · Echo · Spot Change</div>
+        <div class="tile-badge">Recovery</div>
       </a>
 
     </div>
@@ -161,79 +102,25 @@ body::before{
     <div class="cat-label" style="color:#00D9A5">🧠 COGNITIVE COURT</div>
     <div class="games-row">
 
-      <!-- PATTERN RECOGNITION -->
       <a class="game-tile" href="/vr-pattern.html" style="--tc:#FF6B35;--tg:rgba(255,107,53,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <rect x="2" y="14" width="60" height="38" rx="4" fill="rgba(255,107,53,.06)" stroke="#FF6B35" stroke-width="1" opacity=".3"/>
-          <!-- 4x8 mini grid pattern -->
-          <rect x="5" y="17" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="11" y="24" text-anchor="middle" fill="white" font-size="6" font-weight="bold">1</text>
-          <rect x="19" y="17" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-          <rect x="33" y="17" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="39" y="24" text-anchor="middle" fill="white" font-size="6" font-weight="bold">2</text>
-          <rect x="47" y="17" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-          <rect x="5" y="27" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-          <rect x="19" y="27" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="25" y="34" text-anchor="middle" fill="white" font-size="6" font-weight="bold">3</text>
-          <rect x="33" y="27" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-          <rect x="47" y="27" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="53" y="34" text-anchor="middle" fill="white" font-size="6" font-weight="bold">4</text>
-          <rect x="5" y="37" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="11" y="44" text-anchor="middle" fill="white" font-size="6" font-weight="bold">5</text>
-          <rect x="19" y="37" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-          <rect x="33" y="37" width="12" height="8" rx="2" fill="#FF6B35" opacity=".9"/><text x="39" y="44" text-anchor="middle" fill="white" font-size="6" font-weight="bold">6</text>
-          <rect x="47" y="37" width="12" height="8" rx="2" fill="rgba(255,107,53,.15)" stroke="#FF6B35" stroke-width=".8" opacity=".5"/>
-        </svg>
+        <div class="tile-icon">🧩</div>
         <div class="tile-name">Pattern Recognition</div>
         <div class="tile-sub">Watch · Remember · Tap</div>
         <div class="tile-badge">Memory</div>
       </a>
 
-      <!-- FLASH RECALL -->
       <a class="game-tile" href="/vr-sequence.html" style="--tc:#00CED1;--tg:rgba(0,206,209,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <rect x="2" y="14" width="60" height="38" rx="4" fill="rgba(0,206,209,.06)" stroke="#00CED1" stroke-width="1" opacity=".3"/>
-          <!-- Many cells lit at once -->
-          <rect x="5" y="17" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="19" y="17" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-          <rect x="33" y="17" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="47" y="17" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="5" y="27" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-          <rect x="19" y="27" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="33" y="27" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-          <rect x="47" y="27" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-          <rect x="5" y="37" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="19" y="37" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-          <rect x="33" y="37" width="12" height="8" rx="2" fill="#00CED1" opacity=".9"/>
-          <rect x="47" y="37" width="12" height="8" rx="2" fill="rgba(0,206,209,.15)" stroke="#00CED1" stroke-width=".8" opacity=".4"/>
-        </svg>
+        <div class="tile-icon">🔢</div>
         <div class="tile-name">Flash Recall</div>
         <div class="tile-sub">Watch · Remember · Find</div>
         <div class="tile-badge">Memory</div>
       </a>
 
-      <!-- SEQUENCE CONTROL -->
       <a class="game-tile" href="/vr-focus.html" style="--tc:#00D9A5;--tg:rgba(0,217,165,.5)">
         <div class="tile-border"></div>
-        <svg class="tile-art" viewBox="0 0 64 64">
-          <defs><radialGradient id="sg1" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#00D9A5"/><stop offset="100%" stop-color="#007A5A"/></radialGradient></defs>
-          <rect x="2" y="14" width="60" height="38" rx="4" fill="rgba(0,217,165,.06)" stroke="#00D9A5" stroke-width="1" opacity=".3"/>
-          <!-- Sequence path through grid -->
-          <rect x="5" y="17" width="12" height="8" rx="2" fill="url(#sg1)"/><text x="11" y="24" text-anchor="middle" fill="black" font-size="6" font-weight="bold">1</text>
-          <rect x="19" y="17" width="12" height="8" rx="2" fill="rgba(0,217,165,.15)" stroke="#00D9A5" stroke-width=".8" opacity=".5"/>
-          <rect x="33" y="17" width="12" height="8" rx="2" fill="url(#sg1)"/><text x="39" y="24" text-anchor="middle" fill="black" font-size="6" font-weight="bold">2</text>
-          <rect x="47" y="17" width="12" height="8" rx="2" fill="rgba(0,217,165,.15)" stroke="#00D9A5" stroke-width=".8" opacity=".5"/>
-          <!-- Connection arrows -->
-          <line x1="17" y1="21" x2="19" y2="21" stroke="#00D9A5" stroke-width="1.5" opacity=".6"/>
-          <line x1="31" y1="21" x2="33" y2="21" stroke="#00D9A5" stroke-width="1.5" opacity=".6"/>
-          <rect x="5" y="27" width="12" height="8" rx="2" fill="rgba(0,217,165,.15)" stroke="#00D9A5" stroke-width=".8" opacity=".5"/>
-          <rect x="19" y="27" width="12" height="8" rx="2" fill="url(#sg1)"/><text x="25" y="34" text-anchor="middle" fill="black" font-size="6" font-weight="bold">3</text>
-          <rect x="33" y="27" width="12" height="8" rx="2" fill="rgba(0,217,165,.15)" stroke="#00D9A5" stroke-width=".8" opacity=".5"/>
-          <rect x="47" y="27" width="12" height="8" rx="2" fill="rgba(0,217,165,.15)" stroke="#00D9A5" stroke-width=".8" opacity=".5"/>
-          <!-- Next to tap — gold -->
-          <rect x="5" y="37" width="12" height="8" rx="2" fill="rgba(255,215,0,.15)" stroke="#FFD700" stroke-width="1.5"/>
-          <text x="11" y="44" text-anchor="middle" fill="#FFD700" font-size="6" font-weight="bold">4</text>
-          <rect x="19" y="37" width="12" height="8" rx="2" fill="rgba(0,217,165,.1)" stroke="#00D9A5" stroke-width=".8" opacity=".4"/>
-          <rect x="33" y="37" width="12" height="8" rx="2" fill="rgba(0,217,165,.1)" stroke="#00D9A5" stroke-width=".8" opacity=".4"/>
-          <rect x="47" y="37" width="12" height="8" rx="2" fill="rgba(0,217,165,.1)" stroke="#00D9A5" stroke-width=".8" opacity=".4"/>
-        </svg>
+        <div class="tile-icon">🎵</div>
         <div class="tile-name">Sequence Control</div>
         <div class="tile-sub">Watch · Remember · Replay</div>
         <div class="tile-badge">Sequence</div>
