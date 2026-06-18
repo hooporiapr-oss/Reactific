@@ -193,84 +193,90 @@ function resetAll(){
 function initGame(){
   g={stage:1,round:1,sc:0,st:0};
   updateHUD();resetAll();
+  $('actBtn').textContent="LET'S GO";
+  $('actBtn').onclick=startRound;
   msg("TAP LET'S GO!",'watch');
-  $('actBtn').disabled=false;$('actBtn').onclick=startRound;
+  $('actBtn').disabled=false;
 }
 
 function startRound(){
   if(phase!=='idle')return;
-  clrT();phase='preview';found=[];
-  $('actBtn').disabled=true;updateHUD();
+  clrT();found=[];
+  updateHUD();
 
   var cellCount=getCellCount(g.round);
   var findCount=g.stage;
 
-  // Generate shuffled numbers 1-50 for active cells
+  // Always show all 50 cells numbered 1-50 randomly
   var nums=[];for(var i=1;i<=50;i++)nums.push(i);
   shuffle(nums);
+  courtNums=nums.slice();
 
-  // Assign to all 50 cells — active ones get numbers, rest inactive
-  var activeCells=[];
-  for(var i=0;i<50;i++)activeCells.push(i);
+  // Show all 50 cells — preview mode, not clickable yet
+  cells.forEach(function(c,i){
+    c.className='cell preview';
+    c.textContent=courtNums[i];
+  });
+
+  // Pick targets — from the cells that will be ACTIVE this round
+  var activeCells=[];for(var i=0;i<50;i++)activeCells.push(i);
   shuffle(activeCells);
   var activeSet=activeCells.slice(0,cellCount);
+  shuffle(activeSet);
+  targets=activeSet.slice(0,findCount).map(function(ci){return courtNums[ci]});
 
-  courtNums=new Array(50).fill(null);
-  activeSet.forEach(function(ci,i){courtNums[ci]=nums[i]});
+  // Store which cells are active this round
+  activeSet_=activeSet;
 
-  // Show ALL 50 cells numbered (preview)
+  msg('SCAN THE COURT','preview');
+  $('targetBar').innerHTML='<div class="target-label">SCAN →</div>';
+  $('actBtn').disabled=false;
+  $('actBtn').textContent="🎯 START HUNT";
+  $('actBtn').onclick=startHunt;
+  phase='preview';
+}
+
+var activeSet_=[];
+function startHunt(){
+  if(phase!=='preview')return;
+  clrT();phase='playing';
+  $('actBtn').disabled=true;
+  $('actBtn').textContent="LET'S GO";
+
+  var findCount=g.stage;
+  var cellCount=getCellCount(g.round);
+
+  // Show targets in bar
+  var bar=$('targetBar');
+  bar.innerHTML='<div class="target-label">FIND →</div>';
+  targets.forEach(function(n){
+    var el=document.createElement('div');
+    el.className='target-num';el.textContent=n;el.id='tgt-'+n;
+    bar.appendChild(el);
+  });
+
+  // Make active cells clickable, dim inactive ones
   cells.forEach(function(c,i){
-    if(courtNums[i]!==null){
-      c.className='cell preview';
-      c.textContent=courtNums[i];
+    if(activeSet_.indexOf(i)!==-1){
+      c.className='cell active';
     }else{
       c.className='cell inactive';
       c.textContent='';
     }
   });
 
-  // Pick targets from active cells
-  shuffle(activeSet);
-  targets=activeSet.slice(0,findCount).map(function(ci){return courtNums[ci]});
+  msg('🎯 FIND '+(findCount>1?'THEM':'IT')+'!','go');
 
-  msg('SCAN THE COURT — MEMORIZE THE LAYOUT','preview');
-  $('targetBar').innerHTML='<div class="target-label">READY →</div>';
-
-  // Preview period — show court for 1.5 seconds then reveal targets and start clock
-  timers.push(setTimeout(function(){
-    if(phase!=='preview')return;
-
-    // Show targets in bar
-    var bar=$('targetBar');
-    bar.innerHTML='<div class="target-label">FIND →</div>';
-    targets.forEach(function(n){
-      var el=document.createElement('div');
-      el.className='target-num';el.textContent=n;el.id='tgt-'+n;
-      bar.appendChild(el);
-    });
-
-    // Switch cells to active (clickable)
-    cells.forEach(function(c,i){
-      if(courtNums[i]!==null){
-        c.className='cell active';
-      }
-    });
-
-    phase='playing';
-    msg('🎯 FIND '+(findCount>1?'THEM':'IT')+'!','go');
-
-    // Start clock
-    var startMs=performance.now();
-    $('clockFill').style.width='100%';
-    function tick(){
-      var pct=Math.max(0,1-(performance.now()-startMs)/timeLimit);
-      $('clockFill').style.width=(pct*100)+'%';
-      if(pct<=0){onMiss("TIME'S UP!");return}
-      if(phase==='playing')shrinkRAF=requestAnimationFrame(tick);
-    }
-    shrinkRAF=requestAnimationFrame(tick);
-
-  },1500));
+  // Start clock
+  var startMs=performance.now();
+  $('clockFill').style.width='100%';
+  function tick(){
+    var pct=Math.max(0,1-(performance.now()-startMs)/timeLimit);
+    $('clockFill').style.width=(pct*100)+'%';
+    if(pct<=0){onMiss("TIME'S UP!");return}
+    if(phase==='playing')shrinkRAF=requestAnimationFrame(tick);
+  }
+  shrinkRAF=requestAnimationFrame(tick);
 }
 
 function handleTap(idx){
@@ -318,6 +324,8 @@ function handleTap(idx){
 
 function nextRound(){
   resetAll();updateHUD();
+  $('actBtn').textContent="LET'S GO";
+  $('actBtn').onclick=startRound;
   msg("TAP LET'S GO!",'watch');
   $('actBtn').disabled=false;
 }
@@ -325,6 +333,8 @@ function nextRound(){
 function resetAllAndRestart(){
   g={stage:1,round:1,sc:0,st:0};
   resetAll();updateHUD();
+  $('actBtn').textContent="LET'S GO";
+  $('actBtn').onclick=startRound;
   msg("TAP LET'S GO!",'watch');
   $('actBtn').disabled=false;
 }
