@@ -177,17 +177,17 @@ function handleTap(idx){
   if(idx===currentTarget){
     cellSt(idx,'correct');
     g.sc+=20;g.st++;g.clears++;
-    if(g.clears>best)best=g.clears;
+    if(g.st>best)best=g.st;
     updateHUD();
     if(g.clears>=3){
-      msg('✅ ROUND CLEAR','perfect');
-      timers.push(setTimeout(function(){
-        if(g.lv<10){g.lv++;g.clears=0}
-        updateHUD();resetCells();
-        msg('🔥 LEVEL UP! L'+g.lv,'perfect');
-        timers.push(setTimeout(function(){endRound(true)},900));
-      },800));
+      phase='idle';clrT();
+      g.clears=0;
+      if(g.lv<10)g.lv++;
+      updateHUD();resetCells();
+      msg('🔥 LEVEL UP! L'+g.lv,'perfect');
+      timers.push(setTimeout(finishRound,1200));
     }else{
+      msg('✅ HIT! '+g.clears+'/3','perfect');
       timers.push(setTimeout(function(){if(phase==='playing')fireCell()},350));
     }
   }else{
