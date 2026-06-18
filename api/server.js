@@ -1,6 +1,5 @@
-// Reactific API — Auth + Stripe + Leaderboards
+// Reactific API — Auth + Stripe + Leaderboards + Google OAuth + Classes
 // Deploy on Render Web Service
-// Product flow: Free 5x5 Practice → Login → Stripe → STROBE™ Arena 5x10 → Leaderboard
 
 const express = require('express');
 const cors = require('cors');
@@ -10,6 +9,7 @@ const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Stripe = require('stripe');
+const { OAuth2Client } = require('google-auth-library');
 
 // ── Config ──────────────────────────────────────────────
 const PORT = process.env.PORT || 3001;
@@ -18,6 +18,7 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const CLIENT_URL = process.env.CLIENT_URL || 'https://reactificgaming.com';
 const COMPETE_URL = process.env.COMPETE_URL || `${CLIENT_URL}/compete/strobe-01-compete.html`;
@@ -38,6 +39,7 @@ const pool = new Pool({
 });
 
 const stripe = STRIPE_SECRET ? new Stripe(STRIPE_SECRET) : null;
+const googleClient = GOOGLE_CLIENT_ID ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
 
 const app = express();
 
@@ -52,7 +54,6 @@ app.use(cors({
   credentials: true
 }));
 
-// Stripe webhook needs raw body — must come before express.json()
 app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), handleStripeWebhook);
 
 app.use(express.json({ limit: '1mb' }));
@@ -66,11 +67,9 @@ app.use('/api/auth/', authLimiter);
 // ── Helpers ─────────────────────────────────────────────
 function normalizeSpeed(speed) {
   const value = String(speed || '').trim().toLowerCase();
-
   if (['slow', 'training', '5', '7', '60'].includes(value)) return 'slow';
   if (['med', 'medium', 'tempo', '3', '90'].includes(value)) return 'med';
   if (['fast', 'elite', '2', '120'].includes(value)) return 'fast';
-
   return null;
 }
 
@@ -80,7 +79,9 @@ function makeToken(user) {
       id: user.id,
       email: user.email,
       username: user.username,
-      subscription_status: user.subscription_status
+      subscription_status: user.subscription_status,
+      role: user.role || 'student',
+      class_id: user.class_id || null
     },
     JWT_SECRET,
     { expiresIn: '30d' }
@@ -89,9 +90,8 @@ function makeToken(user) {
 
 async function getUserById(userId) {
   const result = await pool.query(
-    `SELECT id, email, username, subscription_status, stripe_customer_id, created_at
-     FROM users
-     WHERE id = $1`,
+    `SELECT id, email, username, subscription_status, stripe_customer_id, role, class_id, created_at
+     FROM users WHERE id = $1`,
     [userId]
   );
   return result.rows[0] || null;
@@ -102,11 +102,17 @@ async function userHasActiveSubscription(userId) {
   return !!user && user.subscription_status === 'active';
 }
 
+function generateClassCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
 // ── Auth Middleware ─────────────────────────────────────
 function authRequired(req, res, next) {
   const header = req.headers.authorization;
   if (!header?.startsWith('Bearer ')) return res.status(401).json({ error: 'No token' });
-
   try {
     req.user = jwt.verify(header.slice(7), JWT_SECRET);
     next();
@@ -132,37 +138,30 @@ async function subRequired(req, res, next) {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { email, username, password } = req.body;
-
     const cleanEmail = String(email || '').toLowerCase().trim();
     const cleanUsername = String(username || '').trim();
 
-    if (!cleanEmail || !cleanUsername || !password) {
+    if (!cleanEmail || !cleanUsername || !password)
       return res.status(400).json({ error: 'Email, username, and password required' });
-    }
-    if (!/^\S+@\S+\.\S+$/.test(cleanEmail)) {
+    if (!/^\S+@\S+\.\S+$/.test(cleanEmail))
       return res.status(400).json({ error: 'Valid email required' });
-    }
-    if (cleanUsername.length < 3 || cleanUsername.length > 20) {
+    if (cleanUsername.length < 3 || cleanUsername.length > 20)
       return res.status(400).json({ error: 'Username must be 3-20 characters' });
-    }
-    if (password.length < 6) {
+    if (password.length < 6)
       return res.status(400).json({ error: 'Password must be 6+ characters' });
-    }
-    if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
+    if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername))
       return res.status(400).json({ error: 'Username: letters, numbers, underscores only' });
-    }
 
     const hash = await bcrypt.hash(password, 12);
     const result = await pool.query(
       `INSERT INTO users (email, username, password_hash)
        VALUES ($1, $2, $3)
-       RETURNING id, email, username, subscription_status, created_at`,
+       RETURNING id, email, username, subscription_status, role, class_id, created_at`,
       [cleanEmail, cleanUsername, hash]
     );
 
     const user = result.rows[0];
     const token = makeToken(user);
-
     res.status(201).json({ user, token });
   } catch (err) {
     if (err.code === '23505') {
@@ -180,28 +179,27 @@ app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     const cleanEmail = String(email || '').toLowerCase().trim();
 
-    if (!cleanEmail || !password) {
+    if (!cleanEmail || !password)
       return res.status(400).json({ error: 'Email and password required' });
-    }
 
     const result = await pool.query(
-      `SELECT id, email, username, password_hash, subscription_status
-       FROM users
-       WHERE email = $1`,
+      `SELECT id, email, username, password_hash, subscription_status, role, class_id
+       FROM users WHERE email = $1`,
       [cleanEmail]
     );
 
     if (!result.rows.length) return res.status(401).json({ error: 'Invalid credentials' });
 
     const user = result.rows[0];
+    if (!user.password_hash) return res.status(401).json({ error: 'Please sign in with Google' });
+
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
     const publicUser = {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      subscription_status: user.subscription_status
+      id: user.id, email: user.email, username: user.username,
+      subscription_status: user.subscription_status,
+      role: user.role, class_id: user.class_id
     };
 
     const token = makeToken(publicUser);
@@ -212,19 +210,77 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+// Google Sign In
+app.post('/api/auth/google', async (req, res) => {
+  if (!googleClient) return res.status(500).json({ error: 'Google auth not configured' });
+  try {
+    const { token } = req.body;
+    if (!token) return res.status(400).json({ error: 'Token required' });
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+
+    let result = await pool.query(
+      `SELECT id, email, username, subscription_status, role, class_id, google_id
+       FROM users WHERE google_id = $1 OR email = $2`,
+      [googleId, email]
+    );
+
+    let user;
+
+    if (result.rows.length > 0) {
+      user = result.rows[0];
+      if (!user.google_id) {
+        await pool.query(
+          `UPDATE users SET google_id = $1, avatar_url = $2, updated_at = NOW() WHERE id = $3`,
+          [googleId, picture, user.id]
+        );
+      }
+    } else {
+      const username = (name || email).replace(/\s+/g, '_').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 16) + '_' + Math.floor(Math.random() * 999);
+      const newUser = await pool.query(
+        `INSERT INTO users (email, username, google_id, avatar_url, role)
+         VALUES ($1, $2, $3, $4, 'student')
+         RETURNING id, email, username, subscription_status, role, class_id`,
+        [email, username, googleId, picture]
+      );
+      user = newUser.rows[0];
+    }
+
+    const publicUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      subscription_status: user.subscription_status,
+      role: user.role,
+      class_id: user.class_id,
+      avatar_url: picture,
+      needs_class: !user.class_id
+    };
+
+    const jwtToken = makeToken(publicUser);
+    res.json({ user: publicUser, token: jwtToken });
+  } catch (err) {
+    console.error('Google auth error:', err);
+    res.status(500).json({ error: 'Google authentication failed' });
+  }
+});
+
 // Get current user
 app.get('/api/auth/me', authRequired, async (req, res) => {
   try {
     const user = await getUserById(req.user.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
-
     res.json({
       user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
+        id: user.id, email: user.email, username: user.username,
         subscription_status: user.subscription_status,
-        created_at: user.created_at
+        role: user.role, class_id: user.class_id, created_at: user.created_at
       }
     });
   } catch (err) {
@@ -233,21 +289,144 @@ app.get('/api/auth/me', authRequired, async (req, res) => {
   }
 });
 
-// ── SCORES ENDPOINT ─────────────────────────────────────
+// ── CLASS ENDPOINTS ─────────────────────────────────────
 
+// Create class (teacher)
+app.post('/api/classes/create', authRequired, async (req, res) => {
+  try {
+    const { name, school_id } = req.body;
+    if (!name) return res.status(400).json({ error: 'Class name required' });
+
+    let code, attempts = 0;
+    do {
+      code = generateClassCode();
+      const exists = await pool.query('SELECT id FROM classes WHERE code = $1', [code]);
+      if (!exists.rows.length) break;
+      attempts++;
+    } while (attempts < 10);
+
+    const result = await pool.query(
+      `INSERT INTO classes (teacher_id, school_id, name, code)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, name, code, created_at`,
+      [req.user.id, school_id || null, name, code]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Create class error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Join class with code (student)
+app.post('/api/classes/join', authRequired, async (req, res) => {
+  try {
+    const { code } = req.body;
+    if (!code) return res.status(400).json({ error: 'Class code required' });
+
+    const classResult = await pool.query(
+      `SELECT id, name FROM classes WHERE code = $1`,
+      [code.toUpperCase().trim()]
+    );
+
+    if (!classResult.rows.length)
+      return res.status(404).json({ error: 'Class not found — check your code' });
+
+    const cls = classResult.rows[0];
+
+    await pool.query(
+      `INSERT INTO class_students (class_id, user_id)
+       VALUES ($1, $2) ON CONFLICT (class_id, user_id) DO NOTHING`,
+      [cls.id, req.user.id]
+    );
+
+    await pool.query(
+      `UPDATE users SET class_id = $1, updated_at = NOW() WHERE id = $2`,
+      [cls.id, req.user.id]
+    );
+
+    res.json({ class: cls });
+  } catch (err) {
+    console.error('Join class error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Teacher dashboard
+app.get('/api/classes/:id/dashboard', authRequired, async (req, res) => {
+  try {
+    const classId = req.params.id;
+    const cls = await pool.query(
+      `SELECT id, name, code FROM classes WHERE id = $1 AND teacher_id = $2`,
+      [classId, req.user.id]
+    );
+    if (!cls.rows.length) return res.status(403).json({ error: 'Not authorized' });
+
+    const students = await pool.query(
+      `SELECT u.id, u.username, u.avatar_url,
+        s.score, s.level, s.streak, s.court, s.speed, s.created_at as last_played
+       FROM class_students cs
+       JOIN users u ON u.id = cs.user_id
+       LEFT JOIN LATERAL (
+         SELECT score, level, streak, court, speed, created_at
+         FROM scores WHERE user_id = u.id
+         ORDER BY created_at DESC LIMIT 1
+       ) s ON true
+       WHERE cs.class_id = $1
+       ORDER BY s.score DESC NULLS LAST`,
+      [classId]
+    );
+
+    res.json({ class: cls.rows[0], students: students.rows });
+  } catch (err) {
+    console.error('Dashboard error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// My class (student)
+app.get('/api/classes/mine', authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT c.id, c.name, c.code, u.username as teacher_name
+       FROM users me
+       JOIN classes c ON c.id = me.class_id
+       JOIN users u ON u.id = c.teacher_id
+       WHERE me.id = $1`,
+      [req.user.id]
+    );
+    res.json({ class: result.rows[0] || null });
+  } catch (err) {
+    console.error('My class error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// My classes (teacher)
+app.get('/api/classes/teaching', authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT c.id, c.name, c.code, c.created_at,
+        COUNT(cs.user_id) as student_count
+       FROM classes c
+       LEFT JOIN class_students cs ON cs.class_id = c.id
+       WHERE c.teacher_id = $1
+       GROUP BY c.id
+       ORDER BY c.created_at DESC`,
+      [req.user.id]
+    );
+    res.json({ classes: result.rows });
+  } catch (err) {
+    console.error('Teaching classes error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ── SCORES ENDPOINT ─────────────────────────────────────
 app.post('/api/scores', authRequired, async (req, res) => {
   try {
-    const {
-      court = 'full',
-      speed,
-      level,
-      score,
-      streak,
-      tier,
-      targets_found,
-      time_remaining_ms
-    } = req.body;
-
+    const { court = 'full', speed, level, score, streak, tier, targets_found, time_remaining_ms } = req.body;
     const normalizedSpeed = normalizeSpeed(speed);
 
     if (!['half', 'full'].includes(court)) return res.status(400).json({ error: 'Invalid court' });
@@ -269,28 +448,16 @@ app.post('/api/scores', authRequired, async (req, res) => {
       `INSERT INTO scores (user_id, court, speed, level, score, streak, tier, targets_found, time_remaining_ms)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING id, created_at`,
-      [
-        req.user.id,
-        court,
-        normalizedSpeed,
-        safeLevel,
-        safeScore,
-        safeStreak,
-        safeTier,
-        safeTargets,
-        safeTimeRemaining
-      ]
+      [req.user.id, court, normalizedSpeed, safeLevel, safeScore, safeStreak, safeTier, safeTargets, safeTimeRemaining]
     );
 
     const rankResult = await pool.query(
       `SELECT COUNT(*) + 1 AS rank
        FROM (
          SELECT DISTINCT ON (user_id) user_id, score
-         FROM scores
-         WHERE court = $1 AND speed = $2
+         FROM scores WHERE court = $1 AND speed = $2
          ORDER BY user_id, score DESC, created_at ASC
-       ) top
-       WHERE top.score > $3`,
+       ) top WHERE top.score > $3`,
       [court, normalizedSpeed, safeScore]
     );
 
@@ -307,28 +474,19 @@ app.post('/api/scores', authRequired, async (req, res) => {
 });
 
 // ── LEADERBOARD ENDPOINTS ───────────────────────────────
-
 async function getLeaderboard(period, speedInput, limitInput) {
   const speed = normalizeSpeed(speedInput) || 'slow';
   const limit = Math.min(parseInt(limitInput, 10) || 50, 100);
-
   let timeFilter = '';
   if (period === 'daily') timeFilter = `AND s.created_at >= CURRENT_DATE`;
   if (period === 'weekly') timeFilter = `AND s.created_at >= date_trunc('week', CURRENT_DATE)`;
 
   const result = await pool.query(
     `SELECT DISTINCT ON (s.user_id)
-       u.username,
-       s.score,
-       s.level,
-       s.tier,
-       s.streak,
-       s.created_at
+       u.username, s.score, s.level, s.tier, s.streak, s.created_at
      FROM scores s
      JOIN users u ON u.id = s.user_id
-     WHERE s.court = 'full'
-       AND s.speed = $1
-       ${timeFilter}
+     WHERE s.court = 'full' AND s.speed = $1 ${timeFilter}
      ORDER BY s.user_id, s.score DESC, s.created_at ASC`,
     [speed]
   );
@@ -341,71 +499,41 @@ async function getLeaderboard(period, speedInput, limitInput) {
   return { speed, period, entries };
 }
 
-// All-time leaderboard
 app.get('/api/leaderboard/alltime', async (req, res) => {
-  try {
-    res.json(await getLeaderboard('alltime', req.query.speed, req.query.limit));
-  } catch (err) {
-    console.error('Leaderboard error:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
+  try { res.json(await getLeaderboard('alltime', req.query.speed, req.query.limit)); }
+  catch (err) { console.error('Leaderboard error:', err); res.status(500).json({ error: 'Server error' }); }
 });
 
-// Daily leaderboard
 app.get('/api/leaderboard/daily', async (req, res) => {
-  try {
-    res.json(await getLeaderboard('daily', req.query.speed, req.query.limit));
-  } catch (err) {
-    console.error('Daily leaderboard error:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
+  try { res.json(await getLeaderboard('daily', req.query.speed, req.query.limit)); }
+  catch (err) { console.error('Daily leaderboard error:', err); res.status(500).json({ error: 'Server error' }); }
 });
 
-// Weekly leaderboard
 app.get('/api/leaderboard/weekly', async (req, res) => {
-  try {
-    res.json(await getLeaderboard('weekly', req.query.speed, req.query.limit));
-  } catch (err) {
-    console.error('Weekly leaderboard error:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
+  try { res.json(await getLeaderboard('weekly', req.query.speed, req.query.limit)); }
+  catch (err) { console.error('Weekly leaderboard error:', err); res.status(500).json({ error: 'Server error' }); }
 });
 
-// My rank
 app.get('/api/leaderboard/myrank', authRequired, async (req, res) => {
   try {
     const speed = normalizeSpeed(req.query.speed) || 'slow';
-
     const best = await pool.query(
-      `SELECT score, level, tier, streak, created_at
-       FROM scores
+      `SELECT score, level, tier, streak, created_at FROM scores
        WHERE user_id = $1 AND court = 'full' AND speed = $2
-       ORDER BY score DESC, created_at ASC
-       LIMIT 1`,
+       ORDER BY score DESC, created_at ASC LIMIT 1`,
       [req.user.id, speed]
     );
-
     if (!best.rows.length) return res.json({ rank: null, score: 0, speed });
-
     const userScore = best.rows[0].score;
-
     const rankResult = await pool.query(
-      `SELECT COUNT(*) + 1 AS rank
-       FROM (
-         SELECT DISTINCT ON (user_id) user_id, score
-         FROM scores
+      `SELECT COUNT(*) + 1 AS rank FROM (
+         SELECT DISTINCT ON (user_id) user_id, score FROM scores
          WHERE court = 'full' AND speed = $1
          ORDER BY user_id, score DESC, created_at ASC
-       ) top
-       WHERE top.score > $2`,
+       ) top WHERE top.score > $2`,
       [speed, userScore]
     );
-
-    res.json({
-      rank: parseInt(rankResult.rows[0].rank, 10),
-      speed,
-      ...best.rows[0]
-    });
+    res.json({ rank: parseInt(rankResult.rows[0].rank, 10), speed, ...best.rows[0] });
   } catch (err) {
     console.error('My rank error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -413,48 +541,28 @@ app.get('/api/leaderboard/myrank', authRequired, async (req, res) => {
 });
 
 // ── STRIPE ENDPOINTS ────────────────────────────────────
-
-// Create checkout session
 app.post('/api/stripe/checkout', authRequired, async (req, res) => {
   if (!stripe) return res.status(500).json({ error: 'Stripe not configured' });
   if (!STRIPE_PRICE_ID) return res.status(500).json({ error: 'Stripe price not configured' });
-
   try {
     let customerId;
-
-    const user = await pool.query(
-      `SELECT stripe_customer_id, email FROM users WHERE id = $1`,
-      [req.user.id]
-    );
-
+    const user = await pool.query(`SELECT stripe_customer_id, email FROM users WHERE id = $1`, [req.user.id]);
     if (!user.rows.length) return res.status(404).json({ error: 'User not found' });
-
     if (user.rows[0].stripe_customer_id) {
       customerId = user.rows[0].stripe_customer_id;
     } else {
-      const customer = await stripe.customers.create({
-        email: user.rows[0].email,
-        metadata: { user_id: req.user.id }
-      });
-
+      const customer = await stripe.customers.create({ email: user.rows[0].email, metadata: { user_id: req.user.id } });
       customerId = customer.id;
-
-      await pool.query(
-        `UPDATE users SET stripe_customer_id = $1, updated_at = NOW() WHERE id = $2`,
-        [customerId, req.user.id]
-      );
+      await pool.query(`UPDATE users SET stripe_customer_id = $1, updated_at = NOW() WHERE id = $2`, [customerId, req.user.id]);
     }
-
     const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      payment_method_types: ['card'],
+      customer: customerId, payment_method_types: ['card'],
       line_items: [{ price: STRIPE_PRICE_ID, quantity: 1 }],
       mode: 'subscription',
       success_url: `${COMPETE_URL}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: STRIPE_CANCEL_URL,
       metadata: { user_id: req.user.id }
     });
-
     res.json({ url: session.url });
   } catch (err) {
     console.error('Checkout error:', err);
@@ -462,25 +570,12 @@ app.post('/api/stripe/checkout', authRequired, async (req, res) => {
   }
 });
 
-// Customer portal
 app.post('/api/stripe/portal', authRequired, async (req, res) => {
   if (!stripe) return res.status(500).json({ error: 'Stripe not configured' });
-
   try {
-    const user = await pool.query(
-      `SELECT stripe_customer_id FROM users WHERE id = $1`,
-      [req.user.id]
-    );
-
-    if (!user.rows[0]?.stripe_customer_id) {
-      return res.status(400).json({ error: 'No subscription found' });
-    }
-
-    const session = await stripe.billingPortal.sessions.create({
-      customer: user.rows[0].stripe_customer_id,
-      return_url: CLIENT_URL
-    });
-
+    const user = await pool.query(`SELECT stripe_customer_id FROM users WHERE id = $1`, [req.user.id]);
+    if (!user.rows[0]?.stripe_customer_id) return res.status(400).json({ error: 'No subscription found' });
+    const session = await stripe.billingPortal.sessions.create({ customer: user.rows[0].stripe_customer_id, return_url: CLIENT_URL });
     res.json({ url: session.url });
   } catch (err) {
     console.error('Portal error:', err);
@@ -488,75 +583,44 @@ app.post('/api/stripe/portal', authRequired, async (req, res) => {
   }
 });
 
-// Stripe webhook
 async function handleStripeWebhook(req, res) {
   if (!stripe) return res.status(500).send('Stripe not configured');
   if (!STRIPE_WEBHOOK_SECRET) return res.status(500).send('Stripe webhook secret not configured');
-
   let event;
-
   try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      req.headers['stripe-signature'],
-      STRIPE_WEBHOOK_SECRET
-    );
+    event = stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature error:', err.message);
     return res.status(400).send('Invalid signature');
   }
-
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
-
         if (session.metadata?.user_id) {
           await pool.query(
-            `UPDATE users
-             SET subscription_status = 'active',
-                 stripe_customer_id = $1,
-                 updated_at = NOW()
-             WHERE id = $2`,
+            `UPDATE users SET subscription_status = 'active', stripe_customer_id = $1, updated_at = NOW() WHERE id = $2`,
             [session.customer, session.metadata.user_id]
           );
-          console.log(`Subscription activated for user ${session.metadata.user_id}`);
         }
         break;
       }
-
       case 'customer.subscription.created':
       case 'customer.subscription.updated': {
         const sub = event.data.object;
         const status = sub.status === 'active' || sub.status === 'trialing' ? 'active' : 'inactive';
-
-        await pool.query(
-          `UPDATE users
-           SET subscription_status = $1,
-               updated_at = NOW()
-           WHERE stripe_customer_id = $2`,
-          [status, sub.customer]
-        );
+        await pool.query(`UPDATE users SET subscription_status = $1, updated_at = NOW() WHERE stripe_customer_id = $2`, [status, sub.customer]);
         break;
       }
-
       case 'customer.subscription.deleted': {
         const sub = event.data.object;
-
-        await pool.query(
-          `UPDATE users
-           SET subscription_status = 'cancelled',
-               updated_at = NOW()
-           WHERE stripe_customer_id = $1`,
-          [sub.customer]
-        );
+        await pool.query(`UPDATE users SET subscription_status = 'cancelled', updated_at = NOW() WHERE stripe_customer_id = $1`, [sub.customer]);
         break;
       }
     }
   } catch (err) {
     console.error('Webhook handler error:', err);
   }
-
   res.json({ received: true });
 }
 
@@ -564,12 +628,7 @@ async function handleStripeWebhook(req, res) {
 app.get('/api/health', async (req, res) => {
   try {
     await pool.query('SELECT 1');
-    res.json({
-      status: 'ok',
-      db: 'connected',
-      stripe: !!stripe,
-      client_url: CLIENT_URL
-    });
+    res.json({ status: 'ok', db: 'connected', stripe: !!stripe, google: !!googleClient, client_url: CLIENT_URL });
   } catch {
     res.status(500).json({ status: 'error', db: 'disconnected' });
   }
