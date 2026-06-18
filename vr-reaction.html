@@ -84,7 +84,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0</div></div>
     <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
     <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
-    <div class="top-box"><div class="top-label">Wins</div><div class="top-val" id="hCl">0/3</div></div>
+    <div class="top-box"><div class="top-label">Hits</div><div class="top-val" id="hCl">0</div></div>
     <div class="top-box"><div class="top-label">Best</div><div class="top-val" id="hBest">0</div></div>
   </div>
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
@@ -121,7 +121,7 @@ function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 var g={lv:1,sc:0,rd:0,st:0,clears:0};
 function getDecoyCount(){if(g.lv<=3)return 0;if(g.lv<=6)return 1;if(g.lv<=9)return 2;return 3}
-function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hCl').textContent=g.clears+'/3';$('hBest').textContent=best;for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.clears>=j?' earned':'')}
+function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hCl').textContent=g.st;$('hBest').textContent=best;for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.clears>=j?' earned':'')}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 function initGame(){g={lv:1,sc:0,rd:0,st:0,clears:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('clockFill').style.width='100%'}
 
@@ -179,17 +179,10 @@ function handleTap(idx){
     g.sc+=20;g.st++;g.clears++;
     if(g.st>best)best=g.st;
     updateHUD();
-    if(g.clears>=3){
-      phase='idle';clrT();
-      g.clears=0;
-      if(g.lv<10)g.lv++;
-      updateHUD();resetCells();
-      msg('🔥 LEVEL UP! L'+g.lv,'perfect');
-      timers.push(setTimeout(finishRound,1200));
-    }else{
-      msg('✅ HIT! '+g.clears+'/3','perfect');
-      timers.push(setTimeout(function(){if(phase==='playing')fireCell()},350));
-    }
+    if(g.lv<10)g.lv++;
+    updateHUD();
+    msg('🔥 LEVEL '+g.lv,'perfect');
+    timers.push(setTimeout(function(){if(phase==='playing')fireCell()},350));
   }else{
     cellSt(idx,'wrong');
     endRound(false,'WRONG TAP!');
