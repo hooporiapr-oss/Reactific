@@ -214,8 +214,7 @@ document.querySelectorAll('[data-bpm]').forEach(btn=>{
   }
 });
 
-document.getElementById('modePracticeBtn').onclick=function(){setMode('practice')};
-document.getElementById('modeCompeteBtn').onclick=function(){setMode('compete')};
+
 
 $('startBtn').onclick=function(){
   $('screen-intro').style.display='none';
@@ -401,6 +400,12 @@ function finishSession(){
 }
 
 $('actBtn').onclick=startSession;
+
+// Wire mode buttons safely
+var pb=document.getElementById('modePracticeBtn');
+var cb=document.getElementById('modeCompeteBtn');
+if(pb)pb.onclick=function(){setMode('practice')};
+if(cb)cb.onclick=function(){setMode('compete')};
 })();
 </script>
 </body>
