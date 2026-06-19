@@ -9,52 +9,102 @@
 html,body{
   width:100%;height:100%;overflow:hidden;
   font-family:Arial,sans-serif;color:#fff;
-  background:radial-gradient(ellipse at 20% 20%,rgba(0,140,255,.18),transparent 40%),
-             radial-gradient(ellipse at 80% 80%,rgba(155,89,182,.15),transparent 40%),
-             linear-gradient(180deg,#020810,#010205);
+  background:
+    radial-gradient(circle at 18% 12%,rgba(0,217,255,.22),transparent 32%),
+    radial-gradient(circle at 82% 18%,rgba(155,89,182,.20),transparent 34%),
+    radial-gradient(circle at 50% 105%,rgba(255,215,0,.08),transparent 36%),
+    linear-gradient(180deg,#020810,#010205);
   user-select:none;-webkit-user-select:none;
 }
 body::before{
-  content:'';position:fixed;bottom:0;left:0;right:0;height:35%;
+  content:'';position:fixed;bottom:-12%;left:-8%;right:-8%;height:45%;
   background:
-    repeating-linear-gradient(90deg,rgba(0,140,255,.07) 0,rgba(0,140,255,.07) 1px,transparent 1px,transparent 50px),
-    repeating-linear-gradient(0deg,rgba(0,140,255,.07) 0,rgba(0,140,255,.07) 1px,transparent 1px,transparent 50px);
-  transform:perspective(300px) rotateX(60deg);
+    repeating-linear-gradient(90deg,rgba(0,217,255,.10) 0,rgba(0,217,255,.10) 1px,transparent 1px,transparent 54px),
+    repeating-linear-gradient(0deg,rgba(155,89,182,.10) 0,rgba(155,89,182,.10) 1px,transparent 1px,transparent 54px);
+  transform:perspective(360px) rotateX(62deg);
   transform-origin:bottom center;
   pointer-events:none;
 }
-.wrap{width:100%;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.header{text-align:center;padding:10px 16px 4px;flex-shrink:0}
-.vr-badge{display:inline-block;background:rgba(0,140,255,.15);border:1px solid rgba(0,140,255,.4);border-radius:999px;padding:3px 14px;font-size:.55rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#008cff;margin-bottom:5px}
-.vr-logo{font-size:2rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 30px rgba(0,140,255,.6)}
-.vr-logo span{color:#008cff}
-.vr-sub{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:3px}
-.categories{flex:1;display:flex;flex-direction:column;padding:6px 14px 8px;gap:8px;min-height:0;overflow:hidden}
-.cat-label{font-size:.55rem;font-weight:900;letter-spacing:.25em;text-transform:uppercase;padding:0 4px;margin-bottom:2px}
-.games-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex:1;min-height:0}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(circle at center,transparent 35%,rgba(0,0,0,.38));
+  pointer-events:none;
+}
+.wrap{width:100%;height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:2}
+.header{text-align:center;padding:12px 16px 6px;flex-shrink:0}
+.vr-badge{
+  display:inline-block;background:rgba(0,217,255,.12);
+  border:1px solid rgba(0,217,255,.45);
+  border-radius:999px;padding:4px 18px;
+  font-size:.56rem;font-weight:900;letter-spacing:.24em;
+  text-transform:uppercase;color:#00d9ff;margin-bottom:6px;
+  box-shadow:0 0 18px rgba(0,217,255,.22);
+}
+.vr-logo{
+  font-size:2.15rem;font-weight:900;font-style:italic;
+  letter-spacing:.12em;text-transform:uppercase;line-height:1;
+  text-shadow:0 0 30px rgba(0,217,255,.7);
+}
+.vr-logo span{color:#00d9ff}
+.vr-sub{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:#a7adba;margin-top:4px}
+.categories{flex:1;display:flex;flex-direction:column;padding:6px 18px 8px;gap:9px;min-height:0;overflow:hidden}
+.cat-label{font-size:.56rem;font-weight:900;letter-spacing:.28em;text-transform:uppercase;padding:0 4px;margin-bottom:2px}
+.games-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;min-height:0}
 .game-tile{
-  border-radius:14px;padding:8px;
+  border-radius:18px;padding:10px;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   cursor:pointer;text-decoration:none;
-  border:2px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.4);
+  border:2px solid rgba(255,255,255,.09);
+  background:
+    radial-gradient(circle at 50% 18%,var(--glow),transparent 34%),
+    linear-gradient(180deg,rgba(255,255,255,.07),rgba(0,0,0,.45));
   position:relative;overflow:hidden;
-  transition:transform .15s,box-shadow .15s;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
   min-height:0;
+  box-shadow:inset 0 0 28px rgba(255,255,255,.035),0 0 18px rgba(0,0,0,.35);
 }
-.game-tile::before{content:'';position:absolute;inset:0;background:var(--tc);opacity:.07;transition:opacity .15s}
-.game-tile:hover::before{opacity:.16}
-.game-tile:hover{transform:scale(1.03);box-shadow:0 0 24px var(--tg)}
-.tile-border{position:absolute;inset:0;border-radius:14px;border:2px solid var(--tc);opacity:.3;pointer-events:none}
-.tile-icon{font-size:2rem;margin-bottom:5px;line-height:1}
-.tile-name{font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.15}
-.tile-sub{font-size:.44rem;color:#a7adba;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;text-align:center}
-.tile-badge{position:absolute;top:6px;right:6px;background:var(--tc);color:#fff;font-size:.4rem;font-weight:900;letter-spacing:.08em;padding:2px 6px;border-radius:999px;text-transform:uppercase}
-.divider{height:1px;background:rgba(255,255,255,.06);margin:0 4px}
-.footer{text-align:center;padding:3px 16px 6px;flex-shrink:0}
-.footer-text{font-size:.45rem;color:#2a3240;letter-spacing:.12em;text-transform:uppercase}
-.footer-text span{color:#008cff}
+.game-tile::before{
+  content:'';position:absolute;inset:-40%;
+  background:conic-gradient(from 120deg,transparent,var(--tc),transparent 28%);
+  opacity:.16;animation:spin 9s linear infinite;
+}
+.game-tile::after{
+  content:'';position:absolute;inset:3px;border-radius:15px;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.44)),
+    radial-gradient(circle at 50% 45%,rgba(255,255,255,.06),transparent 42%);
+  z-index:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.game-tile:hover{
+  transform:scale(1.035);
+  border-color:var(--tc);
+  box-shadow:0 0 30px var(--tg),inset 0 0 24px rgba(255,255,255,.05);
+}
+.tile-border{position:absolute;inset:0;border-radius:18px;border:2px solid var(--tc);opacity:.34;pointer-events:none;z-index:2}
+.tile-art{
+  width:78px;height:78px;border-radius:22px;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.34),transparent 20%),
+    radial-gradient(circle at 50% 55%,var(--tc),transparent 54%),
+    linear-gradient(135deg,rgba(255,255,255,.10),rgba(0,0,0,.18));
+  box-shadow:0 0 28px var(--tg),inset 0 0 22px rgba(255,255,255,.12);
+  position:relative;z-index:3;margin-bottom:8px;
+}
+.tile-art::before{
+  content:'';position:absolute;inset:12px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.22);
+}
+.tile-icon{font-size:2.05rem;line-height:1;filter:drop-shadow(0 0 10px rgba(0,0,0,.65))}
+.tile-name{position:relative;z-index:3;font-size:.78rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.12;text-shadow:0 0 12px rgba(0,0,0,.8)}
+.tile-sub{position:relative;z-index:3;font-size:.45rem;color:#b8bfce;letter-spacing:.1em;text-transform:uppercase;margin-top:4px;text-align:center}
+.tile-badge{position:absolute;top:7px;right:7px;background:var(--tc);color:#000;font-size:.42rem;font-weight:900;letter-spacing:.08em;padding:3px 7px;border-radius:999px;text-transform:uppercase;z-index:4}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);margin:0 4px}
+.footer{text-align:center;padding:4px 16px 7px;flex-shrink:0}
+.footer-text{font-size:.46rem;color:#3b4658;letter-spacing:.14em;text-transform:uppercase}
+.footer-text span{color:#00d9ff}
 </style>
 </head>
 <body>
@@ -71,25 +121,25 @@ body::before{
     <div class="cat-label" style="color:#FF1493">⚡ REFLEX ARENA</div>
     <div class="games-row">
 
-      <a class="game-tile" href="/vr-reaction.html" style="--tc:#9B59B6;--tg:rgba(155,89,182,.5)">
+      <a class="game-tile" href="/vr-reaction.html" style="--tc:#9B59B6;--tg:rgba(155,89,182,.55);--glow:rgba(155,89,182,.26)">
         <div class="tile-border"></div>
-        <div class="tile-icon">⚡</div>
-        <div class="tile-name">Reaction Control</div>
+        <div class="tile-art"><div class="tile-icon">⚡</div></div>
+        <div class="tile-name">Reaction Reality</div>
         <div class="tile-sub">See It · Tap It · React</div>
         <div class="tile-badge">Reflex</div>
       </a>
 
-      <a class="game-tile" href="/vr-numhunt.html" style="--tc:#ff6b00;--tg:rgba(255,107,0,.5)">
+      <a class="game-tile" href="/vr-numhunt.html" style="--tc:#ff6b00;--tg:rgba(255,107,0,.55);--glow:rgba(255,107,0,.24)">
         <div class="tile-border"></div>
-        <div class="tile-icon">🎯</div>
+        <div class="tile-art"><div class="tile-icon">🎯</div></div>
         <div class="tile-name">Number Hunt</div>
         <div class="tile-sub">Find · Point · Trigger</div>
         <div class="tile-badge">Flagship</div>
       </a>
 
-      <a class="game-tile" href="/vr-recovery.html" style="--tc:#9ACD32;--tg:rgba(154,205,50,.5)">
+      <a class="game-tile" href="/vr-recovery.html" style="--tc:#9ACD32;--tg:rgba(154,205,50,.55);--glow:rgba(154,205,50,.22)">
         <div class="tile-border"></div>
-        <div class="tile-icon">🌱</div>
+        <div class="tile-art"><div class="tile-icon">🌱</div></div>
         <div class="tile-name">Echo Recall</div>
         <div class="tile-sub">Watch · Echo · Spot Change</div>
         <div class="tile-badge">Recovery</div>
@@ -102,25 +152,25 @@ body::before{
     <div class="cat-label" style="color:#00D9A5">🧠 COGNITIVE COURT</div>
     <div class="games-row">
 
-      <a class="game-tile" href="/vr-pattern.html" style="--tc:#FF6B35;--tg:rgba(255,107,53,.5)">
+      <a class="game-tile" href="/vr-pattern.html" style="--tc:#FF6B35;--tg:rgba(255,107,53,.55);--glow:rgba(255,107,53,.24)">
         <div class="tile-border"></div>
-        <div class="tile-icon">🧩</div>
+        <div class="tile-art"><div class="tile-icon">🧩</div></div>
         <div class="tile-name">Pattern Recognition</div>
         <div class="tile-sub">Watch · Remember · Tap</div>
         <div class="tile-badge">Memory</div>
       </a>
 
-      <a class="game-tile" href="/vr-sequence.html" style="--tc:#00CED1;--tg:rgba(0,206,209,.5)">
+      <a class="game-tile" href="/vr-sequence.html" style="--tc:#00CED1;--tg:rgba(0,206,209,.55);--glow:rgba(0,206,209,.22)">
         <div class="tile-border"></div>
-        <div class="tile-icon">🔢</div>
+        <div class="tile-art"><div class="tile-icon">🔢</div></div>
         <div class="tile-name">Flash Recall</div>
         <div class="tile-sub">Watch · Remember · Find</div>
         <div class="tile-badge">Memory</div>
       </a>
 
-      <a class="game-tile" href="/vr-focus.html" style="--tc:#00D9A5;--tg:rgba(0,217,165,.5)">
+      <a class="game-tile" href="/vr-focus.html" style="--tc:#00D9A5;--tg:rgba(0,217,165,.55);--glow:rgba(0,217,165,.22)">
         <div class="tile-border"></div>
-        <div class="tile-icon">🎵</div>
+        <div class="tile-art"><div class="tile-icon">🎵</div></div>
         <div class="tile-name">Sequence Control</div>
         <div class="tile-sub">Watch · Remember · Replay</div>
         <div class="tile-badge">Sequence</div>
