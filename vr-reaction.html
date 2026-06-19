@@ -100,11 +100,11 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
   <!-- MODE SELECT -->
   <div class="mode-row">
-    <button class="mode-btn active" id="modePractice" id="modePracticeBtn">
+    <button class="mode-btn active" id="modePracticeBtn">
       ⚡ PRACTICE
       <small>Choose your speed · 5 levels</small>
     </button>
-    <button class="mode-btn compete-btn" id="modeCompete" id="modeCompeteBtn">
+    <button class="mode-btn compete-btn" id="modeCompeteBtn">
       🏆 COMPETE
       <small>Auto speed · 20 taps per level</small>
     </button>
@@ -190,8 +190,8 @@ var best=0;
 // MODE
 function setMode(m){
   mode=m;
-  $('modePractice').classList.toggle('active',m==='practice');
-  $('modeCompete').classList.toggle('active',m==='compete');
+  document.getElementById('modePracticeBtn').classList.toggle('active',m==='practice');
+  document.getElementById('modeCompeteBtn').classList.toggle('active',m==='compete');
   $('speedSection').style.display=m==='practice'?'block':'none';
   var btn=$('startBtn');
   if(m==='compete'){
