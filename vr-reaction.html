@@ -100,11 +100,11 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
   <!-- MODE SELECT -->
   <div class="mode-row">
-    <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">
+    <button class="mode-btn active" id="modePractice" id="modePracticeBtn">
       ⚡ PRACTICE
       <small>Choose your speed · 5 levels</small>
     </button>
-    <button class="mode-btn compete-btn" id="modeCompete" onclick="setMode('compete')">
+    <button class="mode-btn compete-btn" id="modeCompete" id="modeCompeteBtn">
       🏆 COMPETE
       <small>Auto speed · 20 taps per level</small>
     </button>
@@ -213,6 +213,9 @@ document.querySelectorAll('[data-bpm]').forEach(btn=>{
     btn.classList.add('active');
   }
 });
+
+document.getElementById('modePracticeBtn').onclick=function(){setMode('practice')};
+document.getElementById('modeCompeteBtn').onclick=function(){setMode('compete')};
 
 $('startBtn').onclick=function(){
   $('screen-intro').style.display='none';
