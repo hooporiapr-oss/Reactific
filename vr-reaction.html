@@ -248,7 +248,7 @@ var phase='idle',currentTarget=-1,timers=[],shrinkRAF=null,currentSpeed=null;
 
 function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
 
-function getDecoyCount(lv){if(lv<=2)return 0;if(lv<=4)return 1;if(lv<=6)return 2;if(lv<=8)return 3;return 4}
+function getDecoyCount(lv){if(lv<=4)return 0;if(lv<=6)return 1;if(lv<=8)return 2;return 3}
 
 function updateHUD(){
   $('hBpm').textContent=currentSpeed?currentSpeed.bpm:'—';
@@ -392,7 +392,15 @@ function onMiss(reason){
 
 function finishSession(){
   phase='idle';clrT();resetCells();
+  currentTarget=-1;
   $('clockFill').style.width='100%';
+  // Reset game state for next session
+  if(mode==='practice'){
+    currentSpeed=selectedSpeed;
+  }else{
+    currentSpeed=SPEEDS[0];
+  }
+  g={taps:0,sc:0,st:0,lv:1,speedIdx:0,speedTaps:0};
   updateHUD();
   msg("TAP LET'S GO!",'watch');
   $('actBtn').disabled=false;
