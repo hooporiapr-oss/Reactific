@@ -634,6 +634,212 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// ── GAME LEADERBOARD SYSTEM ──────────────────────────────
+// Six games, three time windows each, class-gated.
+// game_id must be one of these six — anything else is rejected.
+const VALID_GAMES = ['reaction', 'numhunt', 'recovery', 'pattern', 'sequence', 'focus'];
+
+function isValidGame(g) {
+  return VALID_GAMES.includes(String(g || '').toLowerCase());
+}
+
+// Build the display name for a leaderboard row based on the class's display_mode
+function displayName(row) {
+  if (row.display_mode === 'initials') {
+    const first = (row.first_name || row.username || '?').trim();
+    const lastInitial = (row.last_name || '').trim().charAt(0).toUpperCase();
+    return lastInitial ? `${first} ${lastInitial}.` : first;
+  }
+  return row.username;
+}
+
+// POST /api/scores/game — submit a score for one of the six games
+// Score only ranks (appears on any leaderboard) if the student is in a class.
+// mode is 'practice' or 'compete' — informational only, doesn't change ranking logic.
+app.post('/api/scores/game', authRequired, async (req, res) => {
+  try {
+    const { game_id, score, level, mode } = req.body;
+
+    if (!isValidGame(game_id)) return res.status(400).json({ error: 'Invalid game_id' });
+
+    const safeScore = Math.max(0, parseInt(score, 10) || 0);
+    const safeLevel = Math.max(1, Math.min(parseInt(level, 10) || 1, 99));
+    const safeMode = mode === 'compete' ? 'compete' : 'practice';
+
+    // Pull the student's current class_id — null means score is saved but unranked
+    const userResult = await pool.query(`SELECT class_id FROM users WHERE id = $1`, [req.user.id]);
+    const classId = userResult.rows[0]?.class_id || null;
+
+    const inserted = await pool.query(
+      `INSERT INTO game_scores (user_id, class_id, game_id, score, level, mode)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING id, created_at`,
+      [req.user.id, classId, String(game_id).toLowerCase(), safeScore, safeLevel, safeMode]
+    );
+
+    // Update global streak — counts any game played, once per calendar day
+    const today = new Date().toISOString().slice(0, 10);
+    const streakRow = await pool.query(`SELECT current_streak, best_streak, last_played_on FROM user_streaks WHERE user_id = $1`, [req.user.id]);
+
+    if (!streakRow.rows.length) {
+      await pool.query(
+        `INSERT INTO user_streaks (user_id, current_streak, best_streak, last_played_on) VALUES ($1, 1, 1, $2)`,
+        [req.user.id, today]
+      );
+    } else {
+      const s = streakRow.rows[0];
+      const lastPlayed = s.last_played_on ? new Date(s.last_played_on).toISOString().slice(0, 10) : null;
+      if (lastPlayed !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        const newCurrent = lastPlayed === yesterday ? s.current_streak + 1 : 1;
+        const newBest = Math.max(s.best_streak, newCurrent);
+        await pool.query(
+          `UPDATE user_streaks SET current_streak = $1, best_streak = $2, last_played_on = $3 WHERE user_id = $4`,
+          [newCurrent, newBest, today, req.user.id]
+        );
+      }
+    }
+
+    // Ranked status — only true if student is in a class
+    const ranked = classId !== null;
+    let rank = null;
+    if (ranked) {
+      const rankResult = await pool.query(
+        `SELECT COUNT(*) + 1 AS rank FROM (
+           SELECT DISTINCT ON (user_id) user_id, score FROM game_scores
+           WHERE game_id = $1 AND class_id IS NOT NULL
+           ORDER BY user_id, score DESC, created_at ASC
+         ) top WHERE top.score > $2`,
+        [String(game_id).toLowerCase(), safeScore]
+      );
+      rank = parseInt(rankResult.rows[0].rank, 10);
+    }
+
+    res.status(201).json({
+      id: inserted.rows[0].id,
+      created_at: inserted.rows[0].created_at,
+      ranked,
+      rank
+    });
+  } catch (err) {
+    console.error('Game score submit error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/leaderboard/:game_id?window=today|week|alltime&class_id=X&limit=N
+// Returns one game's leaderboard for one time window.
+// class_id is optional — omit for school-wide, include to scope to one class.
+async function getGameLeaderboard(gameId, windowParam, classIdParam, limitInput) {
+  const limit = Math.min(parseInt(limitInput, 10) || 10, 100);
+  let timeFilter = '';
+  if (windowParam === 'today') timeFilter = `AND gs.created_at >= CURRENT_DATE`;
+  if (windowParam === 'week') timeFilter = `AND gs.created_at >= date_trunc('week', CURRENT_DATE)`;
+
+  let classFilter = '';
+  const params = [gameId];
+  if (classIdParam) {
+    params.push(parseInt(classIdParam, 10));
+    classFilter = `AND gs.class_id = $${params.length}`;
+  }
+  params.push(limit);
+
+  const result = await pool.query(
+    `SELECT DISTINCT ON (gs.user_id)
+       gs.user_id, gs.score, gs.level, gs.created_at,
+       u.username, u.first_name, u.last_name,
+       c.display_mode
+     FROM game_scores gs
+     JOIN users u ON u.id = gs.user_id
+     LEFT JOIN classes c ON c.id = gs.class_id
+     WHERE gs.game_id = $1 AND gs.class_id IS NOT NULL ${timeFilter} ${classFilter}
+     ORDER BY gs.user_id, gs.score DESC, gs.created_at ASC`,
+    params
+  );
+
+  const entries = result.rows
+    .sort((a, b) => b.score - a.score || new Date(a.created_at) - new Date(b.created_at))
+    .slice(0, limit)
+    .map((row, i) => ({
+      rank: i + 1,
+      name: displayName(row),
+      score: row.score,
+      level: row.level
+    }));
+
+  return { game_id: gameId, window: windowParam, entries };
+}
+
+app.get('/api/leaderboard/:game_id', async (req, res) => {
+  try {
+    const gameId = String(req.params.game_id).toLowerCase();
+    if (!isValidGame(gameId)) return res.status(400).json({ error: 'Invalid game_id' });
+
+    const windowParam = ['today', 'week', 'alltime'].includes(req.query.window) ? req.query.window : 'alltime';
+    const result = await getGameLeaderboard(gameId, windowParam, req.query.class_id, req.query.limit);
+    res.json(result);
+  } catch (err) {
+    console.error('Game leaderboard error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/scores/personal-best/:game_id — student's own best score on one game
+app.get('/api/scores/personal-best/:game_id', authRequired, async (req, res) => {
+  try {
+    const gameId = String(req.params.game_id).toLowerCase();
+    if (!isValidGame(gameId)) return res.status(400).json({ error: 'Invalid game_id' });
+
+    const best = await pool.query(
+      `SELECT score, level, created_at FROM game_scores
+       WHERE user_id = $1 AND game_id = $2
+       ORDER BY score DESC, created_at ASC LIMIT 1`,
+      [req.user.id, gameId]
+    );
+
+    if (!best.rows.length) return res.json({ game_id: gameId, score: 0, level: 1, has_played: false });
+    res.json({ game_id: gameId, ...best.rows[0], has_played: true });
+  } catch (err) {
+    console.error('Personal best error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/streak/me — global streak, any game, once per day
+app.get('/api/streak/me', authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT current_streak, best_streak, last_played_on FROM user_streaks WHERE user_id = $1`,
+      [req.user.id]
+    );
+    if (!result.rows.length) return res.json({ current_streak: 0, best_streak: 0, last_played_on: null });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Streak fetch error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// POST /api/classes/:id/display-mode — teacher sets how names show on leaderboards for their class
+app.post('/api/classes/:id/display-mode', authRequired, async (req, res) => {
+  try {
+    const { display_mode } = req.body;
+    if (!['username', 'initials'].includes(display_mode)) {
+      return res.status(400).json({ error: 'display_mode must be username or initials' });
+    }
+    const classId = parseInt(req.params.id, 10);
+
+    const owns = await pool.query(`SELECT id FROM classes WHERE id = $1 AND teacher_id = $2`, [classId, req.user.id]);
+    if (!owns.rows.length) return res.status(403).json({ error: 'Not your class' });
+
+    await pool.query(`UPDATE classes SET display_mode = $1 WHERE id = $2`, [display_mode, classId]);
+    res.json({ class_id: classId, display_mode });
+  } catch (err) {
+    console.error('Display mode update error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // ── Start ───────────────────────────────────────────────
 app.listen(PORT, () => console.log(`Reactific API running on port ${PORT}`));
 
