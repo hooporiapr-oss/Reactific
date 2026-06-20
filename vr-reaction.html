@@ -245,7 +245,7 @@ function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 // GAME STATE
 var g={taps:0,sc:0,st:0,lv:1,speedIdx:0,speedTaps:0};
-var phase='idle',currentTarget=-1,timers=[],shrinkRAF=null,currentSpeed=null;
+var phase='idle',currentTarget=-1,timers=[],shrinkRAF=null,currentSpeed=null,transitionMs=null;
 
 function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
 
@@ -349,8 +349,9 @@ function fireCell(){
     cells[ti].style.boxShadow='';
   }
 
-  // Shrink clock
-  var cw=currentSpeed.ms;
+  // Shrink clock — use transition timing for the first cell after a speed jump
+  var cw=(transitionMs!==null)?transitionMs:currentSpeed.ms;
+  transitionMs=null;
   var startMs=performance.now();
   $('clockFill').style.width='100%';
   if(mode==='compete'){
@@ -392,10 +393,12 @@ function handleTap(idx){
     if(mode==='compete'){
       // Check speed advance
       if(g.speedTaps>=COMPETE_TAPS&&g.speedIdx<SPEEDS.length-1){
+        var prevSpeedMs=currentSpeed.ms; // give one transition tap at the OLD (slower) pace
         g.speedIdx++;g.speedTaps=0;
         currentSpeed=SPEEDS[g.speedIdx];
         updateHUD();
         msg('🔥 '+currentSpeed.bpm+' BPM — FASTER!','levelup');
+        transitionMs=prevSpeedMs;
         timers.push(setTimeout(function(){if(phase==='playing')fireCell()},600));
       }else if(g.speedIdx>=SPEEDS.length-1&&g.speedTaps>=COMPETE_TAPS){
         // All speeds mastered
