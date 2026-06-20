@@ -6,7 +6,7 @@
 <title>VR Reaction Control | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 
 #screen-intro{
   position:fixed;inset:0;display:flex;flex-direction:column;
@@ -74,7 +74,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 .court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
 .court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(155,89,182,.25);border-radius:14px;padding:6px;background:rgba(8,0,15,.85);box-shadow:0 0 60px rgba(155,89,182,.3),inset 0 0 40px rgba(155,89,182,.04),0 20px 60px rgba(0,0,0,.8)}
-.cell{border-radius:8px;background:rgba(155,89,182,.08);border:2px solid rgba(155,89,182,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0}
+.cell{border-radius:8px;background:rgba(155,89,182,.08);border:2px solid rgba(155,89,182,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0;touch-action:manipulation}
 .cell:hover{background:rgba(155,89,182,.2);border-color:#9B59B6;transform:scale(1.05)}
 .cell.target{background:#9B59B6;border-color:#A873B8;box-shadow:0 0 30px rgba(155,89,182,1);transform:scale(1.06)}
 .cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important}
@@ -252,7 +252,7 @@ function buildCourt(){
   var court=$('court');court.innerHTML='';cells=[];
   for(var i=0;i<50;i++){
     var c=document.createElement('div');c.className='cell';
-    c.onclick=(function(idx){return function(){handleTap(idx)}})(i);
+    c.addEventListener('pointerdown',(function(idx){return function(e){e.preventDefault();handleTap(idx)}})(i));
     court.appendChild(c);cells.push(c);
   }
 }
@@ -390,7 +390,7 @@ function handleTap(idx){
   if(phase!=='playing')return;
   if(tapLocked)return; // debounce: ignore duplicate/double-fired tap events
   tapLocked=true;
-  setTimeout(function(){tapLocked=false},120);
+  setTimeout(function(){tapLocked=false},80);
   var tappedTarget=currentTarget;
   currentTarget=-1; // prevent double-processing the same tap
   timers.forEach(clearTimeout);timers=[];
