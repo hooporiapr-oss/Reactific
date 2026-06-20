@@ -30,7 +30,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .speed-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8892a0;margin-bottom:8px}
 .speed-row{display:flex;gap:8px;justify-content:center}
 .speed-btn{width:90px;height:58px;border:2px solid rgba(155,89,182,.4);background:rgba(155,89,182,.08);border-radius:14px;color:#fff;font-size:.95rem;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:all .2s}
-.speed-btn.active{border-color:#9B59B6;background:rgba(155,89,182,.22);box-shadow:0 0 20px rgba(155,89,182,.5);color:#9B59B6}
+.speed-btn.active{transition:all .2s}
 .speed-btn small{display:block;font-size:.6rem;color:#a7adba;letter-spacing:.06em;margin-top:2px}
 
 .big-btn{width:420px;height:76px;border:none;border-radius:24px;background:linear-gradient(135deg,#9B59B6,#A873B8);color:#fff;font-size:1.5rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(155,89,182,.7);margin-bottom:12px;animation:btnPulse 2s ease-in-out infinite}
@@ -115,11 +115,11 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="speed-section" id="speedSection">
     <div class="speed-label">Select Speed</div>
     <div class="speed-row">
-      <button class="speed-btn active" data-bpm="40" data-ms="1500" data-pts="10">40<small>BPM · 10pt</small></button>
-      <button class="speed-btn" data-bpm="60" data-ms="1000" data-pts="20">60<small>BPM · 20pt</small></button>
-      <button class="speed-btn" data-bpm="80" data-ms="750" data-pts="40">80<small>BPM · 40pt</small></button>
-      <button class="speed-btn" data-bpm="100" data-ms="600" data-pts="70">100<small>BPM · 70pt</small></button>
-      <button class="speed-btn" data-bpm="120" data-ms="500" data-pts="100">120<small>BPM · 100pt</small></button>
+      <button class="speed-btn active" data-bpm="40" data-ms="1500" data-pts="10" data-color="#9B59B6" data-glow="rgba(155,89,182,1)">40<small>BPM · 10pt</small></button>
+      <button class="speed-btn" data-bpm="60" data-ms="1000" data-pts="20" data-color="#00BFFF" data-glow="rgba(0,191,255,1)">60<small>BPM · 20pt</small></button>
+      <button class="speed-btn" data-bpm="80" data-ms="750" data-pts="40" data-color="#00D9A5" data-glow="rgba(0,217,165,1)">80<small>BPM · 40pt</small></button>
+      <button class="speed-btn" data-bpm="100" data-ms="600" data-pts="70" data-color="#ff6b00" data-glow="rgba(255,107,0,1)">100<small>BPM · 70pt</small></button>
+      <button class="speed-btn" data-bpm="120" data-ms="500" data-pts="100" data-color="#FF1493" data-glow="rgba(255,20,147,1)">120<small>BPM · 100pt</small></button>
     </div>
   </div>
 
@@ -206,14 +206,30 @@ function setMode(m){
   }
 }
 
-// SPEED BUTTONS
+// SPEED BUTTONS — color each box to match its speed tier, always
+function paintSpeedButtons(){
+  document.querySelectorAll('[data-bpm]').forEach(b=>{
+    var col=b.dataset.color, glow=b.dataset.glow;
+    b.style.borderColor=col;
+    b.style.color=col;
+    if(b.classList.contains('active')){
+      b.style.background=col+'30';
+      b.style.boxShadow='0 0 20px '+glow;
+    }else{
+      b.style.background=col+'14';
+      b.style.boxShadow='none';
+    }
+  });
+}
 document.querySelectorAll('[data-bpm]').forEach(btn=>{
   btn.onclick=function(){
     selectedSpeed=SPEEDS.find(s=>s.bpm===Number(btn.dataset.bpm));
     document.querySelectorAll('[data-bpm]').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
+    paintSpeedButtons();
   }
 });
+paintSpeedButtons();
 
 
 
@@ -339,15 +355,9 @@ function fireCell(){
   var ti;do{ti=Math.floor(Math.random()*50)}while(used.indexOf(ti)!==-1);
   currentTarget=ti;
   cells[ti].className='cell target';
-  if(mode==='compete'){
-    cells[ti].style.background=currentSpeed.color;
-    cells[ti].style.borderColor=currentSpeed.color;
-    cells[ti].style.boxShadow='0 0 30px '+currentSpeed.glow;
-  }else{
-    cells[ti].style.background='';
-    cells[ti].style.borderColor='';
-    cells[ti].style.boxShadow='';
-  }
+  cells[ti].style.background=currentSpeed.color;
+  cells[ti].style.borderColor=currentSpeed.color;
+  cells[ti].style.boxShadow='0 0 30px '+currentSpeed.glow;
 
   // Shrink clock — ease into new speed with 2 transition cells at the prior pace
   var cw=currentSpeed.ms;
