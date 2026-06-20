@@ -6,7 +6,7 @@
 <title>VR Flash Recall | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 
 #screen-intro{
   position:fixed;inset:0;display:flex;flex-direction:column;
@@ -46,7 +46,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .star.earned{opacity:1;filter:drop-shadow(0 0 6px #00CED1);transform:scale(1.2)}
 .court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
 .court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(0,206,209,.25);border-radius:14px;padding:6px;background:rgba(0,15,15,.85);box-shadow:0 0 60px rgba(0,206,209,.3),inset 0 0 40px rgba(0,206,209,.04),0 20px 60px rgba(0,0,0,.8)}
-.cell{border-radius:8px;background:rgba(0,206,209,.08);border:2px solid rgba(0,206,209,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0}
+.cell{border-radius:8px;background:rgba(0,206,209,.08);border:2px solid rgba(0,206,209,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .08s;min-height:0;min-width:0;touch-action:manipulation}
 .cell:hover{background:rgba(0,206,209,.2);border-color:#00CED1;transform:scale(1.05)}
 .cell.lit{background:#00CED1!important;border-color:#40E0D0!important;box-shadow:0 0 30px rgba(0,206,209,1)!important;transform:scale(1.05)}
 .cell.selected{background:rgba(0,206,209,.35)!important;border-color:#00CED1!important;box-shadow:0 0 14px rgba(0,206,209,.6)!important}
@@ -64,7 +64,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <body>
 
 <div id="screen-intro">
-  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/index.html">← Games</a>
+  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">FLASH <span>RECALL</span></div>
   <div class="vrr-sub">5×10 VR Court · Reactific™</div>
   <div class="vrr-rule">👀 WATCH THE FLASH — FIND THEM ALL</div>
@@ -101,7 +101,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
-    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/index.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
@@ -118,7 +118,7 @@ $('menuBtn').onclick=function(){$('screen-game').style.display='none';$('screen-
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
-function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.onclick=(function(idx){return function(){handleTap(idx)}})(i);court.appendChild(c);cells.push(c)}}
+function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.addEventListener('pointerdown',(function(idx){return function(e){e.preventDefault();handleTap(idx)}})(i));court.appendChild(c);cells.push(c)}}
 function cellSt(i,st){cells[i].className='cell';if(st)cells[i].classList.add(st)}
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
