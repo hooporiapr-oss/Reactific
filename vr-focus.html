@@ -6,7 +6,7 @@
 <title>VR Sequence Control | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 
 #screen-intro{
   position:fixed;inset:0;display:flex;flex-direction:column;
@@ -46,7 +46,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .star.earned{opacity:1;filter:drop-shadow(0 0 6px #00D9A5);transform:scale(1.2)}
 .court-area{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 8px;min-height:0;perspective:800px}
 .court{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(5,1fr);gap:4px;width:100%;height:100%;max-height:100%;transform:rotateX(6deg);transform-origin:center bottom;border:2px solid rgba(0,217,165,.25);border-radius:14px;padding:6px;background:rgba(0,15,10,.85);box-shadow:0 0 60px rgba(0,217,165,.3),inset 0 0 40px rgba(0,217,165,.04),0 20px 60px rgba(0,0,0,.8)}
-.cell{border-radius:8px;background:rgba(0,217,165,.08);border:2px solid rgba(0,217,165,.4);display:flex;align-items:center;justify-content:center;font-size:clamp(1rem,2.2vw,2rem);font-weight:900;color:transparent;cursor:pointer;transition:all .08s;min-height:0;min-width:0}
+.cell{border-radius:8px;background:rgba(0,217,165,.08);border:2px solid rgba(0,217,165,.4);display:flex;align-items:center;justify-content:center;font-size:clamp(1rem,2.2vw,2rem);font-weight:900;color:transparent;cursor:pointer;transition:all .08s;min-height:0;min-width:0;touch-action:manipulation}
 .cell:hover{background:rgba(0,217,165,.2);border-color:#00D9A5;transform:scale(1.05)}
 .cell.lit{background:#FFD700!important;border-color:#FFD700!important;box-shadow:0 0 30px rgba(255,215,0,1)!important;color:#000!important;transform:scale(1.06)}
 .cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important;color:#000!important}
@@ -63,7 +63,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <body>
 
 <div id="screen-intro">
-  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/index.html">← Games</a>
+  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">SEQUENCE <span>CONTROL</span></div>
   <div class="vrr-sub">5×10 VR Court · Reactific™</div>
   <div class="vrr-rule">🎵 WATCH THE ORDER — REPLAY IT BACK</div>
@@ -97,7 +97,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
-    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/index.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
@@ -114,7 +114,7 @@ $('menuBtn').onclick=function(){$('screen-game').style.display='none';$('screen-
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
-function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.onclick=(function(idx){return function(){handleTap(idx)}})(i);court.appendChild(c);cells.push(c)}}
+function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.addEventListener('pointerdown',(function(idx){return function(e){e.preventDefault();handleTap(idx)}})(i));court.appendChild(c);cells.push(c)}}
 function cellSt(i,st,num){cells[i].className='cell';cells[i].textContent='';cells[i].style.color='transparent';if(st){cells[i].classList.add(st);if(num!==undefined){cells[i].textContent=num;cells[i].style.color=''}}}
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
@@ -156,8 +156,12 @@ function startRound(){
   },600));
 }
 
+var tapLocked=false;
 function handleTap(idx){
   if(phase!=='tapping')return;
+  if(tapLocked)return;
+  tapLocked=true;
+  setTimeout(function(){tapLocked=false},80);
   cells[idx].classList.add('player-tap');playNote(idx);
   timers.push(setTimeout(function(){if(cells[idx])cells[idx].classList.remove('player-tap')},200));
   if(idx===sequence[playerIdx]){
