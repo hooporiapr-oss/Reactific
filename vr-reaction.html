@@ -371,8 +371,12 @@ function fireCell(){
   shrinkRAF=requestAnimationFrame(tick);
 }
 
+var tapLocked=false;
 function handleTap(idx){
   if(phase!=='playing')return;
+  if(tapLocked)return; // debounce: ignore duplicate/double-fired tap events
+  tapLocked=true;
+  setTimeout(function(){tapLocked=false},120);
   var tappedTarget=currentTarget;
   currentTarget=-1; // prevent double-processing the same tap
   timers.forEach(clearTimeout);timers=[];
