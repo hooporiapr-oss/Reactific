@@ -310,9 +310,14 @@ function startSession(){
   },700));
 }
 
+var fireSeq=0;
 function fireCell(){
   if(phase!=='playing')return;
-  clrT();resetCells();
+  if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}
+  resetCells();
+  fireSeq++;
+  var mySeq=fireSeq;
+
   var dc=getDecoyCount(g.lv);
   var used=[];
   for(var d=0;d<dc;d++){
@@ -328,6 +333,7 @@ function fireCell(){
   var startMs=performance.now();
   $('clockFill').style.width='100%';
   function tick(){
+    if(mySeq!==fireSeq)return; // stale loop, abandon
     var pct=Math.max(0,1-(performance.now()-startMs)/cw);
     $('clockFill').style.width=(pct*100)+'%';
     if(pct<=0){onMiss('MISSED!');return}
@@ -338,8 +344,11 @@ function fireCell(){
 
 function handleTap(idx){
   if(phase!=='playing')return;
-  clrT();
-  if(idx===currentTarget){
+  var tappedTarget=currentTarget;
+  currentTarget=-1; // prevent double-processing the same tap
+  timers.forEach(clearTimeout);timers=[];
+  if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}
+  if(idx===tappedTarget){
     cellSt(idx,'correct');
     g.taps++;g.st++;g.speedTaps++;
     g.sc+=currentSpeed.pts;
@@ -377,7 +386,7 @@ function handleTap(idx){
     }
   }else{
     cellSt(idx,'wrong');
-    if(currentTarget>=0)cellSt(currentTarget,'missed');
+    if(tappedTarget>=0)cellSt(tappedTarget,'missed');
     onMiss('WRONG TAP!');
   }
 }
