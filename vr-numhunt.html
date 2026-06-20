@@ -109,7 +109,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <a style="display:inline-block;margin-bottom:18px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none;align-self:flex-start" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">NUMBER <span>HUNT</span></div>
   <div class="vrr-sub">5×10 VR Court · Reactific™</div>
-  <div class="vrr-rule">🎯 SCAN THE COURT — FIND THE NUMBER</div>
+  <div class="vrr-rule">🎯 FIND THE NUMBER — TAP IT FAST</div>
   <div class="speed-row">
     <button class="speed-btn active" data-time="5000">SLOW<small>5 SEC</small></button>
     <button class="speed-btn" data-time="3000">TEMPO<small>3 SEC</small></button>
@@ -117,8 +117,8 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
   <button class="big-btn" id="startBtn">🎯 ENTER THE COURT</button>
   <div class="intro-info">
-    <strong>ALL 50 CELLS</strong> — numbered before each round<br>
-    <strong>TARGET APPEARS</strong> — clock starts<br>
+    <strong>TARGET NUMBER APPEARS</strong> — clock starts immediately<br>
+    <strong>FIND IT ON THE COURT</strong> — tap it before time runs out<br>
     <strong>10 ROUNDS</strong> — 5 cells added each round<br>
     <strong>5 STAGES</strong> — find 1 · 2 · 3 · 4 · 5 numbers
   </div>
@@ -139,7 +139,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
 
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:100%"></div></div>
-  <div class="msg-bar preview" id="msg">SCAN THE COURT</div>
+  <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
 
   <div class="progress-row" id="progressRow"></div>
 
@@ -226,45 +226,24 @@ function startRound(){
 
   var cellCount=getCellCount(g.round);
   var findCount=g.stage;
+  phase='playing';
+  $('actBtn').disabled=true;
 
-  // Always show all 50 cells numbered 1-50 randomly
+  // Build the court numbers
   var nums=[];for(var i=1;i<=50;i++)nums.push(i);
   shuffle(nums);
   courtNums=nums.slice();
 
-  // Show all 50 cells — preview mode, not clickable yet
-  cells.forEach(function(c,i){
-    c.className='cell preview';
-    c.textContent=courtNums[i];
-  });
-
-  // Pick targets — from the cells that will be ACTIVE this round
+  // Pick which cells are active this round
   var activeCells=[];for(var i=0;i<50;i++)activeCells.push(i);
   shuffle(activeCells);
   var activeSet=activeCells.slice(0,cellCount);
-  shuffle(activeSet);
-  targets=activeSet.slice(0,findCount).map(function(ci){return courtNums[ci]});
-
-  // Store which cells are active this round
   activeSet_=activeSet;
 
-  msg('SCAN THE COURT','preview');
-  $('targetBar').innerHTML='<div class="target-label">SCAN →</div>';
-  $('actBtn').disabled=false;
-  $('actBtn').textContent="🎯 START HUNT";
-  $('actBtn').onclick=startHunt;
-  phase='preview';
-}
-
-var activeSet_=[];
-function startHunt(){
-  if(phase!=='preview')return;
-  clrT();phase='playing';
-  $('actBtn').disabled=true;
-  $('actBtn').textContent="LET'S GO";
-
-  var findCount=g.stage;
-  var cellCount=getCellCount(g.round);
+  // Pick targets from the active cells
+  var targetCells=activeSet.slice();
+  shuffle(targetCells);
+  targets=targetCells.slice(0,findCount).map(function(ci){return courtNums[ci]});
 
   // Show targets in bar
   var bar=$('targetBar');
@@ -275,10 +254,11 @@ function startHunt(){
     bar.appendChild(el);
   });
 
-  // Make active cells clickable, dim inactive ones
+  // Render the court — active cells clickable with numbers, rest inactive
   cells.forEach(function(c,i){
-    if(activeSet_.indexOf(i)!==-1){
+    if(activeSet.indexOf(i)!==-1){
       c.className='cell active';
+      c.textContent=courtNums[i];
     }else{
       c.className='cell inactive';
       c.textContent='';
@@ -287,7 +267,7 @@ function startHunt(){
 
   msg('🎯 FIND '+(findCount>1?'THEM':'IT')+'!','go');
 
-  // Start clock
+  // Start clock immediately
   var startMs=performance.now();
   $('clockFill').style.width='100%';
   function tick(){
@@ -298,6 +278,8 @@ function startHunt(){
   }
   shrinkRAF=requestAnimationFrame(tick);
 }
+
+var activeSet_=[];
 
 var tapLocked=false;
 function handleTap(idx){
