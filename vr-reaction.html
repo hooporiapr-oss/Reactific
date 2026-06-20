@@ -176,11 +176,11 @@ var $=id=>document.getElementById(id);
 
 // SPEEDS config
 var SPEEDS=[
-  {bpm:40,  ms:1500, pts:10},
-  {bpm:60,  ms:1000, pts:20},
-  {bpm:80,  ms:750,  pts:40},
-  {bpm:100, ms:600,  pts:70},
-  {bpm:120, ms:500,  pts:100},
+  {bpm:40,  ms:1500, pts:10,  color:'#9B59B6', glow:'rgba(155,89,182,1)'},
+  {bpm:60,  ms:1000, pts:20,  color:'#00BFFF', glow:'rgba(0,191,255,1)'},
+  {bpm:80,  ms:750,  pts:40,  color:'#00D9A5', glow:'rgba(0,217,165,1)'},
+  {bpm:100, ms:600,  pts:70,  color:'#ff6b00', glow:'rgba(255,107,0,1)'},
+  {bpm:120, ms:500,  pts:100, color:'#FF1493', glow:'rgba(255,20,147,1)'},
 ];
 var COMPETE_TAPS=20;  // taps to advance speed in compete
 var MAX_TAPS=100;     // max taps in practice
@@ -241,7 +241,7 @@ function buildCourt(){
     court.appendChild(c);cells.push(c);
   }
 }
-function cellSt(i,st){cells[i].className='cell';if(st)cells[i].classList.add(st)}
+function cellSt(i,st){cells[i].className='cell';cells[i].style.background='';cells[i].style.borderColor='';cells[i].style.boxShadow='';if(st)cells[i].classList.add(st)}
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 // GAME STATE
@@ -254,6 +254,10 @@ function getDecoyCount(lv){if(lv<=4)return 0;if(lv<=6)return 1;if(lv<=8)return 2
 
 function updateHUD(){
   $('hBpm').textContent=currentSpeed?currentSpeed.bpm:'—';
+  if(mode==='compete'&&currentSpeed){
+    document.querySelector('.bpm-box').style.borderColor=currentSpeed.color;
+    $('hBpm').style.color=currentSpeed.color;
+  }
   $('hTaps').textContent=g.taps;
   $('hSc').textContent=g.sc;
   $('hBest').textContent=best;
@@ -277,6 +281,13 @@ function updateHUD(){
       seg.className='spd-seg'+(j<g.speedIdx?' done':j===g.speedIdx?' current':'');
     }
     $('spd-label').textContent=currentSpeed.bpm+' BPM';
+    $('spd-label').style.color=currentSpeed.color;
+    for(var k=0;k<5;k++){
+      var seg=$('seg'+k);
+      if(k<g.speedIdx){seg.style.background=SPEEDS[k].color;seg.style.borderColor=SPEEDS[k].color;seg.style.boxShadow='0 0 6px '+SPEEDS[k].glow}
+      else if(k===g.speedIdx){seg.style.background=currentSpeed.color+'80';seg.style.borderColor=currentSpeed.color;seg.style.boxShadow='0 0 8px '+currentSpeed.glow}
+      else{seg.style.background='';seg.style.borderColor='';seg.style.boxShadow=''}
+    }
   }else{
     $('speedProgress').classList.remove('visible');
   }
@@ -328,12 +339,26 @@ function fireCell(){
   }
   var ti;do{ti=Math.floor(Math.random()*50)}while(used.indexOf(ti)!==-1);
   currentTarget=ti;
-  cells[ti].className='cell target'+(mode==='compete'?' compete':'');
+  cells[ti].className='cell target';
+  if(mode==='compete'){
+    cells[ti].style.background=currentSpeed.color;
+    cells[ti].style.borderColor=currentSpeed.color;
+    cells[ti].style.boxShadow='0 0 30px '+currentSpeed.glow;
+  }else{
+    cells[ti].style.background='';
+    cells[ti].style.borderColor='';
+    cells[ti].style.boxShadow='';
+  }
 
   // Shrink clock
   var cw=currentSpeed.ms;
   var startMs=performance.now();
   $('clockFill').style.width='100%';
+  if(mode==='compete'){
+    $('clockFill').style.background='linear-gradient(90deg,'+currentSpeed.color+','+currentSpeed.color+')';
+  }else{
+    $('clockFill').style.background='';
+  }
   function tick(){
     if(mySeq!==fireSeq)return; // stale loop, abandon
     var pct=Math.max(0,1-(performance.now()-startMs)/cw);
