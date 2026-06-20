@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
-  width:100%;height:100%;overflow:hidden;
+  width:100%;min-height:100%;overflow-y:auto;overflow-x:hidden;
   font-family:Arial,sans-serif;color:#fff;
   background:radial-gradient(ellipse at 20% 20%,rgba(0,140,255,.18),transparent 40%),
              radial-gradient(ellipse at 80% 80%,rgba(155,89,182,.15),transparent 40%),
@@ -23,25 +23,25 @@ body::before{
   transform-origin:bottom center;
   pointer-events:none;
 }
-.wrap{width:100%;height:100vh;display:flex;flex-direction:column;overflow:hidden;padding:10px 14px 8px}
+.wrap{width:100%;min-height:100vh;display:flex;flex-direction:column;padding:10px 14px 8px}
 .header{text-align:center;margin-bottom:8px;flex-shrink:0}
 .vr-badge{display:inline-block;background:rgba(0,140,255,.15);border:1px solid rgba(0,140,255,.4);border-radius:999px;padding:3px 14px;font-size:.55rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#008cff;margin-bottom:5px}
 .vr-logo{font-size:2rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 30px rgba(0,140,255,.6)}
 .vr-logo span{color:#008cff}
 .vr-sub{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:3px}
-.categories{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
+.categories{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
 .cat-label{font-size:.55rem;font-weight:900;letter-spacing:.25em;text-transform:uppercase;margin-bottom:4px;padding:0 2px;display:flex;align-items:center;gap:8px;flex-shrink:0}
 .cat-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
-.games-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex:1;min-height:0}
+.games-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .game-tile{
-  border-radius:14px;padding:8px;
+  border-radius:14px;padding:10px 8px;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   cursor:pointer;text-decoration:none;
   background:rgba(0,0,0,.5);
   position:relative;overflow:hidden;
   transition:transform .15s,box-shadow .15s;
-  min-height:0;
+  min-height:118px;
 }
 .tile-bg{position:absolute;inset:0;border-radius:14px;opacity:.12}
 .tile-border{position:absolute;inset:0;border-radius:14px;border:2px solid;opacity:.5;pointer-events:none}
@@ -55,6 +55,22 @@ body::before{
 .divider{height:1px;background:rgba(255,255,255,.06);flex-shrink:0}
 .footer{text-align:center;padding-top:4px;font-size:.44rem;color:#2a3240;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0}
 .footer span{color:#008cff}
+
+@media (max-width:520px){
+  .wrap{padding:14px 10px 16px}
+  .header{margin-bottom:14px}
+  .vr-logo{font-size:1.7rem}
+  .vr-sub{font-size:.5rem}
+  .categories{gap:16px}
+  .cat-label{font-size:.6rem;margin-bottom:8px}
+  .games-row{grid-template-columns:1fr 1fr;gap:10px}
+  .game-tile{min-height:140px;padding:14px 8px}
+  .tile-art{width:64px;height:64px;margin-bottom:8px}
+  .tile-name{font-size:.78rem}
+  .tile-sub{font-size:.5rem;margin-top:5px}
+  .tile-badge{font-size:.46rem;padding:3px 8px}
+  .footer{padding-top:14px;font-size:.42rem}
+}
 </style>
 </head>
 <body>
