@@ -6,7 +6,7 @@
 <title>VR Pattern Recognition | REACTIFIC™</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 
 #screen-intro{
   position:fixed;inset:0;display:flex;flex-direction:column;
@@ -57,7 +57,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .court.strobe-soft{filter:brightness(.62) contrast(1.08)}
 .court.strobe-medium{filter:brightness(.42) contrast(1.15)}
 .court.strobe-hard{opacity:.18}
-.cell{border-radius:8px;background:rgba(255,107,53,.08);border:2px solid rgba(255,107,53,.4);display:flex;align-items:center;justify-content:center;font-size:clamp(1.4rem,3vw,3rem);font-weight:900;color:transparent;cursor:pointer;transition:all .08s}
+.cell{border-radius:8px;background:rgba(255,107,53,.08);border:2px solid rgba(255,107,53,.4);display:flex;align-items:center;justify-content:center;font-size:clamp(1.4rem,3vw,3rem);font-weight:900;color:transparent;cursor:pointer;transition:all .08s;touch-action:manipulation}
 .cell:hover{background:rgba(255,107,53,.2);border-color:#FF6B35;transform:scale(1.05)}
 .cell.lit{background:#FF6B35!important;border-color:#ffd35a!important;box-shadow:0 0 20px rgba(255,107,53,.9)!important;color:#fff!important;transform:scale(1.05)}
 .cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 16px rgba(0,217,165,.7)!important;color:#fff!important}
@@ -74,7 +74,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <body>
 
 <div id="screen-intro">
-  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/index.html">← Games</a>
+  <a style="position:absolute;top:16px;left:16px;padding:10px 20px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer;text-decoration:none" href="/vr-home.html">← Games</a>
   <div class="vrr-logo">PATTERN <span>RECOGNITION</span></div>
   <div class="vrr-sub">5×10 VR Court · Reactific™</div>
   <div class="vrr-rule">🧩 MEMORIZE THE PATTERN — TAP IT BACK</div>
@@ -112,7 +112,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
-    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/index.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
@@ -134,7 +134,7 @@ $('menuBtn').onclick=function(){stopStrobe();$('screen-game').style.display='non
 $('fsBtn').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
-function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.onclick=(function(idx){return function(){handleTap(idx)}})(i);court.appendChild(c);cells.push(c)}}
+function buildCourt(){var court=$('court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='cell';c.dataset.i=i;c.addEventListener('pointerdown',(function(idx){return function(e){e.preventDefault();handleTap(idx)}})(i));court.appendChild(c);cells.push(c)}}
 function cellSt(i,st,num){cells[i].className='cell';cells[i].textContent='';cells[i].style.color='transparent';if(st){cells[i].classList.add(st);if(num!==undefined){cells[i].textContent=num;cells[i].style.color='#fff'}}}
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
@@ -168,8 +168,12 @@ function startRound(){
   },600));
 }
 
+var tapLocked=false;
 function handleTap(idx){
   if(phase!=='tapping')return;
+  if(tapLocked)return;
+  tapLocked=true;
+  setTimeout(function(){tapLocked=false},80);
   if(idx===pattern[playerIdx]){
     cellSt(idx,'correct',playerIdx+1);playerIdx++;
     if(playerIdx>=pattern.length){
