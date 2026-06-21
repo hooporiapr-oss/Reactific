@@ -149,6 +149,22 @@ function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 function initGame(){g={lv:1,sc:0,rd:0,st:0,pf:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound}
 
+// ── SCORE SUBMISSION ──────────────────────────────────
+var API='https://api.reactificgaming.com';
+(function(){
+  var urlToken=new URLSearchParams(window.location.search).get('t');
+  if(urlToken)localStorage.setItem('rct-token',urlToken);
+})();
+function submitScore(score,level,mode){
+  var token=localStorage.getItem('rct-token');
+  if(!token)return;
+  fetch(API+'/api/scores/game',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+    body:JSON.stringify({game_id:'sequence',score:score,level:level,mode:mode})
+  }).catch(function(){});
+}
+
 var phase='idle',targets=[],selected=[],timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
 
@@ -193,6 +209,7 @@ function revealResults(){
   }else{
     g.pf=0;g.st=0;updateHUD();
     msg('MISSED! '+correct+'/'+needed,'miss');
+    submitScore(g.sc,g.lv,'progression');
     timers.push(setTimeout(finishRound,2000));
   }
 }
