@@ -664,7 +664,7 @@ app.post('/api/scores/game', authRequired, async (req, res) => {
 
     const safeScore = Math.max(0, parseInt(score, 10) || 0);
     const safeLevel = Math.max(1, Math.min(parseInt(level, 10) || 1, 99));
-    const safeMode = mode === 'compete' ? 'compete' : 'practice';
+    const safeMode = ['compete', 'progression'].includes(mode) ? mode : 'practice';
 
     // Pull the student's current class_id — null means score is saved but unranked
     const userResult = await pool.query(`SELECT class_id FROM users WHERE id = $1`, [req.user.id]);
