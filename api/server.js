@@ -878,13 +878,17 @@ app.post('/api/auth/student-login', async (req, res) => {
       user = userResult.rows[0];
     } else {
       // Auto-create student account from email
+      // Students log in via email + class code only — never via password —
+      // so we generate a random, never-shared password hash just to satisfy the column constraint.
       const username = cleanEmail.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 20);
       const uniqueUsername = username + '_' + Math.floor(Math.random() * 999);
+      const randomPassword = require('crypto').randomBytes(32).toString('hex');
+      const passwordHash = await bcrypt.hash(randomPassword, 12);
       const newUser = await pool.query(
-        `INSERT INTO users (email, username, role, class_id)
-         VALUES ($1, $2, 'student', $3)
+        `INSERT INTO users (email, username, password_hash, role, class_id)
+         VALUES ($1, $2, $3, 'student', $4)
          RETURNING id, email, username, subscription_status, role, class_id`,
-        [cleanEmail, uniqueUsername, cls.id]
+        [cleanEmail, uniqueUsername, passwordHash, cls.id]
       );
       user = newUser.rows[0];
     }
