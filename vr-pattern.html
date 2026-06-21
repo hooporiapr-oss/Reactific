@@ -165,6 +165,22 @@ function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv'
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 
+// ── SCORE SUBMISSION ──────────────────────────────────
+var API='https://api.reactificgaming.com';
+(function(){
+  var urlToken=new URLSearchParams(window.location.search).get('t');
+  if(urlToken)localStorage.setItem('rct-token',urlToken);
+})();
+function submitScore(score,level,mode){
+  var token=localStorage.getItem('rct-token');
+  if(!token)return;
+  fetch(API+'/api/scores/game',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+    body:JSON.stringify({game_id:'pattern',score:score,level:level,mode:mode})
+  }).catch(function(){});
+}
+
 var phase='idle',pattern=[],playerIdx=0,timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
 
@@ -207,6 +223,7 @@ function handleTap(idx){
     phase='idle';clrT();stopStrobe();
     cellSt(idx,'wrong');g.st=0;g.pf=0;updateHUD();
     msg('WRONG ORDER!','miss');
+    submitScore(g.sc,g.lv,'progression');
     timers.push(setTimeout(function(){pattern.forEach(function(pi,n){cellSt(pi,'reveal',n+1)});timers.push(setTimeout(finishRound,1800))},500));
   }
 }
