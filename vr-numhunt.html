@@ -180,6 +180,22 @@ function buildCourt(){
 }
 
 var g={stage:1,round:1,sc:0,st:0};
+// ── SCORE SUBMISSION ──────────────────────────────────
+var API='https://api.reactificgaming.com';
+(function(){
+  var urlToken=new URLSearchParams(window.location.search).get('t');
+  if(urlToken)localStorage.setItem('rct-token',urlToken);
+})();
+function submitScore(score,level,mode){
+  var token=localStorage.getItem('rct-token');
+  if(!token)return;
+  fetch(API+'/api/scores/game',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+    body:JSON.stringify({game_id:'numhunt',score:score,level:level,mode:mode})
+  }).catch(function(){});
+}
+
 var phase='idle',targets=[],found=[],courtNums=[],timers=[],shrinkRAF=null;
 
 function clrT(){timers.forEach(clearTimeout);timers=[];if(shrinkRAF){cancelAnimationFrame(shrinkRAF);shrinkRAF=null}}
@@ -308,6 +324,7 @@ function handleTap(idx){
         // Stage complete
         if(g.stage>=TOTAL_STAGES){
           msg('🏆 CHAMPION! ALL 5 STAGES MASTERED!','perfect');
+          submitScore(g.sc,g.stage,'progression');
           timers.push(setTimeout(resetAllAndRestart,2500));
         }else{
           g.stage++;g.round=1;
@@ -357,6 +374,7 @@ function onMiss(reason){
   g.st=0;g.round=1;// Reset round within stage on miss
   updateHUD();
   msg(reason+' — ROUND RESET','miss');
+  submitScore(g.sc,g.stage,'progression');
   timers.push(setTimeout(nextRound,2000));
 }
 
