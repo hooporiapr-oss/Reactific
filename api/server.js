@@ -137,9 +137,10 @@ async function subRequired(req, res, next) {
 // Register
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { email, username, password, role } = req.body;
     const cleanEmail = String(email || '').toLowerCase().trim();
     const cleanUsername = String(username || '').trim();
+    const cleanRole = role === 'teacher' ? 'teacher' : 'student';
 
     if (!cleanEmail || !cleanUsername || !password)
       return res.status(400).json({ error: 'Email, username, and password required' });
@@ -154,10 +155,10 @@ app.post('/api/auth/register', async (req, res) => {
 
     const hash = await bcrypt.hash(password, 12);
     const result = await pool.query(
-      `INSERT INTO users (email, username, password_hash)
-       VALUES ($1, $2, $3)
+      `INSERT INTO users (email, username, password_hash, role)
+       VALUES ($1, $2, $3, $4)
        RETURNING id, email, username, subscription_status, role, class_id, created_at`,
-      [cleanEmail, cleanUsername, hash]
+      [cleanEmail, cleanUsername, hash, cleanRole]
     );
 
     const user = result.rows[0];
