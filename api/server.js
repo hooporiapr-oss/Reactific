@@ -743,7 +743,6 @@ async function getGameLeaderboard(gameId, windowParam, classIdParam, limitInput)
     params.push(parseInt(classIdParam, 10));
     classFilter = `AND gs.class_id = $${params.length}`;
   }
-  params.push(limit);
 
   const result = await pool.query(
     `SELECT DISTINCT ON (gs.user_id)
