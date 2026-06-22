@@ -752,7 +752,7 @@ async function getGameLeaderboard(gameId, windowParam, classIdParam, limitInput)
      FROM game_scores gs
      JOIN users u ON u.id = gs.user_id
      LEFT JOIN classes c ON c.id = gs.class_id
-     WHERE gs.game_id = $1 AND gs.class_id IS NOT NULL ${timeFilter} ${classFilter}
+     WHERE gs.game_id = $1 AND gs.class_id IS NOT NULL AND gs.score > 0 ${timeFilter} ${classFilter}
      ORDER BY gs.user_id, gs.score DESC, gs.created_at ASC`,
     params
   );
