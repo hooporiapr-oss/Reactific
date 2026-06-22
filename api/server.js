@@ -635,6 +635,55 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// ── CLASS MANAGEMENT ────────────────────────────────────
+
+// DELETE /api/classes/:id — teacher deletes their own class
+app.delete('/api/classes/:id', authRequired, async (req, res) => {
+  try {
+    const classId = parseInt(req.params.id, 10);
+    const owns = await pool.query(`SELECT id FROM classes WHERE id = $1 AND teacher_id = $2`, [classId, req.user.id]);
+    if (!owns.rows.length) return res.status(403).json({ error: 'Not your class' });
+    await pool.query(`DELETE FROM class_students WHERE class_id = $1`, [classId]);
+    await pool.query(`DELETE FROM classes WHERE id = $1`, [classId]);
+    res.json({ deleted: true, class_id: classId });
+  } catch (err) {
+    console.error('Delete class error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PATCH /api/classes/:id — teacher renames their class
+app.patch('/api/classes/:id', authRequired, async (req, res) => {
+  try {
+    const classId = parseInt(req.params.id, 10);
+    const { name } = req.body;
+    if (!name || !name.trim()) return res.status(400).json({ error: 'Name required' });
+    const owns = await pool.query(`SELECT id FROM classes WHERE id = $1 AND teacher_id = $2`, [classId, req.user.id]);
+    if (!owns.rows.length) return res.status(403).json({ error: 'Not your class' });
+    await pool.query(`UPDATE classes SET name = $1 WHERE id = $2`, [name.trim(), classId]);
+    res.json({ updated: true, class_id: classId, name: name.trim() });
+  } catch (err) {
+    console.error('Rename class error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE /api/classes/:id/students/:userId — teacher removes a student from their class
+app.delete('/api/classes/:id/students/:userId', authRequired, async (req, res) => {
+  try {
+    const classId = parseInt(req.params.id, 10);
+    const userId = req.params.userId;
+    const owns = await pool.query(`SELECT id FROM classes WHERE id = $1 AND teacher_id = $2`, [classId, req.user.id]);
+    if (!owns.rows.length) return res.status(403).json({ error: 'Not your class' });
+    await pool.query(`DELETE FROM class_students WHERE class_id = $1 AND user_id = $2`, [classId, userId]);
+    await pool.query(`UPDATE users SET class_id = NULL WHERE id = $1 AND class_id = $2`, [userId, classId]);
+    res.json({ removed: true, user_id: userId, class_id: classId });
+  } catch (err) {
+    console.error('Remove student error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // ── GAME LEADERBOARD SYSTEM ──────────────────────────────
 // Six games, three time windows each, class-gated.
 // game_id must be one of these six — anything else is rejected.
