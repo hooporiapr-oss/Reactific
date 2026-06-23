@@ -139,7 +139,7 @@ function cellSt(i,st,num){cells[i].className='cell';cells[i].textContent='';cell
 function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 var LEVEL_BASE={1:5,2:6,3:7,4:8,5:9,6:10,7:11,8:12,9:13,10:14};
-var ROUNDS_PER_TIER=3,TOTAL_TIERS=10;
+var ROUNDS_PER_TIER=1,TOTAL_TIERS=10;
 var g={lv:1,tier:1,rd:0,sc:0,st:0};
 function gsl(){return LEVEL_BASE[g.lv]||5}
 
