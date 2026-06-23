@@ -117,10 +117,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
   <div class="timerbar"><div class="timerbar-fill" id="timerFill" style="width:100%"></div></div>
   <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
-  <div class="stars">
-    <span class="star" id="ps1">⭐</span>
-    <span class="star" id="ps2">⭐</span>
-  </div>
+  <div class="stars"><span style="font-size:.65rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase">Level</span>&nbsp;<span id="ps1" style="font-size:1.2rem;font-weight:900;color:#9ACD32"></span></div>
   <div class="court-area"><div class="court" id="court"></div></div>
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
@@ -152,7 +149,7 @@ function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 function gcc(lv){return(lv||1)+2}
 var g={lv:1,sc:0,rd:0,st:0,pf:0};
-function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/2';for(var j=1;j<=2;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'')}
+function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/1';$('ps1').textContent=g.lv}
 function setPhase(txt){$('hPhase').textContent=txt}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 function initGame(){g={lv:1,sc:0,rd:0,st:0,pf:0};updateHUD();setPhase('READY');msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('restartBtn').style.display='none';stopTimer()}
@@ -246,7 +243,7 @@ function handleTap(idx){
 
 function revealAnswer(){echo.forEach(function(ci){cellSt(ci)});cellSt(changedCell,'reveal-answer',changePos+1);cellSt(originalCell,'reveal-original',changePos+1)}
 function roundSuccess(){phase='idle';g.pf++;g.st++;g.sc+=20*g.lv;updateHUD();setPhase('✅');msg('CORRECT!','perfect');
-  if(g.pf>=2){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
+  if(g.pf>=1){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
   else{timers.push(setTimeout(autoNextRound,1000))}}
 function autoNextRound(){if(phase!=='idle')return;resetCells();stopTimer();$('restartBtn').style.display='none';startRound()}
 function roundFail(){phase='idle';g.st=0;g.pf=0;updateHUD();setPhase('❌');msg('WRONG!','miss');
