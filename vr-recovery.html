@@ -245,7 +245,7 @@ function handleTap(idx){
 }
 
 function revealAnswer(){echo.forEach(function(ci){cellSt(ci)});cellSt(changedCell,'reveal-answer',changePos+1);cellSt(originalCell,'reveal-original',changePos+1)}
-function roundSuccess(){g.pf++;g.st++;g.sc+=20*g.lv;updateHUD();setPhase('✅');msg('CORRECT!','perfect');
+function roundSuccess(){phase='idle';g.pf++;g.st++;g.sc+=20*g.lv;updateHUD();setPhase('✅');msg('CORRECT!','perfect');
   if(g.pf>=2){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
   else{timers.push(setTimeout(autoNextRound,1000))}}
 function autoNextRound(){if(phase!=='idle')return;resetCells();stopTimer();$('restartBtn').style.display='none';startRound()}
