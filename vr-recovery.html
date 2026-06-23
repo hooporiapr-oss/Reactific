@@ -125,7 +125,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
-    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" id="restartBtn" style="display:none;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#8892a0;font-size:.8rem" onclick="restartGame()">↺ Restart<span style="color:#555">Level 1</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
@@ -155,7 +155,7 @@ var g={lv:1,sc:0,rd:0,st:0,pf:0};
 function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/2';for(var j=1;j<=2;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'')}
 function setPhase(txt){$('hPhase').textContent=txt}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
-function initGame(){g={lv:1,sc:0,rd:0,st:0,pf:0};updateHUD();setPhase('READY');msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound;stopTimer()}
+function initGame(){g={lv:1,sc:0,rd:0,st:0,pf:0};updateHUD();setPhase('READY');msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('restartBtn').style.display='none';stopTimer()}
 
 // ── SCORE SUBMISSION ──────────────────────────────────
 var API='https://api.reactificgaming.com';
@@ -192,7 +192,7 @@ function startRound(){
   if(phase!=='idle')return;
   clrT();canTap=false;stopTimer();
   phase='watching';g.rd++;genPatterns();
-  resetCells();$('actBtn').disabled=true;updateHUD();
+  resetCells();$('actBtn').disabled=true;$('restartBtn').style.display='none';updateHUD();
   setPhase('WATCH');msg('WATCH ORIGINAL','watch');
   var i=0;
   function watchNext(){
@@ -246,10 +246,17 @@ function handleTap(idx){
 
 function revealAnswer(){echo.forEach(function(ci){cellSt(ci)});cellSt(changedCell,'reveal-answer',changePos+1);cellSt(originalCell,'reveal-original',changePos+1)}
 function roundSuccess(){g.pf++;g.st++;g.sc+=20*g.lv;updateHUD();setPhase('✅');msg('CORRECT!','perfect');
-  if(g.pf>=2){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(finishRound,900))},1200))}
-  else{timers.push(setTimeout(finishRound,1200))}}
-function roundFail(){phase='idle';g.st=0;g.pf=0;updateHUD();setPhase('❌');msg('WRONG!','miss');submitScore(g.sc,g.lv,'progression');timers.push(setTimeout(finishRound,1200))}
-function finishRound(){phase='idle';canTap=false;clrT();stopTimer();resetCells();updateHUD();setPhase('READY');msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false}
+  if(g.pf>=2){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
+  else{timers.push(setTimeout(autoNextRound,1000))}}
+function autoNextRound(){if(phase!=='idle')return;resetCells();stopTimer();$('restartBtn').style.display='none';startRound()}
+function roundFail(){phase='idle';g.st=0;g.pf=0;updateHUD();setPhase('❌');msg('WRONG!','miss');
+  submitScore(g.sc,g.lv,'progression');
+  timers.push(setTimeout(showMissOptions,1200));}
+function showMissOptions(){phase='idle';canTap=false;clrT();stopTimer();resetCells();updateHUD();setPhase('READY');
+  msg("TRY AGAIN",'miss');
+  $('actBtn').textContent="TRY AGAIN";$('actBtn').onclick=function(){$('restartBtn').style.display='none';startRound()};$('actBtn').disabled=false;
+  $('restartBtn').style.display='';}
+function restartGame(){clrT();phase='idle';canTap=false;stopTimer();g={lv:1,sc:0,rd:0,st:0,pf:0};resetCells();updateHUD();setPhase('READY');msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').onclick=startRound;$('actBtn').disabled=false;$('restartBtn').style.display='none'}
 buildCourt();
 })();
 </script>
