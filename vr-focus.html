@@ -117,7 +117,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
     <button class="bot-btn start-btn" id="actBtn">LET'S GO</button>
-    <button class="bot-btn" style="border-color:#ffd35a;color:#ffd35a" onclick="location.href='/vr-home.html'">⊞ Games<span style="display:block;color:#ffd35a;font-size:.55rem;margin-top:1px">All 6</span></button>
+    <button class="bot-btn" id="restartBtn" style="display:none;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#8892a0;font-size:.8rem" onclick="restartGame()">↺ Restart<span style="color:#555">Level 1</span></button>
     <button class="bot-btn" id="fsBtn">Fullscreen<span>Toggle</span></button>
   </div>
 </div>
@@ -146,7 +146,8 @@ function gsl(){return LEVEL_BASE[g.lv]||5}
 function renderTierDots(){var el=$('tierDots');el.innerHTML='';for(var i=1;i<=TOTAL_TIERS;i++){var d=document.createElement('span');d.className='star';d.textContent='⭐';if(i<=g.tier)d.classList.add('earned');el.appendChild(d)}}
 function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd+'/'+ROUNDS_PER_TIER;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hTr').textContent=g.tier;$('hSeq').textContent=gsl()+' steps';renderTierDots()}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
-function initGame(){g={lv:1,tier:1,rd:0,sc:0,st:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false;$('actBtn').onclick=startRound}
+function initGame(){g={lv:1,tier:1,rd:0,sc:0,st:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('restartBtn').style.display='none'}
+function restartGame(){clrT();phase='idle';initGame();resetCells()}
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 function genSeq(){return shuffle(Array.from({length:50},(_,i)=>i)).slice(0,gsl())}
 
@@ -177,7 +178,7 @@ function clrT(){timers.forEach(clearTimeout);timers=[]}
 function startRound(){
   if(phase!=='idle')return;
   clrT();phase='showing';playerIdx=0;
-  resetCells();$('actBtn').disabled=true;updateHUD();
+  resetCells();$('actBtn').disabled=true;$('restartBtn').style.display='none';updateHUD();
   sequence=genSeq();
   msg('WATCH THE SEQUENCE...','watch');
   timers.push(setTimeout(function(){
@@ -207,7 +208,7 @@ function handleTap(idx){
       g.sc+=gsl()*10*g.lv;g.st++;g.rd++;updateHUD();
       msg('✅ PERFECT!','perfect');
       if(g.rd>=ROUNDS_PER_TIER){timers.push(setTimeout(tierUp,900))}
-      else{timers.push(setTimeout(finishRound,1200))}
+      else{timers.push(setTimeout(autoNextRound,1000))}
     }
   }else{
     phase='idle';clrT();
@@ -215,11 +216,17 @@ function handleTap(idx){
     msg('WRONG ORDER!','miss');
     submitScore(g.sc,g.lv,'progression');
     timers.push(setTimeout(function(){sequence.forEach(function(si,n){cellSt(si,'correct',n+1)});timers.push(setTimeout(finishRound,1800))},500));
+    // stay at current level on miss
   }
 }
 
-function tierUp(){g.tier++;g.rd=0;if(g.tier>TOTAL_TIERS)g.tier=TOTAL_TIERS;if(g.lv<10)g.lv++;updateHUD();resetCells();msg('⭐ GOSTAR! L'+g.lv,'perfect');timers.push(setTimeout(finishRound,1200))}
-function finishRound(){phase='idle';clrT();resetCells();updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').disabled=false}
+function tierUp(){g.tier++;g.rd=0;if(g.tier>TOTAL_TIERS)g.tier=TOTAL_TIERS;if(g.lv<10)g.lv++;updateHUD();resetCells();msg('⭐ GOSTAR! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,1200))}
+function autoNextRound(){if(phase!=='idle')return;resetCells();startRound()}
+function finishRound(){phase='idle';clrT();resetCells();updateHUD();
+  msg("TRY AGAIN",'miss');
+  $('actBtn').textContent="TRY AGAIN";$('actBtn').onclick=startRound;$('actBtn').disabled=false;
+  $('restartBtn').style.display='';
+}
 $('actBtn').onclick=startRound;
 buildCourt();
 })();
