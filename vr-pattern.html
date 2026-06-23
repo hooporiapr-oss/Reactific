@@ -123,11 +123,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   </div>
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:0%"></div></div>
   <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
-  <div class="stars">
-    <span class="star" id="ps1">⭐</span>
-    <span class="star" id="ps2">⭐</span>
-    <span class="star" id="ps3">⭐</span>
-  </div>
+  <div class="stars"><span style="font-size:.65rem;color:#8892a0;letter-spacing:.1em;text-transform:uppercase">Level</span>&nbsp;<span id="ps1" style="font-size:1.2rem;font-weight:900;color:#FF6B35"></span></div>
   <div class="court-area"><div class="court" id="court"></div></div>
   <div class="bottombar">
     <button class="bot-btn" id="menuBtn">← Home<span>Settings</span></button>
@@ -164,7 +160,7 @@ function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 var LEVEL_CELLS={1:5,2:6,3:7,4:8,5:10,6:12,7:14,8:16,9:18,10:20};
 var g={lv:1,sc:0,rd:0,st:0,pf:0};
 function gcc(){return LEVEL_CELLS[g.lv]||5}
-function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/3';$('hFind').textContent=gcc()+' cells';for(var j=1;j<=3;j++)$('ps'+j).className='star'+(g.pf>=j?' earned':'')}
+function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/1';$('hFind').textContent=gcc()+' cells';$('ps1').textContent=g.lv}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 
@@ -219,7 +215,7 @@ function handleTap(idx){
       phase='idle';clrT();stopStrobe();
       g.sc+=gcc()*20;g.st++;g.pf++;updateHUD();
       msg('✅ PERFECT!','perfect');
-      if(g.pf>=3){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('🔥 LEVEL UP!','perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
+      if(g.pf>=1){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('🔥 LEVEL UP!','perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
       else{timers.push(setTimeout(autoNextRound,1000))}
     }
   }else{
