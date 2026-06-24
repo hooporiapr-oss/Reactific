@@ -693,13 +693,22 @@ function isValidGame(g) {
   return VALID_GAMES.includes(String(g || '').toLowerCase());
 }
 
-// Build the display name for a leaderboard row based on the class's display_mode
-// Default to initials when first_name is available — cleaner for school displays
+// Build the display name for a leaderboard row
+// Defaults to initials — safest for school displays
+// Teacher can override to 'full_name' or 'username' per class
 function displayName(row) {
+  if (row.display_mode === 'username') return row.username;
+  if (row.display_mode === 'full_name') {
+    if (row.first_name) {
+      const full = [row.first_name, row.last_name].filter(Boolean).join(' ').trim();
+      return full || row.username;
+    }
+    return row.username;
+  }
+  // Default: initials (first name + last initial)
   if (row.first_name) {
     const first = row.first_name.trim();
     const lastInitial = (row.last_name || '').trim().charAt(0).toUpperCase();
-    if (row.display_mode === 'username') return row.username;
     return lastInitial ? `${first} ${lastInitial}.` : first;
   }
   return row.username;
@@ -875,8 +884,8 @@ app.get('/api/streak/me', authRequired, async (req, res) => {
 app.post('/api/classes/:id/display-mode', authRequired, async (req, res) => {
   try {
     const { display_mode } = req.body;
-    if (!['username', 'initials'].includes(display_mode)) {
-      return res.status(400).json({ error: 'display_mode must be username or initials' });
+    if (!['username', 'initials', 'full_name'].includes(display_mode)) {
+      return res.status(400).json({ error: 'display_mode must be username, initials, or full_name' });
     }
     const classId = parseInt(req.params.id, 10);
 
