@@ -694,10 +694,12 @@ function isValidGame(g) {
 }
 
 // Build the display name for a leaderboard row based on the class's display_mode
+// Default to initials when first_name is available — cleaner for school displays
 function displayName(row) {
-  if (row.display_mode === 'initials') {
-    const first = (row.first_name || row.username || '?').trim();
+  if (row.first_name) {
+    const first = row.first_name.trim();
     const lastInitial = (row.last_name || '').trim().charAt(0).toUpperCase();
+    if (row.display_mode === 'username') return row.username;
     return lastInitial ? `${first} ${lastInitial}.` : first;
   }
   return row.username;
@@ -929,15 +931,29 @@ app.post('/api/auth/student-login', async (req, res) => {
       // Auto-create student account from email
       // Students log in via email + class code only — never via password —
       // so we generate a random, never-shared password hash just to satisfy the column constraint.
-      const username = cleanEmail.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 20);
+      const localPart = cleanEmail.split('@')[0]; // e.g. "john.burgos" from "john.burgos@school.org"
+
+      // Parse first/last name from email — handles first.last format cleanly
+      // Falls back gracefully if the pattern doesn't match
+      let firstName = null, lastName = null;
+      if (localPart.includes('.')) {
+        const parts = localPart.split('.');
+        firstName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+        lastName = parts.slice(1).join(' ').replace(/\b\w/g, c => c.toUpperCase());
+      } else {
+        // No dot — just capitalize the whole thing as first name
+        firstName = localPart.charAt(0).toUpperCase() + localPart.slice(1).toLowerCase();
+      }
+
+      const username = localPart.replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 20);
       const uniqueUsername = username + '_' + Math.floor(Math.random() * 999);
       const randomPassword = require('crypto').randomBytes(32).toString('hex');
       const passwordHash = await bcrypt.hash(randomPassword, 12);
       const newUser = await pool.query(
-        `INSERT INTO users (email, username, password_hash, role, class_id)
-         VALUES ($1, $2, $3, 'student', $4)
-         RETURNING id, email, username, subscription_status, role, class_id`,
-        [cleanEmail, uniqueUsername, passwordHash, cls.id]
+        `INSERT INTO users (email, username, password_hash, role, class_id, first_name, last_name)
+         VALUES ($1, $2, $3, 'student', $4, $5, $6)
+         RETURNING id, email, username, subscription_status, role, class_id, first_name, last_name`,
+        [cleanEmail, uniqueUsername, passwordHash, cls.id, firstName, lastName]
       );
       user = newUser.rows[0];
     }
