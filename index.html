@@ -3,113 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>REACTIFIC VR | Access</title>
+<title>VR Games Hub | REACTIFIC</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  width:100%;height:100%;overflow:hidden;
-  font-family:Arial,sans-serif;color:#fff;
-  background:radial-gradient(ellipse at 20% 20%,rgba(0,140,255,.18),transparent 40%),
-             radial-gradient(ellipse at 80% 80%,rgba(155,89,182,.15),transparent 40%),
-             linear-gradient(180deg,#020810,#010205);
-  user-select:none;-webkit-user-select:none;
-}
-body::before{
-  content:'';position:fixed;bottom:0;left:0;right:0;height:35%;
-  background:
-    repeating-linear-gradient(90deg,rgba(0,140,255,.07) 0,rgba(0,140,255,.07) 1px,transparent 1px,transparent 50px),
-    repeating-linear-gradient(0deg,rgba(0,140,255,.07) 0,rgba(0,140,255,.07) 1px,transparent 1px,transparent 50px);
-  transform:perspective(300px) rotateX(60deg);
-  transform-origin:bottom center;
-  pointer-events:none;
-}
-.wrap{
-  position:relative;width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:24px;
-}
-.vr-badge{display:inline-block;background:rgba(0,140,255,.15);border:1px solid rgba(0,140,255,.4);border-radius:999px;padding:4px 16px;font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#008cff;margin-bottom:14px}
-.vr-logo{font-size:2.6rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 40px rgba(0,140,255,.6);text-align:center}
-.vr-logo span{color:#008cff}
-.vr-sub{font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:#a7adba;margin-top:8px;margin-bottom:40px;text-align:center}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.gate-box{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center}
-.gate-label{font-size:.65rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#8892a0;margin-bottom:12px;text-align:center}
-.gate-input{
-  width:100%;height:58px;border-radius:14px;
-  border:2px solid rgba(0,140,255,.4);background:rgba(0,140,255,.06);
-  color:#fff;font-size:1.3rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;
-  text-align:center;outline:none;transition:border-color .2s,box-shadow .2s;
-  margin-bottom:16px;
-}
-.gate-input:focus{border-color:#008cff;box-shadow:0 0 24px rgba(0,140,255,.4)}
-.gate-input::placeholder{color:rgba(255,255,255,.25);letter-spacing:.1em;font-weight:700}
-
-.gate-btn{
-  width:100%;height:58px;border:none;border-radius:14px;
-  background:linear-gradient(135deg,#008cff,#40b0ff);color:#fff;
-  font-size:1rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
-  cursor:pointer;box-shadow:0 0 30px rgba(0,140,255,.5);
-  transition:transform .15s;
-}
-.gate-btn:active{transform:scale(.97)}
-
-.gate-error{
-  font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:#ff4d6d;margin-top:14px;text-align:center;min-height:14px;
+body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background: linear-gradient(180deg, #020810, #010205);
+  overflow-x: hidden;
 }
 
-.footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:.46rem;color:#2a3240;letter-spacing:.12em;text-transform:uppercase}
-.footer span{color:#008cff}
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
 
-@media (max-width:420px){
-  .vr-logo{font-size:2rem}
-  .vr-sub{font-size:.55rem;margin-bottom:32px}
-  .gate-box{max-width:300px}
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(0, 140, 255, 0.15);
+  border: 1px solid rgba(0, 140, 255, 0.4);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #008cff;
+  margin-bottom: 16px;
+}
+
+.logo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(0, 140, 255, 0.6);
+}
+
+.logo span {
+  color: #008cff;
+}
+
+.subtitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #a7adba;
+  margin-top: 12px;
+}
+
+.games-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  border-radius: 16px;
+  background: rgba(0, 140, 255, 0.08);
+  border: 2px solid rgba(0, 140, 255, 0.3);
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 180px;
+  text-align: center;
+}
+
+.game-card:hover {
+  border-color: #008cff;
+  background: rgba(0, 140, 255, 0.15);
+  box-shadow: 0 0 30px rgba(0, 140, 255, 0.4);
+  transform: translateY(-6px);
+}
+
+.game-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.game-title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.game-subtitle {
+  font-size: 0.55rem;
+  color: #8892a0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 0.5rem;
+  color: #4a5568;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-top: 1px solid rgba(0, 140, 255, 0.15);
+  width: 100%;
+}
+
+.footer span {
+  color: #008cff;
+}
+
+.settings-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid rgba(0, 140, 255, 0.4);
+  background: rgba(0, 140, 255, 0.08);
+  color: #008cff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+  border-color: #008cff;
+  background: rgba(0, 140, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 140, 255, 0.4);
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 16px;
+  }
+  .logo {
+    font-size: 2rem;
+  }
+  .games-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0;
+  }
+  .game-card {
+    min-height: 160px;
+    padding: 16px 12px;
+  }
+  .game-icon {
+    font-size: 2rem;
+  }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="vr-badge">🥽 Virtual Reaction Reality™</div>
-  <div class="vr-logo">REACTIFIC<span>™</span></div>
-  <div class="vr-sub">Pico VR · Gostar Digital™</div>
+<div class="container">
 
-  <div class="gate-box">
-    <div class="gate-label">Enter Access Code</div>
-    <input type="text" class="gate-input" id="codeInput" placeholder="••••••••" autocomplete="off" autocapitalize="off" spellcheck="false">
-    <button class="gate-btn" id="enterBtn">Enter VR Lab</button>
-    <div class="gate-error" id="errMsg"></div>
+  <div class="header">
+    <div class="badge">🥽 Virtual Reaction Reality</div>
+    <div class="logo">REACTIFIC<span>™</span></div>
+    <div class="subtitle">6 VR Games - Choose Your Challenge</div>
   </div>
 
-  <div class="footer">REACTIFIC™ · <span>Virtual Reaction Reality</span> · Gostar Digital LLC</div>
+  <div class="games-container">
+
+    <!-- REACTION CONTROL -->
+    <a href="/vr-reaction.html" class="game-card">
+      <div class="game-icon">⚡</div>
+      <div class="game-title">Reaction Control</div>
+      <div class="game-subtitle">Fast Reflexes</div>
+    </a>
+
+    <!-- NUMBER HUNT -->
+    <a href="/vr-numhunt.html" class="game-card">
+      <div class="game-icon">🔢</div>
+      <div class="game-title">Number Hunt</div>
+      <div class="game-subtitle">Pattern Match</div>
+    </a>
+
+    <!-- PATTERN RECOGNITION -->
+    <a href="/vr-pattern.html" class="game-card">
+      <div class="game-icon">🧩</div>
+      <div class="game-title">Pattern Recognition</div>
+      <div class="game-subtitle">Memory Game</div>
+    </a>
+
+    <!-- SEQUENCE CONTROL -->
+    <a href="/vr-sequence.html" class="game-card">
+      <div class="game-icon">⏪</div>
+      <div class="game-title">Sequence Control</div>
+      <div class="game-subtitle">Order Recall</div>
+    </a>
+
+    <!-- ECHO RECALL -->
+    <a href="/vr-echo.html" class="game-card">
+      <div class="game-icon">👁️</div>
+      <div class="game-title">Echo Recall</div>
+      <div class="game-subtitle">Change Detection</div>
+    </a>
+
+    <!-- FLASH RECALL -->
+    <a href="/vr-flash.html" class="game-card">
+      <div class="game-icon">👀</div>
+      <div class="game-title">Flash Recall</div>
+      <div class="game-subtitle">Find Them All</div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    REACTIFIC™ · <span>Virtual Reaction Reality</span> · Gostar Digital LLC
+  </div>
 
 </div>
 
+<button class="settings-btn" title="Dashboard" onclick="location.href='/dashboard.html'">⚙️</button>
+
 <script>
-var ACCESS_CODE = 'Paradiso';
-var input = document.getElementById('codeInput');
-var btn = document.getElementById('enterBtn');
-var err = document.getElementById('errMsg');
-
-function tryEnter(){
-  var entered = input.value.trim();
-  if(entered.toLowerCase() === ACCESS_CODE.toLowerCase()){
-    sessionStorage.setItem('rct-gate-pass','1');
-    window.location.href = '/vr-home.html';
-  }else{
-    err.textContent = 'Incorrect code — try again';
-    input.value = '';
-    input.focus();
-  }
+// Check gate access
+if (!sessionStorage.getItem('rct-gate-pass')) {
+  window.location.href = '/';
 }
-
-btn.onclick = tryEnter;
-input.addEventListener('keydown', function(e){
-  if(e.key === 'Enter') tryEnter();
-});
-input.focus();
 </script>
+
 </body>
 </html>
