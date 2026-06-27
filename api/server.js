@@ -24,10 +24,19 @@ const CLIENT_URL = process.env.CLIENT_URL || 'https://reactificgaming.com';
 const COMPETE_URL = process.env.COMPETE_URL || `${CLIENT_URL}/compete/strobe-01-compete.html`;
 const STRIPE_CANCEL_URL = process.env.STRIPE_CANCEL_URL || `${CLIENT_URL}/compete/com-01.html`;
 
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || CLIENT_URL)
-  .split(',')
-  .map(origin => origin.trim())
-  .filter(Boolean);
+// Always allow all three Reactific domains regardless of env variable
+const REQUIRED_ORIGINS = [
+  'https://gostardigital.com',
+  'https://gostar.digital',
+  'https://reactificgaming.com',
+  'https://www.reactificgaming.com',
+];
+const ALLOWED_ORIGINS = [
+  ...new Set([
+    ...REQUIRED_ORIGINS,
+    ...(process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean)
+  ])
+];
 
 if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'change-me-in-production') {
   console.warn('WARNING: JWT_SECRET is using the fallback value. Set JWT_SECRET in production.');
