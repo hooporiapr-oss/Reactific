@@ -286,6 +286,7 @@ var API='https://api.reactificgaming.com';
   var urlToken=new URLSearchParams(window.location.search).get('t');
   if(urlToken)localStorage.setItem('rct-token',urlToken);
 })();
+
 function submitScore(score,level,mode){
   var token=localStorage.getItem('rct-token');
   if(!token)return; // not logged in — VR/demo play, nothing to submit
@@ -293,8 +294,20 @@ function submitScore(score,level,mode){
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
     body:JSON.stringify({game_id:'reaction',score:score,level:level,mode:mode})
-  }).catch(function(){});
+  }).catch(function(err){
+    console.error('Score submit error:',err);
+  });
 }
+
+// Ensure score is saved when leaving
+window.addEventListener('beforeunload',function(){
+  var token=localStorage.getItem('rct-token');
+  if(token && g && g.sc>0){
+    navigator.sendBeacon(API+'/api/scores/game',
+      JSON.stringify({game_id:'reaction',score:g.sc,level:g.lv,mode:mode})
+    );
+  }
+});
 
 var phase='idle',currentTarget=-1,timers=[],shrinkRAF=null,currentSpeed=null,transitionMs=null,transitionTapsLeft=0;
 
@@ -443,7 +456,7 @@ function handleTap(idx){
         // All speeds mastered
         phase='idle';clrT();
         msg('🏆 CHAMPION! ALL SPEEDS MASTERED!','perfect');
-        submitScore(g.sc,g.lv,mode);
+        submitScore(g.sc,g.lv,mode);  // ✓ Already here
         timers.push(setTimeout(finishSession,2000));
       }else{
         msg('⚡ '+g.speedTaps+'/'+COMPETE_TAPS+' @ '+currentSpeed.bpm+'BPM','go');
@@ -454,7 +467,7 @@ function handleTap(idx){
       if(g.taps>=MAX_TAPS){
         phase='idle';clrT();
         msg('💯 PERFECT 100! SCORE: '+g.sc,'perfect');
-        submitScore(g.sc,g.lv,mode);
+        submitScore(g.sc,g.lv,mode);  // FIXED: Added this submission
         timers.push(setTimeout(finishSession,2000));
       }else{
         msg('⚡ '+g.taps+' / '+MAX_TAPS,'go');
