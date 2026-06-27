@@ -1,83 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>REACTIFIC VR Games</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#0a0e1a;color:#fff;overflow-x:hidden}
-.wrap{max-width:1000px;margin:0 auto;padding:30px 20px}
-.header{text-align:center;margin-bottom:40px}
-.badge{display:inline-block;font-size:.6rem;color:#008cff;border:1px solid #008cff;padding:6px 12px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.15em}
-.logo{font-size:2.4rem;font-weight:900;margin:10px 0}
-.logo span{color:#008cff}
-.subtitle{font-size:.7rem;color:#888;letter-spacing:.1em;text-transform:uppercase}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:30px}
-.card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:rgba(0,140,255,.08);border:2px solid rgba(0,140,255,.3);border-radius:12px;text-decoration:none;color:#fff;cursor:pointer;transition:all .2s;min-height:160px}
-.card:hover{border-color:#008cff;background:rgba(0,140,255,.12);transform:translateY(-3px)}
-.icon{font-size:2.8rem;margin-bottom:10px}
-.title{font-size:.8rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
-.sub{font-size:.55rem;color:#888;margin-top:6px;text-transform:uppercase}
-.footer{text-align:center;padding:20px;border-top:1px solid rgba(0,140,255,.15);font-size:.5rem;color:#666;letter-spacing:.08em;text-transform:uppercase}
-.settings{position:fixed;top:20px;right:20px;width:50px;height:50px;border-radius:10px;border:2px solid #008cff;background:rgba(0,140,255,.1);color:#008cff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.settings:hover{background:rgba(0,140,255,.2)}
-@media(max-width:600px){.logo{font-size:1.8rem}.grid{grid-template-columns:repeat(2,1fr);gap:12px}.card{min-height:140px;padding:16px}.icon{font-size:2rem}.title{font-size:.7rem}}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>REACTIFIC Games</title>
+<style>body{margin:0;padding:20px;background:#0a0e1a;color:#fff;font-family:Arial,sans-serif}.h{text-align:center;margin-bottom:30px}.l{font-size:2rem;font-weight:900;margin:10px 0}.s{font-size:.7rem;color:#888}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}.c{padding:12px;background:#111;border:1px solid #008cff;border-radius:8px;text-align:center;text-decoration:none;color:#fff;cursor:pointer}.c:hover{background:#1a1a2e}.i{font-size:2rem;display:block;margin-bottom:6px}.t{font-size:.75rem;font-weight:900;text-transform:uppercase}.sb{position:fixed;top:15px;right:15px;width:45px;height:45px;border-radius:8px;border:1px solid #008cff;background:#111;color:#008cff;font-size:1.2rem;cursor:pointer}</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <div class="badge">🥽 VR GAMES</div>
-    <div class="logo">REACTIFIC<span>™</span></div>
-    <div class="subtitle">6 VR Games · 6 Challenges</div>
-  </div>
-
-  <div class="grid">
-    <a href="/vr-reaction.html" class="card" title="Reaction Control">
-      <div class="icon">⚡</div>
-      <div class="title">Reaction</div>
-      <div class="sub">Reflexes</div>
-    </a>
-
-    <a href="/vr-numhunt.html" class="card" title="Number Hunt">
-      <div class="icon">🔢</div>
-      <div class="title">Number</div>
-      <div class="sub">Hunt</div>
-    </a>
-
-    <a href="/vr-pattern.html" class="card" title="Pattern Recognition">
-      <div class="icon">🧩</div>
-      <div class="title">Pattern</div>
-      <div class="sub">Recognition</div>
-    </a>
-
-    <a href="/vr-sequence.html" class="card" title="Sequence Control">
-      <div class="icon">⏪</div>
-      <div class="title">Sequence</div>
-      <div class="sub">Control</div>
-    </a>
-
-    <a href="/vr-echo.html" class="card" title="Echo Recall">
-      <div class="icon">👁️</div>
-      <div class="title">Echo</div>
-      <div class="sub">Recall</div>
-    </a>
-
-    <a href="/vr-flash.html" class="card" title="Flash Recall">
-      <div class="icon">👀</div>
-      <div class="title">Flash</div>
-      <div class="sub">Recall</div>
-    </a>
-  </div>
-
-  <div class="footer">REACTIFIC™ · Gostar Digital LLC</div>
+<div class="h"><div class="l">REACTIFIC™</div><div class="s">VR GAMES</div></div>
+<div class="g">
+<a href="/vr-reaction.html" class="c"><span class="i">⚡</span><span class="t">Reaction</span></a>
+<a href="/vr-numhunt.html" class="c"><span class="i">🔢</span><span class="t">Number</span></a>
+<a href="/vr-pattern.html" class="c"><span class="i">🧩</span><span class="t">Pattern</span></a>
+<a href="/vr-sequence.html" class="c"><span class="i">⏪</span><span class="t">Sequence</span></a>
+<a href="/vr-echo.html" class="c"><span class="i">👁️</span><span class="t">Echo</span></a>
+<a href="/vr-flash.html" class="c"><span class="i">👀</span><span class="t">Flash</span></a>
 </div>
-
-<button class="settings" onclick="window.location.href='/dashboard.html'" title="Dashboard">⚙️</button>
-
-<script>
-if(!sessionStorage.getItem('rct-gate-pass')){window.location.href='/';}
-</script>
+<button class="sb" onclick="location.href='/dashboard.html'">⚙️</button>
+<script>if(!sessionStorage.getItem('rct-gate-pass'))location.href='/'</script>
 </body>
 </html>
