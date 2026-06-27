@@ -162,15 +162,28 @@ var API='https://api.reactificgaming.com';
   var urlToken=new URLSearchParams(window.location.search).get('t');
   if(urlToken)localStorage.setItem('rct-token',urlToken);
 })();
+
 function submitScore(score,level,mode){
   var token=localStorage.getItem('rct-token');
   if(!token)return;
   fetch(API+'/api/scores/game',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-    body:JSON.stringify({game_id:'focus',score:score,level:level,mode:mode})
-  }).catch(function(){});
+    body:JSON.stringify({game_id:'sequence',score:score,level:level,mode:mode})
+  }).catch(function(err){
+    console.error('Score submit error:',err);
+  });
 }
+
+// Ensure score is saved when leaving
+window.addEventListener('beforeunload',function(){
+  var token=localStorage.getItem('rct-token');
+  if(token && g && g.sc>0){
+    navigator.sendBeacon(API+'/api/scores/game',
+      JSON.stringify({game_id:'sequence',score:g.sc,level:g.lv,mode:'progression'})
+    );
+  }
+});
 
 var phase='idle',sequence=[],playerIdx=0,timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
@@ -214,19 +227,37 @@ function handleTap(idx){
     phase='idle';clrT();
     cellSt(idx,'wrong');g.st=0;updateHUD();
     msg('WRONG ORDER!','miss');
-    submitScore(g.sc,g.lv,'progression');
+    submitScore(g.sc,g.lv,'progression');  // FIXED: Submit on failure
     timers.push(setTimeout(function(){sequence.forEach(function(si,n){cellSt(si,'correct',n+1)});timers.push(setTimeout(finishRound,1800))},500));
-    // stay at current level on miss
   }
 }
 
-function tierUp(){g.tier++;g.rd=0;if(g.tier>TOTAL_TIERS)g.tier=TOTAL_TIERS;if(g.lv<10)g.lv++;updateHUD();resetCells();msg('⭐ GOSTAR! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,1200))}
-function autoNextRound(){if(phase!=='idle')return;resetCells();startRound()}
-function finishRound(){phase='idle';clrT();resetCells();updateHUD();
+function tierUp(){
+  g.tier++;g.rd=0;
+  if(g.tier>TOTAL_TIERS)g.tier=TOTAL_TIERS;
+  if(g.lv<10)g.lv++;
+  updateHUD();
+  resetCells();
+  msg('⭐ GOSTAR! L'+g.lv,'perfect');
+  submitScore(g.sc,g.lv,'compete');  // FIXED: Submit on tier up
+  timers.push(setTimeout(autoNextRound,1200));
+}
+
+function autoNextRound(){
+  if(phase!=='idle')return;
+  resetCells();
+  startRound();
+}
+
+function finishRound(){
+  phase='idle';clrT();resetCells();updateHUD();
   msg("TRY AGAIN",'miss');
-  $('actBtn').textContent="TRY AGAIN";$('actBtn').onclick=startRound;$('actBtn').disabled=false;
+  $('actBtn').textContent="TRY AGAIN";
+  $('actBtn').onclick=startRound;
+  $('actBtn').disabled=false;
   $('restartBtn').style.display='';
 }
+
 $('actBtn').onclick=startRound;
 buildCourt();
 })();
