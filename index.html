@@ -3,257 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VR Games Hub | REACTIFIC</title>
+<title>REACTIFIC VR Games</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  width: 100%;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  color: #fff;
-  background: linear-gradient(180deg, #020810, #010205);
-  overflow-x: hidden;
-}
-
-.container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 50px;
-  margin-top: 20px;
-}
-
-.badge {
-  display: inline-block;
-  background: rgba(0, 140, 255, 0.15);
-  border: 1px solid rgba(0, 140, 255, 0.4);
-  border-radius: 50px;
-  padding: 6px 16px;
-  font-size: 0.6rem;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #008cff;
-  margin-bottom: 16px;
-}
-
-.logo {
-  font-size: 2.8rem;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 1;
-  text-shadow: 0 0 40px rgba(0, 140, 255, 0.6);
-}
-
-.logo span {
-  color: #008cff;
-}
-
-.subtitle {
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #a7adba;
-  margin-top: 12px;
-}
-
-.games-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: 40px;
-  padding: 0 20px;
-}
-
-.game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
-  border-radius: 16px;
-  background: rgba(0, 140, 255, 0.08);
-  border: 2px solid rgba(0, 140, 255, 0.3);
-  text-decoration: none;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 180px;
-  text-align: center;
-}
-
-.game-card:hover {
-  border-color: #008cff;
-  background: rgba(0, 140, 255, 0.15);
-  box-shadow: 0 0 30px rgba(0, 140, 255, 0.4);
-  transform: translateY(-6px);
-}
-
-.game-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
-  line-height: 1;
-}
-
-.game-title {
-  font-size: 0.85rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1.4;
-  margin-bottom: 8px;
-}
-
-.game-subtitle {
-  font-size: 0.55rem;
-  color: #8892a0;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.footer {
-  text-align: center;
-  padding: 30px 20px;
-  font-size: 0.5rem;
-  color: #4a5568;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border-top: 1px solid rgba(0, 140, 255, 0.15);
-  width: 100%;
-}
-
-.footer span {
-  color: #008cff;
-}
-
-.settings-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  border: 2px solid rgba(0, 140, 255, 0.4);
-  background: rgba(0, 140, 255, 0.08);
-  color: #008cff;
-  font-size: 1.4rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.settings-btn:hover {
-  border-color: #008cff;
-  background: rgba(0, 140, 255, 0.15);
-  box-shadow: 0 0 20px rgba(0, 140, 255, 0.4);
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 20px 16px;
-  }
-  .logo {
-    font-size: 2rem;
-  }
-  .games-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 0;
-  }
-  .game-card {
-    min-height: 160px;
-    padding: 16px 12px;
-  }
-  .game-icon {
-    font-size: 2rem;
-  }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#0a0e1a;color:#fff;overflow-x:hidden}
+.wrap{max-width:1000px;margin:0 auto;padding:30px 20px}
+.header{text-align:center;margin-bottom:40px}
+.badge{display:inline-block;font-size:.6rem;color:#008cff;border:1px solid #008cff;padding:6px 12px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.15em}
+.logo{font-size:2.4rem;font-weight:900;margin:10px 0}
+.logo span{color:#008cff}
+.subtitle{font-size:.7rem;color:#888;letter-spacing:.1em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:30px}
+.card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:rgba(0,140,255,.08);border:2px solid rgba(0,140,255,.3);border-radius:12px;text-decoration:none;color:#fff;cursor:pointer;transition:all .2s;min-height:160px}
+.card:hover{border-color:#008cff;background:rgba(0,140,255,.12);transform:translateY(-3px)}
+.icon{font-size:2.8rem;margin-bottom:10px}
+.title{font-size:.8rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
+.sub{font-size:.55rem;color:#888;margin-top:6px;text-transform:uppercase}
+.footer{text-align:center;padding:20px;border-top:1px solid rgba(0,140,255,.15);font-size:.5rem;color:#666;letter-spacing:.08em;text-transform:uppercase}
+.settings{position:fixed;top:20px;right:20px;width:50px;height:50px;border-radius:10px;border:2px solid #008cff;background:rgba(0,140,255,.1);color:#008cff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.settings:hover{background:rgba(0,140,255,.2)}
+@media(max-width:600px){.logo{font-size:1.8rem}.grid{grid-template-columns:repeat(2,1fr);gap:12px}.card{min-height:140px;padding:16px}.icon{font-size:2rem}.title{font-size:.7rem}}
 </style>
 </head>
 <body>
-
-<div class="container">
-
+<div class="wrap">
   <div class="header">
-    <div class="badge">🥽 Virtual Reaction Reality</div>
+    <div class="badge">🥽 VR GAMES</div>
     <div class="logo">REACTIFIC<span>™</span></div>
-    <div class="subtitle">6 VR Games - Choose Your Challenge</div>
+    <div class="subtitle">6 VR Games · 6 Challenges</div>
   </div>
 
-  <div class="games-container">
-
-    <!-- REACTION CONTROL -->
-    <a href="/vr-reaction.html" class="game-card">
-      <div class="game-icon">⚡</div>
-      <div class="game-title">Reaction Control</div>
-      <div class="game-subtitle">Fast Reflexes</div>
+  <div class="grid">
+    <a href="/vr-reaction.html" class="card" title="Reaction Control">
+      <div class="icon">⚡</div>
+      <div class="title">Reaction</div>
+      <div class="sub">Reflexes</div>
     </a>
 
-    <!-- NUMBER HUNT -->
-    <a href="/vr-numhunt.html" class="game-card">
-      <div class="game-icon">🔢</div>
-      <div class="game-title">Number Hunt</div>
-      <div class="game-subtitle">Pattern Match</div>
+    <a href="/vr-numhunt.html" class="card" title="Number Hunt">
+      <div class="icon">🔢</div>
+      <div class="title">Number</div>
+      <div class="sub">Hunt</div>
     </a>
 
-    <!-- PATTERN RECOGNITION -->
-    <a href="/vr-pattern.html" class="game-card">
-      <div class="game-icon">🧩</div>
-      <div class="game-title">Pattern Recognition</div>
-      <div class="game-subtitle">Memory Game</div>
+    <a href="/vr-pattern.html" class="card" title="Pattern Recognition">
+      <div class="icon">🧩</div>
+      <div class="title">Pattern</div>
+      <div class="sub">Recognition</div>
     </a>
 
-    <!-- SEQUENCE CONTROL -->
-    <a href="/vr-sequence.html" class="game-card">
-      <div class="game-icon">⏪</div>
-      <div class="game-title">Sequence Control</div>
-      <div class="game-subtitle">Order Recall</div>
+    <a href="/vr-sequence.html" class="card" title="Sequence Control">
+      <div class="icon">⏪</div>
+      <div class="title">Sequence</div>
+      <div class="sub">Control</div>
     </a>
 
-    <!-- ECHO RECALL -->
-    <a href="/vr-echo.html" class="game-card">
-      <div class="game-icon">👁️</div>
-      <div class="game-title">Echo Recall</div>
-      <div class="game-subtitle">Change Detection</div>
+    <a href="/vr-echo.html" class="card" title="Echo Recall">
+      <div class="icon">👁️</div>
+      <div class="title">Echo</div>
+      <div class="sub">Recall</div>
     </a>
 
-    <!-- FLASH RECALL -->
-    <a href="/vr-flash.html" class="game-card">
-      <div class="game-icon">👀</div>
-      <div class="game-title">Flash Recall</div>
-      <div class="game-subtitle">Find Them All</div>
+    <a href="/vr-flash.html" class="card" title="Flash Recall">
+      <div class="icon">👀</div>
+      <div class="title">Flash</div>
+      <div class="sub">Recall</div>
     </a>
-
   </div>
 
-  <div class="footer">
-    REACTIFIC™ · <span>Virtual Reaction Reality</span> · Gostar Digital LLC
-  </div>
-
+  <div class="footer">REACTIFIC™ · Gostar Digital LLC</div>
 </div>
 
-<button class="settings-btn" title="Dashboard" onclick="location.href='/dashboard.html'">⚙️</button>
+<button class="settings" onclick="window.location.href='/dashboard.html'" title="Dashboard">⚙️</button>
 
 <script>
-// Check gate access
-if (!sessionStorage.getItem('rct-gate-pass')) {
-  window.location.href = '/';
-}
+if(!sessionStorage.getItem('rct-gate-pass')){window.location.href='/';}
 </script>
-
 </body>
 </html>
