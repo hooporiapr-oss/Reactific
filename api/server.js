@@ -910,8 +910,126 @@ app.post('/api/classes/:id/display-mode', authRequired, async (req, res) => {
   }
 });
 
+// ── WebSocket Real-Time Leaderboard Updates ─────────────
+const WebSocket = require('ws');
+const http = require('http');
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server, path: '/api/leaderboard/subscribe' });
+
+// Store active subscriptions: { gameId-window-classId: [ws1, ws2, ...] }
+var activeSubscriptions = {};
+
+wss.on('connection', function(ws) {
+  var subscriptionKey = null;
+
+  ws.on('message', function(data) {
+    try {
+      var msg = JSON.parse(data);
+
+      if (msg.action === 'subscribe') {
+        var gameId = String(msg.game_id || '').toLowerCase();
+        var window = ['today', 'week', 'alltime'].includes(msg.window) ? msg.window : 'alltime';
+        var classId = msg.class_id ? parseInt(msg.class_id, 10) : null;
+
+        if (!VALID_GAMES.includes(gameId)) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Invalid game' }));
+          return;
+        }
+
+        subscriptionKey = gameId + '-' + window + '-' + (classId || 'all');
+
+        if (!activeSubscriptions[subscriptionKey]) {
+          activeSubscriptions[subscriptionKey] = [];
+        }
+
+        activeSubscriptions[subscriptionKey].push(ws);
+        ws.send(JSON.stringify({ type: 'subscribed', key: subscriptionKey }));
+      }
+    } catch (err) {
+      console.error('WS message error:', err);
+      ws.send(JSON.stringify({ type: 'error', message: 'Parse error' }));
+    }
+  });
+
+  ws.on('close', function() {
+    if (subscriptionKey && activeSubscriptions[subscriptionKey]) {
+      var idx = activeSubscriptions[subscriptionKey].indexOf(ws);
+      if (idx > -1) {
+        activeSubscriptions[subscriptionKey].splice(idx, 1);
+      }
+      if (activeSubscriptions[subscriptionKey].length === 0) {
+        delete activeSubscriptions[subscriptionKey];
+      }
+    }
+  });
+
+  ws.on('error', function(err) {
+    console.error('WS error:', err);
+  });
+});
+
+async function broadcastLeaderboardUpdate(gameId, window, classId) {
+  var key = gameId + '-' + window + '-' + (classId || 'all');
+  var subscribers = activeSubscriptions[key];
+
+  if (!subscribers || !subscribers.length) return;
+
+  try {
+    var leaderboard = await getGameLeaderboard(gameId, window, classId, 8);
+    var msg = JSON.stringify({
+      type: 'leaderboard_update',
+      game_id: gameId,
+      window: window,
+      entries: leaderboard.entries
+    });
+
+    subscribers.forEach(function(ws) {
+      if (ws.readyState === ws.OPEN) {
+        ws.send(msg);
+      }
+    });
+  } catch (err) {
+    console.error('Broadcast error:', err);
+  }
+}
+
+var originalPostScoreHandler = null;
+app._router.stack.forEach(function(layer) {
+  if (layer.route && layer.route.path === '/api/scores/game' && layer.route.methods.post) {
+    var handlers = layer.route.stack;
+    if (handlers && handlers.length > 0) {
+      originalPostScoreHandler = handlers[handlers.length - 1].handle;
+      handlers[handlers.length - 1].handle = function(req, res) {
+        var originalSend = res.send;
+        res.send = function(data) {
+          if (res.statusCode === 201) {
+            try {
+              var gameId = String(req.body.game_id || '').toLowerCase();
+              pool.query('SELECT class_id FROM users WHERE id = $1', [req.user.id])
+                .then(function(result) {
+                  var classId = result.rows[0]?.class_id || null;
+                  ['today', 'week', 'alltime'].forEach(function(w) {
+                    broadcastLeaderboardUpdate(gameId, w, classId);
+                    broadcastLeaderboardUpdate(gameId, w, null);
+                  });
+                })
+                .catch(function(err) {
+                  console.error('Broadcast class lookup error:', err);
+                });
+            } catch (e) {
+              console.error('Broadcast hook error:', e);
+            }
+          }
+          return originalSend.call(this, data);
+        };
+        return originalPostScoreHandler.call(this, req, res);
+      };
+    }
+  }
+});
+
 // ── Start ───────────────────────────────────────────────
-app.listen(PORT, () => console.log(`Reactific API running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Reactific API with WebSocket running on port ${PORT}`));
 
 // ── STUDENT LOGIN — email + class code ─────────────────
 app.post('/api/auth/student-login', async (req, res) => {
