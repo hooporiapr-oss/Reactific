@@ -158,6 +158,7 @@ var API='https://api.reactificgaming.com';
   var urlToken=new URLSearchParams(window.location.search).get('t');
   if(urlToken)localStorage.setItem('rct-token',urlToken);
 })();
+
 function submitScore(score,level,mode){
   var token=localStorage.getItem('rct-token');
   if(!token)return;
@@ -165,8 +166,20 @@ function submitScore(score,level,mode){
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
     body:JSON.stringify({game_id:'numhunt',score:score,level:level,mode:mode})
-  }).catch(function(){});
+  }).catch(function(err){
+    console.error('Score submit error:',err);
+  });
 }
+
+// Ensure score is saved when leaving
+window.addEventListener('beforeunload',function(){
+  var token=localStorage.getItem('rct-token');
+  if(token && g && g.sc>0){
+    navigator.sendBeacon(API+'/api/scores/game',
+      JSON.stringify({game_id:'numhunt',score:g.sc,level:g.level,mode:'progression'})
+    );
+  }
+});
 
 document.querySelectorAll('[data-time]').forEach(btn=>{
   btn.onclick=function(){
@@ -327,12 +340,13 @@ function handleTap(idx){
         // Completed full run of this level (10→50 cells) — advance to next level
         if(g.level>=MAX_LEVEL){
           msg('🏆 ULTIMATE HUNTER! ALL LEVELS MASTERED!','perfect');
-          submitScore(g.sc,g.level,'progression');
+          submitScore(g.sc,g.level,'compete');  // FIXED: Submit on ultimate level
           timers.push(setTimeout(restartGame,3000));
         }else{
           var nextLevel=g.level+1;
           var nextCells=Math.max(MIN_CELLS,nextLevel);
           msg('🔥 LEVEL '+nextLevel+' UNLOCKED! FIND '+nextLevel+' NUMBERS!','perfect');
+          submitScore(g.sc,nextLevel,'progression');  // FIXED: Submit on level up
           g.level=nextLevel;
           g.cells=nextCells;
           timers.push(setTimeout(startRound,1200));
@@ -341,6 +355,7 @@ function handleTap(idx){
         // Advance cells within same level
         g.cells=g.cells+1;
         msg('✅ +'+(g.cells)+' CELLS → KEEP HUNTING!','perfect');
+        submitScore(g.sc,g.level,'progression');  // FIXED: Submit on cell advance
         timers.push(setTimeout(startRound,700));
       }
     }else{
