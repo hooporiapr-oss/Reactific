@@ -144,7 +144,7 @@ function resetCells(){cells.forEach((_,i)=>cellSt(i))}
 
 var g={lv:1,sc:0,rd:0,st:0,pf:0};
 function gcc(){return g.lv+4}
-function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/1';$('hFind').textContent=gcc()+' cells';$('ps1').textContent=g.lv}
+function updateHUD(){$('hSc').textContent=g.sc;$('hRd').textContent=g.rd;$('hLv').textContent=g.lv;$('hSt').textContent=g.st;$('hPf').textContent=g.pf+'/2';$('hFind').textContent=gcc()+' cells';$('ps1').textContent=g.lv}
 function msg(txt,cls){var el=$('msg');el.textContent=txt;el.className='msg-bar '+(cls||'watch')}
 function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
 function initGame(){g={lv:1,sc:0,rd:0,st:0,pf:0};updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').disabled=false;$('actBtn').onclick=startRound;$('restartBtn').style.display='none'}
@@ -155,15 +155,28 @@ var API='https://api.reactificgaming.com';
   var urlToken=new URLSearchParams(window.location.search).get('t');
   if(urlToken)localStorage.setItem('rct-token',urlToken);
 })();
+
 function submitScore(score,level,mode){
   var token=localStorage.getItem('rct-token');
   if(!token)return;
   fetch(API+'/api/scores/game',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-    body:JSON.stringify({game_id:'sequence',score:score,level:level,mode:mode})
-  }).catch(function(){});
+    body:JSON.stringify({game_id:'focus',score:score,level:level,mode:mode})
+  }).catch(function(err){
+    console.error('Score submit error:',err);
+  });
 }
+
+// Ensure score is saved when leaving
+window.addEventListener('beforeunload',function(){
+  var token=localStorage.getItem('rct-token');
+  if(token && g && g.sc>0){
+    navigator.sendBeacon(API+'/api/scores/game',
+      JSON.stringify({game_id:'focus',score:g.sc,level:g.lv,mode:'progression'})
+    );
+  }
+});
 
 var phase='idle',targets=[],selected=[],timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
@@ -206,8 +219,22 @@ function revealResults(){
   if(correct===needed){
     g.pf++;g.st++;g.sc+=needed*10*g.lv;updateHUD();
     msg('✅ PERFECT! '+correct+'/'+needed,'perfect');
-    if(g.pf>=1){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('🔥 LEVEL UP! L'+g.lv,'perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
-    else{timers.push(setTimeout(autoNextRound,1000))}
+    if(g.pf>=2){
+      timers.push(setTimeout(function(){
+        if(g.lv<10){
+          g.lv++;
+          g.pf=0;
+          submitScore(g.sc,g.lv,'progression');  // FIXED: Submit on level up
+        }
+        updateHUD();
+        resetCells();
+        msg('🔥 LEVEL UP! L'+g.lv,'perfect');
+        timers.push(setTimeout(autoNextRound,900))
+      },1200))
+    }else{
+      submitScore(g.sc,g.lv,'progression');  // FIXED: Submit on regular success
+      timers.push(setTimeout(autoNextRound,1000))
+    }
   }else{
     g.pf=0;g.st=0;updateHUD();
     msg('MISSED! '+correct+'/'+needed,'miss');
@@ -217,12 +244,18 @@ function revealResults(){
 }
 
 function autoNextRound(){if(phase!=='idle')return;resetCells();$('restartBtn').style.display='none';startRound()}
-function showMissOptions(){phase='idle';clrT();resetCells();updateHUD();
+
+function showMissOptions(){
+  phase='idle';clrT();resetCells();updateHUD();
   msg("TRY AGAIN",'miss');
   $('actBtn').textContent="TRY AGAIN";$('actBtn').onclick=function(){$('restartBtn').style.display='none';startRound()};$('actBtn').disabled=false;
   $('restartBtn').style.display='';
 }
-function restartGame(){clrT();phase='idle';g={lv:1,sc:0,rd:0,st:0,pf:0};resetCells();updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').onclick=startRound;$('actBtn').disabled=false;$('restartBtn').style.display='none'}
+
+function restartGame(){
+  clrT();phase='idle';g={lv:1,sc:0,rd:0,st:0,pf:0};resetCells();updateHUD();msg("TAP LET'S GO!",'watch');$('actBtn').textContent="LET'S GO";$('actBtn').onclick=startRound;$('actBtn').disabled=false;$('restartBtn').style.display='none'
+}
+
 $('actBtn').onclick=startRound;
 buildCourt();
 })();
