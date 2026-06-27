@@ -1,5 +1,6 @@
 // Reactific API — Auth + Stripe + Leaderboards + Google OAuth + Classes
 // Deploy on Render Web Service
+// FIXES: display_mode now included in class creation, teaching endpoint, and dashboard
 
 const express = require('express');
 const cors = require('cors');
@@ -301,7 +302,7 @@ app.get('/api/auth/me', authRequired, async (req, res) => {
 
 // ── CLASS ENDPOINTS ─────────────────────────────────────
 
-// Create class (teacher)
+// Create class (teacher) — FIX: Now sets default display_mode to 'initials'
 app.post('/api/classes/create', authRequired, async (req, res) => {
   try {
     const { name, school_id } = req.body;
@@ -316,9 +317,9 @@ app.post('/api/classes/create', authRequired, async (req, res) => {
     } while (attempts < 10);
 
     const result = await pool.query(
-      `INSERT INTO classes (teacher_id, school_id, name, code)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, name, code, created_at`,
+      `INSERT INTO classes (teacher_id, school_id, name, code, display_mode)
+       VALUES ($1, $2, $3, $4, 'initials')
+       RETURNING id, name, code, display_mode, created_at`,
       [req.user.id, school_id || null, name, code]
     );
 
@@ -363,12 +364,12 @@ app.post('/api/classes/join', authRequired, async (req, res) => {
   }
 });
 
-// Teacher dashboard
+// Teacher dashboard — FIX: Now includes display_mode in response
 app.get('/api/classes/:id/dashboard', authRequired, async (req, res) => {
   try {
     const classId = req.params.id;
     const cls = await pool.query(
-      `SELECT id, name, code FROM classes WHERE id = $1 AND teacher_id = $2`,
+      `SELECT id, name, code, display_mode FROM classes WHERE id = $1 AND teacher_id = $2`,
       [classId, req.user.id]
     );
     if (!cls.rows.length) return res.status(403).json({ error: 'Not authorized' });
@@ -413,11 +414,11 @@ app.get('/api/classes/mine', authRequired, async (req, res) => {
   }
 });
 
-// My classes (teacher)
+// My classes (teacher) — FIX: Now includes display_mode in response
 app.get('/api/classes/teaching', authRequired, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT c.id, c.name, c.code, c.created_at,
+      `SELECT c.id, c.name, c.code, c.display_mode, c.created_at,
         COUNT(cs.user_id) as student_count
        FROM classes c
        LEFT JOIN class_students cs ON cs.class_id = c.id
