@@ -119,7 +119,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="top-box"><div class="top-label">Round</div><div class="top-val" id="hRd">0</div></div>
     <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLv">1</div></div>
     <div class="top-box"><div class="top-label">Streak</div><div class="top-val" id="hSt">0</div></div>
-    <div class="top-box"><div class="top-label">Level Up</div><div class="top-val" id="hPf">0/3</div></div>
+    <div class="top-box"><div class="top-label">Level Up</div><div class="top-val" id="hPf">0/1</div></div>
   </div>
   <div class="clockbar"><div class="clockbar-fill" id="clockFill" style="width:0%"></div></div>
   <div class="msg-bar watch" id="msg">TAP LET'S GO!</div>
@@ -170,6 +170,7 @@ var API='https://api.reactificgaming.com';
   var urlToken=new URLSearchParams(window.location.search).get('t');
   if(urlToken)localStorage.setItem('rct-token',urlToken);
 })();
+
 function submitScore(score,level,mode){
   var token=localStorage.getItem('rct-token');
   if(!token)return;
@@ -177,8 +178,20 @@ function submitScore(score,level,mode){
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
     body:JSON.stringify({game_id:'pattern',score:score,level:level,mode:mode})
-  }).catch(function(){});
+  }).catch(function(err){
+    console.error('Score submit error:',err);
+  });
 }
+
+// Ensure score is saved when leaving
+window.addEventListener('beforeunload',function(){
+  var token=localStorage.getItem('rct-token');
+  if(token && g && g.sc>0){
+    navigator.sendBeacon(API+'/api/scores/game',
+      JSON.stringify({game_id:'pattern',score:g.sc,level:g.lv,mode:'progression'})
+    );
+  }
+});
 
 var phase='idle',pattern=[],playerIdx=0,timers=[];
 function clrT(){timers.forEach(clearTimeout);timers=[]}
@@ -215,8 +228,22 @@ function handleTap(idx){
       phase='idle';clrT();stopStrobe();
       g.sc+=gcc()*20;g.st++;g.pf++;updateHUD();
       msg('✅ PERFECT!','perfect');
-      if(g.pf>=1){timers.push(setTimeout(function(){if(g.lv<10){g.lv++;g.pf=0}updateHUD();resetCells();msg('🔥 LEVEL UP!','perfect');timers.push(setTimeout(autoNextRound,900))},1200))}
-      else{timers.push(setTimeout(autoNextRound,1000))}
+      if(g.pf>=1){
+        timers.push(setTimeout(function(){
+          if(g.lv<10){
+            g.lv++;
+            g.pf=0;
+            submitScore(g.sc,g.lv,'progression');  // FIXED: Submit on level up
+          }
+          updateHUD();
+          resetCells();
+          msg('🔥 LEVEL UP!','perfect');
+          timers.push(setTimeout(autoNextRound,900))
+        },1200))
+      }else{
+        submitScore(g.sc,g.lv,'progression');  // FIXED: Submit on success
+        timers.push(setTimeout(autoNextRound,1000))
+      }
     }
   }else{
     phase='idle';clrT();stopStrobe();
