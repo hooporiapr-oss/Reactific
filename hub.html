@@ -62,7 +62,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 <div class="header">
   <div class="logo">REACTIFIC<span>™</span></div>
   <div class="header-right">
-    <button class="settings" onclick="goToSettings()">⚙️ Dashboard</button>
+    <button class="settings" id="settingsBtn" onclick="goToSettings()" style="display:none">⚙️ Dashboard</button>
     <div class="avatar" id="avatarEl">?</div>
     <span class="uname" id="uname">Player</span>
     <button class="signout" onclick="signOut()">Sign Out</button>
@@ -187,6 +187,19 @@ if(user.avatar_url){
   document.getElementById('avatarEl').appendChild(img);
 }
 
+// Check if user is a teacher - show settings button only for teachers
+fetch(API+'/api/classes/teaching',{
+  headers:{'Authorization':'Bearer '+token}
+})
+.then(r=>r.json())
+.then(d=>{
+  // If they have teaching classes, show settings button
+  if(d && d.length > 0){
+    document.getElementById('settingsBtn').style.display='block';
+  }
+})
+.catch(()=>{});
+
 // Load class info
 if(user.class_id){
   fetch(API+'/api/classes/'+user.class_id,{
@@ -249,7 +262,14 @@ function playGame(gameFile){
 
 // Go to settings/dashboard
 function goToSettings(){
-  window.location.href='/dashboard.html';
+  // Option 1: Dashboard (teacher monitoring)
+  // window.location.href='/dashboard.html';
+  
+  // Option 2: Scoreboard (live leaderboard)
+  window.location.href='/scoreboard.html';
+  
+  // Option 3: Hub (stay on same page)
+  // window.location.href='/hub.html';
 }
 
 // Sign out
