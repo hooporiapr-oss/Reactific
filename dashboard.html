@@ -18,6 +18,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 .header-right{display:flex;align-items:center;gap:10px}
 .avatar{width:34px;height:34px;border-radius:50%;border:2px solid rgba(0,140,255,.4);background:linear-gradient(135deg,#008cff,#9B59B6);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900;flex-shrink:0}
 .uname{font-size:.85rem;font-weight:600;color:#a7adba}
+.role-badge{font-size:.65rem;background:rgba(255,193,7,.2);color:#ffc107;padding:2px 8px;border-radius:4px;margin-left:8px}
 .signout{padding:6px 14px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#8892a0;border-radius:8px;font-size:.75rem;cursor:pointer;transition:all .2s}
 .signout:hover{border-color:rgba(255,255,255,.3);color:#fff}
 
@@ -66,6 +67,13 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 
 .back-btn{display:inline-block;margin-bottom:20px;padding:8px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:.8rem;text-decoration:none;cursor:pointer;transition:all .2s}
 .back-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+
+.access-denied{background:rgba(244,67,54,.1);border:2px solid rgba(244,67,54,.4);border-radius:14px;padding:40px 20px;text-align:center;margin-top:40px}
+.access-denied-icon{font-size:4rem;margin-bottom:20px}
+.access-denied-text{color:#f44336;font-size:1.2rem;font-weight:900;margin-bottom:10px}
+.access-denied-desc{color:#8892a0;margin-bottom:20px}
+.access-denied-btn{display:inline-block;padding:10px 20px;background:rgba(244,67,54,.2);border:1px solid rgba(244,67,54,.4);color:#f44336;border-radius:8px;text-decoration:none;cursor:pointer;margin:0 5px}
+.access-denied-btn:hover{background:rgba(244,67,54,.3)}
 </style>
 </head>
 <body>
@@ -75,6 +83,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
   <div class="header-right">
     <div class="avatar" id="avatarEl">?</div>
     <span class="uname" id="uname">Teacher</span>
+    <span class="role-badge" id="roleBadge">TEACHER</span>
     <button class="signout" onclick="signOut()">Sign Out</button>
   </div>
 </div>
@@ -83,7 +92,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
   <div class="welcome">Welcome, <span id="heroName">Teacher</span></div>
 </div>
 
-<div class="container">
+<div class="container" id="mainContent" style="display:none">
   
   <button class="back-btn" onclick="goBack()">← Back to Games</button>
 
@@ -93,7 +102,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value" id="totalStudents">—</div>
-        <div class="stat-label">Students in Class</div>
+        <div class="stat-label">Students Across Classes</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="totalScores">—</div>
@@ -101,7 +110,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
       </div>
       <div class="stat-card">
         <div class="stat-value" id="avgScore">—</div>
-        <div class="stat-label">Class Average Score</div>
+        <div class="stat-label">School Average Score</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="topScore">—</div>
@@ -139,6 +148,17 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 
 </div>
 
+<!-- Access Denied Message -->
+<div class="container" id="accessDenied" style="display:none">
+  <div class="access-denied">
+    <div class="access-denied-icon">🚫</div>
+    <div class="access-denied-text">Access Denied</div>
+    <div class="access-denied-desc">This dashboard is for teachers only.</div>
+    <button class="access-denied-btn" onclick="goBack()">← Back to Games</button>
+    <button class="access-denied-btn" onclick="signOut()">Sign Out</button>
+  </div>
+</div>
+
 <script>
 var API='https://api.reactificgaming.com';
 var token=localStorage.getItem('rct-token');
@@ -156,25 +176,52 @@ document.getElementById('uname').textContent=name;
 document.getElementById('heroName').textContent=name;
 document.getElementById('avatarEl').textContent=name[0].toUpperCase();
 
-// Load user's classes
-function loadClasses(){
-  fetch(API+'/api/classes/teaching',{
-    headers:{'Authorization':'Bearer '+token}
-  })
-  .then(r=>r.json())
-  .then(d=>{
+if(user.avatar_url){
+  var img=document.createElement('img');
+  img.src=user.avatar_url;
+  img.style='width:34px;height:34px;border-radius:50%;object-fit:cover';
+  img.onerror=function(){};
+  document.getElementById('avatarEl').innerHTML='';
+  document.getElementById('avatarEl').appendChild(img);
+}
+
+// Check if user is a teacher by attempting to load teaching classes
+// If they have teaching classes, they're a teacher
+fetch(API+'/api/classes/teaching',{
+  headers:{'Authorization':'Bearer '+token}
+})
+.then(r=>r.json())
+.then(d=>{
+  // If no classes or error, not a teacher
+  if(!d || d.error){
+    showAccessDenied();
+    return;
+  }
+  
+  // User is a teacher - show dashboard
+  showDashboard();
+  
+  // Populate class selector
+  if(d.length > 0){
     var select=document.getElementById('classSelect');
-    if(!d || !d.length){
-      select.innerHTML='<option value="">No classes assigned</option>';
-      return;
-    }
     select.innerHTML='<option value="">Select a class...</option>'+
       d.map(c=>'<option value="'+c.id+'">'+c.name+'</option>').join('');
-  })
-  .catch(err=>{
-    console.error('Error loading classes:',err);
-    document.getElementById('classSelect').innerHTML='<option value="">Error loading classes</option>';
-  });
+  }
+})
+.catch(err=>{
+  console.error('Error checking teacher status:',err);
+  showAccessDenied();
+});
+
+function showDashboard(){
+  document.getElementById('mainContent').style.display='block';
+  document.getElementById('accessDenied').style.display='none';
+  loadLeaderboard();
+}
+
+function showAccessDenied(){
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('accessDenied').style.display='block';
 }
 
 // Load class students and stats
@@ -280,10 +327,6 @@ function signOut(){
   localStorage.removeItem('rct-user');
   window.location.href='/index.html';
 }
-
-// Initialize on load
-loadClasses();
-loadLeaderboard();
 </script>
 
 </body>
