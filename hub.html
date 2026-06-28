@@ -20,6 +20,8 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 .uname{font-size:.85rem;font-weight:600;color:#a7adba}
 .signout{padding:6px 14px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#8892a0;border-radius:8px;font-size:.75rem;cursor:pointer;transition:all .2s}
 .signout:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.settings{padding:6px 14px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#8892a0;border-radius:8px;font-size:.75rem;cursor:pointer;transition:all .2s;margin-right:8px}
+.settings:hover{border-color:rgba(255,255,255,.3);color:#fff}
 
 .hero{padding:28px 20px 16px;text-align:center}
 .welcome{font-size:1.8rem;font-weight:900;margin-bottom:8px}
@@ -60,6 +62,7 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
 <div class="header">
   <div class="logo">REACTIFIC<span>™</span></div>
   <div class="header-right">
+    <button class="settings" onclick="goToSettings()">⚙️ Dashboard</button>
     <div class="avatar" id="avatarEl">?</div>
     <span class="uname" id="uname">Player</span>
     <button class="signout" onclick="signOut()">Sign Out</button>
@@ -81,34 +84,34 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
   <div class="sec-title" style="color:#FF1493">⚡ Reflex Arena</div>
   <div class="game-grid">
     <!-- REACTION CONTROL -->
-    <a class="game-card" onclick="playGame('vr-reaction.html')" data-game="vr-reaction.html" style="--gc:rgba(155,89,182,.8);--gb:rgba(155,89,182,.25)">
+    <div class="game-card" onclick="playGame('vr-reaction.html')" style="--gc:rgba(155,89,182,.8);--gb:rgba(155,89,182,.25)">
       <div class="game-ico">⚡</div>
       <div class="game-info">
         <div class="game-name">Reaction Control</div>
         <div class="game-desc">Tap the lit cell before it vanishes. Speed climbs as you go.</div>
       </div>
       <div class="game-tag" style="background:#9B59B6">Reflex</div>
-    </a>
+    </div>
 
     <!-- NUMBER HUNT -->
-    <a class="game-card" onclick="playGame('vr-numhunt.html')" data-game="vr-numhunt.html" style="--gc:rgba(255,107,0,.8);--gb:rgba(255,107,0,.2)">
+    <div class="game-card" onclick="playGame('vr-numhunt.html')" style="--gc:rgba(255,107,0,.8);--gb:rgba(255,107,0,.2)">
       <div class="game-ico">🔢</div>
       <div class="game-info">
         <div class="game-name">Number Hunt</div>
         <div class="game-desc">Find the target number on the court before time runs out.</div>
       </div>
       <div class="game-tag" style="background:#cc5500">Reflex</div>
-    </a>
+    </div>
 
-    <!-- ECHO RECALL (was vr-recovery.html) -->
-    <a class="game-card" onclick="playGame('vr-echo.html')" data-game="vr-echo.html" style="--gc:rgba(154,205,50,.8);--gb:rgba(154,205,50,.2)">
+    <!-- ECHO RECALL -->
+    <div class="game-card" onclick="playGame('vr-echo.html')" style="--gc:rgba(154,205,50,.8);--gb:rgba(154,205,50,.2)">
       <div class="game-ico">👁️</div>
       <div class="game-info">
         <div class="game-name">Echo Recall</div>
         <div class="game-desc">Spot which cell changed and tap it back to its original.</div>
       </div>
       <div class="game-tag" style="background:#5a8a14">Memory</div>
-    </a>
+    </div>
   </div>
 </div>
 
@@ -118,34 +121,34 @@ html,body{width:100%;min-height:100%;font-family:'Segoe UI',Arial,sans-serif;
   <div class="sec-title" style="color:#00D9A5">🧠 Cognitive Court</div>
   <div class="game-grid">
     <!-- PATTERN RECOGNITION -->
-    <a class="game-card" onclick="playGame('vr-pattern.html')" data-game="vr-pattern.html" style="--gc:rgba(255,107,53,.8);--gb:rgba(255,107,53,.2)">
+    <div class="game-card" onclick="playGame('vr-pattern.html')" style="--gc:rgba(255,107,53,.8);--gb:rgba(255,107,53,.2)">
       <div class="game-ico">🧩</div>
       <div class="game-info">
         <div class="game-name">Pattern Recognition</div>
         <div class="game-desc">Memorize numbered cells. Tap them back in exact order.</div>
       </div>
       <div class="game-tag" style="background:#cc4400">Memory</div>
-    </a>
+    </div>
 
-    <!-- SEQUENCE CONTROL (was vr-sequence.html) -->
-    <a class="game-card" onclick="playGame('vr-sequence.html')" data-game="vr-sequence.html" style="--gc:rgba(0,206,209,.8);--gb:rgba(0,206,209,.2)">
+    <!-- SEQUENCE CONTROL -->
+    <div class="game-card" onclick="playGame('vr-sequence.html')" style="--gc:rgba(0,206,209,.8);--gb:rgba(0,206,209,.2)">
       <div class="game-ico">🎵</div>
       <div class="game-info">
         <div class="game-name">Sequence Control</div>
         <div class="game-desc">Watch cells light up one by one. Replay in the exact same order.</div>
       </div>
       <div class="game-tag" style="background:#007b80">Sequence</div>
-    </a>
+    </div>
 
-    <!-- FLASH RECALL (was vr-focus.html) -->
-    <a class="game-card" onclick="playGame('vr-flash.html')" data-game="vr-flash.html" style="--gc:rgba(0,217,165,.8);--gb:rgba(0,217,165,.2)">
+    <!-- FLASH RECALL -->
+    <div class="game-card" onclick="playGame('vr-flash.html')" style="--gc:rgba(0,217,165,.8);--gb:rgba(0,217,165,.2)">
       <div class="game-ico">👀</div>
       <div class="game-info">
         <div class="game-name">Flash Recall</div>
         <div class="game-desc">Multiple cells flash at once. Find every single one.</div>
       </div>
       <div class="game-tag" style="background:#007a50">Memory</div>
-    </a>
+    </div>
   </div>
 </div>
 
@@ -242,6 +245,11 @@ fetch(API+'/api/leaderboard?limit=10')
 function playGame(gameFile){
   var url='/'+gameFile+'?t='+encodeURIComponent(token);
   window.location.href=url;
+}
+
+// Go to settings/dashboard
+function goToSettings(){
+  window.location.href='/dashboard.html';
 }
 
 // Sign out
